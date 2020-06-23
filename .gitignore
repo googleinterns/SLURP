@@ -1,0 +1,5 @@
+# Remove auto-generated files from 'Maven for Java' vscode extension.
+.classpath
+.project
+.settings/
+.factorypath
