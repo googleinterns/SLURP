@@ -11,3 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+
+// Initialize Firebase and its related product we use (Firestore and Firebase
+// Auth) using the provided Firebase project configuation.
+var firebaseConfig = {
+  apiKey: "AIzaSyAAJgRhJY_rRn_q_On1HdA3hx15YHSkEJg",
+  authDomain: "step53-2020.firebaseapp.com",
+  databaseURL: "https://step53-2020.firebaseio.com",
+  projectId: "step53-2020",
+  storageBucket: "step53-2020.appspot.com",
+  messagingSenderId: "905834221913",
+  appId: "1:905834221913:web:25e711f1132b2c0537fc48",
+  measurementId: "G-PLVY991DHW"
+};
+
+firebase.initializeApp(firebaseConfig);
