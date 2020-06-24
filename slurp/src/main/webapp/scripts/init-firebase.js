@@ -13,8 +13,8 @@
 // limitations under the License.
 
 
-// Initialize Firebase and its related product we use (Firestore and Firebase
-// Auth) using the provided Firebase project configuation.
+// Initialize Firebase and its related product we use using the provided
+// Firebase project configuation.
 var firebaseConfig = {
   apiKey: "AIzaSyAAJgRhJY_rRn_q_On1HdA3hx15YHSkEJg",
   authDomain: "step53-2020.firebaseapp.com",
