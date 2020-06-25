@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Slurp</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../styles/style.css">
+
+    <!-- JavaScript -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script defer src="https://www.gstatic.com/firebasejs/7.15.4/firebase-app.js"></script>
+    <!-- Add any other SDKs for Firebase products that we want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script defer src="https://www.gstatic.com/firebasejs/7.15.4/firebase-firestore.js"></script>
+
+    <script defer src="../scripts/init-firebase.js"></script>
+    <script defer src="../scripts/view-trips.js"></script>
+  </head>
+  <body>
+    <!-- TODO(Issue 9): Create a top navigation bar -->
+    <nav id="top-navbar">
+      <!-- top-navbar.html populated here by jQuery. -->
+    </nav>
+    <!-- TODO(Issue 10): Create the manage trips menu -->
+    <div id="manage-trips-menu">
+      <div id="new-trip"></div>
+      <div id="sort-trips"></div>
+      <div id="reload-page"></div>
+    </div>
+    <main id="trips-container">
+      <!-- Trip <div> elements are populated here by view-trips.js -->
+    </main>
+  </body>
+</html>
