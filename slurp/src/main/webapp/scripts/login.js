@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// FirebaseUI config.
-const uiConfig = {
+const firebaseUiConfig = {
   signInSuccessUrl: 'view-trips.html',
   signInOptions: [
     // This app requires a Google account to use.
@@ -21,7 +20,5 @@ const uiConfig = {
   ]
 };
 
-// Initialize the FirebaseUI Widget using Firebase.
-const ui = new firebaseui.auth.AuthUI(firebase.auth());
-// The start method will wait until the DOM is loaded.
-ui.start('#firebaseui-login', uiConfig);
+const firebaseAuthUi = new firebaseui.auth.AuthUI(firebase.auth());
+firebaseAuthUi.start('#firebaseui-login', firebaseUiConfig);
