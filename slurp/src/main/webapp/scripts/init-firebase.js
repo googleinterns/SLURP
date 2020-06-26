@@ -22,7 +22,7 @@ const FIREBASE_EMULATOR_PORT = 8000; // This is the port from when you run fireb
 
 const RUN_LOCALLY = USE_EMULATOR && (location.hostname === "localhost" || location.hostname === "");
 
-var firebaseConfig;
+let firebaseConfig;
 if (RUN_LOCALLY) {
   firebaseConfig = {
     projectId: "step53-2020", 
