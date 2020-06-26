@@ -16,13 +16,11 @@
 // Initialize Firebase and its related product we use using the provided
 // Firebase project configuation.
 
+// TO USE THE EMULATOR: UPDATE THESE TWO VALUES. 
 const USE_EMULATOR = true;
-// const LOCALHOST_FIREBASE_PORT = 9000;
+const FIREBASE_EMULATOR_PORT = 8000; // This is the port from when you run firebase emulators:start 
 
 const RUN_LOCALLY = USE_EMULATOR && (location.hostname === "localhost" || location.hostname === "");
-
-// var p = JSON.parse('{"name":"John", "age":30, "city":"New York"}');
-// console.log(p.name);
 
 var firebaseConfig;
 if (RUN_LOCALLY) {
@@ -46,7 +44,7 @@ const db = firebaseApp.firestore();
 
 if (RUN_LOCALLY) {
   db.settings({
-    host: "localhost:8000",
+    host: "localhost:" + FIREBASE_EMULATOR_PORT,
     ssl: false
   });
 }
