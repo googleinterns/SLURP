@@ -19,11 +19,13 @@
 const USE_EMULATOR = true;
 // const LOCALHOST_FIREBASE_PORT = 9000;
 
+const RUN_LOCALLY = USE_EMULATOR && (location.hostname === "localhost" || location.hostname === "");
+
 // var p = JSON.parse('{"name":"John", "age":30, "city":"New York"}');
 // console.log(p.name);
 
 var firebaseConfig;
-if (USE_EMULATOR) {
+if (RUN_LOCALLY) {
   firebaseConfig = {
     projectId: "step53-2020", 
   };
@@ -42,8 +44,7 @@ if (USE_EMULATOR) {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
 
-if (USE_EMULATOR && 
-  (location.hostname === "localhost" || location.hostname === "") ) {
+if (RUN_LOCALLY) {
   db.settings({
     host: "localhost:8000",
     ssl: false
