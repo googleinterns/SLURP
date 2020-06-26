@@ -15,15 +15,37 @@
 
 // Initialize Firebase and its related product we use using the provided
 // Firebase project configuation.
-var firebaseConfig = {
-  apiKey: "AIzaSyAAJgRhJY_rRn_q_On1HdA3hx15YHSkEJg",
-  authDomain: "step53-2020.firebaseapp.com",
-  databaseURL: "https://step53-2020.firebaseio.com",
-  projectId: "step53-2020",
-  storageBucket: "step53-2020.appspot.com",
-  messagingSenderId: "905834221913",
-  appId: "1:905834221913:web:25e711f1132b2c0537fc48",
-  measurementId: "G-PLVY991DHW"
-};
 
-firebase.initializeApp(firebaseConfig);
+const USE_EMULATOR = true;
+// const LOCALHOST_FIREBASE_PORT = 9000;
+
+// var p = JSON.parse('{"name":"John", "age":30, "city":"New York"}');
+// console.log(p.name);
+
+var firebaseConfig;
+if (USE_EMULATOR) {
+  firebaseConfig = {
+    projectId: "step53-2020", 
+  };
+} else {
+  firebaseConfig = {
+    apiKey: "AIzaSyAAJgRhJY_rRn_q_On1HdA3hx15YHSkEJg",
+    authDomain: "step53-2020.firebaseapp.com",
+    databaseURL: "https://step53-2020.firebaseio.com",
+    projectId: "step53-2020",
+    storageBucket: "step53-2020.appspot.com",
+    messagingSenderId: "905834221913",
+    appId: "1:905834221913:web:25e711f1132b2c0537fc48",
+    measurementId: "G-PLVY991DHW"
+  };
+}
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebaseApp.firestore();
+
+if (USE_EMULATOR && 
+  (location.hostname === "localhost" || location.hostname === "") ) {
+  db.settings({
+    host: "localhost:8000",
+    ssl: false
+  });
+}
