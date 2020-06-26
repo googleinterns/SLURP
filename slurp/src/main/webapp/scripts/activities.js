@@ -6,7 +6,12 @@ function fetchAndDisplayActivities() {
   db.collection(TRIP_COLLECTION).doc(tripId)
     .collection(ACTIVITY_COLLECTION).get().then(function(querySnapshot) {
       querySnapshot.forEach(function(doc){
-        console.log(doc.id, doc.data());
+        const activityData = doc.data();
+        console.log(activityData);
+        const activityTitle = activityData["title"];
+        const activityContent = activityData["description"];
+
+        makeDropdown(activityTitle, activityContent, "activity-list");
       });
     }).catch( function(error) {
       console.log("Error getting trip details for tripId " + tripId);
@@ -30,7 +35,7 @@ function makeDropdown(title, content, location) {
   newDropdownContent.classList.add("collapse");
   newDropdownContent.setAttribute("tabindex", 0);
   newDropdownContent.id = randomId;
-
+  console.log(element);
   element.appendChild(newButton);
   element.appendChild(newDropdownContent);
 
