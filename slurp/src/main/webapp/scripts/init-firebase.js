@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// CONSTANTS 
 
 // Initialize Firebase and its related product we use using the provided
 // Firebase project configuation.
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyAAJgRhJY_rRn_q_On1HdA3hx15YHSkEJg",
   authDomain: "step53-2020.firebaseapp.com",
   databaseURL: "https://step53-2020.firebaseio.com",
@@ -27,3 +28,7 @@ var firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const TRIP_COLLECTION = "trips";
+const ACTIVITY_COLLECTOIN = "activities";
