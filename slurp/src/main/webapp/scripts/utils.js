@@ -3,7 +3,7 @@
  * @param {string} url The URL to be parsed. 
  * @returns {Object.<string, string>} Dictionary of the parsed URL parameters. 
  */
-export function parseUrl(url) {
+function parseUrl(url) {
   var paramsUrl = url.substring(url.indexOf("?") + 1);
   var paramPairs = paramsUrl.split("&");
   
@@ -18,4 +18,17 @@ export function parseUrl(url) {
   }
 
   return params;
+}
+
+/**
+ * Make a random 32-digit UUID. 
+ */
+function getRandomUuid() {
+  // https://gist.github.com/6174/6062387
+  return Math.random().toString(36).substring(2, 15) 
+    + Math.random().toString(36).substring(2, 15);
+}
+
+if (typeof exports !== 'undefined'){
+  module.exports = {parseUrl, getRandomUuid};
 }
