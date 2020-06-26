@@ -13,58 +13,127 @@
 // limitations under the License.
 
 
-/**
- * Fetches the previously entered comments from the server and inserts each
- * comment as a list item of the 'comments-thread-container' <ul> element.
- *
- * The number of comments displayed is determined by
- * getNumCommentstoDisplay().
- */
 function getTrips() {
   const tripsContainer = document.getElementById('trips-container');
-  const userEmail = getUserEmail();
   db.collection('trips')
-      .where('collaborators', 'array-contains', userEmail)
+      .where('collaborators', 'array-contains', getUserEmail())
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          console.log(typeof doc.data());
           console.log(doc.data());
-          tripsContainer.appendChild(createTripElement(doc.id));
+          console.log(doc.id);
+          tripsContainer.appendChild(createTripElement(doc.data(), doc.id));
         });
       })
       .catch(error => {
-        console.log('Error in getCommentsThread: ' + error);
+        console.log(`Error in getTrips: ${error}`);
         tripsContainer.appendChild(
             createErrorElement('Error: Unable to load your trips.'));
-      })
+      });
 }
 
 function getUserEmail() {
   return 'matt.murdock';
 }
 
-/**
- * Creates an <li> element containing the comment data.
- *
- * Each comment contains a message text, image, landmark name/location,
- * and landmark latitude-longitude coordinates. However, both the blobKey
- * and landmark fields of the comment JSON object can be null. If the
- * blobKey value null, no image element is included in the parent <li> element.
- * If the landmark value is null, no landmark information is included.
- *
- * @param {object} commentInJson A string that contains a JSON object of an
- *    individual comment. This JSON object contains fields for message text,
- *    image, landmark name, and landmark latitude-longitude coordinates.
- * @return {HTMLDivElement} The div element containing the trip data.
- */
-function createTripElement(tripId) {
-  const divElement = document.createElement('div');
-  const textElement = document.createElement('p');
-  textElement.innerText = tripId;
-  divElement.appendChild(textElement);
+function createTripElement(tripObj, tripId) {
+  const tripElement = document.createElement('div');
 
-  return divElement;
+  createTitleElement(tripElement, tripObj);
+  createDescriptionElement(tripElement, tripObj);
+  createDateRangeElement(tripElement, tripObj);
+  createDestinationElement(tripElement, tripObj);
+  createCollaboratorElement(tripElement, tripObj);
+  createEditTripButton(tripElement, tripObj);
+  createViewActivitiesButton(tripElement, tripId);
+
+  return tripElement;
+}
+
+function createTitleElement(tripElement, tripObj) {
+  const titleEl = document.createElement('h2');
+  try {
+    titleEl.innerText = tripObj.name;
+  } catch (error) {
+    console.log(`Error in fetching trip title: ${error}`);
+    titleEl.innerText = 'Unable to fetch trip title';
+  } finally {
+    tripElement.appendChild(titleEl);
+  }
+}
+
+function createDescriptionElement(tripElement, tripObj) {
+  const descriptionEl = document.createElement('p');
+  try {
+    descriptionEl.innerText = tripObj.description;
+  } catch (error) {
+    console.log(`Error in fetching trip description: ${error}`);
+    descriptionEl.innerText = 'Unable to fetch trip description';
+  } finally {
+    tripElement.appendChild(descriptionEl);
+  }
+}
+
+function createDateRangeElement(tripElement, tripObj) {
+  const dateRangeEl = document.createElement('p');
+  try {
+    const startDate = tripObj.start_date.toDate();
+    const endDate = tripObj.end_date.toDate();
+    dateRangeEl.innerText = `${startDate.getMonth()}/${startDate.getDate()}/
+        ${startDate.getFullYear()} - ${endDate.getMonth()}/${endDate.getDate()}
+        /${startDate.getFullYear()}`;
+  } catch (error) {
+    console.log(`Error in fetching trip start/end date(s): ${error}`);
+    dateRangeEl.innerText = 'Unable to fetch trip start and/or end date(s)';
+  } finally {
+    tripElement.appendChild(dateRangeEl);
+  }
+}
+
+function createDestinationElement(tripElement, tripObj) {
+  const destinationEl = document.createElement('p');
+  try {
+    destinationEl.innerText = tripObj.description;
+  } catch (error) {
+    console.log(`Error in fetching trip destination: ${error}`);
+    destinationEl.innerText = 'Unable to fetch trip destination';
+  } finally {
+    tripElement.appendChild(destinationEl);
+  }
+}
+
+function createCollaboratorElement(tripElement, tripObj) {
+  const collaboratorsEl = document.createElement('p');
+  try {
+    const /** !Array<string> */ collaboratorArr = tripObj.collaborators;
+    collaboratorArr.forEach((collaborator, index) => {
+      if (index < collaboratorArr.length - 1) {
+        collaboratorsEl.innerText += `${collaborator}, `;
+      } else {
+        collaboratorsEl.innerText += collaborator;
+      }
+    });
+  } catch (error) {
+    console.log(`Error in fetching trip collaborators: ${error}`);
+    collaboratorsEl.innerText = 'Unable to fetch trip collaborators';
+  } finally {
+    tripElement.appendChild(collaboratorsEl);
+  }
+}
+
+function createEditTripButton(tripElement, tripObj) {
+  const editTripBtn = document.createElement('button');
+  editTripBtn.innerText = 'Edit';
+  // TODO(Issue 15): Add edit trip page.
+  tripElement.appendChild(editTripBtn);
+}
+
+function createViewActivitiesButton(tripElement, tripId) {
+  const viewActivitiesBtn = document.createElement('button');
+  viewActivitiesBtn.innerText = 'View Activities!';
+  viewActivitiesBtn.onclick = location.href =
+      `../pages/activities.html?trip-id=${tripId}`;
+  tripElement.appendChild(viewActivitiesBtn);
 }
 
 function createErrorElement(errorMessage) {
