@@ -1,7 +1,16 @@
 function fetchAndDisplayActivities() {
   const url = window.location.href;
-  urlParams = parseUrl(url);
-  console.log(urlParams);
+  const urlParams = parseUrl(url);
+  const tripId = urlParams["tripid"];
+
+  db.collection(TRIP_COLLECTION).doc(tripId)
+    .collection(ACTIVITY_COLLECTION).get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc){
+        console.log(doc.id, doc.data());
+      });
+    }).catch( function(error) {
+      console.log("Error getting trip details for tripId " + tripId);
+    });
 }
 
 function makeDropdown(title, content, location) {

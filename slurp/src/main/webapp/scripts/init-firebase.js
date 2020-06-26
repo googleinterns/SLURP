@@ -31,4 +31,4 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 const TRIP_COLLECTION = "trips";
-const ACTIVITY_COLLECTOIN = "activities";
+const ACTIVITY_COLLECTION = "activities";
