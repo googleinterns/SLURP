@@ -12,7 +12,6 @@ npm install --save-dev test
 npm install jest --global
 
 npm install --save-dev jest babel-jest @babel/preset-env 
-
 ``` 
 
 Define testable functions with the `export` keyword, and in the test file, import the functions with `import`. 
