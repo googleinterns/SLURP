@@ -1,6 +1,6 @@
 /**
  * Make a dropdown object under the HTML element with ID #location,
- * with proviided title and HTML content.
+ * with provided title and HTML content.
  * @param {string} title The title of the to-be dropdown (what's displayed when the dropdown is closed).
  * @param {string} content The content of the to-be dropdown (what's displayed when the dropdown is open).
  * @param {string} location The parent HTML element of the to-be dropdown.
@@ -44,7 +44,7 @@ function makeActivityContent(activityData) {
 
 /**
  * Fetch activities from the TripID provided in the URL and 
- * display the trips in #activity-list
+ * display the trips in #activity-list.
  */
 function fetchAndDisplayActivities() {
   const url = window.location.href;
