@@ -78,6 +78,17 @@ function sortByDate(tripActivities) {
 }
 
 /**
+ * 
+ * @param {*} activities 
+ * 
+ */
+function getDayHTML(activities){
+  // find the date, set the title
+  // create content HTML. use .outerHTML, makeActivityContent.
+  // return {"title": title html, "content": content html}
+}
+
+/**
  * Fetch activities from the TripID provided in the URL and 
  * display the trips in #activity-list
  */
@@ -102,9 +113,13 @@ async function fetchAndDisplayActivities() {
       });
       return tripActivities;
     }).catch( function(error) {
-      console.log('Error getting trip details for tripId ' + tripId);
+      console.log('Error getting trip details for tripId', tripId);
     }).then( function(tripActivities) {
       // Split into days
       // Display each day.
     });
+}
+
+if (typeof exports !== 'undefined'){
+  module.exports = {compareActivities, sortByDate};
 }

@@ -21,7 +21,6 @@ test('multiple parse with special chars', () => {
 test('new york timestamp format', () => {
   // Month parameter is zero indexed so it's actually the 10th month.
   const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
-  console.log(testDate);
   const expected = "Saturday, October 3, 2020, 10:19 AM";
   const actual = utils.timestampToFormatted(testDate);
   expect(actual).toEqual(expected);
