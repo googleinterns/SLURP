@@ -30,12 +30,16 @@ function makeDropdown(title, content, location) {
 /**
  * Extract all the activity's data and put it in HTML form. 
  * @param {dictionary} activityData The activity's detailed information.
+ * @return {string} HTML element(s) representing the activity content, to be 
+ * put in a dropdown.
  */
 function makeActivityContent(activityData) {
   let content = "<p>";
   content += ("Description: " + activityData["description"]);
-  content += ("Start time: " + activityData["start_time"]);
-  content += ("End time: " + activityData["end_time"]);
+  content += ("<br>Start time: " + activityData["start_time"]);
+  content += ("<br>End time: " + activityData["end_time"]);
+  content += ("</p>");
+  return content;
 }
 
 /**
