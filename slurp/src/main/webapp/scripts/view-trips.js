@@ -79,8 +79,8 @@ function createTripElement(tripObj, tripId) {
  *    documents as DocumentSnapshot objects.
  */
 function queryUserTrips(userEmail) {
-  return db.collection('trips')
-      .where('collaborators', 'array-contains', userEmail)
+  return db.collection(TRIP_COLLECTION)
+      .where(COLLABORATORS_FIELD, 'array-contains', userEmail)
       .get();
 }
 
@@ -116,3 +116,10 @@ function loadPage() {
   serveTrips();
 }
 window.onload = loadPage;
+
+/**
+ * Export functions that are tested in view-trips.test.js.
+ */
+if (typeof exports !== 'undefined'){
+  module.exports.queryUserTrips = queryUserTrips;
+}
