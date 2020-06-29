@@ -22,6 +22,7 @@ function parseUrl(url) {
 
 /**
  * Make a random 32-digit UUID. 
+ * @returns {string} 32-digit UUID as string.
  */
 function getRandomUuid() {
   // https://gist.github.com/6174/6062387
@@ -30,5 +31,5 @@ function getRandomUuid() {
 }
 
 if (typeof exports !== 'undefined'){
-  module.exports = {parseUrl, getRandomUuid};
+  module.exports = {parseUrl};
 }
