@@ -69,31 +69,40 @@ function createTripElement(tripObj, tripId) {
 }
 
 /**
- * Queries, fetches, and serves all trips to the UI that the current user is a
- * collaborator on.
+ * Returns a promise of a query object containg the array of Trip Documents
+ * corresponding to the trips that the current user is a collaborator on.
  *
- * The current user's email is retrieved from getUserEmail in the Authentication
- * module. Once all of the Trip documents are fetched, they are each passed to
- * createTripElement() to create the HTML for each trip and appended to the
- * trips-container <div>.
+ * @param {string} userEmail The email corresponding to the current user
+ *    logged in.
+ * @return {Promise} Promise object containing the query results as a
+ *    QuerySnapshot object. This QuerySnapshot contains zero or more Trip
+ *    documents as DocumentSnapshot objects.
  */
-function getTrips() {
-  const tripsContainer = document.getElementById('trips-container');
-  const userEmail = getUserEmail();
-  db.collection('trips')
+function queryUserTrips(userEmail) {
+  return db.collection('trips')
       .where('collaborators', 'array-contains', userEmail)
-      .get()
+      .get();
+}
+
+/**
+ * Grabs Trip Documents for user from queryUserTrips(), get HTML for each
+ * individual trip, and append each trip to the trip container on the view
+ * trips page.
+ */
+function serveTrips() {
+  queryUserTrips(getUserEmail())
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          console.log(typeof doc.id);
-          tripsContainer.appendChild(createTripElement(doc.data(), doc.id));
+          document.getElementById('trips-container')
+              .appendChild(createTripElement(doc.data(), doc.id));
         });
       })
       .catch(error => {
         console.log(`Error in getCommentsThread: ${error}`);
-        tripsContainer.appendChild(
-            createErrorElement('Error: Unable to load your trips.'));
-      })
+        document.getElementById('trips-container')
+            .appendChild(
+                createErrorElement('Error: Unable to load your trips.'));
+      });
 }
 
 /**
@@ -104,6 +113,6 @@ function getTrips() {
  * body html element.
  */
 function loadPage() {
-  getTrips();
+  serveTrips();
 }
 window.onload = loadPage;
