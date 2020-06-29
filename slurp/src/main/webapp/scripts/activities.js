@@ -51,14 +51,30 @@ function makeActivityContent(activityData) {
  * @param {dictionary} b Dictionary representing activity b and its fields.
  */
 function compareActivities(a, b) {
-  if (a[ACTIVITY_START_TIME]['seconds'] < b[ACTIVITY_START_TIME]['seconds']) {
+  if (a[ACTIVITY_START_TIME] < b[ACTIVITY_START_TIME]) {
     return -1;
-  } else if (a[ACTIVITY_START_TIME]['seconds'] > b[ACTIVITY_START_TIME]['seconds']) {
+  } else if (a[ACTIVITY_START_TIME] > b[ACTIVITY_START_TIME]) {
     return 1;
   } else if (a[ACTIVITY_END_TIME] > b[ACTIVITY_END_TIME]) {
     return 1;
   }
   return -1;
+}
+
+/**
+ * 
+ */
+function sortByDate(tripActivities) {
+  let activities = {}; // { Date.getTime(): [activities] }.
+  for (let activity of tripActivities) {
+    activityDate = new Date(activity[ACTIVITY_START_TIME]).getDate();
+    if (activityDate.getTime() in activities) {
+      activities[activityDate.getTime()].push(activity);
+    } else {
+      activities[activityDate.getTime()] = [activity];
+    }
+  }
+  return activities;
 }
 
 /**
@@ -74,17 +90,21 @@ async function fetchAndDisplayActivities() {
     .collection(ACTIVITY_COLLECTION).get().then(function(querySnapshot) {
       let tripActivities = [];
       querySnapshot.forEach(function(doc) {
-        // If start date != end date, then split into 2 days and enter twice
+        // If start date != end date, then split into 2 days and enter twice.
         let data = doc.data();
         data['id'] = doc.id;
-        console.log(data[ACTIVITY_START_TIME]['seconds']);
+
+        // Eliminate nanoseconds, convert to milliseconds.
+        data[ACTIVITY_START_TIME] = data[ACTIVITY_START_TIME]["seconds"] * 1000;         
+        data[ACTIVITY_END_TIME] = data[ACTIVITY_END_TIME]["seconds"] * 1000;
+
         tripActivities.push(data);
       });
       return tripActivities;
     }).catch( function(error) {
       console.log('Error getting trip details for tripId ' + tripId);
     }).then( function(tripActivities) {
-      tripActivities = tripActivities.sort(compareActivities);
-      // split into days.
+      // Split into days
+      // Display each day.
     });
 }
