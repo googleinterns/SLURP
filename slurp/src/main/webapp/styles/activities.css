@@ -1,3 +1,19 @@
-#activity-list{
-  
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#activity-list {
+  margin: 1em auto;
+  width: 60%;
+}
+
+#activity-list button {
+  padding: 0.5em;
+  width: 100%;
+}
+
+#activity-list div {
+  padding: 1.5em;
+  width: 100%;
 }
