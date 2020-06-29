@@ -29,6 +29,12 @@ function getRandomUuid() {
     + Math.random().toString(36).substring(2, 15);
 }
 
+function timestampToFormatted(timestampSeconds, timezone = "America/New_York") {
+  let date = new Date(timestampSeconds);
+  let formatted = date.toLocaleString('en-US', {timeZone : timezone});
+  return formatted;
+}
+
 if (typeof exports !== 'undefined'){
   module.exports = {parseUrl};
 }
