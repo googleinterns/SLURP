@@ -4,15 +4,15 @@
  * @returns {Object.<string, string>} Dictionary of the parsed URL parameters. 
  */
 function parseUrl(url) {
-  var paramsUrl = url.substring(url.indexOf("?") + 1);
-  var paramPairs = paramsUrl.split("&");
+  let paramsUrl = url.substring(url.indexOf("?") + 1);
+  let paramPairs = paramsUrl.split("&");
   
-  var params = {};
-  for (var pair of paramPairs) {
-    var splitIndex = pair.indexOf("=");
+  let params = {};
+  for (let pair of paramPairs) {
+    let splitIndex = pair.indexOf("=");
     
-    var key = pair.substring(0, splitIndex);
-    var value = pair.substring(splitIndex+1);
+    let key = pair.substring(0, splitIndex);
+    let value = pair.substring(splitIndex+1);
 
     params[key] = value;
   }
