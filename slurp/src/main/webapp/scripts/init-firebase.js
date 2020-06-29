@@ -28,3 +28,12 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+const TRIP_COLLECTION = "trips";
+
+const COLLABORATORS_FIELD = "collaborators";
+const DESCRIPTION_FIELD = "description";
+const DESTINATION_FIELD = "destination";
+const END_DATE_FIELD = "end_date";
+const START_DATE_FIELD = "start_date";
+const NAME_FIELD = "name";
