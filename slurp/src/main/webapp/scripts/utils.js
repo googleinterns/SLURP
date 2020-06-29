@@ -4,12 +4,12 @@
  * @returns {Object.<string, string>} Dictionary of the parsed URL parameters. 
  */
 function parseUrl(url) {
-  let paramsUrl = url.substring(url.indexOf("?") + 1);
-  let paramPairs = paramsUrl.split("&");
+  let paramsUrl = url.substring(url.indexOf('?') + 1);
+  let paramPairs = paramsUrl.split('&');
   
   let params = {};
   for (let pair of paramPairs) {
-    let splitIndex = pair.indexOf("=");
+    let splitIndex = pair.indexOf('=');
     
     let key = pair.substring(0, splitIndex);
     let value = pair.substring(splitIndex+1);
