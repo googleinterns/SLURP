@@ -4,12 +4,12 @@
  * @returns {Object.<string, string>} Dictionary of the parsed URL parameters. 
  */
 function parseUrl(url) {
-  var paramsUrl = url.substring(url.indexOf("?") + 1);
-  var paramPairs = paramsUrl.split("&");
+  var paramsUrl = url.substring(url.indexOf('?') + 1);
+  var paramPairs = paramsUrl.split('&');
   
   var params = {};
   for (var pair of paramPairs) {
-    var splitIndex = pair.indexOf("=");
+    var splitIndex = pair.indexOf('=');
     
     var key = pair.substring(0, splitIndex);
     var value = pair.substring(splitIndex+1);
@@ -30,5 +30,5 @@ function getRandomUuid() {
 }
 
 if (typeof exports !== 'undefined'){
-  module.exports = {parseUrl, getRandomUuid};
+  module.exports = {parseUrl};
 }
