@@ -29,12 +29,28 @@ function getRandomUuid() {
     + Math.random().toString(36).substring(2, 15);
 }
 
-function timestampToFormatted(timestampSeconds, timezone = "America/New_York") {
-  let date = new Date(timestampSeconds);
-  let formatted = date.toLocaleString('en-US', {timeZone : timezone});
+/** 
+ * Format a timestamp (in milliseconds) into a pretty string.
+ * @param {int} msTimestamp 
+ * @param {string} timezone 
+ * @returns {string} Time formatted into a string like 
+ * "Monday, January 19, 1970, 02:48 AM"
+ */
+function timestampToFormatted(msTimestamp, timezone = "America/New_York") {
+  let date = new Date(msTimestamp);
+  let formatOptions = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',  
+    hour: '2-digit', 
+    minute: '2-digit', 
+    timeZone: timezone
+  };
+  let formatted = date.toLocaleString('en-US', formatOptions);
   return formatted;
 }
 
 if (typeof exports !== 'undefined'){
-  module.exports = {parseUrl};
+  module.exports = {parseUrl, timestampToFormatted};
 }
