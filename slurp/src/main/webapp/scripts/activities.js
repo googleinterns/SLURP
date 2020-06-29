@@ -10,17 +10,17 @@ function makeDropdown(title, content, location) {
 
   const randomId = getRandomUuid();
 
-  let newButton = document.createElement("button");
+  let newButton = document.createElement('button');
   newButton.innerHTML = title;
-  newButton.setAttribute("data-toggle", "collapse");
-  newButton.setAttribute("data-parent", "#"+location);
-  newButton.setAttribute("href", "#"+randomId);
-  newButton.setAttribute("aria-expanded", "false");
+  newButton.setAttribute('data-toggle', 'collapse');
+  newButton.setAttribute('data-parent', '#'+location);
+  newButton.setAttribute('href', '#'+randomId);
+  newButton.setAttribute('aria-expanded', 'false');
 
-  let newDropdownContent = document.createElement("div");
+  let newDropdownContent = document.createElement('div');
   newDropdownContent.innerHTML = content;
-  newDropdownContent.classList.add("collapse");
-  newDropdownContent.setAttribute("tabindex", 0);
+  newDropdownContent.classList.add('collapse');
+  newDropdownContent.setAttribute('tabindex', 0);
   newDropdownContent.id = randomId;
 
   element.appendChild(newButton);
@@ -34,11 +34,11 @@ function makeDropdown(title, content, location) {
  * put in a dropdown.
  */
 function makeActivityContent(activityData) {
-  let content = "<p>";
-  content += ("Description: " + activityData["description"]);
-  content += ("<br>Start time: " + activityData["start_time"]);
-  content += ("<br>End time: " + activityData["end_time"]);
-  content += ("</p>");
+  let content = '<p>';
+  content += ('Description: ' + activityData['description']);
+  content += ('<br>Start time: ' + activityData['start_time']);
+  content += ('<br>End time: ' + activityData['end_time']);
+  content += ('</p>');
   return content;
 }
 
@@ -49,7 +49,7 @@ function makeActivityContent(activityData) {
 function fetchAndDisplayActivities() {
   const url = window.location.href;
   const urlParams = parseUrl(url);
-  const tripId = urlParams["tripid"];
+  const tripId = urlParams['tripid'];
 
   //TODO: CHANGE THIS INTO 1. AGGREGATE LIST, 2. MAKE DROPDOWN.
   db.collection(TRIP_COLLECTION).doc(tripId)
@@ -57,12 +57,12 @@ function fetchAndDisplayActivities() {
       querySnapshot.forEach(function(doc){
         const activityData = doc.data();
         console.log(activityData);
-        const activityTitle = activityData["title"];
+        const activityTitle = activityData['title'];
         const activityContent = makeActivityContent(activityData);
 
-        makeDropdown(activityTitle, activityContent, "activity-list");
+        makeDropdown(activityTitle, activityContent, 'activity-list');
       });
     }).catch( function(error) {
-      console.log("Error getting trip details for tripId " + tripId);
+      console.log('Error getting trip details for tripId ' + tripId);
     });
 }
