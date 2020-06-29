@@ -21,18 +21,19 @@ const USE_EMULATOR = true;
 const FIREBASE_EMULATOR_PORT = 8000; // This is the port from when you run firebase emulators:start 
 
 const RUN_LOCALLY = USE_EMULATOR && (location.hostname === "localhost" || location.hostname === "");
+const PROJECT_ID = "step53-2020";
 
 var firebaseConfig;
 if (RUN_LOCALLY) {
   firebaseConfig = {
-    projectId: "step53-2020", 
+    projectId: PROJECT_ID, 
   };
 } else {
   firebaseConfig = {
     apiKey: "AIzaSyAAJgRhJY_rRn_q_On1HdA3hx15YHSkEJg",
     authDomain: "step53-2020.firebaseapp.com",
     databaseURL: "https://step53-2020.firebaseio.com",
-    projectId: "step53-2020",
+    projectId: PROJECT_ID,
     storageBucket: "step53-2020.appspot.com",
     messagingSenderId: "905834221913",
     appId: "1:905834221913:web:25e711f1132b2c0537fc48",
