@@ -18,7 +18,7 @@
 
 // TO USE THE EMULATOR: UPDATE THESE TWO VALUES. 
 const USE_EMULATOR = true;
-const FIREBASE_EMULATOR_PORT = 8000; // This is the port from when you run firebase emulators:start 
+const FIREBASE_EMULATOR_PORT = 8000; // This is the port from when you run firebase emulators:start.
 
 const RUN_LOCALLY = USE_EMULATOR && (location.hostname === "localhost" || location.hostname === "");
 
