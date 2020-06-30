@@ -1,8 +1,6 @@
 # step53-2020
 > STEP 2020 - pod #53
 
-This is a filler README to get the repo initialized.
-
 ## Testing
 slurp/src/test includes tests for this project using Jest. To use it,
 first install npm, then run the following:
