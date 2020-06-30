@@ -63,7 +63,7 @@ function fetchAndDisplayActivities() {
 
         makeDropdown(activityTitle, activityContent, 'activity-list');
       });
-    }).catch( function(error) {
+    }).catch((error) => {
       console.log('Error getting trip details for tripId ' + tripId);
     });
 }
