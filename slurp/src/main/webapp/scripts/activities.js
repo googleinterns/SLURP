@@ -53,7 +53,8 @@ function fetchAndDisplayActivities() {
 
   //TODO: CHANGE THIS INTO 1. AGGREGATE LIST, 2. MAKE DROPDOWN.
   db.collection(TRIP_COLLECTION).doc(tripId)
-    .collection(ACTIVITY_COLLECTION).get().then(function(querySnapshot) {
+    .collection(ACTIVITY_COLLECTION).get()
+      .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         const activityData = doc.data();
         console.log(activityData);
