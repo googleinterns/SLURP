@@ -65,14 +65,16 @@ function compareActivities(a, b) {
  * 
  */
 function sortByDate(tripActivities) {
-  let activities = {}; // { Date.getTime(): [activities] }.
+  let activities = {}; // { [year, month, day]: [activities] }.
   for (let activity of tripActivities) {
-    activityDate = new Date(activity[ACTIVITY_START_TIME]).getDate();
-    if (activityDate.getTime() in activities) {
-      activities[activityDate.getTime()].push(activity);
+    const activityDate = new Date(activity[ACTIVITY_START_TIME]);
+    const dateKey = activityDate.toLocaleDateString()
+    if (dateKey in activities) {
+      activities[dateKey].add(activity);
     } else {
-      activities[activityDate.getTime()] = [activity];
+      activities[dateKey] = new Set([activity]);
     }
+    console.log(activities[dateKey]);
   }
   return activities;
 }
