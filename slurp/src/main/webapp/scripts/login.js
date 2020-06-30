@@ -15,7 +15,7 @@
 const firebaseUiConfig = {
   signInSuccessUrl: 'view-trips.html',
   signInOptions: [
-    // This app requires a Google account to use.
+    // TODO: Issue #26, incorporate other providers besides Google.
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
   ]
 };
