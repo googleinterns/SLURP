@@ -8,8 +8,5 @@
 # does not make sense to include in the repo.
 target/
 
-# Large configuration directories
-node_modules/
-
 # Log files
 *.log
