@@ -11,3 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+/**
+ * This file exists to provide an example of how to use the Jest module. It has nothing to do with the functionality of the overall project.
+ */
+function sum(a, b) {
+  return a + b;
+}
+
+if (typeof exports !== 'undefined'){
+  module.exports = {sum};
+}
