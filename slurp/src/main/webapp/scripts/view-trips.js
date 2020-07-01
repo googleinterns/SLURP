@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Import db from init-firebase so Jest works
+import * as fb_init from './init-firebase.js'
+
 /**
  * Temporary hardcoded function that returns the current users email.
  *
@@ -23,7 +26,7 @@
  *                 module.
  */
 function getUserEmail() {
-  return 'matt.murdock';
+  return '!@#$%^&*)(~{}';
 }
 
 
@@ -79,8 +82,11 @@ function createTripElement(tripObj, tripId) {
  *    documents as DocumentSnapshot objects.
  */
 function queryUserTrips(userEmail) {
-  return db.collection(TRIP_COLLECTION)
-      .where(COLLABORATORS_FIELD, 'array-contains', userEmail)
+  console.log(fb_init);
+  console.log(fb_init.db);
+  console.log(fb_init.TRIP_COLLECTION);
+  return fb_init.db.collection('trips')
+      .where(fb_init.COLLABORATORS_FIELD, 'array-contains', userEmail)
       .get();
 }
 
@@ -98,7 +104,7 @@ function serveTrips() {
         });
       })
       .catch(error => {
-        console.log(`Error in getCommentsThread: ${error}`);
+        console.log(`Error in serveTrips: ${error}`);
         document.getElementById('trips-container')
             .appendChild(
                 createErrorElement('Error: Unable to load your trips.'));

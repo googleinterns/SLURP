@@ -12,11 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Need to import firebase and firestore manually to enable testing with Jest.
+import * as firebase from "../../../../node_modules/firebase/app";
+// import '@firebase/firestore'
+//----------
+// let curFirebase;
+// try {
+//   curFirebase = firebase;
+//   // console.log(firebase);
+// } catch (error) {
+//   console.log('Running test');
+//   curFirebase = require('firebase');
+//   require('firebase/firestore');
+// }
+//---------------
 
 // TO USE THE EMULATOR: UPDATE THESE TWO VALUES.
-const USE_EMULATOR = false;
+const USE_EMULATOR = true;
 // This is the port from when you run firebase emulators:start.
-const FIREBASE_EMULATOR_PORT = 9090;
+const FIREBASE_EMULATOR_PORT = 8000;
 
 const RUN_LOCALLY = USE_EMULATOR &&
     (location.hostname === 'localhost' || location.hostname === '');
@@ -47,7 +61,6 @@ if (RUN_LOCALLY) {
 }
 
 const TRIP_COLLECTION = 'trips';
-
 const COLLABORATORS_FIELD = 'collaborators';
 const DESCRIPTION_FIELD = 'description';
 const DESTINATION_FIELD = 'destination';
@@ -59,13 +72,14 @@ const NAME_FIELD = 'name';
  * Export firestore instance and constants for use in view-trips.test.js.
  */
 if (typeof exports !== 'undefined') {
-  module.exports.db = db;
-
-  module.exports.TRIP_COLLECTION = TRIP_COLLECTION;
-  module.exports.COLLABORATORS_FIELD = COLLABORATORS_FIELD;
-  module.exports.DESCRIPTION_FIELD = DESCRIPTION_FIELD;
-  module.exports.DESTINATION_FIELD = DESTINATION_FIELD;
-  module.exports.END_DATE_FIELD = END_DATE_FIELD;
-  module.exports.START_DATE_FIELD = START_DATE_FIELD;
-  module.exports.NAME_FIELD = NAME_FIELD;
+  module.exports = {
+    db,
+    TRIP_COLLECTION,
+    COLLABORATORS_FIELD,
+    DESCRIPTION_FIELD,
+    DESTINATION_FIELD,
+    END_DATE_FIELD,
+    START_DATE_FIELD,
+    NAME_FIELD
+  };
 }
