@@ -1,0 +1,20 @@
+{
+  "name": "slurp",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "firebase-admin": "^8.13.0"
+  },
+  "devDependencies": {
+    "@firebase/testing": "^0.20.5",
+    "@types/jest": "^26.0.3",
+    "eslint": "^7.3.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "jest": "^25.5.4"
+  },
+  "private": true
+}
