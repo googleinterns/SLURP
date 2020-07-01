@@ -14,7 +14,8 @@
 
 // FirebaseUI config.
 const uiConfig = {
-  signInSuccessUrl: "view-trips.html",
+  // TODO: Replace with Trips Management page
+  signInSuccessUrl: "test.html",
   signInOptions: [
     // This app requires a Google account to use.
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
