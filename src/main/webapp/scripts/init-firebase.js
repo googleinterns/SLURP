@@ -12,19 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 // Initialize Firebase and its related product we use using the provided
 // Firebase project configuation.
-var firebaseConfig = {
-  apiKey: "AIzaSyAAJgRhJY_rRn_q_On1HdA3hx15YHSkEJg",
-  authDomain: "step53-2020.firebaseapp.com",
-  databaseURL: "https://step53-2020.firebaseio.com",
-  projectId: "step53-2020",
-  storageBucket: "step53-2020.appspot.com",
-  messagingSenderId: "905834221913",
-  appId: "1:905834221913:web:25e711f1132b2c0537fc48",
-  measurementId: "G-PLVY991DHW"
-};
+import firebase from '@firebase/app'
+import '@firebase/firestore';
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// TO USE THE EMULATOR:
+// - Set USE_EMULATOR to true
+// - Change FIREBASE_EMULATOR_PORT to a desired port where the firestore db
+//   emulator should run on when you run firebase emulators:start.
+const USE_EMULATOR = true;
+const FIREBASE_EMULATOR_PORT = 8000;
+
+const RUN_LOCALLY = USE_EMULATOR &&
+    (typeof window === 'undefined' || location.hostname === 'localhost' ||
+     location.hostname === '');
+const PROJECT_ID = 'step53-2020';
+
+let firebaseConfig;
+if (RUN_LOCALLY) {
+  firebaseConfig = {
+    projectId: PROJECT_ID,
+  };
+} else {
+  firebaseConfig = {
+    apiKey: 'AIzaSyAAJgRhJY_rRn_q_On1HdA3hx15YHSkEJg',
+    authDomain: 'step53-2020.firebaseapp.com',
+    databaseURL: 'https://step53-2020.firebaseio.com',
+    projectId: PROJECT_ID,
+    storageBucket: 'step53-2020.appspot.com',
+    messagingSenderId: '905834221913',
+    appId: '1:905834221913:web:25e711f1132b2c0537fc48',
+    measurementId: 'G-PLVY991DHW'
+  };
+}
+const app = firebase.initializeApp(firebaseConfig);
+const db = app.firestore();
+
+if (RUN_LOCALLY) {
+  db.settings({host: 'localhost:' + FIREBASE_EMULATOR_PORT, ssl: false});
+}
