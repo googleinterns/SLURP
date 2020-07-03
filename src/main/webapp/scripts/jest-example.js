@@ -11,8 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// import firebase from '@firebase/app'
-import * as init_fb from './init-firebase.js'
+// import * as init_fb from './init-firebase.js'
+let init_fb;
+if (typeof window === 'undefined') {
+  init_fb = require('./init-firebase.js');
+}
 
 /**
  * This function provides a simple example of how to use the Jest module.
@@ -25,7 +28,7 @@ function sum(a, b) {
 /**
  * This function
  */
-function addSampleDocToFirestore(db, collection, docId, docNum) {
+async function addSampleDocToFirestore(db, collection, docId, docNum) {
   db.collection(collection).doc(docId).set({
     doc_num: docNum
   })
@@ -45,8 +48,8 @@ function addSampleDocToFirestore(db, collection, docId, docNum) {
  * successfully and there were no errors in the console when including this
  * script in index.html.
  */
-function loadPage() {
-  addSampleDocToFirestore(init_fb.db, "samples", "doc1", 1);
+async function loadPage() {
+  await addSampleDocToFirestore(init_fb.db, "samples", "doc1", 1);
 }
 
 // Check if we are in node or in a browser
