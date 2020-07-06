@@ -38,9 +38,21 @@ function makeDropdown(title, content) {
  * put in a dropdown.
  */
 function makeActivityContent(activityData) {
-  let p = document.createElement("p");
-  p.innerHTML = activityData["title"];
-  return p;
+  let bigdiv = document.createElement("div");
+  
+  let title = document.createElement("p");
+  title.innerHTML = activityData["title"];
+  bigdiv.appendChild(title);
+
+  let starttime = document.createElement("p");
+  starttime.innerHTML = "start time: " + timestampToTimeFormatted(activityData[ACTIVITY_START_TIME]);
+  bigdiv.appendChild(starttime);
+
+  let endtime = document.createElement("p");
+  endtime.innerHTML = "end time: " + timestampToTimeFormatted(activityData[ACTIVITY_END_TIME]);
+  bigdiv.appendChild(endtime);
+
+  return bigdiv;
 }
 
 /**
