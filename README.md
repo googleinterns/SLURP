@@ -81,7 +81,7 @@ Although React Bootstrap is the main styling framework used for this project, th
 ### Backend
 The Backend is runs on the Google App Engine framework and built using Maven. It has the following (simplified) directory tree:
 ```
-.
+backend/
 ├── pom.xml
 ├── src
 │   ├── main
