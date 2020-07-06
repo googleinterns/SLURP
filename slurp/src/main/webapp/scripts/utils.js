@@ -43,7 +43,7 @@ function timestampToFormatted(msTimestamp, timezone = "America/New_York") {
     year: 'numeric', 
     month: 'long', 
     day: 'numeric',  
-    hour: '2-digit', 
+    hour: 'numeric', 
     minute: '2-digit', 
     timeZone: timezone
   };
@@ -51,6 +51,25 @@ function timestampToFormatted(msTimestamp, timezone = "America/New_York") {
   return formatted;
 }
 
+/**
+ * Format a timestamp (in milliseconds) into a pretty string with just the date.
+ * @param {int} msTimestamp 
+ * @param {string} timezone 
+ * @returns {string} Time formatted into a string like "Monday, January 19, 1970".
+ */
+function timestampToDateFormatted(msTimestamp, timezone="America/New_York") {
+  let date = new Date(msTimestamp);
+  let formatOptions = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',  
+    timeZone: timezone
+  };
+  let formatted = date.toLocaleDateString('en-US', formatOptions);
+  return formatted;
+}
+
 if (typeof exports !== 'undefined'){
-  module.exports = {parseUrl, timestampToFormatted};
+  module.exports = {parseUrl, timestampToFormatted, timestampToDateFormatted};
 }
