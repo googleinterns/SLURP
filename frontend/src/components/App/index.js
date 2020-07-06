@@ -18,7 +18,7 @@ const App = () => {
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route path={ROUTES.VIEW_TRIPS} component={ViewTripsPage} />
-        <Route path={ROUTES.VIEW_ACTIVITIES + '/:trip-id'} component={ViewActivitiesPage} />
+        <Route path={ROUTES.VIEW_ACTIVITIES} component={ViewActivitiesPage} />
       </div>
     </Router>
   );

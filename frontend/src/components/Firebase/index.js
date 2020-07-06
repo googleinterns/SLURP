@@ -3,7 +3,7 @@
  * 'step53-2020'.
  */
 import * as firebase from 'firebase/app';
-import 'firebase/firebase-database';
+import 'firebase/firebase-firestore';
 import 'firebase/firebase-auth';
 
 const app = firebase.initializeApp({

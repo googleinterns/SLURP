@@ -23,7 +23,7 @@ const Landing = () => {
         <Card.Body>
           <Card.Title>Welcome to SLURP</Card.Title>
           {/* TODO (Issue #24): Put path to logo when we have one. */}
-          <img alt="SLURP Logo"></img>
+          <img alt='SLURP Logo'></img>
         </Card.Body>
         <Button type='button' onClick={handleClick} variant='primary' size='lg'>
           Sign In

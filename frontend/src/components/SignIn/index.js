@@ -28,7 +28,7 @@ const SignIn = () => {
     signInFlow: 'popup',
     signInSuccessUrl: VIEW_TRIPS,
     signInOptions: [
-      // TODO Issue (#26): Incorporate other providers besides Google.
+      // TODO (Issue #26): Incorporate other providers besides Google.
       firebase.auth.GoogleAuthProvider.PROVIDER_ID
     ],
     callbacks: {
