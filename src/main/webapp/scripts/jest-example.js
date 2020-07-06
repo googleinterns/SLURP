@@ -12,12 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import * as init_fb from './init-firebase.js'
-// let init_fb;
-// if (typeof window === 'undefined') {
-//   init_fb = require('./init-firebase.js');
-// }
-
 /**
  * This function provides a simple example of how to use the Jest module.
  * It has nothing to do with the functionality of the overall project.
@@ -27,7 +21,12 @@ function sum(a, b) {
 }
 
 /**
- * This function
+ * This function serves as an example of a possible function that interacts with
+ * Firebase Firestore.
+ *
+ * This function was both tested in jest-example.test.js and called when the app
+ * was deployed in order to verify that it was functional when using the
+ * emulator as well as the production version of Firestore.
  */
 async function addSampleDocToFirestore(db, collection, docId, docNum) {
   db.collection(collection).doc(docId).set({

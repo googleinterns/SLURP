@@ -14,11 +14,6 @@
 
 // Initialize Firebase and its related product we use using the provided
 // Firebase project configuation.
-// import firebase from '@firebase/app'
-// import '@firebase/firestore';
-// const firebase = require('@firebase/app');
-// require('@firebase/firestore');
-
 let curFirebase;
 if (typeof window === 'undefined') {
   curFirebase = require('@firebase/app');

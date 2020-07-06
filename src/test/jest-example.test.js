@@ -8,8 +8,8 @@ process.env.GCLOUD_PROJECT = projectId;
 process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8000';
 let app = fb_admin.initializeApp({projectId});
 let db = fb_test.firestore(app);
-// db.settings({host: 'localhost:8000', ssl: false});
 
+// Jest setup and unit tests
 beforeAll(async () => {
   await fb_test.clearFirestoreData({projectId});
 });
