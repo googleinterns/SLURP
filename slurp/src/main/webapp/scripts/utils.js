@@ -52,6 +52,23 @@ function timestampToFormatted(msTimestamp, timezone = "America/New_York") {
 }
 
 /**
+ * Format a timestamp (in milliseconds) into a pretty string with just the time.
+ * @param {int} msTimestamp 
+ * @param {string} timezone 
+ * @returns {string} Time formatted into a string like "10:19 AM".
+ */
+function timestampToTimeFormatted(msTimestamp, timezone = "America/New_York") {
+  let date = new Date(msTimestamp);
+  let formatOptions = { 
+    hour: 'numeric', 
+    minute: '2-digit', 
+    timeZone: timezone
+  };
+  let formatted = date.toLocaleTimeString('en-US', formatOptions);
+  return formatted;
+}
+
+/**
  * Format a timestamp (in milliseconds) into a pretty string with just the date.
  * @param {int} msTimestamp 
  * @param {string} timezone 
@@ -71,5 +88,5 @@ function timestampToDateFormatted(msTimestamp, timezone="America/New_York") {
 }
 
 if (typeof exports !== 'undefined'){
-  module.exports = {parseUrl, timestampToFormatted, timestampToDateFormatted};
+  module.exports = {parseUrl, timestampToFormatted, timestampToDateFormatted, timestampToTimeFormatted};
 }
