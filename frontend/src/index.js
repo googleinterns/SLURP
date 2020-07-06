@@ -1,8 +1,15 @@
+/**
+ * This file is the main entrypoint for the web application and is used to
+ * render the 'root' element of index.html.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import * as serviceWorker from './serviceWorker';
+
+import App from './components/App';
 
 ReactDOM.render(
   <React.StrictMode>
