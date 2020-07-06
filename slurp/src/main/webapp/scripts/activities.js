@@ -2,21 +2,18 @@ const ACTIVITY_START_TIME = 'start_time';
 const ACTIVITY_END_TIME = 'end_time';
 
 /**
- * Make a dropdown object under the HTML element with ID #location,
- * with provided title and HTML content.
+ * Make a dropdown object with provided title and HTML content.
  * @param {string} title The title of the to-be dropdown (what's displayed when the dropdown is closed).
  * @param {string} content The content of the to-be dropdown (what's displayed when the dropdown is open).
  * @param {string} location The parent HTML element of the to-be dropdown.
+ * @returns HTML div object with the created dropdown.
  */
-function makeDropdown(title, content, location) {
-  const element = document.getElementById(location);
-
+function makeDropdown(title, content) {
   const randomId = getRandomUuid();
 
   let newButton = document.createElement('button');
   newButton.innerHTML = title;
   newButton.setAttribute('data-toggle', 'collapse');
-  newButton.setAttribute('data-parent', '#'+location);
   newButton.setAttribute('href', '#'+randomId);
   newButton.setAttribute('aria-expanded', 'false');
 
@@ -26,8 +23,12 @@ function makeDropdown(title, content, location) {
   newDropdownContent.setAttribute('tabindex', 0);
   newDropdownContent.id = randomId;
 
-  element.appendChild(newButton);
-  element.appendChild(newDropdownContent);
+  let newDiv = document.createElement('div');
+  newDiv.id = "dropdown_" + randomId;
+  newDiv.appendChild(newButton);
+  newDiv.appendChild(newDropdownContent);
+
+  return newDiv;
 }
 
 /**
@@ -37,12 +38,9 @@ function makeDropdown(title, content, location) {
  * put in a dropdown.
  */
 function makeActivityContent(activityData) {
-  let content = '<p>';
-  content += ('Description: ' + activityData['description']);
-  content += ('<br>Start time: ' + activityData['start_time']);
-  content += ('<br>End time: ' + activityData['end_time']);
-  content += ('</p>');
-  return content;
+  let p = document.createElement("p");
+  p.innerHTML = activityData["title"];
+  return p;
 }
 
 /**
@@ -62,10 +60,12 @@ function compareActivities(a, b) {
 }
 
 /**
- * 
+ * Sort a list of trip activities by date. 
+ * @param {Array} tripActivities Array of activities.
+ * @returns Dictionary of trip activities in the form {"MM/DD/YYYY": [activities on that day], ...}.
  */
 function sortByDate(tripActivities) {
-  let activities = {}; // { [year, month, day]: [activities] }.
+  let activities = {}; // { [MM/DD/YYYY]: [activities] }.
   for (let activity of tripActivities) {
     const activityDate = new Date(activity[ACTIVITY_START_TIME]);
     const dateKey = activityDate.toLocaleDateString()
@@ -74,20 +74,34 @@ function sortByDate(tripActivities) {
     } else {
       activities[dateKey] = new Set([activity]);
     }
-    console.log(activities[dateKey]);
   }
   return activities;
 }
 
 /**
- * 
- * @param {*} activities 
- * 
+ * Make the inner and top-level content for a day.
+ * @param {array} activities The list of activities for the day
+ * @return Dictionary of structure {"title": HTML, "content", HTML} with the title 
+ * and content of the dropdown for the given day.
  */
 function getDayHTML(activities){
-  // find the date, set the title
-  // create content HTML. use .outerHTML, makeActivityContent.
-  // return {"title": title html, "content": content html}
+  activities = Array.from(activities);
+
+  if (activities === undefined || activities.length == 0) {
+    return;
+  }
+
+  const startTime = activities[0][ACTIVITY_START_TIME];
+  const startDate = timestampToDateFormatted(startTime);
+
+  activities.sort(compareActivities);
+  let activitiesDiv = document.createElement("div");
+  for (var activity of activities) {
+    let activityElement = makeActivityContent(activity);
+    activitiesDiv.appendChild(activityElement);
+  }
+  
+  return {"title": startDate, "content": activitiesDiv.outerHTML};
 }
 
 /**
@@ -98,6 +112,8 @@ async function fetchAndDisplayActivities() {
   const url = window.location.href;
   const urlParams = parseUrl(url);
   const tripId = urlParams['tripid'];
+
+  const activityListElement = document.getElementById("activity-list");
 
   db.collection(TRIP_COLLECTION).doc(tripId)
     .collection(ACTIVITY_COLLECTION).get().then(function(querySnapshot) {
@@ -117,9 +133,15 @@ async function fetchAndDisplayActivities() {
     }).catch( function(error) {
       console.log('Error getting trip details for tripId', tripId);
     }).then( function(tripActivities) {
-      // Split into days
-      // Display each day.
-    });
+      const tripActivitiesByDay = sortByDate(tripActivities);
+
+      // Display each day in a  dropdown format.
+      for (const [date, activities] of Object.entries(tripActivitiesByDay)) {
+        const dayContent = getDayHTML(activities);
+        const dropdown = makeDropdown(dayContent["title"], dayContent["content"]);
+        activityListElement.appendChild(dropdown);
+      }
+    }); 
 }
 
 if (typeof exports !== 'undefined'){
