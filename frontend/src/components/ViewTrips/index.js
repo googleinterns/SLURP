@@ -1,14 +1,16 @@
 import React from 'react';
+import TripsContainer from './trips-container'
 
 /**
  * ViewTrips component.
  */
 const ViewTrips = () => {
   return (
-    <div>
-      <h1>View Trips</h1>
-    </div>
+    <div><TripsContainer /></div>
   );
 };
 
 export default ViewTrips;
+
+
+
