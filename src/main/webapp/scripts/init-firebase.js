@@ -14,8 +14,17 @@
 
 // Initialize Firebase and its related product we use using the provided
 // Firebase project configuation.
-import firebase from '@firebase/app'
-import '@firebase/firestore';
+// import firebase from '@firebase/app'
+// import '@firebase/firestore';
+// const firebase = require('@firebase/app');
+// require('@firebase/firestore');
+
+let curFirebase;
+if (typeof window === 'undefined') {
+  curFirebase = require('@firebase/app');
+} else {
+  curFirebase = firebase;
+}
 
 // TO USE THE EMULATOR:
 // - Set USE_EMULATOR to true
@@ -46,7 +55,7 @@ if (RUN_LOCALLY) {
     measurementId: 'G-PLVY991DHW'
   };
 }
-const app = firebase.initializeApp(firebaseConfig);
+const app = curFirebase.default.initializeApp(firebaseConfig);
 const db = app.firestore();
 
 if (RUN_LOCALLY) {

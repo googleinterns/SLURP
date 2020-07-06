@@ -11,11 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 // import * as init_fb from './init-firebase.js'
-let init_fb;
-if (typeof window === 'undefined') {
-  init_fb = require('./init-firebase.js');
-}
+// let init_fb;
+// if (typeof window === 'undefined') {
+//   init_fb = require('./init-firebase.js');
+// }
 
 /**
  * This function provides a simple example of how to use the Jest module.
@@ -49,7 +50,7 @@ async function addSampleDocToFirestore(db, collection, docId, docNum) {
  * script in index.html.
  */
 async function loadPage() {
-  await addSampleDocToFirestore(init_fb.db, "samples", "doc1", 1);
+  await addSampleDocToFirestore(db, "samples", "doc1", 1);
 }
 
 // Check if we are in node or in a browser
