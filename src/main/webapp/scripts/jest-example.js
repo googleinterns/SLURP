@@ -29,14 +29,8 @@ function sum(a, b) {
  * emulator as well as the production version of Firestore.
  */
 async function addSampleDocToFirestore(db, collection, docId, docNum) {
-  db.collection(collection).doc(docId).set({
+  return db.collection(collection).doc(docId).set({
     doc_num: docNum
-  })
-  .then(() => {
-    console.log("Document written successfully");
-  })
-  .catch(error => {
-    console.error("Error writing document: ", error);
   });
 }
 

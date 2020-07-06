@@ -24,13 +24,18 @@ test('Confirm sample doc was written to firestore', async () => {
   const docId = 'sample1';
   const docNum = 1;
 
-  await jestEx.addSampleDocToFirestore(db, collection, docId, docNum);
-
-  const docRef = db.collection(collection).doc(docId);
-  const doc = await docRef.get();
-  if (!doc.exists) {
-    console.error('No such document exists!');
-  } else {
-    expect(doc.data().doc_num).toBe(docNum);
-  }
+  // TODO(Issue #): Fix Jest Reference Error when running this function:
+  // "You are trying to `import` a file after the Jest environment has been
+  // torn down."
+  return jestEx.addSampleDocToFirestore(db, collection, docId, docNum)
+      .then(() => {
+        const docRef = db.collection(collection).doc(docId);
+        const doc = docRef.get().then(() => {
+          expect(doc.exists).toBeTruthy();
+          expect(doc.data().doc_num).toBe(docNum);
+        });
+      })
+      .catch(error => {
+        console.error('Error writing document: ', error);
+      });
 });
