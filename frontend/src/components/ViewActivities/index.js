@@ -1,5 +1,4 @@
 import React from 'react';
-import App from '../Firebase';
 import ActivityList from './activitylist';
 
 class ViewActivities extends React.Component {
