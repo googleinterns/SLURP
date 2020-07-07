@@ -1,8 +1,7 @@
 import React from 'react';
 
-
 /**
- * Creates an <div> element containing the HTML for an individual trip.
+ * Component corresponding to the container containing an individual trip.
  *
  * Temporarily, only the title and associated document ID are included in a
  * text element for each trip <div> element. This is done to simple test the
@@ -14,8 +13,7 @@ class Trip extends React.Component {
   render() {
     return (
       <div>
-        <p>'Title: {this.props.tripObj.name} | 
-            Document Id: {this.props.tripId}'</p>
+        <p>Title: {this.props.tripObj.name} | Doc Id: {this.props.tripId}</p>
       </div>
     );
   }

@@ -26,9 +26,9 @@ function getUserEmail() {
  *
  * @param {string} userEmail The email corresponding to the current user
  *    logged in.
- * @return {Promise} Promise object containing the query results as a
- *    QuerySnapshot object. This QuerySnapshot contains zero or more Trip
- *    documents as DocumentSnapshot objects.
+ * @return {Promise<!Object>} Promise object containing the query results as a
+ *    `QuerySnapshot` object. This `QuerySnapshot` contains zero or more Trip
+ *    documents (`DocumentSnapshot` objects).
  */
 function queryUserTrips(userEmail) {
   return db.collection(DATABASE.TRIP_COLLECTION)
@@ -37,29 +37,45 @@ function queryUserTrips(userEmail) {
 }
 
 /**
- * Grabs Trip Documents for user from queryUserTrips(), get HTML for each
- * individual trip, and append each trip to the trip container on the view
- * trips page.
+ * Grabs Trips query result from `queryUserTrips()` and returns an array of
+ * `<Trip>` elements as defined in `trip.js`.
+ *
+ * @param {Promise<!Object>} querySnapshot Promise object containing the query
+ *    results as a `QuerySnapshot` object.
+ * @return {Promise<!Array<ReactElement>>} Promise object containing an array
+ *    of Trip React/HTML elements corresponding to the Trip docsuments included
+ *    in 'querySnapshot`.
  */
 function serveTrips(querySnapshot) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     const tripsContainer = querySnapshot.docs.map(doc =>
         ( <Trip key={doc.id} tripObj={doc.data()} tripId={doc.id} /> ));
-    console.log(tripsContainer);
     resolve(tripsContainer);
   });
 }
 
+/**
+ * Returns a `<div>` element with the specified error message.
+ *
+ * @param {string} error Error message in `componentDidMount()` catch statement.
+ * @return {Promise<HTMLDivElement>} Promise object containing a `<div>` element
+ *    with the error message `error` inside.
+ */
 function getErrorElement(error) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     console.log(`Error in Trips Container: ${error}`);
     resolve(( <div><p>Error: Unable to load your trips.</p></div> ));
   });
 }
 
+/**
+ * Component corresponding to the container containing a users trips.
+ *
+ * @extends React.Component
+ */
 class TripsContainer extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {trips: []};
   }
 
@@ -67,7 +83,6 @@ class TripsContainer extends React.Component {
     try {
       const querySnapshot = await queryUserTrips(getUserEmail());
       let tripsContainer = await serveTrips(querySnapshot);
-      console.log(tripsContainer);
       this.setState({trips: tripsContainer});
     }
     catch (error) {
@@ -76,7 +91,6 @@ class TripsContainer extends React.Component {
   }
 
   render() {
-    console.log(this.state.trips);
     return (
       <div>{this.state.trips}</div>
     );
@@ -84,4 +98,4 @@ class TripsContainer extends React.Component {
 }
 
 export default TripsContainer;
-// export {serveTrips, ...}
+export {queryUserTrips, serveTrips, getErrorElement};
