@@ -13,6 +13,7 @@ class ActivityList extends React.Component {
     this.state = { days : [], tripId: props.tripId };
   }
 
+  /** @inheritdoc */
   async componentDidMount() {
     if (this.state === null) { return; }
     let tripActivities = await activityFns.getActivityList(this.state.tripId);
@@ -23,6 +24,7 @@ class ActivityList extends React.Component {
     this.setState({days: activityFns.sortByDate(tripActivities)});
   }
 
+  /** @inheritdoc */
   render() {
     if (this.state === null) { return (<div></div>); }
     if (this.state.days === null) {

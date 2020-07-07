@@ -1,11 +1,11 @@
 import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-
 import Activity from './activity';
 import * as activityFns from './activityfns';
 
 class ActivityDay extends React.Component {
+  /** @inheritdoc */
   constructor(props) {
     super(props);
     this.state = {
@@ -14,6 +14,7 @@ class ActivityDay extends React.Component {
     };
   }
 
+  /** @inheritdoc */
   render() {
     let id = new Date(this.state.date).getTime();
     return (
