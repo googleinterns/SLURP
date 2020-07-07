@@ -41,36 +41,47 @@ function queryUserTrips(userEmail) {
  * individual trip, and append each trip to the trip container on the view
  * trips page.
  */
-function serveTrips() {
-  queryUserTrips(getUserEmail())
-      .then(querySnapshot => {
-        let a = (querySnapshot.docs.map(doc => {
-          const test = ( <Trip tripObj={doc.data()} tripId={doc.id} /> );
-          return test;
-        }))
-        console.log(a);
-        return a;
-      })
-      .catch(error => {
-        console.log(`Error in getCommentsThread: ${error}`);
-        return ( <p>Error: Unable to load your trips.</p> );
-      });
+function serveTrips(querySnapshot) {
+  return new Promise(function(resolve, reject) {
+    const tripsContainer = querySnapshot.docs.map(doc =>
+        ( <Trip key={doc.id} tripObj={doc.data()} tripId={doc.id} /> ));
+    console.log(tripsContainer);
+    resolve(tripsContainer);
+  });
 }
 
-// function serveTrips() {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       resolve([1,2]);
-//     }, 1000);
-//   });
-// }
+function getErrorElement(error) {
+  return new Promise(function(resolve, reject) {
+    console.log(`Error in Trips Container: ${error}`);
+    resolve(( <div><p>Error: Unable to load your trips.</p></div> ));
+  });
+}
 
-const TripsContainer = () => {
-  console.log(serveTrips());
-  return (
-    <div>{serveTrips()}</div>
-  );
-};
+class TripsContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {trips: []};
+  }
+
+  async componentDidMount() {
+    try {
+      const querySnapshot = await queryUserTrips(getUserEmail());
+      let tripsContainer = await serveTrips(querySnapshot);
+      console.log(tripsContainer);
+      this.setState({trips: tripsContainer});
+    }
+    catch (error) {
+      this.setState({trips: getErrorElement(error)});
+    }
+  }
+
+  render() {
+    console.log(this.state.trips);
+    return (
+      <div>{this.state.trips}</div>
+    );
+  }
+}
 
 export default TripsContainer;
 // export {serveTrips, ...}

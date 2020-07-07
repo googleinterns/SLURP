@@ -6,7 +6,7 @@ import TripsContainer from './trips-container'
  */
 const ViewTrips = () => {
   return (
-    <div><TripsContainer /></div>
+    <TripsContainer />
   );
 };
 
