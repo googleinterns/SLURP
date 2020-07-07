@@ -1,6 +1,6 @@
 import React from 'react';
 import app from '../Firebase';
-
+import * as activityFns from './activityfns';
 import ActivityDay from './activityday';
 import Accordion from 'react-bootstrap/Accordion';
 
@@ -15,12 +15,12 @@ class ActivityList extends React.Component {
 
   async componentDidMount() {
     if (this.state === null) { return; }
-    let tripActivities = await getActivityList(this.state.tripId);
+    let tripActivities = await activityFns.getActivityList(this.state.tripId);
     if (tripActivities === null) {
       this.setState({days: null});  
       return;
     } 
-    this.setState({days: sortByDate(tripActivities)});
+    this.setState({days: activityFns.sortByDate(tripActivities)});
   }
 
   render() {
@@ -32,11 +32,11 @@ class ActivityList extends React.Component {
     }
     return (
       <div>
-        <Accordion defaultActiveKey="0">
         {this.state.days.map((item, index) => (
-          <ActivityDay key={index}  date={item[0]} activities={item[1]} />
+          <Accordion defaultActiveKey="1">
+            <ActivityDay key={index} date={item[0]} activities={item[1]} />
+          </Accordion>
         ))}
-        </Accordion>
       </div>
     );
   }

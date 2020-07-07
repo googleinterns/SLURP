@@ -3,14 +3,14 @@ import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 
 import Activity from './activity';
-import compareActivities from './activityfns';
+import * as activityFns from './activityfns';
 
 class ActivityDay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       date: props.date, 
-      activities: Array.from(props.activities).sort(compareActivities)
+      activities: Array.from(props.activities).sort(activityFns.compareActivities)
     };
   }
 

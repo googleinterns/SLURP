@@ -1,10 +1,13 @@
 import * as DBFIELDS from '../../constants/dbconstants';
+import app from '../Firebase';
+
+const db = app.firestore();
 
 /**
  * Gets the list of activities from the server. 
  * @param {string} tripId The trip ID.
  */
-async function getActivityList(tripId) {
+export async function getActivityList(tripId) {
   return new Promise(function(resolve, reject) {
     let tripActivities = [];
     
