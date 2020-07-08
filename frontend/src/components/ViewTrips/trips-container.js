@@ -1,22 +1,21 @@
 import React from 'react';
-import app from '../Firebase';
 import Trip from './trip';
 
 import * as DATABASE from '../../constants/database';
 
-const db = app.firestore();
 
 /**
  * Returns a promise of a query object containg the array of Trip Documents
  * corresponding to the trips that the current user is a collaborator on.
  *
+ * @param {Object} db The Firestore database instance.
  * @param {string} userEmail The email corresponding to the current user
  *    logged in.
  * @return {Promise<!Object>} Promise object containing the query results as a
  *    `QuerySnapshot` object. This `QuerySnapshot` contains zero or more Trip
  *    documents (`DocumentSnapshot` objects).
  */
-function queryUserTrips(userEmail) {
+function queryUserTrips(db, userEmail) {
   return db.collection(DATABASE.TRIP_COLLECTION)
       .where(DATABASE.COLLABORATORS_FIELD, 'array-contains', userEmail)
       .get();
@@ -67,7 +66,8 @@ class TripsContainer extends React.Component {
 
   async componentDidMount() {
     try {
-      const querySnapshot = await queryUserTrips(this.props.userEmail);
+      const querySnapshot = await queryUserTrips(
+          this.props.db, this.props.userEmail);
       let tripsContainer = await serveTrips(querySnapshot);
       this.setState({trips: tripsContainer});
     }

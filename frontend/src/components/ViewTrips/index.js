@@ -1,5 +1,8 @@
 import React from 'react';
+import app from '../Firebase';
 import TripsContainer from './trips-container'
+
+const db = app.firestore();
 
 /**
  * Temporary hardcoded function that returns the current users email.
@@ -20,7 +23,7 @@ function getUserEmail() {
  */
 const ViewTrips = () => {
   return (
-    <TripsContainer userEmail={getUserEmail()} />
+    <TripsContainer db={db} userEmail={getUserEmail()} />
   );
 };
 
