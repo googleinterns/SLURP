@@ -18,7 +18,6 @@ class ActivityDay extends React.Component {
   /** @inheritdoc */
   render() {
     let date = new Date(this.state.date);
-    let id = date.getTime();
     return (
       <Card>
         <Accordion.Toggle as={Card.Header} eventKey="0" align="center" >
