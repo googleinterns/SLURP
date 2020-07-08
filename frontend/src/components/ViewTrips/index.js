@@ -19,7 +19,8 @@ function getUserEmail() {
 }
 
 /**
- * ViewTrips component.
+ * ViewTrips component that defines the page where a user can view and manage
+ * their current trips.
  */
 const ViewTrips = () => {
   return (
