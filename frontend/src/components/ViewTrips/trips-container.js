@@ -7,20 +7,6 @@ import * as DATABASE from '../../constants/database';
 const db = app.firestore();
 
 /**
- * Temporary hardcoded function that returns the current users email.
- *
- * The hardcoded string was created based on one of the manually created test
- * Trip Documents. This function will be implemented in the user authentication
- * JS module using Firebase's Authentication API.
- *
- * TODO(Issue 16): Remove this function once implemented in authentication
- *                 module.
- */
-function getUserEmail() {
-  return 'matt.murdock';
-}
-
-/**
  * Returns a promise of a query object containg the array of Trip Documents
  * corresponding to the trips that the current user is a collaborator on.
  *
@@ -74,14 +60,14 @@ function getErrorElement(error) {
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {trips: []};
   }
 
   async componentDidMount() {
     try {
-      const querySnapshot = await queryUserTrips(getUserEmail());
+      const querySnapshot = await queryUserTrips(this.props.userEmail);
       let tripsContainer = await serveTrips(querySnapshot);
       this.setState({trips: tripsContainer});
     }
