@@ -1,38 +1,22 @@
 import React from 'react';
-import app from '../Firebase';
 import Trip from './trip';
 
 import * as DATABASE from '../../constants/database';
 
-const db = app.firestore();
-
-/**
- * Temporary hardcoded function that returns the current users email.
- *
- * The hardcoded string was created based on one of the manually created test
- * Trip Documents. This function will be implemented in the user authentication
- * JS module using Firebase's Authentication API.
- *
- * TODO(Issue 16): Remove this function once implemented in authentication
- *                 module.
- */
-function getUserEmail() {
-  return 'matt.murdock';
-}
 
 /**
  * Returns a promise of a query object containg the array of Trip Documents
  * corresponding to the trips that the current user is a collaborator on.
  *
+ * @param {firebase.firestore.Firestore} db The Firestore database instance.
  * @param {string} userEmail The email corresponding to the current user
  *    logged in.
- * @return {Promise<!Object>} Promise object containing the query results as a
- *    `QuerySnapshot` object. This `QuerySnapshot` contains zero or more Trip
- *    documents (`DocumentSnapshot` objects).
+ * @return {Promise<!firebase.firestore.QuerySnapshot>} Promise object
+ *    containing the query results with zero or more Trip  documents.
  */
-function queryUserTrips(userEmail) {
-  return db.collection(DATABASE.TRIP_COLLECTION)
-      .where(DATABASE.COLLABORATORS_FIELD, 'array-contains', userEmail)
+function queryUserTrips(db, userEmail) {
+  return db.collection(DATABASE.COLLECTION_TRIPS)
+      .where(DATABASE.TRIPS_COLLABORATORS, 'array-contains', userEmail)
       .get();
 }
 
@@ -40,9 +24,9 @@ function queryUserTrips(userEmail) {
  * Grabs Trips query result from `queryUserTrips()` and returns an array of
  * `<Trip>` elements as defined in `trip.js`.
  *
- * @param {Promise<!Object>} querySnapshot Promise object containing the query
- *    results as a `QuerySnapshot` object.
- * @return {Promise<!Array<ReactElement>>} Promise object containing an array
+ * @param {Promise<!firebase.firestore.QuerySnapshot>} querySnapshot Promise
+ *    object containing the query results with zero or more Trip  documents.
+ * @return {Promise<!Array<Trip>>} Promise object containing an array
  *    of Trip React/HTML elements corresponding to the Trip docsuments included
  *    in 'querySnapshot`.
  */
@@ -74,14 +58,17 @@ function getErrorElement(error) {
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
-  constructor() {
-    super();
+  /** @inheritdoc */
+  constructor(props) {
+    super(props);
     this.state = {trips: []};
   }
 
+  /** @inheritdoc */
   async componentDidMount() {
     try {
-      const querySnapshot = await queryUserTrips(getUserEmail());
+      const querySnapshot = await queryUserTrips(
+          this.props.db, this.props.userEmail);
       let tripsContainer = await serveTrips(querySnapshot);
       this.setState({trips: tripsContainer});
     }
@@ -90,6 +77,7 @@ class TripsContainer extends React.Component {
     }
   }
 
+  /** @inheritdoc */
   render() {
     return (
       <div>{this.state.trips}</div>
@@ -98,4 +86,3 @@ class TripsContainer extends React.Component {
 }
 
 export default TripsContainer;
-export {queryUserTrips, serveTrips, getErrorElement};
