@@ -9,14 +9,12 @@ class ActivityDay extends React.Component {
   /** @inheritdoc */
   constructor(props) {
     super(props);
-    this.state = {
-      date: props.date, 
-      activities: Array.from(props.activities).sort(activityFns.compareActivities)
-    };
   }
 
   /** @inheritdoc */
   render() {
+    const sortedActivities = Array.from(this.props.activities)
+          .sort(activityFns.compareActivities);
     let date = new Date(this.props.date);
     let id = date.getTime();
     return (
@@ -26,7 +24,7 @@ class ActivityDay extends React.Component {
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body>
-            {this.state.activities.map((activity, index) => (
+            {sortedActivities.map((activity, index) => (
             <Activity activity={activity} key={index + id}/>
             ))}
           </Card.Body>
