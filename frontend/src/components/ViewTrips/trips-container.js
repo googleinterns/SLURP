@@ -59,11 +59,13 @@ function getErrorElement(error) {
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
+  /** @inheritdoc */
   constructor(props) {
     super(props);
     this.state = {trips: []};
   }
 
+  /** @inheritdoc */
   async componentDidMount() {
     try {
       const querySnapshot = await queryUserTrips(
@@ -76,6 +78,7 @@ class TripsContainer extends React.Component {
     }
   }
 
+  /** @inheritdoc */
   render() {
     return (
       <div>{this.state.trips}</div>
