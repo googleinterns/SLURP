@@ -9,7 +9,7 @@ class Activity extends React.Component {
   render() {
     const activity = this.props.activity;
     return (
-      <Card className="activity">
+      <Card className='activity'>
         <p>title: {activity[DBUTILS.ACTIVITIES_TITLE]}</p>
         <p>start time: {utils.timestampToTimeFormatted(activity[DBUTILS.ACTIVITIES_START_TIME])} </p>
         <p>end time: {utils.timestampToTimeFormatted(activity[DBUTILS.ACTIVITIES_END_TIME])} </p>

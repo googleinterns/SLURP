@@ -22,9 +22,9 @@ export async function getActivityList(tripId) {
 
         // Eliminate nanoseconds, convert to milliseconds.
         data[DBFIELDS.ACTIVITIES_START_TIME] =
-          data[DBFIELDS.ACTIVITIES_START_TIME]["seconds"] * 1000;         
+          data[DBFIELDS.ACTIVITIES_START_TIME]['seconds'] * 1000;         
         data[DBFIELDS.ACTIVITIES_END_TIME] = 
-          data[DBFIELDS.ACTIVITIES_END_TIME]["seconds"] * 1000;
+          data[DBFIELDS.ACTIVITIES_END_TIME]['seconds'] * 1000;
 
         tripActivities.push(data);
       })
@@ -38,7 +38,7 @@ export async function getActivityList(tripId) {
  * Sort a list of trip activities by date. 
  * @param {Array} tripActivities Array of activities.
  * @returns List of trip activities in the form
- * [ ["MM/DD/YYYY", [activities on that day]], ...] in chronological order by date.
+ * [ ['MM/DD/YYYY', [activities on that day]], ...] in chronological order by date.
  */
 export function sortByDate(tripActivities) {
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.

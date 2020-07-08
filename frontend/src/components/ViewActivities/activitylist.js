@@ -27,14 +27,14 @@ class ActivityList extends React.Component {
   render() {
     if (this.state === null) { return (<div></div>); }
     if (this.state.days === null) {
-      return (<p className="activity-list">An error has occurred :(</p> );
+      return (<p className='activity-list'>An error has occurred :(</p> );
     } else if (this.state.days.length == 0) {
-      return (<p className="activity-list">Plan your trip here!</p>);
+      return (<p className='activity-list'>Plan your trip here!</p>);
     }
     return (
-      <div className="activity-list">
+      <div className='activity-list'>
         {this.state.days.map((item, index) => (
-          <Accordion defaultActiveKey="1" key={index} className="activity-day-dropdown">
+          <Accordion defaultActiveKey='1' key={index} className='activity-day-dropdown'>
             <ActivityDay date={item[0]} activities={item[1]} />
           </Accordion>
         ))}

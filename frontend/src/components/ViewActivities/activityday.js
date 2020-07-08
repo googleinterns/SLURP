@@ -19,10 +19,10 @@ class ActivityDay extends React.Component {
     let id = date.getTime();
     return (
       <Card>
-        <Accordion.Toggle as={Card.Header} eventKey="0" align="center" >
+        <Accordion.Toggle as={Card.Header} eventKey='0' align='center' >
           {utils.timestampToDateFormatted(date.getTime())}
         </Accordion.Toggle>
-        <Accordion.Collapse eventKey="0">
+        <Accordion.Collapse eventKey='0'>
           <Card.Body>
             {sortedActivities.map((activity, index) => (
             <Activity activity={activity} key={index + id}/>

@@ -5,7 +5,7 @@ class ViewActivities extends React.Component {
   /** @inheritdoc */
   render() {
     return (
-      <div className="activity-page"> 
+      <div className='activity-page'> 
         <ActivityList tripId={this.props.match.params.tripId}/>
       </div>
     )

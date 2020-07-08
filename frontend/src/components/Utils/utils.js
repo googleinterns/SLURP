@@ -2,9 +2,9 @@
  * Format a timestamp (in milliseconds) into a pretty string with just the time.
  * @param {int} msTimestamp 
  * @param {string} timezone 
- * @returns {string} Time formatted into a string like "10:19 AM".
+ * @returns {string} Time formatted into a string like '10:19 AM'.
  */
-export function timestampToTimeFormatted(msTimestamp, timezone = "America/New_York") {
+export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
   let date = new Date(msTimestamp);
   let formatOptions = { 
     hour: 'numeric', 
@@ -19,9 +19,9 @@ export function timestampToTimeFormatted(msTimestamp, timezone = "America/New_Yo
  * Format a timestamp (in milliseconds) into a pretty string with just the date.
  * @param {int} msTimestamp 
  * @param {string} timezone 
- * @returns {string} Time formatted into a string like "Monday, January 19, 1970".
+ * @returns {string} Time formatted into a string like 'Monday, January 19, 1970'.
  */
-export function timestampToDateFormatted(msTimestamp, timezone="America/New_York") {
+export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
   let date = new Date(msTimestamp);
   let formatOptions = { 
     weekday: 'long', 
