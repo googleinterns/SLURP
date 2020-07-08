@@ -5,7 +5,7 @@
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like "10:19 AM".
  */
-export function timestampToTimeFormatted(msTimestamp, timezone = "America/New_York") {
+export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
   let date = new Date(msTimestamp);
   let formatOptions = { 
     hour: 'numeric', 
