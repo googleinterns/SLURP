@@ -16,8 +16,8 @@ import * as DATABASE from '../../constants/database';
  *    documents (`DocumentSnapshot` objects).
  */
 function queryUserTrips(db, userEmail) {
-  return db.collection(DATABASE.TRIP_COLLECTION)
-      .where(DATABASE.COLLABORATORS_FIELD, 'array-contains', userEmail)
+  return db.collection(DATABASE.COLLECTION_TRIPS)
+      .where(DATABASE.TRIPS_COLLABORATORS, 'array-contains', userEmail)
       .get();
 }
 
