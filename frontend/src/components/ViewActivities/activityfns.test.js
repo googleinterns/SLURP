@@ -1,11 +1,10 @@
 import * as activityFns from './activityfns';
 
-// Date objects to be used in tests. All on May 2nd, 2020. 
-const ten = new Date(Date.UTC(2020,  4, 2, 10,  0));
-const eleven = new Date(Date.UTC(2020, 4, 2, 11, 0));
-const elevenThirty = new Date(Date.UTC(2020, 4, 2, 11, 30));
-const twelve = new Date(Date.UTC(2020, 4, 2, 12, 0));
-const one = new Date(Date.UTC(2020, 4, 2, 13, 0));
+const ten = new Date(Date.UTC(2020, 4, 2, 10,  0));          // May 2, 2020 10:00
+const eleven = new Date(Date.UTC(2020, 4, 2, 11, 0));        // May 2, 2020 11:00
+const elevenThirty = new Date(Date.UTC(2020, 4, 2, 11, 30)); // May 2, 2020 11:30
+const twelve = new Date(Date.UTC(2020, 4, 2, 12, 0));        // May 2, 2020 12:00
+const one = new Date(Date.UTC(2020, 4, 2, 13, 0));           // May 2, 2020 13:00
 
 // Date objects to be used in tests. All on different days.
 const may102pm = new Date(Date.UTC(2020, 4, 10, 14, 0));
