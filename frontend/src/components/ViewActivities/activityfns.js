@@ -53,11 +53,7 @@ export function sortByDate(tripActivities) {
   }
 
   // Sort activities by date.
-  let activitiesSorted = Array.from(activities).sort(function (a, b) {
-    const adate = new Date(a[0]);
-    const bdate = new Date(b[0]);
-    return adate > bdate ? 1 : adate < bdate ? -1 : 0;
-  });
+  let activitiesSorted = Array.from(activities).sort(compareActivities);
   
   return activitiesSorted;
 }
