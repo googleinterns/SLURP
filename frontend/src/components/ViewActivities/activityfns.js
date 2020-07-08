@@ -37,7 +37,7 @@ export async function getActivityList(tripId) {
 /**
  * Sort a list of trip activities by date. 
  * @param {Array} tripActivities Array of activities.
- * @returns Dictionary of trip activities in the form {"MM/DD/YYYY": [activities on that day], ...}.
+ * @returns List of trip activities in the form [ ["MM/DD/YYYY", [activities on that day]], ...].
  */
 export function sortByDate(tripActivities) {
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
