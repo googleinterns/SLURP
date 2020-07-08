@@ -48,10 +48,9 @@ test('compareActivities on different days', () => {
   const may10 = createActivity(may102pm, may102pm);
   const may15 = createActivity(may153am, may153am);
   const may01 = createActivity(may014pm, may014pm);
-  expect(compareActivities(may10, may01)).toBe(1);
-  expect(compareActivities(may15, may01)).toBe(1);
+  expect(activityFns.compareActivities(may10, may01)).toBe(1);
+  expect(activityFns.compareActivities(may15, may01)).toBe(1);
 })
-
 
 describe('sortByDate tests', () => {
   const act1 = createActivity(ten, eleven);
@@ -63,30 +62,33 @@ describe('sortByDate tests', () => {
   test('sortByDate all same date', () => {
     const tripActivities = [act1, act2, act3];
 
-    const expected = {};
-    expected[ten.toLocaleDateString()] = new Set([act1, act2, act3]);
+    let expected = new Map();
+    expected.set(ten.toLocaleDateString(), new Set([act1, act2, act3]));
+    expected = Array.from(expected);
 
     expect(activityFns.sortByDate(tripActivities)).toEqual(expected);
   })
 
   test('sortByDate all differentDates', () =>   {
     const tripActivities = [act3, act4, act5];
-
-    const expected = {};
-    expected[ten.toLocaleDateString()] = new Set([act3]);
-    expected[may102pm.toLocaleDateString()] = new Set([act4]);
-    expected[may153am.toLocaleDateString()] = new Set([act5]);
+    
+    let expected = new Map();
+    expected.set(ten.toLocaleDateString(), new Set([act3]));
+    expected.set(may102pm.toLocaleDateString(), new Set([act4]));
+    expected.set(may153am.toLocaleDateString(), new Set([act5]));
+    expected = Array.from(expected);
 
     expect(activityFns.sortByDate(tripActivities)).toEqual(expected);
   })
 
   test('sortByDate mixed dates', () => {
     const tripActivities = [act3, act4, act1, act5, act2];
-
-    const expected = {};
-    expected[ten.toLocaleDateString()] = new Set([act3, act1, act2]);
-    expected[may102pm.toLocaleDateString()] = new Set([act4]);
-    expected[may153am.toLocaleDateString()] = new Set([act5]);
+    
+    let expected = new Map();
+    expected.set(ten.toLocaleDateString(), new Set([act3, act1, act2]));
+    expected.set(may102pm.toLocaleDateString(), new Set([act4]));
+    expected.set(may153am.toLocaleDateString(), new Set([act5]));
+    expected = Array.from(expected);
 
     expect(activityFns.sortByDate(tripActivities)).toEqual(expected);
   })
