@@ -1,14 +1,15 @@
 import React from 'react';
 
 function createTitleElement(tripObj) {
-  let title;
   try {
-    title = tripObj.name;
+    if('name' in tripObj) {
+      return tripObj.name;
+    }
+    throw new Error(`Property 'name' is not defined in 'tripObj.'`);
   } catch (error) {
     console.log(`Error in fetching trip title: ${error}`);
-    title = 'Unable to fetch trip title';
+    return 'Unable to fetch trip title';
   }
-  return ( <h2>{title}</h2> );
 }
 
 /**
@@ -23,9 +24,11 @@ function createTitleElement(tripObj) {
 const Trip = (props) => {
   return (
     <div>
-      <p>{createTitleElement(props.tripObj)} Doc Id: {props.tripId}</p>
+      <h2>{createTitleElement(props.tripObj)}</h2>
+      <p>Doc Id: {props.tripId}</p>
     </div>
   );
 };
 
 export default Trip;
+export { createTitleElement };
