@@ -1,5 +1,6 @@
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time.
+ *
  * @param {int} msTimestamp 
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like "10:19 AM".
