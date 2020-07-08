@@ -9,14 +9,12 @@ import React from 'react';
  *
  * TODO(Issue 17): Feed all the Trip Doc data to the UI.
  */
-class Trip extends React.Component {
-  render() {
-    return (
-      <div>
-        <p>Title: {this.props.tripObj.name} | Doc Id: {this.props.tripId}</p>
-      </div>
-    );
-  }
-}
+const Trip = () => {
+  return (
+    <div>
+      <p>Title: {this.props.tripObj.name} | Doc Id: {this.props.tripId}</p>
+    </div>
+  );
+};
 
 export default Trip;
