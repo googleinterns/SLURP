@@ -11,7 +11,9 @@ class ViewActivities extends React.Component {
   /** @inheritdoc */
   render() {
     return (
-      <div className="activity-page"> <ActivityList tripId={this.state.tripId}/></div>
+      <div className="activity-page"> 
+        <ActivityList tripId={this.state.tripId}/>
+      </div>
     )
   }
 }
