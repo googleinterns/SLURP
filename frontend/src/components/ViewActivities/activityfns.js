@@ -37,7 +37,8 @@ export async function getActivityList(tripId) {
 /**
  * Sort a list of trip activities by date. 
  * @param {Array} tripActivities Array of activities.
- * @returns List of trip activities in the form [ ["MM/DD/YYYY", [activities on that day]], ...].
+ * @returns List of trip activities in the form
+ * [ ["MM/DD/YYYY", [activities on that day]], ...] in chronological order by date.
  */
 export function sortByDate(tripActivities) {
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
@@ -51,11 +52,13 @@ export function sortByDate(tripActivities) {
     }
   }
 
+  // Sort activities by date.
   let activitiesSorted = Array.from(activities).sort(function (a, b) {
     const adate = new Date(a[0]);
     const bdate = new Date(b[0]);
     return adate > bdate ? 1 : adate < bdate ? -1 : 0;
   });
+  
   return activitiesSorted;
 }
 
