@@ -1,0 +1,13 @@
+.activity-list {
+    margin: 1em auto;
+    width: 50%;
+}
+
+.activity-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.activity {
+    margin: 1em;
+}

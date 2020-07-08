@@ -3,8 +3,7 @@ import app from '../Firebase';
 import * as activityFns from './activityfns';
 import ActivityDay from './activityday';
 import Accordion from 'react-bootstrap/Accordion';
-
-const db = app.firestore();
+import '../../styles/activities.css';
 
 class ActivityList extends React.Component {
   /** @inheritdoc */
@@ -33,10 +32,10 @@ class ActivityList extends React.Component {
       return (<p>Plan your trip here!</p>);
     }
     return (
-      <div>
+      <div className="activity-list">
         {this.state.days.map((item, index) => (
-          <Accordion defaultActiveKey="1">
-            <ActivityDay key={index} date={item[0]} activities={item[1]} />
+          <Accordion defaultActiveKey="1" key={index}>
+            <ActivityDay date={item[0]} activities={item[1]} />
           </Accordion>
         ))}
       </div>
