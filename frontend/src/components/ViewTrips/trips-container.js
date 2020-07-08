@@ -87,4 +87,3 @@ class TripsContainer extends React.Component {
 }
 
 export default TripsContainer;
-export {queryUserTrips, serveTrips, getErrorElement};
