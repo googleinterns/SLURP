@@ -1,5 +1,13 @@
 import React from 'react';
 
+/**
+ * Returns the title of the trip associated with the Trip document data
+ * `tripObj`.
+ *
+ * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
+ *    and values for a Trip document.
+ * @return Title of the trip (if it exists).
+ */
 function createTitleElement(tripObj) {
   try {
     if('name' in tripObj) {

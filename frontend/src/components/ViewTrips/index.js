@@ -13,6 +13,7 @@ const db = app.firestore();
  *
  * TODO(Issue 16): Remove this function once implemented in authentication
  *                 module.
+ * @return Hardcoded user email string.
  */
 function getUserEmail() {
   return 'matt.murdock';
