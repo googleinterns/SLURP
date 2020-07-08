@@ -1,5 +1,16 @@
 import React from 'react';
 
+function createTitleElement(tripObj) {
+  let title;
+  try {
+    title = tripObj.name;
+  } catch (error) {
+    console.log(`Error in fetching trip title: ${error}`);
+    title = 'Unable to fetch trip title';
+  }
+  return ( <h2>{title}</h2> );
+}
+
 /**
  * Component corresponding to the container containing an individual trip.
  *
@@ -9,10 +20,10 @@ import React from 'react';
  *
  * TODO(Issue 17): Feed all the Trip Doc data to the UI.
  */
-const Trip = () => {
+const Trip = (props) => {
   return (
     <div>
-      <p>Title: {this.props.tripObj.name} | Doc Id: {this.props.tripId}</p>
+      <p>{createTitleElement(props.tripObj)} Doc Id: {props.tripId}</p>
     </div>
   );
 };
