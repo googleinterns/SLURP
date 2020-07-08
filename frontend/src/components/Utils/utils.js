@@ -18,6 +18,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = "America/New_Yo
 
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the date.
+ *
  * @param {int} msTimestamp 
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like "Monday, January 19, 1970".
