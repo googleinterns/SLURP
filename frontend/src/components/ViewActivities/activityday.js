@@ -17,7 +17,7 @@ class ActivityDay extends React.Component {
 
   /** @inheritdoc */
   render() {
-    let date = new Date(this.state.date);
+    let date = new Date(this.props.date);
     let id = date.getTime();
     return (
       <Card>
@@ -27,7 +27,7 @@ class ActivityDay extends React.Component {
         <Accordion.Collapse eventKey="0">
           <Card.Body>
             {this.state.activities.map((activity, index) => (
-            <Activity activity={activity} key={index + this.state.date}/>
+            <Activity activity={activity} key={index + id}/>
             ))}
           </Card.Body>
         </Accordion.Collapse>

@@ -27,9 +27,9 @@ class ActivityList extends React.Component {
   render() {
     if (this.state === null) { return (<div></div>); }
     if (this.state.days === null) {
-      return (<p>An error has occurred :(</p> );
+      return (<p className="activity-list">An error has occurred :(</p> );
     } else if (this.state.days.length == 0) {
-      return (<p>Plan your trip here!</p>);
+      return (<p className="activity-list">Plan your trip here!</p>);
     }
     return (
       <div className="activity-list">
