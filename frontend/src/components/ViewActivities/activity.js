@@ -5,7 +5,6 @@ import * as DBUTILS from '../../constants/dbconstants'
 import '../../styles/activities.css';
 
 class Activity extends React.Component {
-  
   /** @inheritdoc */
   constructor(props) {
     super(props);
