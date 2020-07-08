@@ -1,7 +1,3 @@
-/**
- * Test file for the SignInButton component.
- */
-
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import renderer from 'react-test-renderer';
@@ -17,7 +13,6 @@ jest.mock('react-router-dom', () => ({
   })
 }));
 
-// SignInButton tests.
 describe('SignInButton component', () => {
   it('renders correctly', () => {
     const tree = renderer
