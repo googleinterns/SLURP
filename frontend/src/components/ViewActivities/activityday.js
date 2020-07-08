@@ -7,11 +7,6 @@ import * as utils from '../Utils/utils.js'
 
 class ActivityDay extends React.Component {
   /** @inheritdoc */
-  constructor(props) {
-    super(props);
-  }
-
-  /** @inheritdoc */
   render() {
     const sortedActivities = Array.from(this.props.activities)
           .sort(activityFns.compareActivities);
