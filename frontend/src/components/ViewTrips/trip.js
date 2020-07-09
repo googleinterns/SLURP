@@ -27,7 +27,14 @@ function createTitleElement(tripObj) {
   }
 }
 
-
+/**
+ * Returns the description of the trip associated with the Trip document data
+ * `tripObj`.
+ *
+ * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
+ *    and values for a Trip document.
+ * @return Description of the trip (if it exists).
+ */
 function createDescriptionElement(tripObj) {
   try {
     if (DB.TRIPS_DESCRIPTION in tripObj) {
@@ -41,6 +48,14 @@ function createDescriptionElement(tripObj) {
   }
 }
 
+/**
+ * Returns the date range of the trip associated with the Trip document data
+ * `tripObj`.
+ *
+ * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
+ *    and values for a Trip document.
+ * @return Date range of the trip (if it exists).
+ */
 function createDateRangeElement(tripObj) {
   try {
     if (DB.TRIPS_START_DATE in tripObj && DB.TRIPS_END_DATE in tripObj) {
@@ -58,6 +73,14 @@ function createDateRangeElement(tripObj) {
   }
 }
 
+/**
+ * Returns the destination of the trip associated with the Trip document data
+ * `tripObj`.
+ *
+ * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
+ *    and values for a Trip document.
+ * @return Destination of the trip (if it exists).
+ */
 function createDestinationElement(tripObj) {
   try {
     if (DB.TRIPS_DESTINATION in tripObj) {
@@ -71,6 +94,14 @@ function createDestinationElement(tripObj) {
   }
 }
 
+/**
+ * Returns the collaborators of the trip associated with the Trip document data
+ * `tripObj`.
+ *
+ * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
+ *    and values for a Trip document.
+ * @return Collaborators of the trip (if it exists).
+ */
 function createCollaboratorElement(tripObj) {
   try {
     if (DB.TRIPS_COLLABORATORS in tripObj) {
@@ -119,11 +150,10 @@ const Trip = (props) => {
       <p>{createDestinationElement(props.tripObj)}</p>
       <p>{createCollaboratorElement(props.tripObj)}</p>
       {/* TODO(Issue 15): Add edit trip page. */}
-      <Button onClick={null} type='button' variant='primary'>
+      <Button type='button' onClick={null} variant='primary'>
         Edit
       </Button>
-      <Button onClick={handleClick}
-          type='button' variant='primary'>
+      <Button type='button' onClick={handleClick} variant='primary'>
         View Activities!
       </Button>
 
