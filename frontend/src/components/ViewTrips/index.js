@@ -30,6 +30,3 @@ const ViewTrips = () => {
 };
 
 export default ViewTrips;
-
-
-
