@@ -15,7 +15,7 @@ import { VIEW_ACTIVITIES } from '../../constants/routes';
  *    and values for a Trip document.
  * @return Title of the trip (if it exists).
  */
-function createTitleElement(tripObj) {
+function getTitle(tripObj) {
   try {
     if (DB.TRIPS_NAME in tripObj) {
       return tripObj.name;
@@ -35,7 +35,7 @@ function createTitleElement(tripObj) {
  *    and values for a Trip document.
  * @return Description of the trip (if it exists).
  */
-function createDescriptionElement(tripObj) {
+function getDescription(tripObj) {
   try {
     if (DB.TRIPS_DESCRIPTION in tripObj) {
       return tripObj.description;
@@ -56,14 +56,14 @@ function createDescriptionElement(tripObj) {
  *    and values for a Trip document.
  * @return Date range of the trip (if it exists).
  */
-function createDateRangeElement(tripObj) {
+function getDateRange(tripObj) {
   try {
     if (DB.TRIPS_START_DATE in tripObj && DB.TRIPS_END_DATE in tripObj) {
       const startDate = tripObj.start_date.toDate();
       const endDate = tripObj.end_date.toDate();
-      return `${startDate.getMonth()}/${startDate.getDate()}/
-          ${startDate.getFullYear()} - ${endDate.getMonth()}/${endDate.getDate()}
-          /${startDate.getFullYear()}`;
+      return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
+          `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
+          `${endDate.getDate()}/${endDate.getFullYear()}`;
     }
     throw new Error(`Property '${DB.TRIPS_START_DATE}' and/or
         '${DB.TRIPS_END_DATE}' is not defined in 'tripObj.'`);
@@ -81,7 +81,7 @@ function createDateRangeElement(tripObj) {
  *    and values for a Trip document.
  * @return Destination of the trip (if it exists).
  */
-function createDestinationElement(tripObj) {
+function getDestination(tripObj) {
   try {
     if (DB.TRIPS_DESTINATION in tripObj) {
       return tripObj.destination;
@@ -102,7 +102,7 @@ function createDestinationElement(tripObj) {
  *    and values for a Trip document.
  * @return Collaborators of the trip (if it exists).
  */
-function createCollaboratorElement(tripObj) {
+function getCollaborators(tripObj) {
   try {
     if (DB.TRIPS_COLLABORATORS in tripObj) {
       const /** !Array<string> */ collaboratorArr = tripObj.collaborators;
@@ -144,11 +144,11 @@ const Trip = (props) => {
 
   return (
     <div>
-      <h2>{createTitleElement(props.tripObj)}</h2>
-      <p>{createDescriptionElement(props.tripObj)}</p>
-      <p>{createDateRangeElement(props.tripObj)}</p>
-      <p>{createDestinationElement(props.tripObj)}</p>
-      <p>{createCollaboratorElement(props.tripObj)}</p>
+      <h2>{getTitle(props.tripObj)}</h2>
+      <p>{getDescription(props.tripObj)}</p>
+      <p>{getDateRange(props.tripObj)}</p>
+      <p>{getDestination(props.tripObj)}</p>
+      <p>{getCollaborators(props.tripObj)}</p>
       {/* TODO(Issue 15): Add edit trip page. */}
       <Button type='button' onClick={null} variant='primary'>
         Edit
@@ -162,5 +162,5 @@ const Trip = (props) => {
 };
 
 export default Trip;
-export { createTitleElement, createDescriptionElement, createDateRangeElement,
-    createDestinationElement, createCollaboratorElement };
+export { getTitle, getDescription, getDateRange, getDestination,
+         getCollaborators };
