@@ -37,6 +37,7 @@ function handleAuthError(error) {
  * SignIn component that defines the sign-in page of the application.
  */
 class SignIn extends React.Component {
+  /** @inheritdoc */
   render() {
     return (
       <div>

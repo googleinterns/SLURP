@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
  * application.
  */
 class Landing extends React.Component {
+  /** @inheritdoc */
   render() {
     return (
       <div>
