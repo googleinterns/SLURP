@@ -104,18 +104,7 @@ function getDestination(tripObj) {
 function getCollaborators(tripObj) {
   try {
     if (DB.TRIPS_COLLABORATORS in tripObj) {
-      const /** !Array<string> */ collaboratorArr = tripObj.collaborators;
-      let collaborators = '';
-
-      collaboratorArr.forEach((collaborator, index) => {
-        if (index < collaboratorArr.length - 1) {
-          collaborators += `${collaborator}, `;
-        } else {
-          collaborators += collaborator;
-        }
-      });
-
-      return collaborators;
+      return tripObj.collaborators.join(', ');
     }
     throw new Error(
         `Property '${DB.TRIPS_COLLABORATORS}' is not defined in 'tripObj.'`);
