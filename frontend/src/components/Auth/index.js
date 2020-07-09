@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import app from '../Firebase';
 
 const AuthContext = React.createContext();
@@ -8,27 +8,18 @@ const AuthContext = React.createContext();
  * current user. Allows global use of this status using React Context and should
  * be wrapped around the contents of the App component.
  */
-class AuthProvider extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {currentUser: null};
-  }
+const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
 
-  componentDidMount() {
-    // Set up listener that runs whenever the authentication status of the user
-    // changes.
-    app.auth().onAuthStateChanged((user) => {
-      this.state.currentUser = user;
-    })
-  }
+  useEffect(() => {
+    app.auth().onAuthStateChanged(setCurrentUser);
+  }, []);
 
-  render() {
-    return (
-      <AuthContext.Provider value={this.state.currentUser}>
-        {this.props.children}
+  return (
+    <AuthContext.Provider value={{currentUser}}>
+      {children}
       </AuthContext.Provider>
-    );
-  }
+  );
 }
 
 export { AuthContext, AuthProvider };
