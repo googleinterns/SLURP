@@ -10,8 +10,8 @@ class ActivityDay extends React.Component {
   render() {
     const sortedActivities = 
         Array.from(this.props.activities).sort(activityFns.compareActivities);
-    let date = new Date(this.props.date);
-    let id = date.getTime();
+    const date = new Date(this.props.date);
+    const id = date.getTime();
     return (
       <Card>
         <Accordion.Toggle as={Card.Header} eventKey='0' align='center'>
