@@ -1,4 +1,4 @@
-import { createTitleElement } from './trip';
+import { createTitleElement } from './trip.js';
 
 // Mock trip objects
 const mockTripName = 'Sample working trip';

@@ -1,6 +1,6 @@
 import React from 'react';
 import app from '../Firebase';
-import TripsContainer from './trips-container'
+import TripsContainer from './trips-container.js'
 
 const db = app.firestore();
 
