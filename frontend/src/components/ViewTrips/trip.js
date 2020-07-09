@@ -1,7 +1,9 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 
+import * as DB from '../../constants/database';
 import { VIEW_ACTIVITIES } from '../../constants/routes';
 
 
@@ -15,10 +17,10 @@ import { VIEW_ACTIVITIES } from '../../constants/routes';
  */
 function createTitleElement(tripObj) {
   try {
-    if('name' in tripObj) {
+    if (DB.TRIPS_NAME in tripObj) {
       return tripObj.name;
     }
-    throw new Error(`Property 'name' is not defined in 'tripObj.'`);
+    throw new Error(`Property '${DB.TRIPS_NAME}' is not defined in 'tripObj.'`);
   } catch (error) {
     console.log(`Error in fetching trip title: ${error}`);
     return 'Unable to fetch trip title';
@@ -27,71 +29,70 @@ function createTitleElement(tripObj) {
 
 
 function createDescriptionElement(tripObj) {
-  let description;
   try {
-    description = tripObj.description;
+    if (DB.TRIPS_DESCRIPTION in tripObj) {
+      return tripObj.description;
+    }
+    throw new Error(
+        `Property '${DB.TRIPS_DESCRIPTION}' is not defined in 'tripObj.'`);
   } catch (error) {
     console.log(`Error in fetching trip description: ${error}`);
-    description = 'Unable to fetch trip description';
+    return 'Unable to fetch trip description';
   }
-  return ( <p>{description}</p> )
 }
 
 function createDateRangeElement(tripObj) {
-  let dateRange;
   try {
-    const startDate = tripObj.start_date.toDate();
-    const endDate = tripObj.end_date.toDate();
-    dateRange = `${startDate.getMonth()}/${startDate.getDate()}/
-        ${startDate.getFullYear()} - ${endDate.getMonth()}/${endDate.getDate()}
-        /${startDate.getFullYear()}`;
+    if (DB.TRIPS_START_DATE in tripObj && DB.TRIPS_END_DATE in tripObj) {
+      const startDate = tripObj.start_date.toDate();
+      const endDate = tripObj.end_date.toDate();
+      return `${startDate.getMonth()}/${startDate.getDate()}/
+          ${startDate.getFullYear()} - ${endDate.getMonth()}/${endDate.getDate()}
+          /${startDate.getFullYear()}`;
+    }
+    throw new Error(`Property '${DB.TRIPS_START_DATE}' and/or
+        '${DB.TRIPS_END_DATE}' is not defined in 'tripObj.'`);
   } catch (error) {
     console.log(`Error in fetching trip start/end date(s): ${error}`);
-    dateRange = 'Unable to fetch trip start and/or end date(s)';
+    return 'Unable to fetch trip start and/or end date(s)';
   }
-  return ( <p>{dateRange}</p> )
 }
 
 function createDestinationElement(tripObj) {
-  let destination;
   try {
-    destination = tripObj.destination;
+    if (DB.TRIPS_DESTINATION in tripObj) {
+      return tripObj.destination;
+    }
+    throw new Error(
+        `Property '${DB.TRIPS_DESTINATION}' is not defined in 'tripObj.'`);
   } catch (error) {
     console.log(`Error in fetching trip destination: ${error}`);
-    destination = 'Unable to fetch trip destination';
+    return 'Unable to fetch trip destination';
   }
-  return ( <p>{destination}</p> );
 }
 
 function createCollaboratorElement(tripObj) {
-  const /** !Array<string> */ collaboratorArr = tripObj.collaborators;
-  let collaborators = '';
   try {
-    collaboratorArr.forEach((collaborator, index) => {
-      if (index < collaboratorArr.length - 1) {
-        collaborators += `${collaborator}, `;
-      } else {
-        collaborators += collaborator;
-      }
-    });
+    if (DB.TRIPS_COLLABORATORS in tripObj) {
+      const /** !Array<string> */ collaboratorArr = tripObj.collaborators;
+      let collaborators = '';
+
+      collaboratorArr.forEach((collaborator, index) => {
+        if (index < collaboratorArr.length - 1) {
+          collaborators += `${collaborator}, `;
+        } else {
+          collaborators += collaborator;
+        }
+      });
+
+      return collaborators;
+    }
+    throw new Error(
+        `Property '${DB.TRIPS_COLLABORATORS}' is not defined in 'tripObj.'`);
   } catch (error) {
     console.log(`Error in fetching trip collaborators: ${error}`);
-    collaborators = 'Unable to fetch trip collaborators';
+    return 'Unable to fetch trip collaborators';
   }
-  return ( <p>{collaborators}</p> );
-}
-
-// TODO(Issue 15): Add edit trip page.
-function createEditTripButton() {
-  return ( <Button type='button' variant='primary'>Edit</Button> );
-}
-
-function createViewActivitiesButton(tripId) {
-  return (
-      <Button type='button' onClick={this.handleClick} variant='primary'>
-        View Activities!
-      </Button>
-  );
 }
 
 /**
@@ -104,19 +105,32 @@ function createViewActivitiesButton(tripId) {
  * TODO(Issue 17): Feed all the Trip Doc data to the UI.
  */
 const Trip = (props) => {
+  const history = useHistory();
+
+  function handleClick() {
+    history.push(`${VIEW_ACTIVITIES}/${props.tripId}`);
+  }
+
   return (
     <div>
       <h2>{createTitleElement(props.tripObj)}</h2>
-        {/* {this.createDescriptionElement(this.props.tripObj)}
-        {this.createDateRangeElement(this.props.tripObj)}
-        {this.createDestinationElement(this.props.tripObj)}
-        {this.createCollaboratorElement(this.props.tripObj)}
-        {this.createEditTripButton()}
-        {this.createViewActivitiesButton(this.props.tripId)} */}
-      <p>Doc Id: {props.tripId}</p>
+      <p>{createDescriptionElement(props.tripObj)}</p>
+      <p>{createDateRangeElement(props.tripObj)}</p>
+      <p>{createDestinationElement(props.tripObj)}</p>
+      <p>{createCollaboratorElement(props.tripObj)}</p>
+      {/* TODO(Issue 15): Add edit trip page. */}
+      <Button onClick={null} type='button' variant='primary'>
+        Edit
+      </Button>
+      <Button onClick={handleClick}
+          type='button' variant='primary'>
+        View Activities!
+      </Button>
+
     </div>
   );
 };
 
 export default Trip;
-export { createTitleElement };
+export { createTitleElement, createDescriptionElement, createDateRangeElement,
+    createDestinationElement, createCollaboratorElement };
