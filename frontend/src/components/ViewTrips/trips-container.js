@@ -1,5 +1,5 @@
 import React from 'react';
-import Trip from './trip';
+import Trip from './trip.js';
 
 import * as DATABASE from '../../constants/database.js';
 
