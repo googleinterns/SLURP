@@ -26,11 +26,6 @@ const AddTrip = (props) => {
       <div className="modal-main">
         {/* TODO(Issue #43): Add trips functionality */}
         <p>Enter the stuff for a new trip: ...</p>
-        <p>Enter the stuff for a new trip: ...</p>
-        <p>Enter the stuff for a new trip: ...</p>
-        <p>Enter the stuff for a new trip: ...</p>
-        <p>Enter the stuff for a new trip: ...</p>
-        <p>Enter the stuff for a new trip: ...</p>
         <Button type='button' onClick={submitNewTrip}>
           Submit New Trip
         </Button>
