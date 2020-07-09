@@ -1,10 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 
 import * as DB from '../../constants/database';
-import { VIEW_ACTIVITIES } from '../../constants/routes';
+import ViewActivitiesButton from './view-activities-button';
 
 
 /**
@@ -128,20 +127,8 @@ function getCollaborators(tripObj) {
 
 /**
  * Component corresponding to the container containing an individual trip.
- *
- * Temporarily, only the title and associated document ID are included in a
- * text element for each trip <div> element. This is done to simple test the
- * query functionality.
- *
- * TODO(Issue 17): Feed all the Trip Doc data to the UI.
  */
 const Trip = (props) => {
-  const history = useHistory();
-
-  function handleClick() {
-    history.push(`${VIEW_ACTIVITIES}/${props.tripId}`);
-  }
-
   return (
     <div>
       <h2>{getTitle(props.tripObj)}</h2>
@@ -150,13 +137,8 @@ const Trip = (props) => {
       <p>{getDestination(props.tripObj)}</p>
       <p>{getCollaborators(props.tripObj)}</p>
       {/* TODO(Issue 15): Add edit trip page. */}
-      <Button type='button' onClick={null} variant='primary'>
-        Edit
-      </Button>
-      <Button type='button' onClick={handleClick} variant='primary'>
-        View Activities!
-      </Button>
-
+      <Button type='button' onClick={null} variant='primary'>Edit</Button>
+      <ViewActivitiesButton tripId={props.tripId} />
     </div>
   );
 };
