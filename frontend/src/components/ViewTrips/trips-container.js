@@ -1,7 +1,7 @@
 import React from 'react';
 import Trip from './trip';
 
-import * as DATABASE from '../../constants/database';
+import * as DATABASE from '../../constants/database.js';
 
 
 /**

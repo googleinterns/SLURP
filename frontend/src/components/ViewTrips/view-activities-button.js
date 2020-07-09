@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 
-import { VIEW_ACTIVITIES } from '../../constants/routes';
+import { VIEW_ACTIVITIES } from '../../constants/routes.js';
 
 /**
  * Component used for the ViewTrips page to redirect to the ViewActivities page.

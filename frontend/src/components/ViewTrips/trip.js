@@ -2,8 +2,8 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import * as DB from '../../constants/database';
-import ViewActivitiesButton from './view-activities-button';
+import * as DB from '../../constants/database.js';
+import ViewActivitiesButton from './view-activities-button.js';
 
 
 /**
