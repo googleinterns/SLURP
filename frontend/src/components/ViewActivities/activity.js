@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import * as utils from '../Utils/utils';
-import * as DBUTILS from '../../constants/dbconstants'
+import * as utils from '../Utils/utils.js';
+import * as DBUTILS from '../../constants/dbconstants.js'
 import '../../styles/activities.css';
 
 class Activity extends React.Component {

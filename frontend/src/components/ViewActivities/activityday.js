@@ -1,8 +1,8 @@
 import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import Activity from './activity';
-import * as activityFns from './activityfns';
+import Activity from './activity.js';
+import * as activityFns from './activityfns.js';
 import * as utils from '../Utils/utils.js'
 
 class ActivityDay extends React.Component {

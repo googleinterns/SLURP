@@ -1,5 +1,5 @@
 import React from 'react';
-import ActivityList from './activitylist';
+import ActivityList from './activitylist.js';
 
 class ViewActivities extends React.Component {
   /** @inheritdoc */

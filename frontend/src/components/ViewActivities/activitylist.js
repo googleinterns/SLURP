@@ -1,7 +1,7 @@
 import React from 'react';
 import app from '../Firebase';
-import * as activityFns from './activityfns';
-import ActivityDay from './activityday';
+import * as activityFns from './activityfns.js';
+import ActivityDay from './activityday.js';
 import Accordion from 'react-bootstrap/Accordion';
 import '../../styles/activities.css';
 

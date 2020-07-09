@@ -1,4 +1,4 @@
-import * as DBFIELDS from '../../constants/dbconstants';
+import * as DBFIELDS from '../../constants/database.js';
 import app from '../Firebase';
 
 const db = app.firestore();
