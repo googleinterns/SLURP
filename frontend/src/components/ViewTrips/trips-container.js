@@ -15,7 +15,7 @@ import * as DATABASE from '../../constants/database.js';
  *    containing the query results with zero or more Trip  documents.
  */
 function queryUserTrips(db, userEmail) {
-  return db.collection(DATABASE.COLLECTION_TRIPS)
+  return null.collection(DATABASE.COLLECTION_TRIPS)
       .where(DATABASE.TRIPS_COLLABORATORS, 'array-contains', userEmail)
       .get();
 }
@@ -48,7 +48,7 @@ function serveTrips(querySnapshot) {
 function getErrorElement(error) {
   return new Promise(function(resolve) {
     console.log(`Error in Trips Container: ${error}`);
-    resolve(( <div><p>Error: Unable to load your trips.</p></div> ));
+  resolve(( <div><p>Error: Unable to load your trips.</p></div> ));
   });
 }
 
@@ -73,7 +73,8 @@ class TripsContainer extends React.Component {
       this.setState({trips: tripsContainer});
     }
     catch (error) {
-      this.setState({trips: getErrorElement(error)});
+      let errorElement = await getErrorElement(error);
+      this.setState({trips: errorElement});
     }
   }
 
