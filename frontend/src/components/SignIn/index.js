@@ -4,7 +4,7 @@ import * as firebase from 'firebase/app';
 import app from '../Firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
-import {VIEW_TRIPS} from '../../constants/routes';
+import {VIEW_TRIPS} from '../../constants/routes.js';
 
 // Configure FirebaseUI.
 const uiConfig = {

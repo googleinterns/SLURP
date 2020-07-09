@@ -2,8 +2,8 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 
-import SignInButton from './signin-button';
-import { SIGN_IN } from '../../constants/routes';
+import SignInButton from './signin-button.js';
+import { SIGN_IN } from '../../constants/routes.js';
 
 // Mock the push function from react-router-dom's useHistory.
 const mockHistoryPush = jest.fn();

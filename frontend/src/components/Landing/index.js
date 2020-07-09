@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SignInButton from './signin-button';
+import SignInButton from './signin-button.js';
 import Card from 'react-bootstrap/Card';
 
 /**
