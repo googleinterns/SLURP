@@ -8,17 +8,25 @@ const AuthContext = React.createContext();
  * current user. Allows global use of this status using React Context and should
  * be wrapped around the contents of the App component.
  */
-const AuthProvider = ({ children }) => {
+const AuthProvider = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [pending, setPending] = useState(true);
 
   useEffect(() => {
-    app.auth().onAuthStateChanged(setCurrentUser);
+    app.auth().onAuthStateChanged((user) => {
+      setCurrentUser(user);
+      setPending(false);
+    });
   }, []);
+
+  if (pending) {
+    return ( <h1>Loading...</h1> );
+  }
 
   return (
     <AuthContext.Provider value={{currentUser}}>
-      {children}
-      </AuthContext.Provider>
+      {props.children}
+    </AuthContext.Provider>
   );
 }
 
