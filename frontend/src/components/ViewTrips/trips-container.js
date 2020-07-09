@@ -25,10 +25,10 @@ function queryUserTrips(db, userEmail) {
  * `<Trip>` elements as defined in `trip.js`.
  *
  * @param {Promise<!firebase.firestore.QuerySnapshot>} querySnapshot Promise
- *    object containing the query results with zero or more Trip  documents.
+ *    object containing the query results with zero or more Trip documents.
  * @return {Promise<!Array<Trip>>} Promise object containing an array
- *    of Trip React/HTML elements corresponding to the Trip docsuments included
- *    in 'querySnapshot`.
+ *    of Trip React/HTML elements corresponding to the Trip documents included
+ *    in `querySnapshot`.
  */
 function serveTrips(querySnapshot) {
   return new Promise(function(resolve) {
@@ -53,7 +53,7 @@ function getErrorElement(error) {
 }
 
 /**
- * Component corresponding to the container containing a users trips.
+ * Component corresponding to the container containing a user's trips.
  *
  * @extends React.Component
  */
