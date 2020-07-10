@@ -30,9 +30,9 @@ export async function getActivityList(tripId) {
     let tripActivities = [];
     
     db.collection(DBFIELDS.COLLECTION_TRIPS).doc(tripId)
-    .collection(DBFIELDS.COLLECTION_ACTIVITIES).get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(doc => {
+        .collection(DBFIELDS.COLLECTION_ACTIVITIES).get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
         let data = doc.data();
         data['id'] = doc.id;
         
@@ -72,7 +72,5 @@ export function sortByDate(tripActivities) {
   }
 
   // Sort activities by date.
-  let activitiesSorted = Array.from(activities).sort(compareActivities);
-  
-  return activitiesSorted;
+  return Array.from(activities).sort(compareActivities);
 }

@@ -32,8 +32,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
     day: 'numeric',  
     timeZone: timezone
   };
-  const formatted = date.toLocaleDateString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleDateString('en-US', formatOptions);
 }
 
 
