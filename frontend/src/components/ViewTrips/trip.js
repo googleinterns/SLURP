@@ -16,7 +16,7 @@ import React from 'react';
 const Trip = (props) => {
   return (
     <div>
-      <h2>{createTitleElement(props.tripObj.name)}</h2>
+      <h2>{props.tripObj.name}</h2>
       <p>Doc Id: {props.tripId}</p>
     </div>
   );
