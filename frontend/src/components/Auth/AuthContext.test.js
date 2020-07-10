@@ -6,9 +6,9 @@ jest.useFakeTimers();
 
 // Mock the the Firebase Auth onAuthStateChanged function, which pauses for 1
 // second before returning a fake user with only a name field set.
-const mockOnAuthStateChanged = jest.fn(cb => {
+const mockOnAuthStateChanged = jest.fn(callback => {
   setTimeout(() => {
-    cb({ name: 'Keiffer' })
+    callback({ name: 'Keiffer' })
   }, 1000);
 });
 jest.mock('firebase/app', () => {
