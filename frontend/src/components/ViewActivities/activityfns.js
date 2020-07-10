@@ -5,6 +5,7 @@ const db = app.firestore();
 
 /**
  * Put a and b in display order. 
+ * 
  * @param {dictionary} a Dictionary representing activity a and its fields. 
  * @param {dictionary} b Dictionary representing activity b and its fields.
  */
@@ -21,6 +22,7 @@ export function compareActivities(a, b) {
 
 /**
  * Gets the list of activities from the server. 
+ * 
  * @param {string} tripId The trip ID.
  */
 export async function getActivityList(tripId) {
@@ -52,6 +54,7 @@ export async function getActivityList(tripId) {
 
 /**
  * Sort a list of trip activities by date. 
+ * 
  * @param {Array} tripActivities Array of activities.
  * @returns List of trip activities in the form
  * [ ['MM/DD/YYYY', [activities on that day]], ...] in chronological order by date.
