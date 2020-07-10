@@ -21,30 +21,26 @@ const mockTripEndDate = firebase.firestore.Timestamp.fromDate(
 const mockTripDest = 'A place';
 const mockTripCollaborators = ['bob.dude', 'pam.brah'];
 
-const mockTripObjWithFields = jest.fn(() => {
-  return {name: mockTripName,
-          description: mockTripDescrip,
-          start_date: mockTripStartDate,
-          end_date: mockTripEndDate,
-          destination: mockTripDest,
-          collaborators: mockTripCollaborators
-         };
-});
-const mockTripObjNoFields = jest.fn(() => {
-  return {someOtherField: 'Not a relevant field.',
-          start_date: mockTripStartDate
-         };
-});
+const mockTripObjWithFields = { name: mockTripName,
+                                description: mockTripDescrip,
+                                start_date: mockTripStartDate,
+                                end_date: mockTripEndDate,
+                                destination: mockTripDest,
+                                collaborators: mockTripCollaborators
+                              };
+const mockTripObjNoFields =   { someOtherField: 'Not a relevant field.',
+                                start_date: mockTripStartDate
+                              };
 const errorStub = 'Unable to fetch trip ';
 
 
 describe('getTitle Tests', () => {
   test('Trip object with name field', () => {
-    expect(getTitle(mockTripObjWithFields()))
+    expect(getTitle(mockTripObjWithFields))
         .toBe(mockTripName);
   });
   test('Trip object with no name field', () => {
-    expect(getTitle(mockTripObjNoFields()))
+    expect(getTitle(mockTripObjNoFields))
         .toBe(errorStub + 'title');
   });
   test('Null trip object', () => {
@@ -55,11 +51,11 @@ describe('getTitle Tests', () => {
 
 describe('getDescription Tests', () => {
   test('Trip object with description field', () => {
-    expect(getDescription(mockTripObjWithFields()))
+    expect(getDescription(mockTripObjWithFields))
         .toBe(mockTripDescrip);
   });
   test('Trip object with no description field', () => {
-    expect(getDescription(mockTripObjNoFields()))
+    expect(getDescription(mockTripObjNoFields))
         .toBe(errorStub + 'description');
   });
   test('Null trip object', () => {
@@ -70,12 +66,12 @@ describe('getDescription Tests', () => {
 
 describe('getDateRange Tests', () => {
   test('Trip object with dates field', () => {
-    expect(getDateRange(mockTripObjWithFields()))
+    expect(getDateRange(mockTripObjWithFields))
         .toBe(`${startMonth}/${startDay}/${startYear} - ` +
         `${endMonth}/${endDay}/${endYear}`);
   });
   test('Trip object with no end date field', () => {
-    expect(getDateRange(mockTripObjNoFields()))
+    expect(getDateRange(mockTripObjNoFields))
         .toBe(errorStub + 'start and/or end date(s)');
   });
   test('Null trip object', () => {
@@ -86,11 +82,11 @@ describe('getDateRange Tests', () => {
 
 describe('getDestination Tests', () => {
   test('Trip object with destination field', () => {
-    expect(getDestination(mockTripObjWithFields()))
+    expect(getDestination(mockTripObjWithFields))
         .toBe(mockTripDest);
   });
   test('Trip object with no destination field', () => {
-    expect(getDestination(mockTripObjNoFields()))
+    expect(getDestination(mockTripObjNoFields))
         .toBe(errorStub + 'destination');
   });
   test('Null trip object', () => {
@@ -101,11 +97,11 @@ describe('getDestination Tests', () => {
 
 describe('getCollaborators Tests', () => {
   test('Trip object with collaborators field', () => {
-    expect(getCollaborators(mockTripObjWithFields()))
+    expect(getCollaborators(mockTripObjWithFields))
         .toBe(mockTripCollaborators.join(', '));
   });
   test('Trip object with no collaborators field', () => {
-    expect(getCollaborators(mockTripObjNoFields()))
+    expect(getCollaborators(mockTripObjNoFields))
         .toBe(errorStub + 'collaborators');
   });
   test('Null trip object', () => {
