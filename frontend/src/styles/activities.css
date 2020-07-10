@@ -11,12 +11,11 @@
     justify-content: center;
 }
 
-.activity {
+.accordion {
     margin: 1em;
 }
 
-.activity-day-dropdown {
-    border: black;
+.activity-day {
     margin: 0.5em auto;
     max-width: 50pc;
 }

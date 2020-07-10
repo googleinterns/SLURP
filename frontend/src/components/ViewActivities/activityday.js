@@ -13,18 +13,14 @@ class ActivityDay extends React.Component {
     let date = new Date(this.props.date);
     let id = date.getTime();
     return (
-      <Card>
-        <Accordion.Toggle as={Card.Header} eventKey='0' align='center' >
-          {time.timestampToDateFormatted(date.getTime())}
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey='0'>
-          <Card.Body>
-            {sortedActivities.map((activity, index) => (
-            <Activity activity={activity} key={index + id}/>
-            ))}
-          </Card.Body>
-        </Accordion.Collapse>
-      </Card>
+      <div className='activity-day'>
+        <h4>{time.timestampToDateFormatted(date.getTime())}</h4>
+        {sortedActivities.map((activity, index) => (
+          <Accordion defaultActiveKey='1' key={index}>
+            <Activity activity={activity} key={index + id} className="activity"/>
+          </Accordion>
+        ))}
+      </div>
     );
   }
 }

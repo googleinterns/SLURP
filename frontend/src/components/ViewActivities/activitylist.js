@@ -34,9 +34,7 @@ class ActivityList extends React.Component {
     return (
       <div className='activity-list'>
         {this.state.days.map((item, index) => (
-          <Accordion defaultActiveKey='1' key={index} className='activity-day-dropdown'>
-            <ActivityDay date={item[0]} activities={item[1]} />
-          </Accordion>
+            <ActivityDay date={item[0]} activities={item[1]} key={index}/>
         ))}
       </div>
     );
