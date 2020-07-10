@@ -3,7 +3,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Activity from './activity.js';
 import * as activityFns from './activityfns.js';
-import * as utils from '../Utils/utils.js'
+import * as time from '../Utils/time.js'
 
 class ActivityDay extends React.Component {
   /** @inheritdoc */
@@ -15,7 +15,7 @@ class ActivityDay extends React.Component {
     return (
       <Card>
         <Accordion.Toggle as={Card.Header} eventKey='0' align='center' >
-          {utils.timestampToDateFormatted(date.getTime())}
+          {time.timestampToDateFormatted(date.getTime())}
         </Accordion.Toggle>
         <Accordion.Collapse eventKey='0'>
           <Card.Body>
