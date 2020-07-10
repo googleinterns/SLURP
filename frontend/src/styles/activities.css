@@ -19,3 +19,10 @@
     margin: 0.5em auto;
     max-width: 50pc;
 }
+
+.view-activity.view {
+    transition: height 1s linear;
+}
+.view-activity.edit {
+
+}
