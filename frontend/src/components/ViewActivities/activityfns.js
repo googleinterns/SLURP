@@ -4,6 +4,22 @@ import app from '../Firebase';
 const db = app.firestore();
 
 /**
+ * Put a and b in display order. 
+ * @param {dictionary} a Dictionary representing activity a and its fields. 
+ * @param {dictionary} b Dictionary representing activity b and its fields.
+ */
+export function compareActivities(a, b) {
+  if (a[DBFIELDS.ACTIVITIES_START_TIME] < b[DBFIELDS.ACTIVITIES_START_TIME]) {
+    return -1;
+  } else if (a[DBFIELDS.ACTIVITIES_START_TIME] > b[DBFIELDS.ACTIVITIES_START_TIME]) {
+    return 1;
+  } else if (a[DBFIELDS.ACTIVITIES_END_TIME] > b[DBFIELDS.ACTIVITIES_END_TIME]) {
+    return 1;
+  }
+  return -1;
+}
+
+/**
  * Gets the list of activities from the server. 
  * @param {string} tripId The trip ID.
  */
@@ -56,20 +72,4 @@ export function sortByDate(tripActivities) {
   let activitiesSorted = Array.from(activities).sort(compareActivities);
   
   return activitiesSorted;
-}
-
-/**
- * Put a and b in display order. 
- * @param {dictionary} a Dictionary representing activity a and its fields. 
- * @param {dictionary} b Dictionary representing activity b and its fields.
- */
-export function compareActivities(a, b) {
-  if (a[DBFIELDS.ACTIVITIES_START_TIME] < b[DBFIELDS.ACTIVITIES_START_TIME]) {
-    return -1;
-  } else if (a[DBFIELDS.ACTIVITIES_START_TIME] > b[DBFIELDS.ACTIVITIES_START_TIME]) {
-    return 1;
-  } else if (a[DBFIELDS.ACTIVITIES_END_TIME] > b[DBFIELDS.ACTIVITIES_END_TIME]) {
-    return 1;
-  }
-  return -1;
 }

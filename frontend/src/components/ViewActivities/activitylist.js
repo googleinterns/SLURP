@@ -37,7 +37,8 @@ class ActivityList extends React.Component {
           <Accordion defaultActiveKey='1' key={index} className='activity-day-dropdown'>
             <ActivityDay date={item[0]} activities={item[1]} />
           </Accordion>
-        ))}
+          )
+        )}
       </div>
     );
   }

@@ -8,6 +8,10 @@ import * as utils from '../Utils/utils.js'
 class ActivityDay extends React.Component {
   /** @inheritdoc */
   render() {
+    // this.props.activities and this.props.date are guaranteed to be defined.
+    if (this.props.activities.length == 0){
+      return <div></div>;
+    }
     const sortedActivities = Array.from(this.props.activities)
           .sort(activityFns.compareActivities);
     let date = new Date(this.props.date);
@@ -19,9 +23,9 @@ class ActivityDay extends React.Component {
         </Accordion.Toggle>
         <Accordion.Collapse eventKey='0'>
           <Card.Body>
-            {sortedActivities.map((activity, index) => (
-            <Activity activity={activity} key={index + id}/>
-            ))}
+            {sortedActivities.map((activity, index) => {
+              return ( <Activity activity={activity} key={index + id}/> );
+            })}
           </Card.Body>
         </Accordion.Collapse>
       </Card>
