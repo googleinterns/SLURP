@@ -29,7 +29,7 @@ describe('PrivateRoute component', () => {
     render(
       <Router history={history}>
         <PrivateRoute component={TestComponent} />
-        <Route path={SIGN_IN} render={() => <div>{SIGN_IN}</div>} />
+        <Route path={SIGN_IN} />
       </Router>
     );
   });
