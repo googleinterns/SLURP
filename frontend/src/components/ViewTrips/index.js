@@ -36,14 +36,10 @@ class ViewTrips extends React.Component {
   }
 
   /** Property that sets `showModal` to true --> displays add trip page. */
-  showAddTripModal = () => {
-    this.setState({ showModal: true });
-  }
+  showAddTripModal = () => { this.setState({ showModal: true }); }
 
   /** Property that sets `showModal` to false --> hides add trip page. */
-  hideAddTripModal = () => {
-    this.setState({ showModal: false });
-  }
+  hideAddTripModal = () => { this.setState({ showModal: false }); }
 
   /** @inheritdoc */
   render() {
