@@ -14,7 +14,7 @@ import ViewActivitiesButton from './view-activities-button.js';
  *    and values for a Trip document.
  * @return Title of the trip (if it exists).
  */
-function getTitle(tripObj) {
+export function getTitle(tripObj) {
   try {
     if (DB.TRIPS_NAME in tripObj) {
       return tripObj.name;
@@ -34,7 +34,7 @@ function getTitle(tripObj) {
  *    and values for a Trip document.
  * @return Description of the trip (if it exists).
  */
-function getDescription(tripObj) {
+export function getDescription(tripObj) {
   try {
     if (DB.TRIPS_DESCRIPTION in tripObj) {
       return tripObj.description;
@@ -55,7 +55,7 @@ function getDescription(tripObj) {
  *    and values for a Trip document.
  * @return Date range of the trip (if it exists).
  */
-function getDateRange(tripObj) {
+export function getDateRange(tripObj) {
   try {
     if (DB.TRIPS_START_DATE in tripObj && DB.TRIPS_END_DATE in tripObj) {
       const startDate = tripObj.start_date.toDate();
@@ -80,7 +80,7 @@ function getDateRange(tripObj) {
  *    and values for a Trip document.
  * @return Destination of the trip (if it exists).
  */
-function getDestination(tripObj) {
+export function getDestination(tripObj) {
   try {
     if (DB.TRIPS_DESTINATION in tripObj) {
       return tripObj.destination;
@@ -101,7 +101,7 @@ function getDestination(tripObj) {
  *    and values for a Trip document.
  * @return Collaborators of the trip (if it exists).
  */
-function getCollaborators(tripObj) {
+export function getCollaborators(tripObj) {
   try {
     if (DB.TRIPS_COLLABORATORS in tripObj) {
       return tripObj.collaborators.join(', ');
@@ -133,5 +133,3 @@ const Trip = (props) => {
 };
 
 export default Trip;
-export { getTitle, getDescription, getDateRange, getDestination,
-         getCollaborators };
