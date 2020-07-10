@@ -46,7 +46,10 @@ class ViewTrips extends React.Component {
     return (
       <div className="view-trips-page">
         <Header />
-        <AddTrip show={this.state.showModal} handleClose={this.hideAddTripModal} />
+        <AddTrip
+          show={this.state.showModal}
+          handleClose={this.hideAddTripModal}
+          userEmail={getUserEmail()} />
         <div className="manage-trips-bar">
           <Button type='button' onClick={this.showAddTripModal}>
             + New Trip
