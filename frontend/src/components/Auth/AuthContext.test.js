@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { render, act, screen, cleanup } from '@testing-library/react';
-import { AuthContext, AuthProvider } from './index';
+import { AuthContext, AuthProvider } from './AuthContext.js';
 
 jest.useFakeTimers();
 
