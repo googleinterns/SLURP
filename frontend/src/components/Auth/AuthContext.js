@@ -21,6 +21,8 @@ const AuthProvider = (props) => {
   }, []);
 
   if (isLoading) {
+    // TODO (Issue #25): Page initially displays "Loading..." for testing
+    // purposes, make this blank in the deployed build.
     return ( <h1>Loading...</h1> );
   }
 
