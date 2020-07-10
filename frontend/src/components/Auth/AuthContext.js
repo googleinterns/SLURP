@@ -10,16 +10,17 @@ const AuthContext = React.createContext();
  */
 const AuthProvider = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [pending, setPending] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Set up listener that changes user status whenever it is updated.
     app.auth().onAuthStateChanged((user) => {
       setCurrentUser(user);
-      setPending(false);
+      setIsLoading(false);
     });
   }, []);
 
-  if (pending) {
+  if (isLoading) {
     return ( <h1>Loading...</h1> );
   }
 
