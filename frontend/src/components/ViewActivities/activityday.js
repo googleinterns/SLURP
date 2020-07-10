@@ -1,6 +1,4 @@
 import React from 'react';
-import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
 import Activity from './activity.js';
 import * as activityFns from './activityfns.js';
 import * as time from '../Utils/time.js'
@@ -16,9 +14,7 @@ class ActivityDay extends React.Component {
       <div className='activity-day'>
         <h4>{time.timestampToDateFormatted(date.getTime())}</h4>
         {sortedActivities.map((activity, index) => (
-          <Accordion defaultActiveKey='1' key={index}>  
-            <Activity activity={activity} key={index + id} className="activity"/>
-          </Accordion>
+          <Activity activity={activity} key={index + id} className="activity"/>
         ))}
       </div>
     );

@@ -1,8 +1,6 @@
 import React from 'react';
-import app from '../Firebase';
 import * as activityFns from './activityfns.js';
 import ActivityDay from './activityday.js';
-import Accordion from 'react-bootstrap/Accordion';
 import '../../styles/activities.css';
 
 class ActivityList extends React.Component {
@@ -34,7 +32,7 @@ class ActivityList extends React.Component {
     return (
       <div className='activity-list'>
         {this.state.days.map((item, index) => (
-            <ActivityDay date={item[0]} activities={item[1]} key={index}/>
+          <ActivityDay date={item[0]} activities={item[1]} key={index}/>
         ))}
       </div>
     );
