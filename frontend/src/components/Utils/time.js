@@ -38,6 +38,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
 
 /** 
  * Format a timestamp (in milliseconds) into a pretty string.
+ * 
  * @param {int} msTimestamp 
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like 
