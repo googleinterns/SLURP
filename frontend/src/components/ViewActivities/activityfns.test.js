@@ -22,22 +22,27 @@ describe('Same day activity compareActivities', () => {
 
   test('Overlapping activities', () => {
     expect(activityFns.compareActivities(elevenToOne, tenToTwelve)).toBe(1);
+    expect(activityFns.compareActivities(tenToTwelve, elevenToOne)).toBe(-1);
   })
 
   test('One activity completely during another', () => {
     expect(activityFns.compareActivities(tenToTwelve, elevenToElevenThirty)).toBe(-1);
+    expect(activityFns.compareActivities(elevenToElevenThirty, tenToTwelve)).toBe(1);
   })
 
   test('Activities with same start time', () => {
     expect(activityFns.compareActivities(tenToEleven, tenToTwelve)).toBe(-1);
+    expect(activityFns.compareActivities(tenToTwelve, tenToEleven)).toBe(1);
   })
 
   test('Sequential activities', () => {
     expect(activityFns.compareActivities(tenToEleven, elevenToTwelve)).toBe(-1);
+    expect(activityFns.compareActivities(elevenToTwelve, tenToEleven)).toBe(1);
   })
 
   test('Activities with same end time', () => {
     expect(activityFns.compareActivities(elevenToTwelve, tenToTwelve)).toBe(1);
+    expect(activityFns.compareActivities(tenToTwelve, elevenToTwelve)).toBe(-1);
   })  
 })
 
