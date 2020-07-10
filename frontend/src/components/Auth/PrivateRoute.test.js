@@ -8,6 +8,8 @@ import { SIGN_IN } from '../../constants/routes.js';
 
 const history = createMemoryHistory();
 
+// Mock the useContext function so that, when called in the PrivateRoute
+// component, returns null the first time and a fake user the second time.
 jest.mock('react', () => (
   {
     ...(jest.requireActual('react')),
