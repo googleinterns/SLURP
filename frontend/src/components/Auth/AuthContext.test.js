@@ -45,7 +45,7 @@ describe('AuthContext Consumer component', () => {
   // A Consumer component for AuthContext that just displays the current
   // user.
   const TestAuthContextConsumerComponent = () => {
-    const {currentUser} = useContext(AuthContext);
+    const currentUser = useContext(AuthContext);
 
     return (
       <div>

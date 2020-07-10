@@ -11,7 +11,7 @@ import { SIGN_IN } from '../../constants/routes.js';
  * will be redirected to the SIGN_IN page.
  */
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
-  const {currentUser} = useContext(AuthContext);
+  const currentUser = useContext(AuthContext);
 
   return (
     <Route
