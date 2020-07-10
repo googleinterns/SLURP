@@ -6,9 +6,9 @@ import { SIGN_IN } from '../../constants/routes.js';
 
 /**
  * PrivateRoute component that takes the authentication status of the current
- * user from AuthContext. If they are authenticated, they will be allows to view
- * the contents of the Route component. If they are not authenticated, they will
- * be redirected to the SIGN_IN page.
+ * user from AuthContext. If they are authenticated, they will be allowed to
+ * view the contents of the Route component. If they are not authenticated, they
+ * will be redirected to the SIGN_IN page.
  */
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
   const {currentUser} = useContext(AuthContext);
