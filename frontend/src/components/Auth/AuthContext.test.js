@@ -26,13 +26,9 @@ jest.mock('firebase/app', () => {
 });
 
 describe('AuthProvider component', () => {
-  beforeEach(() => {
-    render(<AuthProvider />);
-  });
+  beforeEach(() => { render(<AuthProvider />) });
 
-  afterEach(() => {
-    cleanup();
-  });
+  afterEach(cleanup);
 
   it('initially displays "Loading"', () => {
     act(() => jest.advanceTimersByTime(500));
@@ -56,7 +52,7 @@ describe('AuthContext Consumer component', () => {
         <div>{currentUser.name}</div>
       </div>
     );
-  }
+  };
 
   beforeEach(() => {
     render(
@@ -64,11 +60,11 @@ describe('AuthContext Consumer component', () => {
         <TestAuthContextConsumerComponent />
       </AuthProvider>
     );
-  })
+  });
 
   afterEach(() => {
     cleanup();
-  })
+  });
 
   it('initially displays "Loading"', () => {
     act(() => jest.advanceTimersByTime(500));
@@ -78,5 +74,5 @@ describe('AuthContext Consumer component', () => {
   it('displays the current user when they are authenticated', () => {
     act(() => jest.advanceTimersByTime(2000));
     expect(screen.getByText('Keiffer')).toBeInTheDocument();
-  })
+  });
 });
