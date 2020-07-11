@@ -9,6 +9,9 @@ import { SIGN_IN } from '../../constants/routes.js';
 
 let currentUser;
 
+/**
+ * TODO: document!
+ */
 export const AuthUtilsConsumer = (props) => {
   currentUser = useContext(AuthContext);
   return (
@@ -16,6 +19,9 @@ export const AuthUtilsConsumer = (props) => {
   );
 }
 
+/**
+ * TODO: document!
+ */
 function redirectToSignIn() {
   window.location.href = SIGN_IN;
 }
