@@ -1,51 +1,7 @@
 import React from 'react';
-
 import Button from 'react-bootstrap/Button';
 
-import * as DB from '../../constants/database.js';
 import ViewActivitiesButton from './view-activities-button.js';
-
-
-/**
- * Returns the title of the trip associated with the Trip document data
- * `tripObj`.
- *
- * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
- *    and values for a Trip document.
- * @return Title of the trip (if it exists).
- */
-export function getTitle(tripObj) {
-  try {
-    if (DB.TRIPS_NAME in tripObj) {
-      return tripObj.name;
-    }
-    throw new Error(`Property '${DB.TRIPS_NAME}' is not defined in 'tripObj.'`);
-  } catch (error) {
-    console.log(`Error in fetching trip title: ${error}`);
-    return 'Unable to fetch trip title';
-  }
-}
-
-/**
- * Returns the description of the trip associated with the Trip document data
- * `tripObj`.
- *
- * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
- *    and values for a Trip document.
- * @return Description of the trip (if it exists).
- */
-export function getDescription(tripObj) {
-  try {
-    if (DB.TRIPS_DESCRIPTION in tripObj) {
-      return tripObj.description;
-    }
-    throw new Error(
-        `Property '${DB.TRIPS_DESCRIPTION}' is not defined in 'tripObj.'`);
-  } catch (error) {
-    console.log(`Error in fetching trip description: ${error}`);
-    return 'Unable to fetch trip description';
-  }
-}
 
 /**
  * Returns the date range of the trip associated with the Trip document data
@@ -56,75 +12,33 @@ export function getDescription(tripObj) {
  * @return Date range of the trip (if it exists).
  */
 export function getDateRange(tripObj) {
-  try {
-    if (DB.TRIPS_START_DATE in tripObj && DB.TRIPS_END_DATE in tripObj) {
-      const startDate = tripObj.start_date.toDate();
-      const endDate = tripObj.end_date.toDate();
-      return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
-          `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
-          `${endDate.getDate()}/${endDate.getFullYear()}`;
-    }
-    throw new Error(`Property '${DB.TRIPS_START_DATE}' and/or
-        '${DB.TRIPS_END_DATE}' is not defined in 'tripObj.'`);
-  } catch (error) {
-    console.log(`Error in fetching trip start/end date(s): ${error}`);
-    return 'Unable to fetch trip start and/or end date(s)';
-  }
-}
-
-/**
- * Returns the destination of the trip associated with the Trip document data
- * `tripObj`.
- *
- * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
- *    and values for a Trip document.
- * @return Destination of the trip (if it exists).
- */
-export function getDestination(tripObj) {
-  try {
-    if (DB.TRIPS_DESTINATION in tripObj) {
-      return tripObj.destination;
-    }
-    throw new Error(
-        `Property '${DB.TRIPS_DESTINATION}' is not defined in 'tripObj.'`);
-  } catch (error) {
-    console.log(`Error in fetching trip destination: ${error}`);
-    return 'Unable to fetch trip destination';
-  }
-}
-
-/**
- * Returns the collaborators of the trip associated with the Trip document data
- * `tripObj`.
- *
- * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
- *    and values for a Trip document.
- * @return Collaborators of the trip (if it exists).
- */
-export function getCollaborators(tripObj) {
-  try {
-    if (DB.TRIPS_COLLABORATORS in tripObj) {
-      return tripObj.collaborators.join(', ');
-    }
-    throw new Error(
-        `Property '${DB.TRIPS_COLLABORATORS}' is not defined in 'tripObj.'`);
-  } catch (error) {
-    console.log(`Error in fetching trip collaborators: ${error}`);
-    return 'Unable to fetch trip collaborators';
-  }
+  const startDate = tripObj.start_date.toDate();
+  const endDate = tripObj.end_date.toDate();
+  return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
+      `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
+      `${endDate.getDate()}/${endDate.getFullYear()}`;
 }
 
 /**
  * Component corresponding to the container containing an individual trip.
+ *
+ * Trip object fields are cleaned and vetted with firestore security rules
+ * when trips are added and/or editted. Thus, no error checking is done here
+ * on the 'display' side.
+ *
+ * @param {Object} props These are the props for this component:
+ * - tripObj: JS object holding a Trip document fields and corresponding values.
+ * - tripId: Document ID for the current Trip document.
  */
 const Trip = (props) => {
   return (
     <div>
-      <h2>{getTitle(props.tripObj)}</h2>
-      <p>{getDescription(props.tripObj)}</p>
+      <h2>{props.tripObj.name}</h2>
+      <p>{props.tripObj.description}</p>
       <p>{getDateRange(props.tripObj)}</p>
-      <p>{getDestination(props.tripObj)}</p>
-      <p>{getCollaborators(props.tripObj)}</p>
+      <p>{props.tripObj.destination}</p>
+      <p>{props.tripObj.collaborators.join(', ')}</p>
+
       {/* TODO(Issue 15): Add edit trip page. */}
       <Button type='button' onClick={null} variant='primary'>Edit</Button>
       <ViewActivitiesButton tripId={props.tripId} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import Trip from './trip';
+import Trip from './trip.js';
 
 import * as DATABASE from '../../constants/database.js';
 
@@ -25,10 +25,10 @@ function queryUserTrips(db, userEmail) {
  * `<Trip>` elements as defined in `trip.js`.
  *
  * @param {Promise<!firebase.firestore.QuerySnapshot>} querySnapshot Promise
- *    object containing the query results with zero or more Trip  documents.
+ *    object containing the query results with zero or more Trip documents.
  * @return {Promise<!Array<Trip>>} Promise object containing an array
- *    of Trip React/HTML elements corresponding to the Trip docsuments included
- *    in 'querySnapshot`.
+ *    of Trip React/HTML elements corresponding to the Trip documents included
+ *    in `querySnapshot`.
  */
 function serveTrips(querySnapshot) {
   return new Promise(function(resolve) {
@@ -48,13 +48,17 @@ function serveTrips(querySnapshot) {
 function getErrorElement(error) {
   return new Promise(function(resolve) {
     console.log(`Error in Trips Container: ${error}`);
-    resolve(( <div><p>Error: Unable to load your trips.</p></div> ));
+  resolve(( <div><p>Error: Unable to load your trips.</p></div> ));
   });
 }
 
 /**
- * Component corresponding to the container containing a users trips.
+ * Component corresponding to the container containing a user's trips.
+ * props
  *
+ * @param {Object} props These are the props for this component:
+ * - db: Firestore database instance.
+ * - userEmail: The current user's email.
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
@@ -70,10 +74,11 @@ class TripsContainer extends React.Component {
       const querySnapshot = await queryUserTrips(
           this.props.db, this.props.userEmail);
       let tripsContainer = await serveTrips(querySnapshot);
-      this.setState({trips: tripsContainer});
+      this.setState({ trips: tripsContainer });
     }
     catch (error) {
-      this.setState({trips: getErrorElement(error)});
+      let errorElement = await getErrorElement(error);
+      this.setState({ trips: errorElement });
     }
   }
 
