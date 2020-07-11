@@ -15,20 +15,25 @@ function createTextFormControl(placeholder, ref) {
   );
 }
 
-function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
+function createFormGroup(controlId, formLabel, inputType,
+                                    placeholder, ref, subFormText) {
   let formControl;
   if (inputType === 'text') {
     formControl = createTextFormControl(placeholder, ref)
   } else {
-    // TODO(Issue #52): Create diff form control for start & end dates
+    // TODO(Issue #52): Create diff form inputs for start & end dates
     //                  and collaborator emails.
-    console.error('Only text form controls are implemented as of now');
+    console.error('Only text form inputs are implemented as of now');
   }
 
   return (
     <Form.Group controlId={controlId}>
       <Form.Label>{formLabel}</Form.Label>
         {formControl}
+      {/* Temporary instructions until fix Issue #52 */}
+      <Form.Text className="text-muted">
+        {subFormText}
+      </Form.Text>
     </Form.Group>
   )
 }
@@ -85,14 +90,15 @@ class AddTrip extends React.Component {
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
                              'Enter Trip Destination', this.destinationRef)}
             {createFormGroup('tripStartDateGroup', 'Start Date', 'text',
-                             'Enter Trip Start Date', this.startDateRef)}
+                            'Enter Trip Start Date', this.startDateRef,
+                            'Enter date in the form: \'mm/dd/yyy\'')}
             {createFormGroup('tripEndDateGroup', 'End Date', 'text',
-                             'Enter Trip End Date', this.endDateRef)}
+                          'Enter Trip End Date', this.endDateRef,
+                          'Enter date in the form: \'mm/dd/yyy\'')}
             {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'text',
-                           'Enter Collaborator Emails', this.collaboratorsRef)}
-            <Form.Text className="text-muted">
-              Enter emails in the form: 'user1@email.com, ..., userx@email.com'
-            </Form.Text>
+                           'Enter Collaborator Emails', this.collaboratorsRef,
+                           'Enter emails in the form: \'user1@email.com, ...,' +
+                           ' userx@email.com\'')}
           </Modal.Body>
 
           <Modal.Footer>
