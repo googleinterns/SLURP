@@ -4,14 +4,13 @@
  *
  * TODO(Issue #43): Create this function and any associated helpers.
  */
-function createTrip(name, description, destination,
-                    startDate, endDate, collaborators) {
-  console.log(`trip title: ${name}`);
-  console.log(`trip description: ${description}`);
-  console.log(`trip destination: ${destination}`);
-  console.log(`trip start date: ${startDate}`);
-  console.log(`trip end date: ${endDate}`);
-  console.log(`trip collaborators: ${collaborators}`);
+function createTrip(tripObj) {
+  console.log(`trip title: ${tripObj.name}`);
+  console.log(`trip description: ${tripObj.description}`);
+  console.log(`trip destination: ${tripObj.destination}`);
+  console.log(`trip start date: ${tripObj.startDate}`);
+  console.log(`trip end date: ${tripObj.endDate}`);
+  console.log(`trip collaborators: ${tripObj.collaborators}`);
 }
 
 export default createTrip;

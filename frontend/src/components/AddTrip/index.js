@@ -57,13 +57,13 @@ class AddTrip extends React.Component {
    */
   submitNewTrip = () => {
     console.log('New trip submitted.');
-    createTrip(this.nameRef.current.value,
-               this.descriptionRef.current.value,
-               this.destinationRef.current.value,
-               this.startDateRef.current.value,
-               this.endDateRef.current.value,
-               this.collaboratorsRef.current.value
-              );
+    createTrip({name: this.nameRef.current.value,
+               description: this.descriptionRef.current.value,
+               destination: this.destinationRef.current.value,
+               startDate: this.startDateRef.current.value,
+               endDate: this.endDateRef.current.value,
+               collaborators: this.collaboratorsRef.current.value
+    });
 
     this.props.handleClose();
   }
@@ -100,7 +100,7 @@ class AddTrip extends React.Component {
               Close
             </Button>
             <Button variant='primary' type='submit' onClick={this.submitNewTrip}>
-              Submit Trip
+              Add Trip
             </Button>
           </Modal.Footer>
         </Form>
