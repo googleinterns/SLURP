@@ -7,11 +7,14 @@ import React from 'react';
  * when trips are added and/or editted. Thus, no error checking is done here
  * on the 'display' side.
  *
+ * TODO(Issue 17): Feed all the Trip Doc data to the UI.
  * Temporarily, only the title and associated document ID are included in a
  * text element for each trip <div> element. This is done to simple test the
  * query functionality.
  *
- * TODO(Issue 17): Feed all the Trip Doc data to the UI.
+ * @param {Object} props These are the props for this component:
+ * - tripObj: JS object holding a Trip document fields and corresponding values.
+ * - tripId: Document ID for the current Trip document.
  */
 const Trip = (props) => {
   return (

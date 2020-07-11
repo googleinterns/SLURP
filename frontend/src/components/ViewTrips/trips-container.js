@@ -15,7 +15,7 @@ import * as DATABASE from '../../constants/database.js';
  *    containing the query results with zero or more Trip  documents.
  */
 function queryUserTrips(db, userEmail) {
-  return null.collection(DATABASE.COLLECTION_TRIPS)
+  return db.collection(DATABASE.COLLECTION_TRIPS)
       .where(DATABASE.TRIPS_COLLABORATORS, 'array-contains', userEmail)
       .get();
 }
@@ -54,7 +54,11 @@ function getErrorElement(error) {
 
 /**
  * Component corresponding to the container containing a user's trips.
+ * props
  *
+ * @param {Object} props These are the props for this component:
+ * - db: Firestore database instance.
+ * - userEmail: The current user's email.
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
@@ -70,11 +74,11 @@ class TripsContainer extends React.Component {
       const querySnapshot = await queryUserTrips(
           this.props.db, this.props.userEmail);
       let tripsContainer = await serveTrips(querySnapshot);
-      this.setState({trips: tripsContainer});
+      this.setState({ trips: tripsContainer });
     }
     catch (error) {
       let errorElement = await getErrorElement(error);
-      this.setState({trips: errorElement});
+      this.setState({ trips: errorElement });
     }
   }
 
