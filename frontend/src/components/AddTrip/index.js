@@ -20,8 +20,8 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
   if (inputType === 'text') {
     formControl = createTextFormControl(placeholder, ref)
   } else {
-    // TODO(Issue #..): Create diff form control for destination, time,
-    //                  and collaborator emails
+    // TODO(Issue #52): Create diff form control for start & end dates
+    //                  and collaborator emails.
     console.error('Only text form controls are implemented as of now');
   }
 
