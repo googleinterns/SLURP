@@ -2,6 +2,7 @@ import React from 'react';
 import * as time from '../Utils/time.js';
 import * as DB from '../../constants/database.js'
 import '../../styles/activities.css';
+import * as autils from './activityfns.js';
 import { Accordion, Button, Card, Col, Form, Row } from 'react-bootstrap';
 
 /**
@@ -12,20 +13,6 @@ function timezonePicker() {
   return <div></div>
 }
 
-/**
- * Get the field of field name `fieldName` from `activity  or the default value.
- * 
- * @param {Object} activity 
- * @param {string} fieldName 
- * @param defaultValue 
- * @returns `activity[fieldName]` if possible, else `defaultValue`.
- */
-function getField(activity, fieldName, defaultValue){
-  if (activity[fieldName] === null || activity[fieldName] === undefined) {
-    return defaultValue;
-  }
-  return activity[fieldName];
-}
 
 
 class Activity extends React.Component {
@@ -90,7 +77,7 @@ class Activity extends React.Component {
           <Form.Group as={Row} controlId="formActivityTitle">
             <Col sm={2}><Form.Label>Description:</Form.Label></Col>
             <Col><Form.Control type="text" 
-              placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!") }/>
+              placeholder={autils.getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!") }/>
             </Col>
           </Form.Group>
           <Button type="submit" className="float-right">Done!</Button>
