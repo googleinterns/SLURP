@@ -20,9 +20,16 @@
     max-width: 50pc;
 }
 
-.view-activity.view {
-    transition: height 1s linear;
-}
+/* TODO: auto height, transition. (#49)*/
 .view-activity.edit {
+    height: 20em;
+}
+.view-activity {
+    overflow: scroll;
+    height: 7.5em;
+    transition: height 0.25s linear;
+}
 
+.activity-editor {
+    padding: 1em 1em 3em 1em;
 }

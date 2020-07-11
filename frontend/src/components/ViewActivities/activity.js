@@ -1,9 +1,32 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
 import * as time from '../Utils/time.js';
 import * as DB from '../../constants/database.js'
 import '../../styles/activities.css';
-import Accordion from 'react-bootstrap/Accordion';
+import { Accordion, Button, Card, Col, Form, Row } from 'react-bootstrap';
+
+/**
+ * Returns a dropdown of all the timezones.
+ */
+function timezonePicker() {
+  // TODO: Make this dropdown. (#51)
+  return <div></div>
+}
+
+/**
+ * Get the field of field name `fieldName` from `activity  or the default value.
+ * 
+ * @param {Object} activity 
+ * @param {string} fieldName 
+ * @param defaultValue 
+ * @returns `activity[fieldName]` if possible, else `defaultValue`.
+ */
+function getField(activity, fieldName, defaultValue){
+  if (activity[fieldName] === null || activity[fieldName] === undefined) {
+    return defaultValue;
+  }
+  return activity[fieldName];
+}
+
 
 class Activity extends React.Component {
   /** {@inheritdoc} */
@@ -39,14 +62,39 @@ class Activity extends React.Component {
     let activity = this.props.activity;
     if (!this.state.editing) { // View mode.
       return (
-        <Card.Body onClick={this.setEditActivity} className="view-activity.view">
-        <p>Start time: {time.timestampToFormatted(activity[DB.ACTIVITIES_START_TIME])} </p>
-        <p>End time: {time.timestampToFormatted(activity[DB.ACTIVITIES_END_TIME])} </p>
+        <Card.Body onClick={this.setEditActivity}>
+          <p>Start time: {time.timestampToFormatted(activity[DB.ACTIVITIES_START_TIME])} </p>
+          <p>End time: {time.timestampToFormatted(activity[DB.ACTIVITIES_END_TIME])} </p>
         </Card.Body>
       );
     } else { // Edit mode.
       return (
-        <button onClick={this.finishEditActivity} className="view-activity.edit"> button </button>
+        // TODO: Save form. (#48)
+        <Form className="activity-editor" onSubmit={this.finishEditActivity}>
+          <Form.Group as={Row} controlId="formActivityTitle">
+            <Col sm={2}><Form.Label>Title:</Form.Label></Col>
+            <Col><Form.Control type="text" placeholder={activity[DB.ACTIVITIES_TITLE]}/></Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="formActivityStartTime">
+            <Col sm={2}><Form.Label>From:</Form.Label></Col>
+            <Col sm={4}><Form.Control type="date" label="date"/></Col>
+            <Col sm={2}><Form.Control type="time" label="time"/></Col>
+            <Col sm={1}>{timezonePicker()}</Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="formActivityStartTime">
+            <Col sm={2}><Form.Label>To:</Form.Label></Col>
+            <Col sm={4}><Form.Control type="date" label="date"/></Col>
+            <Col sm={2}><Form.Control type="time" label="time"/></Col>
+            <Col sm={1}>{timezonePicker()}</Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="formActivityTitle">
+            <Col sm={2}><Form.Label>Description:</Form.Label></Col>
+            <Col><Form.Control type="text" 
+              placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!") }/>
+            </Col>
+          </Form.Group>
+          <Button type="submit" className="float-right">Done!</Button>
+        </Form>
       )
     }
   }
@@ -60,7 +108,7 @@ class Activity extends React.Component {
           <Accordion.Toggle as={Card.Header} eventKey='0' align='center' >
             {activity[DB.ACTIVITIES_TITLE]}
           </Accordion.Toggle>
-          <Accordion.Collapse eventKey='0'>
+          <Accordion.Collapse eventKey='0' className={'view-activity' + (this.state.editing? ' edit': '')}>
             { this.displayCard() }
           </Accordion.Collapse>
         </Card>
