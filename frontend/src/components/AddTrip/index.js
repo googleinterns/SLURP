@@ -64,6 +64,7 @@ function createFormGroup(controlId, formLabel, inputType,
  * @param {Object} props These are the props for this component:
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: The function that handles closing the add trips modal.
+ * - db: Firestore database instance.
  * - userEmail: The current users email.
  *
  * @extends React.Component
@@ -85,15 +86,17 @@ class AddTrip extends React.Component {
    * Upon submission of the form, a new Trip document is created and the add
    * trip modal is closed.
    */
-  submitNewTrip = () => {
-    console.log('New trip submitted.');
-    createTrip({name: this.nameRef.current.value,
-               description: this.descriptionRef.current.value,
-               destination: this.destinationRef.current.value,
-               startDate: this.startDateRef.current.value,
-               endDate: this.endDateRef.current.value,
-               collaborators: this.collaboratorsRef.current.value
-    });
+  addNewTrip = (e) => {
+    e.preventDefault();
+    createTrip(this.props.db, this.props.userEmail,
+        {
+          name: this.nameRef.current.value,
+          description: this.descriptionRef.current.value,
+          destination: this.destinationRef.current.value,
+          startDate: this.startDateRef.current.value,
+          endDate: this.endDateRef.current.value,
+          collaboratorEmails: this.collaboratorsRef.current.value
+        });
 
     this.props.handleClose();
   }
@@ -130,7 +133,7 @@ class AddTrip extends React.Component {
             <Button variant='secondary' onClick={this.props.handleClose}>
               Close
             </Button>
-            <Button variant='primary' type='submit' onClick={this.submitNewTrip}>
+            <Button variant='primary' type='submit' onClick={this.addNewTrip}>
               Add Trip
             </Button>
           </Modal.Footer>
