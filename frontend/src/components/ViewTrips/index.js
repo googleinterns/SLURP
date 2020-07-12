@@ -32,7 +32,8 @@ class ViewTrips extends React.Component {
   /** @inheritdoc */
   constructor() {
     super();
-    this.state = { showModal: false };
+    this.state = { showModal: false,
+                   refreshTripsContainer: false };
   }
 
   refreshTripsContainer = () => {
@@ -45,6 +46,7 @@ class ViewTrips extends React.Component {
   /** Property that sets `showModal` to false --> hides add trip page. */
   hideAddTripModal = () => {
     this.setState({ showModal: false });
+    this.refreshTripsContainer();
   }
 
   /** @inheritdoc */
@@ -62,7 +64,8 @@ class ViewTrips extends React.Component {
             + New Trip
           </Button>
         </div>
-        <TripsContainer db={db} userEmail={getUserEmail()} />
+        <TripsContainer db={db} userEmail={getUserEmail()}
+            key={this.state.refreshTripsContainer} />
       </div>
     );
   }
