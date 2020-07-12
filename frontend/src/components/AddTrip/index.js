@@ -5,6 +5,14 @@ import Form from 'react-bootstrap/Form'
 
 import createTrip from './create-new-trip.js'
 
+/**
+ * Returns a Form.Control element with input type 'text' and other fields
+ * specified by the function parameters.
+ *
+ * @param {string} placeholder Text placehold in the form input
+ * @param {React.RefObject} ref Ref attached to the value inputted in the form.
+ * @return {JSX.Element} The Form.Control element.
+ */
 function createTextFormControl(placeholder, ref) {
   return (
     <Form.Control
@@ -15,8 +23,20 @@ function createTextFormControl(placeholder, ref) {
   );
 }
 
+/**
+ * Returns a Form.Group element with components specified by the input args.
+ *
+ * @param {string} controlId prop that accessibly wires the nested label and
+ *                           input prop.
+ * @param {string} formLabel Label/title for the form input.
+ * @param {string} inputType Input type of the form.
+ * @param {string} placeholder Text placeholder in the form input.
+ * @param {React.RefObject} ref Ref attatched to the valued inputted in the form.
+ * @param {string} subFormText Subtext instructions under a form input.
+ * @return {JSX.Element} The Form.Group element.
+ */
 function createFormGroup(controlId, formLabel, inputType,
-                                    placeholder, ref, subFormText) {
+                                    placeholder, ref, subFormText = '') {
   let formControl;
   if (inputType === 'text') {
     formControl = createTextFormControl(placeholder, ref)
@@ -41,6 +61,11 @@ function createFormGroup(controlId, formLabel, inputType,
 /**
  * Component corresponding to add trips modal.
  *
+ * @param {Object} props These are the props for this component:
+ * - show: Boolean that determines if the add trips modal should be displayed.
+ * - handleClose: The function that handles closing the add trips modal.
+ * - userEmail: The current users email.
+ *
  * @extends React.Component
  */
 class AddTrip extends React.Component {
@@ -57,8 +82,8 @@ class AddTrip extends React.Component {
   }
 
   /**
-   * Upon submission of form, creates a new Trip document, adds it to Firestore,
-   * and closes the add trip modal.
+   * Upon submission of the form, a new Trip document is created and the add
+   * trip modal is closed.
    */
   submitNewTrip = () => {
     console.log('New trip submitted.');
