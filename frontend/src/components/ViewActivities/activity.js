@@ -5,6 +5,12 @@ import * as DB from '../../constants/database.js'
 import '../../styles/activities.css';
 import Accordion from 'react-bootstrap/Accordion';
 
+/**
+ * A single activity. 
+ * 
+ * @param {Object} props This component expects the following props:
+ * - `activity` {Object} The activity to display.
+ */
 class Activity extends React.Component {
   /** @inheritdoc */
   render() {

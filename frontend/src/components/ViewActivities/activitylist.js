@@ -41,13 +41,14 @@ export async function getActivityList(tripId) {
   })
 }
 
+/**
+ * The list of activities. 
+ * 
+ * @param {Object} props This component expects the following props:
+ * - `tripId` {string} The trip's ID.  
+ */
 class ActivityList extends React.Component {
-  /** 
-   * { @inheritdoc }
-   * 
-   * @param {Object} props This component expects the following props:
-   * - `tripId` The trip's ID.
-   */
+  /** @inheritdoc */
   constructor(props) {
     super(props);
     this.state = { days : [] };
@@ -55,6 +56,7 @@ class ActivityList extends React.Component {
 
   /** 
    * @inheritdoc
+   * 
    * Get sorted list of activities from the database. 
    * 
    * This function only queries the database if `this.state` is defined.
@@ -78,7 +80,7 @@ class ActivityList extends React.Component {
     if (this.state === null) { return (<div></div>); }
     if (this.state.days === null) {
       return (<p className='activity-list'>An error has occurred :(</p> );
-    } else if (this.state.days.length == 0) {
+    } else if (this.state.days.length === 0) {
       return (<p className='activity-list'>Plan your trip here!</p>);
     }
     return (
