@@ -1,0 +1,47 @@
+import React from 'react';
+import app from '../Firebase';
+import * as activityFns from './activityfns.js';
+import ActivityDay from './activityday.js';
+import Accordion from 'react-bootstrap/Accordion';
+import '../../styles/activities.css';
+
+class ActivityList extends React.Component {
+  /** @inheritdoc */
+  constructor(props) {
+    super(props);
+    this.state = { days : [] };
+  }
+
+  /** @inheritdoc */
+  async componentDidMount() {
+    if (this.state === null) { return; }
+    let tripActivities = await activityFns.getActivityList(this.props.tripId);
+    if (tripActivities === null) {
+      this.setState({days: null});  
+      return;
+    } 
+    this.setState({days: activityFns.sortByDate(tripActivities)});
+  }
+
+  /** @inheritdoc */
+  render() {
+    if (this.state === null) { return (<div></div>); }
+    if (this.state.days === null) {
+      return (<p className='activity-list'>An error has occurred :(</p> );
+    } else if (this.state.days.length == 0) {
+      return (<p className='activity-list'>Plan your trip here!</p>);
+    }
+    return (
+      <div className='activity-list'>
+        {this.state.days.map((item, index) => (
+          <Accordion defaultActiveKey='1' key={index} className='activity-day-dropdown'>
+            <ActivityDay date={item[0]} activities={item[1]} />
+          </Accordion>
+          )
+        )}
+      </div>
+    );
+  }
+}
+
+export default ActivityList;
