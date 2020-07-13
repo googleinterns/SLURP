@@ -1,8 +1,17 @@
 import * as firebase from 'firebase/app';
 import { COLLECTION_TRIPS } from '../../constants/database.js';
 
-function getUidFromUserEmail(userEmail) {
-  return userEmail;
+/**
+ * Temporary hardcoded function that returns the current users uid given their
+ * email.
+ *
+ * TODO(Issue 55): Remove this function and replace any calls to it with Auth
+ *                 component function.
+ *
+ * @param {*} userEmail
+ */
+function _getUidFromUserEmail(userEmail) {
+  return '_' + userEmail + '_';
 }
 
 export function getTimestampFromDateString(dateStr) {
@@ -12,8 +21,9 @@ export function getTimestampFromDateString(dateStr) {
 
 export function getCollaboratorUidArray(userEmail, collaboratorEmailsStr) {
   const collaboratorEmailArr = collaboratorEmailsStr.split(', ');
+
   collaboratorEmailArr.push(userEmail);
-  return collaboratorEmailArr.map(userEmail => getUidFromUserEmail(userEmail));
+  return collaboratorEmailArr.map(userEmail => _getUidFromUserEmail(userEmail));
 }
 
 /**
@@ -35,8 +45,8 @@ export function sanitizeTripData(tripObj, userEmail) {
   const startDate = getTimestampFromDateString(tripObj.startDate);
   const endDate = getTimestampFromDateString(tripObj.endDate);
   const tripCreationTime = firebase.firestore.Timestamp.now();
-  const collaborators = getCollaboratorUidArray(userEmail,
-                                                tripObj.collaboratorEmails);
+  const collaboratorUids = getCollaboratorUidArray(userEmail,
+                                                   tripObj.collaboratorEmails);
 
   return {
     name: name,
@@ -45,7 +55,7 @@ export function sanitizeTripData(tripObj, userEmail) {
     start_date: startDate,
     end_date: endDate,
     trip_creation_time: tripCreationTime,
-    collaborators: collaborators
+    collaborators: collaboratorUids
   }
 }
 

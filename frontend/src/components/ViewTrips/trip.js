@@ -4,6 +4,19 @@ import Button from 'react-bootstrap/Button';
 import ViewActivitiesButton from './view-activities-button.js';
 
 /**
+ * Temporary hardcoded function that returns the current users email given their
+ * uid.
+ *
+ * TODO(Issue 55): Remove this function and replace any calls to it with Auth
+ *                 component function.
+ *
+ * @param {*} uid
+ */
+function _getUserEmailFromUid(uid) {
+  return uid.substring(1, uid.length - 1);
+}
+
+/**
  * Returns the date range of the trip associated with the Trip document data
  * `tripObj`.
  *
@@ -17,6 +30,12 @@ export function getDateRange(tripObj) {
   return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
       `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
       `${endDate.getDate()}/${endDate.getFullYear()}`;
+}
+
+export function getCollaboratorEmails(collaboratorUidArr) {
+  const collaboratorEmailArr =
+      collaboratorUidArr.map(uid => _getUserEmailFromUid(uid));
+  return collaboratorEmailArr.join(', ');
 }
 
 /**
@@ -37,7 +56,7 @@ const Trip = (props) => {
       <p>{props.tripObj.description}</p>
       <p>{getDateRange(props.tripObj)}</p>
       <p>{props.tripObj.destination}</p>
-      <p>{props.tripObj.collaborators.join(', ')}</p>
+      <p>{getCollaboratorEmails(props.tripObj.collaborators)}</p>
 
       {/* TODO(Issue 15): Add edit trip page. */}
       <Button type='button' onClick={null} variant='primary'>Edit</Button>

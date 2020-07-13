@@ -3,6 +3,30 @@ import Trip from './trip.js';
 
 import * as DATABASE from '../../constants/database.js';
 
+/**
+ * Temporary hardcoded function that returns the current users email.
+ *
+ * TODO(Issue 55): Remove this function and replace any calls to it with Auth
+ *                 component function.
+ *
+ * @return Hardcoded user email string.
+ */
+function _getUserEmail() {
+  return 'matt.murdock';
+}
+
+/**
+ * Temporary hardcoded function that returns the current users uid given their
+ * email.
+ *
+ * TODO(Issue 55): Remove this function and replace any calls to it with Auth
+ *                 component function.
+ *
+ * @param {*} userEmail
+ */
+function _getUidFromUserEmail(userEmail) {
+  return '_' + userEmail + '_';
+}
 
 /**
  * Returns a promise of a query object containg the array of Trip Documents
@@ -15,8 +39,9 @@ import * as DATABASE from '../../constants/database.js';
  *    containing the query results with zero or more Trip  documents.
  */
 function queryUserTrips(db, userEmail) {
+  const userUid = _getUidFromUserEmail(userEmail);
   return db.collection(DATABASE.COLLECTION_TRIPS)
-      .where(DATABASE.TRIPS_COLLABORATORS, 'array-contains', userEmail)
+      .where(DATABASE.TRIPS_COLLABORATORS, 'array-contains', userUid)
       .get();
 }
 
@@ -72,7 +97,7 @@ class TripsContainer extends React.Component {
   async componentDidMount() {
     try {
       const querySnapshot = await queryUserTrips(
-          this.props.db, this.props.userEmail);
+          this.props.db, _getUserEmail());
       let tripsContainer = await serveTrips(querySnapshot);
       this.setState({ trips: tripsContainer });
     }

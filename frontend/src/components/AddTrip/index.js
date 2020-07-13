@@ -6,6 +6,18 @@ import Form from 'react-bootstrap/Form'
 import createTrip from './create-new-trip.js'
 
 /**
+ * Temporary hardcoded function that returns the current users email.
+ *
+ * TODO(Issue 55): Remove this function and replace any calls to it with Auth
+ *                 component function.
+ *
+ * @return Hardcoded user email string.
+ */
+function _getUserEmail() {
+  return 'matt.murdock';
+}
+
+/**
  * Returns a Form.Control element with input type 'text' and other fields
  * specified by the function parameters.
  *
@@ -88,7 +100,7 @@ class AddTrip extends React.Component {
    */
   addNewTrip = (e) => {
     e.preventDefault();
-    createTrip(this.props.db, this.props.userEmail,
+    createTrip(this.props.db, _getUserEmail(),
         {
           name: this.nameRef.current.value,
           description: this.descriptionRef.current.value,
