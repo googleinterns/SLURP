@@ -1,10 +1,13 @@
+import * as firebase from 'firebase/app';
+import 'firebase/firebase-firestore';
+
 import { getDateRange } from './trip.js'
 
 test('getDateRange test', () => {
-  const startMonth = 12; // December
+  const startMonth = 12;
   const startDay = 17;
   const startYear = 1995;
-  const endMonth = 5;    // May
+  const endMonth = 5;
   const endDay = 24;
   const endYear = 1996;
   const testStartDate = firebase.firestore.Timestamp.fromDate(
