@@ -1,6 +1,6 @@
 # SLURP
 
-This is the repo for the SLURP web application. The frontend is built using the React web framework and the Firebase development platform, with the backend built using Google's App Engine computing platform.
+This is the repo for the SLURP web application. The frontend is built using the React web framework and the Firebase development platform, with the backend built using Google's App Engine computing platform. 
 
 ## CLI Tools
 This project makes use of the `gcloud` SDK for project deployment to Google Cloud, the `npm` and `yarn` package managers for Node.js, and the `nvm` Node.js version manager. Node.js 10 is the specific version required for this project.
