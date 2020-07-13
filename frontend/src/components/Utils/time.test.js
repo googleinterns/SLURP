@@ -1,7 +1,7 @@
-import * as utils from './utils';
+import * as utils from './time.js';
 
 const TZ_CHICAGO = 'America/Chicago';
-const TZ_SINGAPORE = ;
+const TZ_SINGAPORE = 'Asia/Singapore';
 
 test('new york date timestamp format', () => {
   // Month parameter is zero indexed so it's actually the 10th month.

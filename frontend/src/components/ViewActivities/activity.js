@@ -13,6 +13,10 @@ function timezonePicker() {
   return <div></div>
 }
 
+function submitEdit(k) {
+  console.log(k);
+}
+
 /**
  * A single activity. 
  * 
