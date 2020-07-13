@@ -38,6 +38,8 @@ nvm install 10
 nvm use 10
 ```
 
+Local development is run using the `serve` package. You must install this package via `yarn add serve` in order to run the local development scripts.
+
 ## Project Structure
 This project consists of a frontend component and a backend component.
 

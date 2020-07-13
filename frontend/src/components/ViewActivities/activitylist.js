@@ -9,13 +9,13 @@ class ActivityList extends React.Component {
   /** @inheritdoc */
   constructor(props) {
     super(props);
-    this.state = { days : [], tripId: props.tripId };
+    this.state = { days : [] };
   }
 
   /** @inheritdoc */
   async componentDidMount() {
     if (this.state === null) { return; }
-    let tripActivities = await activityFns.getActivityList(this.state.tripId);
+    let tripActivities = await activityFns.getActivityList(this.props.tripId);
     if (tripActivities === null) {
       this.setState({days: null});  
       return;

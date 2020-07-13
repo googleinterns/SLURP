@@ -28,6 +28,7 @@ export function compareActivities(a, b) {
 export async function getActivityList(tripId) {
   return new Promise(function(resolve, reject) {
     let tripActivities = [];
+    console.log(tripId);
     
     db.collection(DBFIELDS.COLLECTION_TRIPS).doc(tripId)
         .collection(DBFIELDS.COLLECTION_ACTIVITIES).get()
