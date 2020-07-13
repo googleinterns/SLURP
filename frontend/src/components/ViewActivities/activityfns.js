@@ -1,38 +1,4 @@
-import * as DBFIELDS from '../../constants/database.js';
-import app from '../Firebase';
-
-const db = app.firestore();
-
-/**
- * Gets the list of activities from the server. 
- * @param {string} tripId The trip ID.
- */
-export async function getActivityList(tripId) {
-  return new Promise(function(resolve, reject) {
-    let tripActivities = [];
-    
-    db.collection(DBFIELDS.COLLECTION_TRIPS).doc(tripId)
-    .collection(DBFIELDS.COLLECTION_ACTIVITIES).get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        let data = doc.data();
-        data['id'] = doc.id;
-        
-        // TODO: if start date != end date, split into 2 days. (#37)
-
-        // Eliminate nanoseconds, convert to milliseconds.
-        data[DBFIELDS.ACTIVITIES_START_TIME] =
-          data[DBFIELDS.ACTIVITIES_START_TIME]['seconds'] * 1000;         
-        data[DBFIELDS.ACTIVITIES_END_TIME] = 
-          data[DBFIELDS.ACTIVITIES_END_TIME]['seconds'] * 1000;
-
-        tripActivities.push(data);
-      })
-    }).catch(error => {
-      tripActivities = null;
-    }).then( () => resolve(tripActivities) );
-  })
-}
+import * as DB from '../../constants/database.js';
 
 /**
  * Sort a list of trip activities by date. 
@@ -43,7 +9,7 @@ export async function getActivityList(tripId) {
 export function sortByDate(tripActivities) {
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
   for (let activity of tripActivities) {
-    const activityDate = new Date(activity[DBFIELDS.ACTIVITIES_START_TIME]);
+    const activityDate = new Date(activity[DB.ACTIVITIES_START_TIME]);
     const dateKey = activityDate.toLocaleDateString()
     if (activities.has(dateKey)) {
       activities.get(dateKey).add(activity);
@@ -64,11 +30,11 @@ export function sortByDate(tripActivities) {
  * @param {dictionary} b Dictionary representing activity b and its fields.
  */
 export function compareActivities(a, b) {
-  if (a[DBFIELDS.ACTIVITIES_START_TIME] < b[DBFIELDS.ACTIVITIES_START_TIME]) {
+  if (a[DB.ACTIVITIES_START_TIME] < b[DB.ACTIVITIES_START_TIME]) {
     return -1;
-  } else if (a[DBFIELDS.ACTIVITIES_START_TIME] > b[DBFIELDS.ACTIVITIES_START_TIME]) {
+  } else if (a[DB.ACTIVITIES_START_TIME] > b[DB.ACTIVITIES_START_TIME]) {
     return 1;
-  } else if (a[DBFIELDS.ACTIVITIES_END_TIME] > b[DBFIELDS.ACTIVITIES_END_TIME]) {
+  } else if (a[DB.ACTIVITIES_END_TIME] > b[DB.ACTIVITIES_END_TIME]) {
     return 1;
   }
   return -1;
