@@ -1,36 +1,26 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-
+import SignInButton from './signin-button.js';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-
-import { SIGN_IN } from '../../constants/routes';
 
 /**
- * Landing component that defines the first page the user encounters in the
- * application.
+ * Landing component.
  */
-const Landing = () => {
-  const history = useHistory();
-
-  function handleClick() {
-    history.push(SIGN_IN);
+class Landing extends React.Component {
+  /** @inheritdoc */
+  render() {
+    return (
+      <div>
+        <Card className='text-center'>
+          <Card.Body>
+            <Card.Title>Welcome to SLURP</Card.Title>
+            {/* TODO (Issue #24): Put path to logo when we have one. */}
+            <img alt='SLURP Logo'></img>
+          </Card.Body>
+          <SignInButton />
+        </Card>
+      </div>
+    );
   }
-
-  return (
-    <div>
-      <Card className='text-center'>
-        <Card.Body>
-          <Card.Title>Welcome to SLURP</Card.Title>
-          {/* TODO (Issue #24): Put path to logo when we have one. */}
-          <img alt="SLURP Logo"></img>
-        </Card.Body>
-        <Button type='button' onClick={handleClick} variant='primary' size='lg'>
-          Sign In
-        </Button>
-      </Card>
-    </div>
-  );
 };
 
 export default Landing;

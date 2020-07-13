@@ -1,14 +1,15 @@
 import React from 'react';
+import ActivityList from './activitylist.js';
 
-/**
- * ViewActivities component.
- */
-const ViewActivities = () => {
-  return (
-    <div>
-      <h1>View Activities</h1>
-    </div>
-  );
-};
+class ViewActivities extends React.Component {
+  /** @inheritdoc */
+  render() {
+    return (
+      <div className='activity-page'> 
+        <ActivityList tripId={this.props.match.params.tripId}/>
+      </div>
+    )
+  }
+}
 
 export default ViewActivities;
