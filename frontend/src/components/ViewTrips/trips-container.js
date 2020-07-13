@@ -1,7 +1,7 @@
 import React from 'react';
 import Trip from './trip.js';
 
-import * as DATABASE from '../../constants/database.js';
+import * as DB from '../../constants/database.js';
 
 /**
  * Temporary hardcoded function that returns the current users email.
@@ -16,13 +16,15 @@ function _getUserEmail() {
 }
 
 /**
- * Temporary hardcoded function that returns the current users uid given their
+ * Temporary hardcoded function that returns the user's uid given the user's
  * email.
  *
  * TODO(Issue 55): Remove this function and replace any calls to it with Auth
  *                 component function.
  *
- * @param {*} userEmail
+ * @param {string} userEmail A users email.
+ * @return {string} The 'fake' uid associated with the user email that is
+ *    created with the form '_`userEmail`_'.
  */
 function _getUidFromUserEmail(userEmail) {
   return '_' + userEmail + '_';
@@ -40,8 +42,8 @@ function _getUidFromUserEmail(userEmail) {
  */
 function queryUserTrips(db, userEmail) {
   const userUid = _getUidFromUserEmail(userEmail);
-  return db.collection(DATABASE.COLLECTION_TRIPS)
-      .where(DATABASE.TRIPS_COLLABORATORS, 'array-contains', userUid)
+  return db.collection(DB.COLLECTION_TRIPS)
+      .where(DB.TRIPS_COLLABORATORS, 'array-contains', userUid)
       .get();
 }
 
@@ -83,7 +85,8 @@ function getErrorElement(error) {
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
- * - userEmail: The current user's email.
+ * - key: Special React attribute that ensures a new TripsContainer instance is
+ *        created whenever this key is updated.
  * @extends React.Component
  */
 class TripsContainer extends React.Component {

@@ -6,18 +6,6 @@ import Form from 'react-bootstrap/Form'
 import createTrip from './create-new-trip.js'
 
 /**
- * Temporary hardcoded function that returns the current users email.
- *
- * TODO(Issue 55): Remove this function and replace any calls to it with Auth
- *                 component function.
- *
- * @return Hardcoded user email string.
- */
-function _getUserEmail() {
-  return 'matt.murdock';
-}
-
-/**
  * Returns a Form.Control element with input type 'text' and other fields
  * specified by the function parameters.
  *
@@ -74,10 +62,9 @@ function createFormGroup(controlId, formLabel, inputType,
  * Component corresponding to add trips modal.
  *
  * @param {Object} props These are the props for this component:
+ * - db: Firestore database instance.
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: The function that handles closing the add trips modal.
- * - db: Firestore database instance.
- * - userEmail: The current users email.
  *
  * @extends React.Component
  */
@@ -97,10 +84,12 @@ class AddTrip extends React.Component {
   /**
    * Upon submission of the form, a new Trip document is created and the add
    * trip modal is closed.
+   *
+   * @param e Event object corresponding to (add trip) submit button click.
    */
   addNewTrip = (e) => {
     e.preventDefault();
-    createTrip(this.props.db, _getUserEmail(),
+    createTrip(this.props.db,
         {
           name: this.nameRef.current.value,
           description: this.descriptionRef.current.value,

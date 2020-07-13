@@ -4,13 +4,14 @@ import Button from 'react-bootstrap/Button';
 import ViewActivitiesButton from './view-activities-button.js';
 
 /**
- * Temporary hardcoded function that returns the current users email given their
- * uid.
+ * Temporary hardcoded function that returns the a user's email given the
+ * fake uid that was stored in the Trip document.
  *
  * TODO(Issue 55): Remove this function and replace any calls to it with Auth
  *                 component function.
  *
- * @param {*} uid
+ * @param {string} uid Fake string uid that is in the form '_userEmail_'.
+ * @return {string} The email corresponding to the fake uid.
  */
 function _getUserEmailFromUid(uid) {
   return uid.substring(1, uid.length - 1);

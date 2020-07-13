@@ -40,9 +40,9 @@ class ViewTrips extends React.Component {
       <div className="view-trips-page">
         <Header />
         <AddTrip
+          db={db}
           show={this.state.showModal}
           handleClose={this.hideAddTripModal}
-          db={db}
         />
         <div className="manage-trips-bar">
           <Button type='button' onClick={this.showAddTripModal}>
