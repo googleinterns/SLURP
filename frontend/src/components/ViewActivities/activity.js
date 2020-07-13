@@ -2,7 +2,7 @@ import React from 'react';
 import * as time from '../Utils/time.js';
 import * as DB from '../../constants/database.js'
 import '../../styles/activities.css';
-import * as autils from './activityfns.js';
+import { getField } from './activityfns.js';
 import { Accordion, Button, Card, Col, Form, Row } from 'react-bootstrap';
 
 /**
@@ -12,8 +12,6 @@ function timezonePicker() {
   // TODO: Make this dropdown. (#51)
   return <div></div>
 }
-
-
 
 class Activity extends React.Component {
   /** {@inheritdoc} */
@@ -73,7 +71,7 @@ class Activity extends React.Component {
           <Form.Group as={Row} controlId="formActivityTitle">
             <Col sm={2}><Form.Label>Description:</Form.Label></Col>
             <Col><Form.Control type="text" 
-              placeholder={autils.getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!") }/>
+              placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!") }/>
             </Col>
           </Form.Group>
           <Button type="submit" className="float-right">Done!</Button>
