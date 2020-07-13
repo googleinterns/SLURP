@@ -62,7 +62,7 @@ const authUtils = {
   getUserEmail,
   getUserPhotoUrl,
   getUserUid,
-  signOut()
+  signOut
 };
 export default authUtils;
 
