@@ -16,7 +16,7 @@
 }
 
 .activity-day-dropdown {
-    max-width: 50pc;
-    margin: 0.5em auto;
     border: black;
+    margin: 0.5em auto;
+    max-width: 50pc;
 }

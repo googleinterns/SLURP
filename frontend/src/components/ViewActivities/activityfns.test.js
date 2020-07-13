@@ -1,16 +1,13 @@
-import * as activityFns from './activityfns';
+import * as activityFns from './activityfns.js';
 
-// Date objects to be used in tests. All on May 2nd, 2020. 
-const ten = new Date(Date.UTC(2020,  4, 2, 10,  0));
-const eleven = new Date(Date.UTC(2020, 4, 2, 11, 0));
-const elevenThirty = new Date(Date.UTC(2020, 4, 2, 11, 30));
-const twelve = new Date(Date.UTC(2020, 4, 2, 12, 0));
-const one = new Date(Date.UTC(2020, 4, 2, 13, 0));
-
-// Date objects to be used in tests. All on different days.
-const may102pm = new Date(Date.UTC(2020, 4, 10, 14, 0));
-const may014pm = new Date(Date.UTC(2020, 4, 1, 16, 0));
-const may153am = new Date(Date.UTC(2020, 4, 15, 3, 0));
+const ten = new Date(Date.UTC(2020, 4, 2, 10,  0));          // May 2, 2020 10:00
+const eleven = new Date(Date.UTC(2020, 4, 2, 11, 0));        // May 2, 2020 11:00
+const elevenThirty = new Date(Date.UTC(2020, 4, 2, 11, 30)); // May 2, 2020 11:30
+const twelve = new Date(Date.UTC(2020, 4, 2, 12, 0));        // May 2, 2020 12:00
+const one = new Date(Date.UTC(2020, 4, 2, 13, 0));           // May 2, 2020 13:00
+const may102pm = new Date(Date.UTC(2020, 4, 10, 14, 0)); // May 10, 2020 14:00
+const may014pm = new Date(Date.UTC(2020, 4, 1, 16, 0));   // May 1, 2020 16:00
+const may153am = new Date(Date.UTC(2020, 4, 15, 3, 0));   // May 15, 2020 3:00
 
 function createActivity(startTime, endTime){
   return {'start_time': startTime, 'end_time': endTime};
@@ -25,22 +22,27 @@ describe('Same day activity compareActivities', () => {
 
   test('Overlapping activities', () => {
     expect(activityFns.compareActivities(elevenToOne, tenToTwelve)).toBe(1);
+    expect(activityFns.compareActivities(tenToTwelve, elevenToOne)).toBe(-1);
   })
 
   test('One activity completely during another', () => {
     expect(activityFns.compareActivities(tenToTwelve, elevenToElevenThirty)).toBe(-1);
+    expect(activityFns.compareActivities(elevenToElevenThirty, tenToTwelve)).toBe(1);
   })
 
   test('Activities with same start time', () => {
     expect(activityFns.compareActivities(tenToEleven, tenToTwelve)).toBe(-1);
+    expect(activityFns.compareActivities(tenToTwelve, tenToEleven)).toBe(1);
   })
 
   test('Sequential activities', () => {
     expect(activityFns.compareActivities(tenToEleven, elevenToTwelve)).toBe(-1);
+    expect(activityFns.compareActivities(elevenToTwelve, tenToEleven)).toBe(1);
   })
 
   test('Activities with same end time', () => {
     expect(activityFns.compareActivities(elevenToTwelve, tenToTwelve)).toBe(1);
+    expect(activityFns.compareActivities(tenToTwelve, elevenToTwelve)).toBe(-1);
   })  
 })
 

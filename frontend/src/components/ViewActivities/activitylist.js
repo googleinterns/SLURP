@@ -1,7 +1,7 @@
 import React from 'react';
 import app from '../Firebase';
-import * as activityFns from './activityfns';
-import ActivityDay from './activityday';
+import * as activityFns from './activityfns.js';
+import ActivityDay from './activityday.js';
 import Accordion from 'react-bootstrap/Accordion';
 import '../../styles/activities.css';
 
@@ -27,17 +27,18 @@ class ActivityList extends React.Component {
   render() {
     if (this.state === null) { return (<div></div>); }
     if (this.state.days === null) {
-      return (<p>An error has occurred :(</p> );
+      return (<p className='activity-list'>An error has occurred :(</p> );
     } else if (this.state.days.length == 0) {
-      return (<p>Plan your trip here!</p>);
+      return (<p className='activity-list'>Plan your trip here!</p>);
     }
     return (
-      <div className="activity-list">
+      <div className='activity-list'>
         {this.state.days.map((item, index) => (
-          <Accordion defaultActiveKey="1" key={index} className="activity-day-dropdown">
+          <Accordion defaultActiveKey='1' key={index} className='activity-day-dropdown'>
             <ActivityDay date={item[0]} activities={item[1]} />
           </Accordion>
-        ))}
+          )
+        )}
       </div>
     );
   }

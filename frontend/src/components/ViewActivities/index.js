@@ -1,18 +1,12 @@
 import React from 'react';
-import ActivityList from './activitylist';
+import ActivityList from './activitylist.js';
 
 class ViewActivities extends React.Component {
   /** @inheritdoc */
-  constructor(props) {
-    super(props);
-    this.state = {tripId: props.match.params.tripId};
-  }
-
-  /** @inheritdoc */
   render() {
     return (
-      <div className="activity-page"> 
-        <ActivityList tripId={this.state.tripId}/>
+      <div className='activity-page'> 
+        <ActivityList tripId={this.props.match.params.tripId}/>
       </div>
     )
   }

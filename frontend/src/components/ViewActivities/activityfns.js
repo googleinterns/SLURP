@@ -1,10 +1,28 @@
-import * as DBFIELDS from '../../constants/dbconstants';
+import * as DBFIELDS from '../../constants/database.js';
 import app from '../Firebase';
 
 const db = app.firestore();
 
 /**
+ * Put a and b in display order. 
+ * 
+ * @param {dictionary} a Dictionary representing activity a and its fields. 
+ * @param {dictionary} b Dictionary representing activity b and its fields.
+ */
+export function compareActivities(a, b) {
+  if (a[DBFIELDS.ACTIVITIES_START_TIME] < b[DBFIELDS.ACTIVITIES_START_TIME]) {
+    return -1;
+  } else if (a[DBFIELDS.ACTIVITIES_START_TIME] > b[DBFIELDS.ACTIVITIES_START_TIME]) {
+    return 1;
+  } else if (a[DBFIELDS.ACTIVITIES_END_TIME] > b[DBFIELDS.ACTIVITIES_END_TIME]) {
+    return 1;
+  }
+  return -1;
+}
+
+/**
  * Gets the list of activities from the server. 
+ * 
  * @param {string} tripId The trip ID.
  */
 export async function getActivityList(tripId) {
@@ -12,9 +30,9 @@ export async function getActivityList(tripId) {
     let tripActivities = [];
     
     db.collection(DBFIELDS.COLLECTION_TRIPS).doc(tripId)
-    .collection(DBFIELDS.COLLECTION_ACTIVITIES).get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(doc => {
+        .collection(DBFIELDS.COLLECTION_ACTIVITIES).get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
         let data = doc.data();
         data['id'] = doc.id;
         
@@ -22,9 +40,9 @@ export async function getActivityList(tripId) {
 
         // Eliminate nanoseconds, convert to milliseconds.
         data[DBFIELDS.ACTIVITIES_START_TIME] =
-          data[DBFIELDS.ACTIVITIES_START_TIME]["seconds"] * 1000;         
+          data[DBFIELDS.ACTIVITIES_START_TIME]['seconds'] * 1000;         
         data[DBFIELDS.ACTIVITIES_END_TIME] = 
-          data[DBFIELDS.ACTIVITIES_END_TIME]["seconds"] * 1000;
+          data[DBFIELDS.ACTIVITIES_END_TIME]['seconds'] * 1000;
 
         tripActivities.push(data);
       })
@@ -36,9 +54,10 @@ export async function getActivityList(tripId) {
 
 /**
  * Sort a list of trip activities by date. 
+ * 
  * @param {Array} tripActivities Array of activities.
  * @returns List of trip activities in the form
- * [ ["MM/DD/YYYY", [activities on that day]], ...] in chronological order by date.
+ * [ ['MM/DD/YYYY', [activities on that day]], ...] in chronological order by date.
  */
 export function sortByDate(tripActivities) {
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
@@ -53,27 +72,5 @@ export function sortByDate(tripActivities) {
   }
 
   // Sort activities by date.
-  let activitiesSorted = Array.from(activities).sort(function (a, b) {
-    const adate = new Date(a[0]);
-    const bdate = new Date(b[0]);
-    return adate > bdate ? 1 : adate < bdate ? -1 : 0;
-  });
-  
-  return activitiesSorted;
-}
-
-/**
- * Put a and b in display order. 
- * @param {dictionary} a Dictionary representing activity a and its fields. 
- * @param {dictionary} b Dictionary representing activity b and its fields.
- */
-export function compareActivities(a, b) {
-  if (a[DBFIELDS.ACTIVITIES_START_TIME] < b[DBFIELDS.ACTIVITIES_START_TIME]) {
-    return -1;
-  } else if (a[DBFIELDS.ACTIVITIES_START_TIME] > b[DBFIELDS.ACTIVITIES_START_TIME]) {
-    return 1;
-  } else if (a[DBFIELDS.ACTIVITIES_END_TIME] > b[DBFIELDS.ACTIVITIES_END_TIME]) {
-    return 1;
-  }
-  return -1;
+  return Array.from(activities).sort(compareActivities);
 }
