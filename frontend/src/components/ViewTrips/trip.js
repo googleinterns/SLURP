@@ -21,6 +21,8 @@ function _getUserEmailFromUid(uid) {
  * Returns the date range of the trip associated with the Trip document data
  * `tripObj`.
  *
+ * Note: tripObj will always contain valid star_date and end_date fields.
+ *
  * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
  *    and values for a Trip document.
  * @return Date range of the trip (if it exists).
