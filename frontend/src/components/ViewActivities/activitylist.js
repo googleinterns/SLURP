@@ -2,6 +2,11 @@ import React from 'react';
 import * as activityFns from './activityfns.js';
 import ActivityDay from './activityday.js';
 import '../../styles/activities.css';
+import * as DB from '../../constants/database.js';
+import app from '../Firebase';
+
+const db = app.firestore();
+
 
 /**
  * Gets the list of activities from the server. 
@@ -12,8 +17,8 @@ export async function getActivityList(tripId) {
   return new Promise(function(resolve, reject) {
     let tripActivities = [];
     
-    db.collection(DBFIELDS.COLLECTION_TRIPS).doc(tripId)
-    .collection(DBFIELDS.COLLECTION_ACTIVITIES).get()
+    db.collection(DB.COLLECTION_TRIPS).doc(tripId)
+    .collection(DB.COLLECTION_ACTIVITIES).get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
         let data = doc.data();
@@ -22,10 +27,10 @@ export async function getActivityList(tripId) {
         // TODO: if start date != end date, split into 2 days. (#37)
 
         // Eliminate nanoseconds, convert to milliseconds.
-        data[DBFIELDS.ACTIVITIES_START_TIME] =
-          data[DBFIELDS.ACTIVITIES_START_TIME]['seconds'] * 1000;         
-        data[DBFIELDS.ACTIVITIES_END_TIME] = 
-          data[DBFIELDS.ACTIVITIES_END_TIME]['seconds'] * 1000;
+        data[DB.ACTIVITIES_START_TIME] =
+          data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
+        data[DB.ACTIVITIES_END_TIME] = 
+          data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
 
         tripActivities.push(data);
       })
