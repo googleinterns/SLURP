@@ -3,21 +3,8 @@
  * from inside a private route component.
  */
 
-import React, { useContext } from 'react';
-import { AuthContext } from '../Auth';
+import { AuthUtilsConsumer, getCurrentUser } from './AuthUtilsConsumer.js';
 import { SIGN_IN } from '../../constants/routes.js';
-
-let currentUser;
-
-/**
- * TODO: document!
- */
-export const AuthUtilsConsumer = (props) => {
-  currentUser = useContext(AuthContext);
-  return (
-    <div>{props.children}</div>
-  );
-}
 
 /**
  * TODO: document!
@@ -27,35 +14,35 @@ function redirectToSignIn() {
 }
 
 export function getUserDisplayName() {
-  if (!currentUser) {
+  if (!getCurrentUser()) {
     redirectToSignIn();
     return null;
   }
-  return currentUser.displayName;
+  return getCurrentUser().displayName;
 }
 
 export function getUserEmail() {
-  if (!currentUser) {
+  if (!getCurrentUser()) {
     redirectToSignIn();
     return null;
   }
-  return currentUser.displayName;
+  return getCurrentUser().email;
 }
 
 export function getUserPhotoUrl() {
-  if (!currentUser) {
+  if (!getCurrentUser()) {
     redirectToSignIn();
     return null;
   }
-  return currentUser.displayName;
+  return getCurrentUser().photoURL;
 }
 
 export function getUserUid() {
-  if (!currentUser) {
+  if (!getCurrentUser()) {
     redirectToSignIn();
     return null;
   }
-  return currentUser.displayName;
+  return getCurrentUser().uid;
 }
 
 // Can also access the auth functions in the named authUtils variable.
@@ -66,3 +53,7 @@ const authUtils = {
   getUserUid
 };
 export default authUtils;
+
+// The AuthUtilsConsumer component must be imported into the App component to
+// allow these functions to be used.
+export { AuthUtilsConsumer };
