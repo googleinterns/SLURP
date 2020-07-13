@@ -2,9 +2,9 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import app from '../Firebase/index.js';
-import Header from '../Header/index.js';
-import AddTrip from '../AddTrip/index.js'
+import app from '../Firebase/';
+import Header from '../Header/';
+import AddTrip from './add-trip.js'
 import TripsContainer from './trips-container.js';
 
 const db = app.firestore();
