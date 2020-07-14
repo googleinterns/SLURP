@@ -44,6 +44,7 @@ describe('auth utility functions when authenticated', () => {
 // All utility functions in this scenario should do the same thing: redirect to
 // the SIGN_IN page.
 describe('auth utility functions when not authenticated', () => {
+  // Delete the default window.location object set by Jest to use my own mock.
   beforeAll(() => {
     delete window.location;
   });
