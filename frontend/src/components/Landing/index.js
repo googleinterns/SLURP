@@ -1,9 +1,11 @@
 import React from 'react';
+
 import SignInButton from './signin-button.js';
 import Card from 'react-bootstrap/Card';
 
 /**
- * Landing component.
+ * Landing component that defines the first page the user encounters in the
+ * application.
  */
 class Landing extends React.Component {
   /** @inheritdoc */
