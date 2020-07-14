@@ -4,7 +4,8 @@ import authUtils from '../AuthUtils';
 import Button from 'react-bootstrap/Button';
 
 // To set spacing between each element of the component.
-const BOOTSTRAP_SPACING_CLASS = 'm-3 row justify-content-center align-self-center';
+const BOOTSTRAP_SPACING_CLASS =
+    'm-3 row justify-content-center align-self-center';
 // Size in pixels.
 const USER_PROFILE_SIDE_LENGTH = 50;
 
