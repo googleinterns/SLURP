@@ -35,12 +35,16 @@ class Activity extends React.Component {
   /**
    * Set the activity into editing mode.
    */
-  setEditActivity = () => ( this.setState({editing: true}) );
+  setEditActivity() {
+    this.setState({editing: true});
+  }
 
   /**
    * Set the activity into viewing mode.
    */
-  finishEditActivity = () => (  this.setState({editing: false}) );
+  finishEditActivity() { 
+    this.setState({editing: false});
+  }
 
   /**
    * Display the current activity, either in view or display mode.
