@@ -17,8 +17,9 @@ const NAVBAR_LOGO_SIDE_LENGTH = 50;
  *
  * This component must ONLY be called in PrivateRoute pages.
  *
- * @param {Object} props An optional parameter can be passed to props:
- * - `component`: A React Component rendered in the middle of the header.
+ * @param {Object} props An optional React component can be passed as the child
+ * of this component. The Header component will then render the given child
+ * component in its center.
  */
 class Header extends React.Component {
   /** @inheritdoc */
