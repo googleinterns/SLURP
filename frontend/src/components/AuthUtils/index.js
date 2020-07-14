@@ -19,6 +19,9 @@ function redirectToSignIn() {
   window.location.href = SIGN_IN;
 }
 
+/**
+ * @returns {String} The user's display name.
+ */
 export function getUserDisplayName() {
   if (!getCurrentUser()) {
     redirectToSignIn();
@@ -27,6 +30,9 @@ export function getUserDisplayName() {
   return getCurrentUser().displayName;
 }
 
+/**
+ * @returns {String} The user's email.
+ */
 export function getUserEmail() {
   if (!getCurrentUser()) {
     redirectToSignIn();
@@ -35,6 +41,9 @@ export function getUserEmail() {
   return getCurrentUser().email;
 }
 
+/**
+ * @returns {String} The user's profile picture URL.
+ */
 export function getUserPhotoUrl() {
   if (!getCurrentUser()) {
     redirectToSignIn();
@@ -43,6 +52,9 @@ export function getUserPhotoUrl() {
   return getCurrentUser().photoURL;
 }
 
+/**
+ * @returns {String} The user's unique ID.
+ */
 export function getUserUid() {
   if (!getCurrentUser()) {
     redirectToSignIn();
