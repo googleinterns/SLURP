@@ -14,6 +14,7 @@ const USER_PROFILE_SIDE_LENGTH = 50;
  * be used with the Header component.
  */
 class UserInfo extends React.Component {
+  /** @inheritdoc */
   render() {
     return (
       <div className='d-flex flex-row'>
