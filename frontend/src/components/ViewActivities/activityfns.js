@@ -60,11 +60,11 @@ export function getField(activity, fieldName, defaultValue){
 }
 
 /**
+ * Write contents into an activity in the database.
  * 
- * @param {*} tripId 
- * @param {*} activityId 
- * @param {*} fieldName 
- * @param {*} newValue 
+ * @param {string} tripId Database ID of the trip whose actiivty should be modified.
+ * @param {string} activityId Database ID of the activity to be modified.
+ * @param {Object} newValues Dictionary of the new values in {fieldName: newValue} form
  */
 export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid.
@@ -76,8 +76,9 @@ export async function writeActivity(tripId, activityId, newValues) {
     .collection(DB.COLLECTION_ACTIVITIES).doc(activityId);
   
   try {
+    // Note: newValues cannot contain lists. Check documentation for update().
     const a = await act.update(newValues);
-    return true;
+    return a ? true : false;
   } catch (e) {
     console.log(e);
     return false;

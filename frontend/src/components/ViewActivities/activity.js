@@ -25,7 +25,7 @@ class Activity extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { editing: false, title: "abcd" };
+    this.state = { editing: false };
 
     // Bind state users/modifiers to `this`.
     this.setEditActivity = this.setEditActivity.bind(this);
@@ -57,7 +57,7 @@ class Activity extends React.Component {
   };
 
   /**
-   * 
+   * TODO FUNCTION DEF HERE
    */
   editActivity() {
     let newVals = {};
@@ -120,7 +120,7 @@ class Activity extends React.Component {
     return (
       <Accordion defaultActiveKey='1'>  
         <Card>
-          <Accordion.Toggle as={Card.Header} eventKey='0' align='center' >
+          <Accordion.Toggle as={Card.Header} eventKey='0' align='center'>
             {activity[DB.ACTIVITIES_TITLE]}
           </Accordion.Toggle>
           <Accordion.Collapse eventKey='0' className={'view-activity' + (this.state.editing? ' edit': '')}>
