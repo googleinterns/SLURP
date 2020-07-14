@@ -1,9 +1,9 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
-import createTrip from './create-new-trip.js'
+import createTrip from './create-new-trip.js';
 
 /**
  * Returns a Form.Control element with input type 'text' and other fields
@@ -24,6 +24,32 @@ function createTextFormControl(placeholder, ref) {
 }
 
 /**
+ * Returns a Form.Control element with input type 'text' and other fields
+ * specified by the function parameters.
+ *
+ * @param {string} placeholder Text placehold in the form input
+ * @param {React.RefObject} refArr The list of refs attached to the emails
+ *     inputted in the form.
+ * @return {JSX.Element} The Form.Control element.
+ */
+function createEmailsFormControl(placeholder, refArr) {
+  return (
+    <>
+      {refArr.map((ref, idx) => {
+        return (
+          <Form.Control
+            type="email"
+            placeholder={placeholder}
+            ref={ref}
+            key={idx}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+/**
  * Returns a Form.Group element with components specified by the input args.
  *
  * @param {string} controlId prop that accessibly wires the nested label and
@@ -35,26 +61,29 @@ function createTextFormControl(placeholder, ref) {
  * @param {string} subFormText Subtext instructions under a form input.
  * @return {JSX.Element} The Form.Group element.
  */
-function createFormGroup(controlId, formLabel, inputType,
-                                    placeholder, ref, subFormText = '') {
+function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
   let formControl;
-  if (inputType === 'text') {
-    formControl = createTextFormControl(placeholder, ref)
-  } else {
-    // TODO(Issue #52): Create diff form inputs for start & end dates
-    //                  and collaborator emails.
-    console.error('Only text form inputs are implemented as of now');
+  switch(inputType) {
+    case 'text':
+      formControl = createTextFormControl(placeholder, ref);
+      break;
+    case 'emails':
+      formControl = createEmailsFormControl(placeholder, ref);
+      break;
+    default:
+      // TODO(Issue #52): Create diff form inputs for start & end dates
+      //                  and collaborator emails.
+      console.error('Only text form inputs are implemented as of now')
   }
 
   return (
-    <Form.Group controlId={controlId}>
+    <>
       <Form.Label>{formLabel}</Form.Label>
-        {formControl}
-      {/* Temporary instructions until fix Issue #52 */}
-      <Form.Text className="text-muted">
-        {subFormText}
-      </Form.Text>
-    </Form.Group>
+      <Form.Group controlId={controlId}>
+          {formControl}
+        {/* Temporary instructions until fix Issue #52 */}
+      </Form.Group>
+    </>
   )
 }
 
@@ -65,6 +94,8 @@ function createFormGroup(controlId, formLabel, inputType,
  * - db: Firestore database instance.
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: The function that handles closing the add trips modal.
+ * - refresh
+ * - key
  *
  * @extends React.Component
  */
@@ -78,7 +109,13 @@ class AddTrip extends React.Component {
     this.destinationRef = React.createRef();
     this.startDateRef = React.createRef();
     this.endDateRef = React.createRef();
-    this.collaboratorsRef = React.createRef();
+    this.state = { collaboratorsRefArr: [React.createRef()] }
+  }
+
+  addCollaboratorRef = () => {
+    this.setState({ collaboratorsRefArr:
+                    this.state.collaboratorsRefArr.concat([React.createRef()]) }
+                 );
   }
 
   /**
@@ -96,9 +133,11 @@ class AddTrip extends React.Component {
           destination: this.destinationRef.current.value,
           startDate: this.startDateRef.current.value,
           endDate: this.endDateRef.current.value,
-          collaboratorEmails: this.collaboratorsRef.current.value
+          collaboratorEmails:
+              this.state.collaboratorsRefArr.map(ref => ref.current.value)
         });
 
+    this.props.refreshTripsContainer();
     this.props.handleClose();
   }
 
@@ -119,15 +158,14 @@ class AddTrip extends React.Component {
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
                              'Enter Trip Destination', this.destinationRef)}
             {createFormGroup('tripStartDateGroup', 'Start Date', 'text',
-                            'Enter Trip Start Date', this.startDateRef,
-                            'Enter date in the form: \'mm/dd/yyy\'')}
+                            'mm/dd/yyyy', this.startDateRef)}
             {createFormGroup('tripEndDateGroup', 'End Date', 'text',
-                          'Enter Trip End Date', this.endDateRef,
-                          'Enter date in the form: \'mm/dd/yyy\'')}
-            {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'text',
-                           'Enter Collaborator Emails', this.collaboratorsRef,
-                           'Enter emails in the form: \'user1@email.com, ...,' +
-                           ' userx@email.com\'')}
+                            'mm/dd/yyyy', this.endDateRef)}
+            {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'emails',
+                      'person@email.xyz', this.state.collaboratorsRefArr)}
+            <Button onClick={this.addCollaboratorRef}>
+              Add Another Collaborator
+            </Button>
           </Modal.Body>
 
           <Modal.Footer>

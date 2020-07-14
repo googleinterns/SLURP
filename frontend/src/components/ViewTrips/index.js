@@ -18,21 +18,27 @@ class ViewTrips extends React.Component {
   constructor() {
     super();
     this.state = { showModal: false,
-                   refreshTripsContainer: false };
+                   refreshTripsContainer: false,
+                   refreshAddTripModal: false
+                 };
   }
 
   refreshTripsContainer = () => {
     this.setState({ refreshTripsContainer: !this.state.refreshTripsContainer });
   }
 
+  refreshAddTripModal = () => {
+    this.setState({ refreshAddTripModal: !this.state.refreshAddTripModal });
+  }
+
   /** Property that sets `showModal` to true --> displays add trip page. */
-  showAddTripModal = () => { this.setState({ showModal: true }); }
+  showAddTripModal = () => {
+    this.refreshAddTripModal()
+    this.setState({ showModal: true });
+  }
 
   /** Property that sets `showModal` to false --> hides add trip page. */
-  hideAddTripModal = () => {
-    this.setState({ showModal: false });
-    this.refreshTripsContainer();
-  }
+  hideAddTripModal = () => { this.setState({ showModal: false }); }
 
   /** @inheritdoc */
   render() {
@@ -43,6 +49,8 @@ class ViewTrips extends React.Component {
           db={db}
           show={this.state.showModal}
           handleClose={this.hideAddTripModal}
+          refreshTripsContainer={this.refreshTripsContainer}
+          key={this.state.refreshAddTripModal}
         />
         <div className="manage-trips-bar">
           <Button type='button' onClick={this.showAddTripModal}>

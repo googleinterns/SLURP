@@ -48,9 +48,8 @@ export function getTimestampFromDateString(dateStr) {
  *     for Issue 52.
  * @return {!Array{string}} Array of collaborator uids.
  */
-export function getCollaboratorUidArray(collaboratorEmailsStr) {
-  const collaboratorEmailArr = collaboratorEmailsStr.split(', ');
-  collaboratorEmailArr.push(_getUserEmail());
+export function getCollaboratorUidArray(collaboratorEmailArr) {
+  collaboratorEmailArr = [_getUserEmail()].concat(collaboratorEmailArr);
   return collaboratorEmailArr.map(userEmail => _getUidFromUserEmail(userEmail));
 }
 
