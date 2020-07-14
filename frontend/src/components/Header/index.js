@@ -1,6 +1,7 @@
 import React from 'react';
 import UserInfo from './UserInfo.js';
 
+import '../../styles/header.css';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 
