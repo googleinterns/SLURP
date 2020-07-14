@@ -56,23 +56,23 @@ describe('auth utility functions when not authenticated', () => {
     expect(getCurrentUser()).toBe(mockUnauthenticatedUser);
   });
 
-  afterEach(() => {
-    expect(window.location.href).toBe(SIGN_IN);
-  })
-
   test('getUserDisplayName function', () => {
     authUtils.getUserDisplayName();
+    expect(window.location.href).toBe(SIGN_IN);
   });
 
   test('getUserEmail function', () => {
     authUtils.getUserEmail();
+    expect(window.location.href).toBe(SIGN_IN);
   });
 
   test('getUserPhotoUrl function', () => {
     authUtils.getUserPhotoUrl();
+    expect(window.location.href).toBe(SIGN_IN);
   });
 
   test('getUserUid function', () => {
     authUtils.getUserUid();
+    expect(window.location.href).toBe(SIGN_IN);
   });
 });
