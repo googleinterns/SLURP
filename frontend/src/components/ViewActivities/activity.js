@@ -57,12 +57,16 @@ class Activity extends React.Component {
   };
 
   /**
-   * TODO FUNCTION DEF HERE
+   * Edit an activity in the database upon form submission.
+   * TODO: Update times as well! This only does the text field forms.
    */
   editActivity() {
     let newVals = {};
     if (this.editTitleRef.current !== null) {
       newVals[DB.ACTIVITIES_TITLE] = this.editTitleRef.current.value;
+    }
+    if (this.editDescriptionRef.current !== null) {
+      newVals[DB.ACTIVITIES_DESCRIPTION] = this.editDescriptionRef.current.value;
     }
     if (Object.keys(newVals).length !== 0) {
       writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
