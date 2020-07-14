@@ -29,6 +29,29 @@ function _getUidFromUserEmail(userEmail) {
 }
 
 /**
+ * Return a string containing the trip name given the trip name entered in the
+ * add trip form.
+ *
+ * @param {string} rawName String containing trip name entered in add trip form.
+ * @return {string} Cleaned trip name.
+ */
+export function getTripName(rawName) {
+  return rawName === '' ? 'Untitled Trip' : rawName;
+}
+
+/**
+ * Return a string containing the trip destination given the trip destination
+ * entered in the add trip form.
+ *
+ * @param {string} rawName String containing trip description entered in the
+ *     add trip form.
+ * @return {string} Cleaned trip description.
+ */
+export function getTripDestination(rawDestination) {
+  return rawDestination === '' ? 'No Destination' : rawDestination;
+}
+
+/**
  * Return a Firestore Timestamp corresponding to the date in `dateStr`.
  *
  * @param {string} dateStr String containing a date in the form 'yyyy-mm-dd'.
@@ -45,15 +68,15 @@ export function getTimestampFromDateString(dateStr) {
 }
 
 /**
- * Return an array of collaborator uids from the emails in
- * `collaboratorEmailsStr`.
+ * Return an array of collaborator uids given the emails provided in the
+ * add trip form.
  *
- * @param {string} collaboratorEmailsStr String containing a comma separated
- *     sequence of emails. This is temporary and will be replaced in the fix
- *     for Issue 52.
- * @return {!Array{string}} Array of collaborator uids.
+ * @param {!Array{string}} collaboratorEmailsArr Array of emails corresponding
+ *     to the  collaborators of the trip (not including the trip creator email).
+ * @return {!Array{string}} Array of all collaborator uids (including trip
+ *     creator uid).
  */
-export function getCollaboratorUidArray(collaboratorEmailArr) {
+export function getCollaboratorUidArr(collaboratorEmailArr) {
   collaboratorEmailArr = [_getUserEmail()].concat(collaboratorEmailArr);
   return collaboratorEmailArr.map(userEmail => _getUidFromUserEmail(userEmail));
 }
@@ -71,26 +94,22 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  *
  * @param {Object} rawTripObj A JS Object containing the raw form data from the
  *     add trip form.
+ * @return {Object} Formatted/cleaned version of `rawTripObj` holding the data
+ *     for the new Trip document that is to be created.
  */
-export function formatTripData(rawTripObj) {
-  const name = rawTripObj.name === '' ? 'Untitled Trip' : rawTripObj.name;
-  const destination = rawTripObj.destination === '' ? 'No Destination' :
-                                                      rawTripObj.destination;
-  const startDate = getTimestampFromDateString(rawTripObj.startDate);
-  const endDate = getTimestampFromDateString(rawTripObj.endDate);
-  const tripCreationTime = firebase.firestore.Timestamp.now();
-  const collaboratorUids =
-      getCollaboratorUidArray(rawTripObj.collaboratorEmails);
+function formatTripData(rawTripObj) {
+  const formattedTripObj =
+  {
+    trip_creation_time: firebase.firestore.Timestamp.now(),
+    name:               getTripName(rawTripObj.name),
+    description:        getTripDestination(rawTripObj.destination),
+    destination:        rawTripObj.description,
+    start_date:         getTimestampFromDateString(rawTripObj.startDate),
+    end_date:           getTimestampFromDateString(rawTripObj.endDate),
+    collaborators:      getCollaboratorUidArr(rawTripObj.collaboratorEmails)
+  };
 
-  return {
-    name: name,
-    description: rawTripObj.description,
-    destination: destination,
-    start_date: startDate,
-    end_date: endDate,
-    trip_creation_time: tripCreationTime,
-    collaborators: collaboratorUids
-  }
+  return formattedTripObj;
 }
 
 /**
