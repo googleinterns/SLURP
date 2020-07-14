@@ -72,7 +72,7 @@ class Activity extends React.Component {
             <Col sm={2}><Form.Control type="time" label="time"/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
-          <Form.Group as={Row} controlId="formActivityStartTime">
+          <Form.Group as={Row} controlId="formActivityEndTime">
             <Col sm={2}><Form.Label>To:</Form.Label></Col>
             <Col sm={4}><Form.Control type="date" label="date"/></Col>
             <Col sm={2}><Form.Control type="time" label="time"/></Col>
