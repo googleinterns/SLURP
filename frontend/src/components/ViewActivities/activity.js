@@ -78,7 +78,7 @@ class Activity extends React.Component {
             <Col sm={2}><Form.Control type="time" label="time"/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
-          <Form.Group as={Row} controlId="formActivityTitle">
+          <Form.Group as={Row} controlId="formActivityDescription">
             <Col sm={2}><Form.Label>Description:</Form.Label></Col>
             <Col><Form.Control type="text" 
               placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!") }/>
