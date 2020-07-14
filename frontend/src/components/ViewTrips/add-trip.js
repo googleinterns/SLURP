@@ -27,12 +27,29 @@ function createTextFormControl(placeholder, ref) {
  * Returns a Form.Control element with input type 'text' and other fields
  * specified by the function parameters.
  *
+ * @param {React.RefObject} refArr The list of refs attached to the emails
+ *     inputted in the form.
+ * @return {JSX.Element} The Form.Control element.
+ */
+function createDateFormControl(ref) {
+  return (
+    <Form.Control
+      type="date"
+      ref={ref}
+    />
+  );
+}
+
+/**
+ * Returns a Form.Control element with input type 'text' and other fields
+ * specified by the function parameters.
+ *
  * @param {string} placeholder Text placehold in the form input
  * @param {React.RefObject} refArr The list of refs attached to the emails
  *     inputted in the form.
  * @return {JSX.Element} The Form.Control element.
  */
-function createEmailsFormControl(placeholder, refArr) {
+function createMultiFormControl(placeholder, refArr) {
   return (
     <>
       {refArr.map((ref, idx) => {
@@ -67,8 +84,11 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
     case 'text':
       formControl = createTextFormControl(placeholder, ref);
       break;
+    case 'date':
+      formControl = createDateFormControl(ref);
+      break;
     case 'emails':
-      formControl = createEmailsFormControl(placeholder, ref);
+      formControl = createMultiFormControl(placeholder, ref);
       break;
     default:
       // TODO(Issue #52): Create diff form inputs for start & end dates
@@ -157,10 +177,10 @@ class AddTrip extends React.Component {
                              'Enter Trip Description', this.descriptionRef)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
                              'Enter Trip Destination', this.destinationRef)}
-            {createFormGroup('tripStartDateGroup', 'Start Date', 'text',
-                            'mm/dd/yyyy', this.startDateRef)}
-            {createFormGroup('tripEndDateGroup', 'End Date', 'text',
-                            'mm/dd/yyyy', this.endDateRef)}
+            {createFormGroup('tripStartDateGroup', 'Start Date', 'date',
+                            '', this.startDateRef)}
+            {createFormGroup('tripEndDateGroup', 'End Date', 'date',
+                            '', this.endDateRef)}
             {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'emails',
                       'person@email.xyz', this.state.collaboratorsRefArr)}
             <Button onClick={this.addCollaboratorRef}>

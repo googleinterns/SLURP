@@ -31,12 +31,17 @@ function _getUidFromUserEmail(userEmail) {
 /**
  * Return a Firestore Timestamp corresponding to the date in `dateStr`.
  *
- * @param {string} dateStr String containing a date in the form 'mm/dd/yyyy'.
- *     This is temporary and will be replaced in the fix for Issue 52.
+ * @param {string} dateStr String containing a date in the form 'yyyy-mm-dd'.
  * @return {firebase.firestore.Timestamp} Firestore timestamp object created.
  */
 export function getTimestampFromDateString(dateStr) {
-  return firebase.firestore.Timestamp.now();
+  const dateParts = dateStr.split('-').map(str => +str);
+  if (dateParts.length === 1 && dateParts[0] === 0) {
+    return firebase.firestore.Timestamp.now()
+  }
+
+  const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+  return firebase.firestore.Timestamp.fromDate(date);
 }
 
 /**
