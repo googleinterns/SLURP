@@ -91,9 +91,7 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
       formControl = createMultiFormControl(placeholder, ref);
       break;
     default:
-      // TODO(Issue #52): Create diff form inputs for start & end dates
-      //                  and collaborator emails.
-      console.error('Only text form inputs are implemented as of now')
+      console.error('There should be no other input type')
   }
 
   return (
