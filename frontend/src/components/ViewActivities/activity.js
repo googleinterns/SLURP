@@ -24,12 +24,20 @@ class Activity extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { editing: false };
+    this.state = { editing: false, title: "abcd" };
 
     // Bind state users/modifiers to `this`.
     this.setEditActivity = this.setEditActivity.bind(this);
     this.finishEditActivity = this.finishEditActivity.bind(this);
     this.displayCard = this.displayCard.bind(this);
+
+    // References. 
+    this.editTitleRef = React.createRef();
+    this.editStartDateRef = React.createRef();
+    this.editEndDateRef = React.createRef();
+    this.editStartTimeRef = React.createRef();
+    this.editEndTimeRef = React.createRef();
+    this.editDescriptionRef = React.createRef();
   }
 
   /**
@@ -40,7 +48,10 @@ class Activity extends React.Component {
   /**
    * Set the activity into viewing mode.
    */
-  finishEditActivity = () => (  this.setState({editing: false}) );
+  finishEditActivity = (event) => {
+    this.setState({editing: false});
+    event.preventDefault();
+  };
 
   /**
    * Display the current activity, either in view or display mode.
@@ -60,24 +71,25 @@ class Activity extends React.Component {
         <Form className="activity-editor" onSubmit={this.finishEditActivity}>
           <Form.Group as={Row} controlId="formActivityTitle">
             <Col sm={2}><Form.Label>Title:</Form.Label></Col>
-            <Col><Form.Control type="text" placeholder={activity[DB.ACTIVITIES_TITLE]}/></Col>
+            <Col><Form.Control type="text" placeholder={activity[DB.ACTIVITIES_TITLE]} ref={this.editTitleReference}/></Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formActivityStartTime">
             <Col sm={2}><Form.Label>From:</Form.Label></Col>
-            <Col sm={4}><Form.Control type="date" label="date"/></Col>
-            <Col sm={2}><Form.Control type="time" label="time"/></Col>
+            <Col sm={4}><Form.Control type="date" label="date" ref={this.editStartDateRef}/></Col>
+            <Col sm={2}><Form.Control type="time" label="time" ref={this.editStartTimeRef}/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formActivityStartTime">
             <Col sm={2}><Form.Label>To:</Form.Label></Col>
-            <Col sm={4}><Form.Control type="date" label="date"/></Col>
-            <Col sm={2}><Form.Control type="time" label="time"/></Col>
+            <Col sm={4}><Form.Control type="date" label="date" ref={this.editEndDateRef}/></Col>
+            <Col sm={2}><Form.Control type="time" label="time" ref={this.editEndTimeRef}/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formActivityTitle">
             <Col sm={2}><Form.Label>Description:</Form.Label></Col>
             <Col><Form.Control type="text" 
-              placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!") }/>
+              placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!")}
+              ref={this.editDescriptionRef} />
             </Col>
           </Form.Group>
           <Button type="submit" className="float-right">Done!</Button>
