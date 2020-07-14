@@ -7,7 +7,6 @@ import app from '../Firebase';
 
 const db = app.firestore();
 
-
 /**
  * Gets the list of activities from the server. 
  * 
@@ -23,6 +22,7 @@ export async function getActivityList(tripId) {
       querySnapshot.forEach(doc => {
         let data = doc.data();
         data['id'] = doc.id;
+        data['tripId'] = tripId;
         
         // TODO: if start date != end date, split into 2 days. (#37)
 

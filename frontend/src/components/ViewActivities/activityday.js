@@ -16,12 +16,11 @@ class ActivityDay extends React.Component {
     const sortedActivities = Array.from(this.props.activities)
           .sort(activityFns.compareActivities);
     let date = new Date(this.props.date);
-    let id = date.getTime();
     return (
       <div className='activity-day'>
         <h4>{time.timestampToDateFormatted(date.getTime())}</h4>
         {sortedActivities.map((activity, index) => (
-          <Activity activity={activity} key={index + id} className="activity"/>
+          <Activity activity={activity} key={index} className="activity"/>
         ))}
       </div>
     );

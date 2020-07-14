@@ -1,4 +1,7 @@
 import * as DB from '../../constants/database.js';
+import app from '../Firebase';
+
+const db = app.firestore();
 
 /**
  * Sort a list of trip activities by date. 
@@ -54,4 +57,29 @@ export function getField(activity, fieldName, defaultValue){
     return defaultValue;
   }
   return activity[fieldName];
+}
+
+/**
+ * 
+ * @param {*} tripId 
+ * @param {*} activityId 
+ * @param {*} fieldName 
+ * @param {*} newValue 
+ */
+export async function writeActivity(tripId, activityId, newValues) {
+  // todo: check if tripId or activityId is not valid.
+  if (newValues === null) {
+    return false;
+  }
+
+  const act = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
+    .collection(DB.COLLECTION_ACTIVITIES).doc(activityId);
+  
+  try {
+    const a = await act.update(newValues);
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
 }

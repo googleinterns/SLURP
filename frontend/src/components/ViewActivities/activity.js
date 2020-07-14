@@ -2,7 +2,7 @@ import React from 'react';
 import * as time from '../Utils/time.js';
 import * as DB from '../../constants/database.js'
 import '../../styles/activities.css';
-import { getField } from './activityfns.js';
+import { getField, writeActivity } from './activityfns.js';
 import { Accordion, Button, Card, Col, Form, Row } from 'react-bootstrap';
 
 /**
@@ -18,6 +18,7 @@ function timezonePicker() {
  * 
  * @param {Object} props This component expects the following props:
  * - `activity` {Object} The activity to display.
+ *    (MUST contain 'id' field with database activity id and 'tripId' field.)
  */
 class Activity extends React.Component {
   /** {@inheritdoc} */
@@ -30,6 +31,7 @@ class Activity extends React.Component {
     this.setEditActivity = this.setEditActivity.bind(this);
     this.finishEditActivity = this.finishEditActivity.bind(this);
     this.displayCard = this.displayCard.bind(this);
+    this.editActivity = this.editActivity.bind(this);
 
     // References. 
     this.editTitleRef = React.createRef();
@@ -48,10 +50,24 @@ class Activity extends React.Component {
   /**
    * Set the activity into viewing mode.
    */
-  finishEditActivity = (event) => {
+  finishEditActivity(event) {
     this.setState({editing: false});
     event.preventDefault();
+    this.editActivity();
   };
+
+  /**
+   * 
+   */
+  editActivity() {
+    let newVals = {};
+    if (this.editTitleRef.current !== null) {
+      newVals[DB.ACTIVITIES_TITLE] = this.editTitleRef.current.value;
+    }
+    if (Object.keys(newVals).length !== 0) {
+      writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
+    }
+  }
 
   /**
    * Display the current activity, either in view or display mode.
@@ -71,7 +87,7 @@ class Activity extends React.Component {
         <Form className="activity-editor" onSubmit={this.finishEditActivity}>
           <Form.Group as={Row} controlId="formActivityTitle">
             <Col sm={2}><Form.Label>Title:</Form.Label></Col>
-            <Col><Form.Control type="text" placeholder={activity[DB.ACTIVITIES_TITLE]} ref={this.editTitleReference}/></Col>
+            <Col><Form.Control type="text" placeholder={activity[DB.ACTIVITIES_TITLE]} ref={this.editTitleRef}/></Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formActivityStartTime">
             <Col sm={2}><Form.Label>From:</Form.Label></Col>
