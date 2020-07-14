@@ -26,12 +26,12 @@ function createTextFormControl(placeholder, ref) {
 /**
  * Returns a Form.Group element with components specified by the input args.
  *
- * @param {string} controlId prop that accessibly wires the nested label and
+ * @param {string} controlId Prop that accessibly wires the nested label and
  *                           input prop.
  * @param {string} formLabel Label/title for the form input.
  * @param {string} inputType Input type of the form.
  * @param {string} placeholder Text placeholder in the form input.
- * @param {React.RefObject} ref Ref attatched to the valued inputted in the form.
+ * @param {React.RefObject} ref Ref attached to the values inputted in the form.
  * @param {string} subFormText Subtext instructions under a form input.
  * @return {JSX.Element} The Form.Group element.
  */
@@ -64,7 +64,7 @@ function createFormGroup(controlId, formLabel, inputType,
  * @param {Object} props These are the props for this component:
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: The function that handles closing the add trips modal.
- * - userEmail: The current users email.
+ * - userEmail: The current user's email.
  *
  * @extends React.Component
  */
