@@ -44,6 +44,7 @@ function queryUserTrips(db, userEmail) {
   const userUid = _getUidFromUserEmail(userEmail);
   return db.collection(DB.COLLECTION_TRIPS)
       .where(DB.TRIPS_COLLABORATORS, 'array-contains', userUid)
+      .orderBy(DB.TRIPS_CREATION_TIME, 'desc')
       .get();
 }
 
