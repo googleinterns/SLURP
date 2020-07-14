@@ -21,7 +21,7 @@ class App extends React.Component {
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <PrivateRoute path={ROUTES.VIEW_TRIPS} component={ViewTripsPage} />
-            <PrivateRoute path={ROUTES.VIEW_ACTIVITIES} component={ViewActivitiesPage} />
+            <PrivateRoute path={ROUTES.VIEW_ACTIVITIES + '/:tripId'} component={ViewActivitiesPage} />
           </div>
         </Router>
       </AuthProvider>
