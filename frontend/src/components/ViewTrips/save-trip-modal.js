@@ -114,8 +114,7 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  *
  * This component acts as a parent comonent of the AddTripModal and
  * EditTripModal components. The only difference between the two is the prop
- * `placeholderObj` that is passed in containing the default values for the
- * form input boxes.
+ * `placeholderObj` prop (see below).
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
@@ -125,7 +124,8 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  *        component upon trip creation (Remove when fix Issue #62).
  * - key: Special React attribute that ensures a new AddTripModal instance is
  *        created whenever this key is updated
- * - placeholderObj: ...
+ * - placeholderObj: Object containing the placeholder/default values for the
+ *        form input text boxes.
  *
  * @extends React.Component
  */

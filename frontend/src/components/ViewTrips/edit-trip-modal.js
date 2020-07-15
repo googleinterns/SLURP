@@ -5,7 +5,7 @@ import SaveTripModal from './save-trip-modal.js'
 /**
  * Component corresponding to the edit trips modal.
  *
- *  TODO(Issue #69): Integrate EditTripModal into Trip component.
+ * TODO(Issue #69): Integrate EditTripModal into Trip component.
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
