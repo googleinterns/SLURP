@@ -1,32 +1,6 @@
 import * as firebase from 'firebase/app';
 import { COLLECTION_TRIPS } from '../../constants/database.js';
-
-/**
- * Temporary hardcoded function that returns the current users email.
- *
- * TODO(Issue 55): Remove this function and replace any calls to it with Auth
- *                 component function.
- *
- * @return Hardcoded user email string.
- */
-function _getUserEmail() {
-  return 'matt.murdock';
-}
-
-/**
- * Temporary hardcoded function that returns the user's uid given the user's
- * email.
- *
- * TODO(Issue 55): Remove this function and replace any calls to it with Auth
- *                 component function.
- *
- * @param {string} userEmail A users email.
- * @return {string} The 'fake' uid associated with the user email that is
- *     created with the form '_`userEmail`_'.
- */
-function _getUidFromUserEmail(userEmail) {
-  return '_' + userEmail + '_';
-}
+import { getCurUserEmail, getUidFromUserEmail} from './temp-auth-utils.js'
 
 /**
  * Return a string containing the trip name given the trip name entered in the
@@ -60,7 +34,7 @@ export function getTripDestination(rawDestination) {
 export function getTimestampFromDateString(dateStr) {
   const dateParts = dateStr.split('-').map(str => +str);
   if (dateParts.length === 1 && dateParts[0] === 0) {
-    return firebase.firestore.Timestamp.now()
+    return firebase.firestore.Timestamp.now();
   }
 
   const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
@@ -77,8 +51,12 @@ export function getTimestampFromDateString(dateStr) {
  *     creator uid).
  */
 export function getCollaboratorUidArr(collaboratorEmailArr) {
-  collaboratorEmailArr = [_getUserEmail()].concat(collaboratorEmailArr);
-  return collaboratorEmailArr.map(userEmail => _getUidFromUserEmail(userEmail));
+  collaboratorEmailArr = [getCurUserEmail()].concat(collaboratorEmailArr);
+  while (collaboratorEmailArr.includes('')) {
+    const emptyStrIdx = collaboratorEmailArr.indexOf('');
+    collaboratorEmailArr.splice(emptyStrIdx, 1);
+  }
+  return collaboratorEmailArr.map(userEmail => getUidFromUserEmail(userEmail));
 }
 
 /**
