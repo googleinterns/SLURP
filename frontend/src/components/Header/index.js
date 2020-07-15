@@ -7,9 +7,6 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import { VIEW_TRIPS } from '../../constants/routes.js';
 
-// Size in pixels.
-const NAVBAR_LOGO_SIDE_LENGTH = 50;
-
 /**
  * Header component to display at the top of pages. By default, it displays the
  * SLURP logo on the left and user info on the right. It accepts a React
@@ -29,11 +26,7 @@ class Header extends React.Component {
         <Navbar className='d-flex align-items-center' fixed='top' bg='info'>
           <Navbar.Brand href={VIEW_TRIPS}>
             {/* TODO (Issue #24): Put path to logo when we have one. */}
-            <img
-                width={NAVBAR_LOGO_SIDE_LENGTH}
-                height={NAVBAR_LOGO_SIDE_LENGTH}
-                alt="SLURP Logo"
-            />
+            <img alt="SLURP Logo" />
           </Navbar.Brand>
           <Container>
             {this.props.children}
