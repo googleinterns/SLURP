@@ -67,7 +67,7 @@ export function getField(activity, fieldName, defaultValue){
  * @param {Object} newValues Dictionary of the new values in {fieldName: newValue} form
  */
 export async function writeActivity(tripId, activityId, newValues) {
-  // todo: check if tripId or activityId is not valid.
+  // todo: check if tripId or activityId is not valid. (#58)
   if (newValues === null) {
     return false;
   }
