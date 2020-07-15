@@ -19,7 +19,7 @@ class ViewTrips extends React.Component {
     super();
     this.state = { showModal: false,
                    refreshTripsContainer: false,
-                   refreshAddTripModal: false
+                   refreshSaveTripModal: false
                  };
   }
 
@@ -38,25 +38,25 @@ class ViewTrips extends React.Component {
   }
 
   /**
-   * Flips `refreshAddTripModal` property which causes that AddTripModal
+   * Flips `refreshSaveTripModal` property which causes that save/edit trip
    * component to be reloaded.
    *
    * This was done to prevent bugs where multiple component input fields would
    * persist from one instance of the modal to the next when view trips page
    * was not refreshed in between.
    */
-  refreshAddTripModal = () => {
-    this.setState({ refreshAddTripModal: !this.state.refreshAddTripModal });
+  refreshSaveTripModal = () => {
+    this.setState({ refreshSaveTripModal: !this.state.refreshSaveTripModal });
   }
 
-  /** Property that refreshes and displays add trip page. */
-  showAddTripModal = () => {
-    this.refreshAddTripModal()
+  /** Property that refreshes and displays the add/edit trip page. */
+  showSaveTripModal = () => {
+    this.refreshSaveTripModal();
     this.setState({ showModal: true });
   }
 
-  /** Property that sets `showModal` to false --> hides add trip page. */
-  hideAddTripModal = () => { this.setState({ showModal: false }); }
+  /** Property that hides the add/edit trip page. */
+  hideSaveTripModal = () => { this.setState({ showModal: false }); }
 
   /** @inheritdoc */
   render() {
@@ -66,9 +66,9 @@ class ViewTrips extends React.Component {
         <AddTripModal
           db={db}
           show={this.state.showModal}
-          handleClose={this.hideAddTripModal}
+          handleClose={this.hideSaveTripModal}
           refreshTripsContainer={this.refreshTripsContainer}
-          key={this.state.refreshAddTripModal}
+          key={this.state.refreshSaveTripModal}
         />
         <div className="manage-trips-bar">
           <Button type='button' onClick={this.showAddTripModal}>
