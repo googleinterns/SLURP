@@ -16,19 +16,27 @@ import SaveTripModal from './save-trip-modal.js'
  *
  * @extends React.Component
  */
-class SaveTripModal extends React.Component {
-  /** @inheritdoc */
-  render() {
-    return (
-      <SaveTripModal
-        db={this.props.db}
-        show={this.props.show}
-        handleClose={this.props.handleClose}
-        refreshTripsContainer={this.props.refreshTripsContainer}
-        key={this.props.key}
-      />
-    );
-  }
+const EditTripModal = (props) => {
+  const placeholderObj =
+  {
+    name:               'Enter Trip Name',
+    description:        'Enter Trip Description',
+    destination:        'Enter Trip Destination',
+    start_date:         '',
+    end_date:           '',
+    collaborators:      ['person@email.xyz']
+  };
+
+  return (
+    <SaveTripModal
+      db={props.db}
+      show={props.show}
+      handleClose={props.handleClose}
+      refreshTripsContainer={props.refreshTripsContainer}
+      key={props.key}
+      placeholderObj={placeholderObj}
+    />
+  );
 };
 
-export default SaveTripModal;
+export default EditTripModal;
