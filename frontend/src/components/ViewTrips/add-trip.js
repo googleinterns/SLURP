@@ -84,8 +84,10 @@ class AddTrip extends React.Component {
   /**
    * Upon submission of the form, a new Trip document is created and the add
    * trip modal is closed.
+   *
+   * TODO(Merge PR #54): Remove console.log statment.
    */
-  submitNewTrip = () => {
+  handleSubmitNewTrip = () => {
     console.log('New trip submitted.');
     createTrip({name: this.nameRef.current.value,
                description: this.descriptionRef.current.value,
@@ -130,7 +132,7 @@ class AddTrip extends React.Component {
             <Button variant='secondary' onClick={this.props.handleClose}>
               Close
             </Button>
-            <Button variant='primary' type='submit' onClick={this.submitNewTrip}>
+            <Button variant='primary' onClick={this.handleSubmitNewTrip}>
               Add Trip
             </Button>
           </Modal.Footer>
