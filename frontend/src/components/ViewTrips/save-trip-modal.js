@@ -182,7 +182,7 @@ class SaveTripModal extends React.Component {
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
                              'Enter Trip Destination', this.destinationRef)}
             {createFormGroup('tripStartDateGroup', 'Start Date', 'date',
-                            '', this.startDateRef)}
+                            '2020-06-06', this.startDateRef)}
             {createFormGroup('tripEndDateGroup', 'End Date', 'date',
                             '', this.endDateRef)}
             {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'emails',
