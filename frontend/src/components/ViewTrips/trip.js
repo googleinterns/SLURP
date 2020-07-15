@@ -2,8 +2,8 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import ViewActivitiesButton from './view-activities-button.js';
 import { getUserEmailFromUid } from './temp-auth-utils.js'
+import ViewActivitiesButton from './view-activities-button.js';
 
 /**
  * Returns the date range of the trip associated with the Trip document data
