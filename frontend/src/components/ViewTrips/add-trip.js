@@ -44,6 +44,8 @@ function createDateFormControl(ref) {
  * Returns a Form.Control element with input type 'text' and other fields
  * specified by the function parameters.
  *
+ * TODO(Issue #67): Email verification before submitting the form.
+ *
  * @param {string} placeholder Text placehold in the form input
  * @param {React.RefObject} refArr The list of refs attached to the emails
  *     inputted in the form.
