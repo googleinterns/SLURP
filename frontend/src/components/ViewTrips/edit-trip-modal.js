@@ -16,7 +16,7 @@ import SaveTripModal from './save-trip-modal.js'
  *
  * @extends React.Component
  */
-class AddTripModal extends React.Component {
+class SaveTripModal extends React.Component {
   /** @inheritdoc */
   render() {
     return (
@@ -31,4 +31,4 @@ class AddTripModal extends React.Component {
   }
 };
 
-export default AddTripModal;
+export default SaveTripModal;
