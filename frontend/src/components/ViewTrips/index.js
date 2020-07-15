@@ -34,8 +34,8 @@ class ViewTrips extends React.Component {
   }
 
   /**
-   * Flips `refreshTripsContainer` property which causes that TripsContainer
-   * component to be reloaded.
+   * Handler that flips `refreshTripsContainer` property which causes that
+   * TripsContainer component to be reloaded.
    *
    * This allows a trip creator's view trips page to be updated in real time.
    *
@@ -48,8 +48,8 @@ class ViewTrips extends React.Component {
   }
 
   /**
-   * Flips `refreshSaveTripModal` property which causes that save/edit trip
-   * component to be reloaded.
+   * Handler that flips `refreshSaveTripModal` property which causes that
+   * save/edit trip component to be reloaded.
    *
    * This was done to prevent bugs where multiple component input fields would
    * persist from one instance of the modal to the next when view trips page
@@ -59,15 +59,22 @@ class ViewTrips extends React.Component {
     this.setState({ refreshSaveTripModal: !this.state.refreshSaveTripModal });
   }
 
-  /** Property that hides the add/edit trip page. */
+  /** Handler that hides the add/edit trip page. */
   hideSaveTripModal = () => { this.setState({ showModal: false }); }
 
-  /** Property that refreshes and displays the add/edit trip page. */
+  /** Handler that refreshes and displays the add/edit trip page. */
   showSaveTripModal = () => {
     this.refreshSaveTripModal();
     this.setState({ showModal: true });
   }
 
+  /**
+   * Handler that displays the add trip page.
+   *
+   * Sets state for the states `title`, `tripId`, and `placeholderObj` in order
+   * to ensure the modal has the visual characteristics of an "add trip" modal
+   * and creates a new Trip document in the database.
+   */
   showAddTripModal = () => {
     this.setState({
       title: 'Add New Trip',
@@ -84,8 +91,16 @@ class ViewTrips extends React.Component {
     this.showSaveTripModal();
   }
 
+  /**
+   * Handler that displays the edit trip page.
+   *
+   * Sets state for the states `title`, `tripId`, and `placeholderObj` in order
+   * to ensure the modal has the visual characteristics of an "edit trip" modal
+   * and overwrites and existing Trip document in the database.
+   *
+   * TODO(Issue #69): Get individual tripId and trip data for placeholderObj.
+   */
   showEditTripModal = () => {
-    // TODO(Issue #69): Get individual tripId and trip data for placeholderObj
     this.setState({
       title: 'Edit Trip',
       tripId: null,
