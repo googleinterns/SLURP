@@ -3,7 +3,7 @@ import React from 'react';
 import SaveTripModal from './save-trip-modal.js'
 
 /**
- * Component corresponding to add trips modal.
+ * Component corresponding to the add trips modal.
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.

@@ -110,7 +110,12 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
 }
 
 /**
- * Component corresponding to add trips modal.
+ * Component corresponding to the save trips modal.
+ *
+ * This component acts as a parent comonent of the AddTripModal and
+ * EditTripModal components. The only difference between the two is the prop
+ * `placeholderObj` that is passed in containing the default values for the
+ * form input boxes.
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.

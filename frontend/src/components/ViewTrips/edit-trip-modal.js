@@ -3,7 +3,9 @@ import React from 'react';
 import SaveTripModal from './save-trip-modal.js'
 
 /**
- * Component corresponding to add trips modal.
+ * Component corresponding to the edit trips modal.
+ *
+ *  TODO(Issue #69): Integrate EditTripModal into Trip component.
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
@@ -17,7 +19,6 @@ import SaveTripModal from './save-trip-modal.js'
  * @extends React.Component
  */
 const EditTripModal = (props) => {
-  // TODO(Issue #)
   const placeholderObj =
   {
     name:          null,
