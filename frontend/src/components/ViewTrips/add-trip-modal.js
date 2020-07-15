@@ -98,13 +98,10 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
   }
 
   return (
-    <>
+    <Form.Group controlId={controlId}>
       <Form.Label>{formLabel}</Form.Label>
-      <Form.Group controlId={controlId}>
-          {formControl}
-        {/* Temporary instructions until fix Issue #52 */}
-      </Form.Group>
-    </>
+        {formControl}
+    </Form.Group>
   )
 }
 
