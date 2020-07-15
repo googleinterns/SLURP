@@ -50,7 +50,7 @@ export function getTimestampFromDateString(dateStr) {
  * @return {!Array{string}} Array of all collaborator uids (including trip
  *     creator uid).
  */
-export function getCollaboratorUidArr(collaboratorEmailArr) {
+export function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [getCurUserEmail()].concat(collaboratorEmailArr);
   while (collaboratorEmailArr.includes('')) {
     const emptyStrIdx = collaboratorEmailArr.indexOf('');
@@ -84,7 +84,7 @@ function formatTripData(rawTripObj) {
     destination:        rawTripObj.description,
     start_date:         getTimestampFromDateString(rawTripObj.startDate),
     end_date:           getTimestampFromDateString(rawTripObj.endDate),
-    collaborators:      getCollaboratorUidArr(rawTripObj.collaboratorEmails)
+    collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails)
   };
 
   return formattedTripObj;
