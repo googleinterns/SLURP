@@ -1,6 +1,6 @@
 import React from 'react';
-import Trip from './trip.js';
 
+import Trip from './trip.js';
 import * as DB from '../../constants/database.js';
 import { getCurUserEmail, getUidFromUserEmail} from './temp-auth-utils.js'
 

@@ -1,4 +1,5 @@
 import * as firebase from 'firebase/app';
+
 import { COLLECTION_TRIPS } from '../../constants/database.js';
 import { getCurUserEmail, getUidFromUserEmail} from './temp-auth-utils.js'
 

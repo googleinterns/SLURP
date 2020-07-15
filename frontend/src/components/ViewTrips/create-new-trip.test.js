@@ -1,7 +1,7 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-firestore';
-import { getUidFromUserEmail} from './temp-auth-utils.js'
 
+import { getUidFromUserEmail} from './temp-auth-utils.js'
 import { getTripName, getTripDestination, getTimestampFromDateString,
          getCollaboratorUidArray }  from './create-new-trip.js'
 
