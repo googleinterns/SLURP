@@ -118,10 +118,10 @@ class AddTrip extends React.Component {
                              'Enter Trip Destination', this.destinationRef)}
             {createFormGroup('tripStartDateGroup', 'Start Date', 'text',
                             'Enter Trip Start Date', this.startDateRef,
-                            'Enter date in the form: \'mm/dd/yyy\'')}
+                            'Enter date in the form: \'mm/dd/yyyy\'')}
             {createFormGroup('tripEndDateGroup', 'End Date', 'text',
                           'Enter Trip End Date', this.endDateRef,
-                          'Enter date in the form: \'mm/dd/yyy\'')}
+                          'Enter date in the form: \'mm/dd/yyyy\'')}
             {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'text',
                            'Enter Collaborator Emails', this.collaboratorsRef,
                            'Enter emails in the form: \'user1@email.com, ...,' +
