@@ -112,7 +112,7 @@ class AddTrip extends React.Component {
           <Modal.Body>
             {createFormGroup('tripNameGroup', 'Trip Name', 'text',
                              'Enter Trip Name', this.nameRef)}
-            {createFormGroup('tripDescripGroup', 'Trip Description', 'text',
+            {createFormGroup('tripDescGroup', 'Trip Description', 'text',
                              'Enter Trip Description', this.descriptionRef)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
                              'Enter Trip Destination', this.destinationRef)}
