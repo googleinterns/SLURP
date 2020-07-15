@@ -24,7 +24,7 @@ const AddTripModal = (props) => {
     destination:        'Enter Trip Destination',
     startDate:         '',
     endDate:           '',
-    collaborators:      'person@email.xyz'
+    collaborators:      ['person@email.xyz']
   };
 
   return (
