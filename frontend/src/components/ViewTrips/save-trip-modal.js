@@ -120,6 +120,7 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  *        component upon trip creation (Remove when fix Issue #62).
  * - key: Special React attribute that ensures a new AddTripModal instance is
  *        created whenever this key is updated
+ * - placeholderObj: ...
  *
  * @extends React.Component
  */
@@ -128,12 +129,20 @@ class SaveTripModal extends React.Component {
   constructor(props) {
     super(props);
 
+    // Create Refs to reference form input elements
     this.nameRef = React.createRef();
     this.descriptionRef = React.createRef();
     this.destinationRef = React.createRef();
     this.startDateRef = React.createRef();
     this.endDateRef = React.createRef();
-    this.state = { collaboratorsRefArr: [React.createRef()] }
+
+    // Create the number of collaborator input box refs as number of
+    // collaborators specified in the placeholderObj
+    const collaboratorsRefArr = [];
+    for (let i = 0; i < this.props.placeholderObj.collaborators.length; i++) {
+      collaboratorsRefArr.push(React.createRef())
+    }
+    this.state = { collaboratorsRefArr: collaboratorsRefArr }
   }
 
   addCollaboratorRef = () => {
@@ -176,17 +185,18 @@ class SaveTripModal extends React.Component {
         <Form>
           <Modal.Body>
             {createFormGroup('tripNameGroup', 'Trip Name', 'text',
-                             'Enter Trip Name', this.nameRef)}
+                    this.props.placeholderObj.name, this.nameRef)}
             {createFormGroup('tripDescripGroup', 'Trip Description', 'text',
-                             'Enter Trip Description', this.descriptionRef)}
+                    this.props.placeholderObj.description, this.descriptionRef)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
-                             'Enter Trip Destination', this.destinationRef)}
+                    this.props.placeholderObj.destination, this.destinationRef)}
             {createFormGroup('tripStartDateGroup', 'Start Date', 'date',
-                            '2020-06-06', this.startDateRef)}
+                    this.props.placeholderObj.startDate, this.startDateRef)}
             {createFormGroup('tripEndDateGroup', 'End Date', 'date',
-                            '', this.endDateRef)}
+                    this.props.placeholderObj.endDate, this.endDateRef)}
             {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'emails',
-                      'person@email.xyz', this.state.collaboratorsRefArr)}
+                    this.props.placeholderObj.collaborators,
+                    this.state.collaboratorsRefArr)}
             <Button onClick={this.addCollaboratorRef}>
               Add Another Collaborator
             </Button>
