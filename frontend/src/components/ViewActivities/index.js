@@ -11,6 +11,6 @@ class ViewActivities extends React.Component {
       </div>
     );
   }
-};
+}
 
 export default ViewActivities;
