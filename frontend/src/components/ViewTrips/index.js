@@ -22,7 +22,14 @@ class ViewTrips extends React.Component {
                    refreshSaveTripModal: false,
                    modalTitle: null,
                    tripId: null,
-                   placeholderObj: null
+                   placeholderObj: {
+                                     name:          null,
+                                     description:   null,
+                                     destination:   null,
+                                     startDate:     null,
+                                     endDate:       null,
+                                     collaborators: []
+                                   }
                  };
   }
 
@@ -51,6 +58,9 @@ class ViewTrips extends React.Component {
   refreshSaveTripModal = () => {
     this.setState({ refreshSaveTripModal: !this.state.refreshSaveTripModal });
   }
+
+  /** Property that hides the add/edit trip page. */
+  hideSaveTripModal = () => { this.setState({ showModal: false }); }
 
   /** Property that refreshes and displays the add/edit trip page. */
   showSaveTripModal = () => {
@@ -90,9 +100,6 @@ class ViewTrips extends React.Component {
     });
     this.showSaveTripModal();
   }
-
-  /** Property that hides the add/edit trip page. */
-  hideSaveTripModal = () => { this.setState({ showModal: false }); }
 
   /** @inheritdoc */
   render() {
