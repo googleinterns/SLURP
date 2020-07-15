@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 import app from '../Firebase/';
 import Header from '../Header/';
-import AddTripModal from './add-trip.js'
+import AddTripModal from './add-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
 const db = app.firestore();
