@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 import app from '../Firebase/';
 import Header from '../Header/';
-import AddTripModal from './add-trip-modal.js'
+import SaveTripModal from './add-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
 const db = app.firestore();
@@ -19,7 +19,10 @@ class ViewTrips extends React.Component {
     super();
     this.state = { showModal: false,
                    refreshTripsContainer: false,
-                   refreshSaveTripModal: false
+                   refreshSaveTripModal: false,
+                   modalTitle: null,
+                   tripId: null,
+                   placeholderObj: null
                  };
   }
 
@@ -55,6 +58,39 @@ class ViewTrips extends React.Component {
     this.setState({ showModal: true });
   }
 
+  showAddTripModal = () => {
+    this.setState({
+      title: 'Add New Trip',
+      tripId: null,
+      placeholderObj: {
+        name:          'Enter Trip Name',
+        description:   'Enter Trip Description',
+        destination:   'Enter Trip Destination',
+        startDate:     '',
+        endDate:       '',
+        collaborators: ['person@email.xyz']
+      }
+    });
+    this.showSaveTripModal();
+  }
+
+  showEditTripModal = () => {
+    // TODO(Issue #69): Get individual tripId and trip data for placeholderObj
+    this.setState({
+      title: 'Edit Trip',
+      tripId: null,
+      placeholderObj: {
+        name:          null,
+        description:   null,
+        destination:   null,
+        startDate:     null,
+        endDate:       null,
+        collaborators: []
+      }
+    });
+    this.showSaveTripModal();
+  }
+
   /** Property that hides the add/edit trip page. */
   hideSaveTripModal = () => { this.setState({ showModal: false }); }
 
@@ -63,11 +99,14 @@ class ViewTrips extends React.Component {
     return (
       <div className="view-trips-page">
         <Header />
-        <AddTripModal
+        <SaveTripModal
           db={db}
           show={this.state.showModal}
           handleClose={this.hideSaveTripModal}
           refreshTripsContainer={this.refreshTripsContainer}
+          title={this.state.title}
+          tripId={this.state.tripId}
+          placeholderObj={this.state.placeholderObj}
           key={this.state.refreshSaveTripModal}
         />
         <div className="manage-trips-bar">
