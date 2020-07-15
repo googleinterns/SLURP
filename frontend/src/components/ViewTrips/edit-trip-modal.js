@@ -22,8 +22,8 @@ const EditTripModal = (props) => {
     name:               'Enter Trip Name',
     description:        'Enter Trip Description',
     destination:        'Enter Trip Destination',
-    start_date:         '',
-    end_date:           '',
+    startDate:         '',
+    endDate:           '',
     collaborators:      ['person@email.xyz']
   };
 
