@@ -123,8 +123,9 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  * - handleClose: The function that handles closing the add trips modal.
  * - refreshTripsContainer: Function that handles refreshing the TripsContainer
  *        component upon trip creation (Remove when fix Issue #62).
- * - title:
- * - tripId:
+ * - title: The title of the modal.
+ * - tripId: For adding a new trip, this will be null. For editting an existing
+ *        trip, this will the document id associated with the trip.
  * - placeholderObj: Object containing the placeholder/default values for the
  *        form input text boxes.
  * - key: Special React attribute that ensures a new AddTripModal instance is
@@ -167,7 +168,7 @@ class SaveTripModal extends React.Component {
    */
   handleCreateNewTrip = (e) => {
     e.preventDefault();
-    createTrip(this.props.db,
+    createTrip(this.props.db, this.props.tripId,
         {
           name: this.nameRef.current.value,
           description: this.descriptionRef.current.value,
@@ -187,7 +188,7 @@ class SaveTripModal extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New Trip</Modal.Title>
+          <Modal.Title>{this.props.title}</Modal.Title>
         </Modal.Header>
 
         <Form>
