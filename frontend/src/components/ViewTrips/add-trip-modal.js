@@ -144,7 +144,7 @@ class AddTrip extends React.Component {
    *
    * @param e Event object corresponding to (add trip) submit button click.
    */
-  addNewTrip = (e) => {
+  handleCreateNewTrip = (e) => {
     e.preventDefault();
     createTrip(this.props.db,
         {
@@ -192,7 +192,7 @@ class AddTrip extends React.Component {
             <Button variant='secondary' onClick={this.props.handleClose}>
               Close
             </Button>
-            <Button variant='primary' type='submit' onClick={this.addNewTrip}>
+            <Button variant='primary' onClick={this.handleCreateNewTrip}>
               Add Trip
             </Button>
           </Modal.Footer>
