@@ -6,7 +6,7 @@
  *
  * @return Hardcoded user email string.
  */
-function getCurUserEmail() {
+export function getCurUserEmail() {
   return 'matt.murdock';
 }
 
@@ -21,7 +21,7 @@ function getCurUserEmail() {
  * @return {string} The 'fake' uid associated with the user email that is
  *     created with the form '_`userEmail`_'.
  */
-function getUidFromUserEmail(userEmail) {
+export function getUidFromUserEmail(userEmail) {
   return '_' + userEmail + '_';
 }
 
@@ -35,6 +35,6 @@ function getUidFromUserEmail(userEmail) {
  * @param {string} uid Fake string uid that is in the form '_userEmail_'.
  * @return {string} The email corresponding to the fake uid.
  */
-function _getUserEmailFromUid(uid) {
+export function getUserEmailFromUid(uid) {
   return uid.substring(1, uid.length - 1);
 }
