@@ -12,19 +12,19 @@ import SaveTripModal from './save-trip-modal.js'
  * - refreshTripsContainer: Function that handles refreshing the TripsContainer
  *        component upon trip creation (Remove when fix Issue #62).
  * - key: Special React attribute that ensures a new AddTripModal instance is
- *        created whenever this key is updated
+ *        newly created whenever this key is updated.
  *
  * @extends React.Component
  */
 const AddTripModal = (props) => {
   const placeholderObj =
   {
-    name:               'Enter Trip Name',
-    description:        'Enter Trip Description',
-    destination:        'Enter Trip Destination',
-    startDate:         '',
-    endDate:           '',
-    collaborators:      ['person@email.xyz']
+    name:          'Enter Trip Name',
+    description:   'Enter Trip Description',
+    destination:   'Enter Trip Destination',
+    startDate:     '',
+    endDate:       '',
+    collaborators: ['person@email.xyz']
   };
 
   return (
