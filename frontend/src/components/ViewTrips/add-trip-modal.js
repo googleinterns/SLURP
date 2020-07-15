@@ -119,7 +119,7 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  *
  * @extends React.Component
  */
-class AddTrip extends React.Component {
+class AddTripModal extends React.Component {
   /** @inheritdoc */
   constructor(props) {
     super(props);
@@ -202,4 +202,4 @@ class AddTrip extends React.Component {
   }
 };
 
-export default AddTrip;
+export default AddTripModal;

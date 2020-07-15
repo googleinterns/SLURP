@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 import app from '../Firebase/';
 import Header from '../Header/';
-import AddTrip from './add-trip-modal.js'
+import AddTripModal from './add-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
 const db = app.firestore();
@@ -45,7 +45,7 @@ class ViewTrips extends React.Component {
     return (
       <div className="view-trips-page">
         <Header />
-        <AddTrip
+        <AddTripModal
           db={db}
           show={this.state.showModal}
           handleClose={this.hideAddTripModal}
