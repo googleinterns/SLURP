@@ -2,20 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 import ViewActivitiesButton from './view-activities-button.js';
-
-/**
- * Temporary hardcoded function that returns the a user's email given the
- * fake uid that was stored in the Trip document.
- *
- * TODO(Issue 55): Remove this function and replace any calls to it with Auth
- *                 component function.
- *
- * @param {string} uid Fake string uid that is in the form '_userEmail_'.
- * @return {string} The email corresponding to the fake uid.
- */
-function _getUserEmailFromUid(uid) {
-  return uid.substring(1, uid.length - 1);
-}
+import { getUserEmailFromUid } from './temp-auth-utils.js'
 
 /**
  * Returns the date range of the trip associated with the Trip document data
@@ -37,7 +24,7 @@ export function getDateRange(tripObj) {
 
 export function getCollaboratorEmails(collaboratorUidArr) {
   const collaboratorEmailArr =
-      collaboratorUidArr.map(uid => _getUserEmailFromUid(uid));
+      collaboratorUidArr.map(uid => getUserEmailFromUid(uid));
   return collaboratorEmailArr.join(', ');
 }
 
