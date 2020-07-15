@@ -114,8 +114,10 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  * - db: Firestore database instance.
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: The function that handles closing the add trips modal.
- * - refresh
- * - key
+ * - refreshTripsContainer: Function that handles refreshing the TripsContainer
+ *        component upon trip creation (Remove when fix Issue #62).
+ * - key: Special React attribute that ensures a new AddTripModal instance is
+ *        created whenever this key is updated
  *
  * @extends React.Component
  */

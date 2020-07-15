@@ -23,15 +23,33 @@ class ViewTrips extends React.Component {
                  };
   }
 
+  /**
+   * Flips `refreshTripsContainer` property which causes that TripsContainer
+   * component to be reloaded.
+   *
+   * This allows a trip creator's view trips page to be updated in real time.
+   *
+   * In the future, the use of refreshTripContainer and the key prop on Trips
+   * container should be removed with the addition of real time listening with
+   * onShapshot (Issue #62).
+   */
   refreshTripsContainer = () => {
     this.setState({ refreshTripsContainer: !this.state.refreshTripsContainer });
   }
 
+  /**
+   * Flips `refreshAddTripModal` property which causes that AddTripModal
+   * component to be reloaded.
+   *
+   * This was done to prevent bugs where multiple component input fields would
+   * persist from one instance of the modal to the next when view trips page
+   * was not refreshed in between.
+   */
   refreshAddTripModal = () => {
     this.setState({ refreshAddTripModal: !this.state.refreshAddTripModal });
   }
 
-  /** Property that sets `showModal` to true --> displays add trip page. */
+  /** Property that refreshes and displays add trip page. */
   showAddTripModal = () => {
     this.refreshAddTripModal()
     this.setState({ showModal: true });

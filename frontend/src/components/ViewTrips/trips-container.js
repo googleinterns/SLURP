@@ -61,7 +61,7 @@ function getErrorElement(error) {
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
  * - key: Special React attribute that ensures a new TripsContainer instance is
- *        created whenever this key is updated.
+ *        created whenever this key is updated (Remove when fix Issue #62).
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
