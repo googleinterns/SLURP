@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as DB from '../../constants/database.js';
-import { getCurUserEmail, getUidFromUserEmail} from './temp-auth-utils.js'
+import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
 import Trip from './trip.js';
 
 /**
