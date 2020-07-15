@@ -96,24 +96,30 @@ function formatTripData(rawTripObj) {
  * Promise containing a reference to the newly created document.
  *
  * @param {firebase.firestore.Firestore} db The Firestore database instance.
+ * @param {?string} tripId Document id associated with trip to overwrite.
+ *     Null if adding a new trip.
  * @param {Object} tripObj A JS Object containing the Trip document fields.
  */
-export function addTripToFirestore(db, tripObj) {
-  return db.collection(COLLECTION_TRIPS)
-    .add(tripObj)
+export function addTripToFirestore(db, tripId, tripObj) {
+  if (tripId === null) {
+    return db.collection(COLLECTION_TRIPS).add(tripObj);
+  }
+  return db.collection(COLLECTION_TRIPS).doc(tripId).set(tripObj);
 }
 
 /**
  * Formats/cleans form data and creates new Trip document in firestore.
  *
  * @param {firebase.firestore.Firestore} db The Firestore database instance.
+ * @param {?string} tripId Document id associated with trip to overwrite.
+ *     Null if adding a new trip.
  * @param {Object} rawTripObj A JS Object containing the raw form data from the
  *    add trip form.
  */
-function createTrip(db, rawTripObj) {
+function createTrip(db, tripId, rawTripObj) {
   const formattedTripObj = formatTripData(rawTripObj);
 
-  addTripToFirestore(db, formattedTripObj)
+  addTripToFirestore(db, tripId, formattedTripObj)
       .then(docRef => {
         console.log("Document written with ID: ", docRef.id);
       })
