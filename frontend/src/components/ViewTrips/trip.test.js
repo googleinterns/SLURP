@@ -13,7 +13,7 @@ test('getDateRange test', () => {
   const endYear = 1996;
 
   // Note that the months in JS dates are 0 indexed rather than 1 indexed so
-  // they must be decremented in order for the month to be correct.
+  // they must be decremented by 1 in order for the month to be correct.
   const testStartDate = firebase.firestore.Timestamp.fromDate(
       new Date(startYear, startMonth - 1, startDay));
   const testEndDate = firebase.firestore.Timestamp.fromDate(
