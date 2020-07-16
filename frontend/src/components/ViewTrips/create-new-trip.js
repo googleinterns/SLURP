@@ -50,6 +50,9 @@ export function getTimestampFromDateString(dateStr) {
  * Return an array of collaborator uids given the emails provided in the
  * add trip form.
  *
+ * TODO(#72 & #67): Remove 'remove empty fields' once there is better way to
+ * remove collaborators (#72) and there is email validation (#67).
+ *
  * @param {!Array{string}} collaboratorEmailsArr Array of emails corresponding
  *     to the  collaborators of the trip (not including the trip creator email).
  * @return {!Array{string}} Array of all collaborator uids (including trip
@@ -57,6 +60,8 @@ export function getTimestampFromDateString(dateStr) {
  */
 export function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [getCurUserEmail()].concat(collaboratorEmailArr);
+
+  // Removes empty fields (temporary).
   while (collaboratorEmailArr.includes('')) {
     const emptyStrIdx = collaboratorEmailArr.indexOf('');
     collaboratorEmailArr.splice(emptyStrIdx, 1);
