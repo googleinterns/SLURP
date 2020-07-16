@@ -1,7 +1,7 @@
-import * as utils from './utils';
+import * as utils from './time';
 
 const TZ_CHICAGO = 'America/Chicago';
-const TZ_SINGAPORE = ;
+const TZ_SINGAPORE = 'Asia/Singapore';
 
 test('new york date timestamp format', () => {
   // Month parameter is zero indexed so it's actually the 10th month.
@@ -51,8 +51,8 @@ test('other full timestamp format', () => {
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
   const expectedCentral = "Saturday, August 22, 2020, 9:03 PM";
   const expectedSingapore = "Sunday, August 23, 2020, 10:03 AM";
-  const actualCentral = utils.timestampToFormatted(testDate, "America/Chicago");
-  const actualSingapore = utils.timestampToFormatted(testDate, "Asia/Singapore");
+  const actualCentral = utils.timestampToFormatted(testDate, TZ_CHICAGO);
+  const actualSingapore = utils.timestampToFormatted(testDate, TZ_SINGAPORE);
   expect(actualCentral).toEqual(expectedCentral);
   expect(actualSingapore).toEqual(expectedSingapore);
 })
