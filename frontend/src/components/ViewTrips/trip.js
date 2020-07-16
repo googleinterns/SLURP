@@ -66,9 +66,9 @@ const Trip = (props) => {
   return (
     <div>
       <h2>{name}</h2>
-      <p>{description}</p>
-      <p>{getDateRange(props.tripData)}</p>
       <p>{destination}</p>
+      <p>{getDateRange(props.tripData)}</p>
+      <p>{description}</p>
       <p>{collaboratorEmailsStr}</p>
 
       <Button
