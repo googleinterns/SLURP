@@ -25,7 +25,7 @@ function createTextFormControl(placeholder, ref) {
 }
 
 /**
- * Returns a Form.Control element with input type 'text' and other fields
+ * Returns a Form.Control element with input type 'date' and other fields
  * specified by the function parameters.
  *
  * @param {React.RefObject} refArr The list of refs attached to the emails
@@ -42,7 +42,7 @@ function createDateFormControl(ref) {
 }
 
 /**
- * Returns a Form.Control element with input type 'text' and other fields
+ * Returns a Form.Control element with input type 'email' and other fields
  * specified by the function parameters.
  *
  * TODO(Issue #67): Email verification before submitting the form.
@@ -109,7 +109,6 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  * Component corresponding to add trips modal.
  *
  * @param {Object} props These are the props for this component:
- * - db: Firestore database instance.
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: The function that handles closing the add trips modal.
  * - refreshTripsContainer: Function that handles refreshing the TripsContainer
@@ -146,7 +145,7 @@ class AddTripModal extends React.Component {
    */
   handleCreateNewTrip = (e) => {
     e.preventDefault();
-    createTrip(this.props.db,
+    createTrip(
         {
           name: this.nameRef.current.value,
           description: this.descriptionRef.current.value,

@@ -1,7 +1,11 @@
 import * as firebase from 'firebase/app';
 
+import app from '../Firebase/';
+
 import { COLLECTION_TRIPS } from '../../constants/database.js';
 import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
+
+const db = app.firestore();
 
 /**
  * Return a string containing the trip name given the trip name entered in the
@@ -97,6 +101,8 @@ function formatTripData(rawTripObj) {
  *
  * @param {firebase.firestore.Firestore} db The Firestore database instance.
  * @param {Object} tripObj A JS Object containing the Trip document fields.
+ * @return {Promise<firebase.firestore.DocumentReference>} Promise with the
+ *     document reference upon successful creation of the trip document.
  */
 export function addTripToFirestore(db, tripObj) {
   return db.collection(COLLECTION_TRIPS)
@@ -106,11 +112,10 @@ export function addTripToFirestore(db, tripObj) {
 /**
  * Formats/cleans form data and creates new Trip document in firestore.
  *
- * @param {firebase.firestore.Firestore} db The Firestore database instance.
  * @param {Object} rawTripObj A JS Object containing the raw form data from the
  *    add trip form.
  */
-function createTrip(db, rawTripObj) {
+function createTrip(rawTripObj) {
   const formattedTripObj = formatTripData(rawTripObj);
 
   addTripToFirestore(db, formattedTripObj)
