@@ -10,18 +10,18 @@ import createTrip from './create-new-trip.js';
  * Returns a Form.Control element with input type 'text' and other props
  * specified by the function parameters.
  *
- * @param {string} defaultVal Text default value in the form input
+ * @param {string} defaultText Default text value in the form input.
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
  * @param {boolean} isNewTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
  * @return {JSX.Element} The Form.Control element.
  */
-function createTextFormControl(defaultVal, ref, isNewTripForm) {
+function createTextFormControl(defaultText, ref, isNewTripForm) {
   if (isNewTripForm) {
     return (
       <Form.Control
         type="text"
-        placeholder={defaultVal}
+        placeholder={defaultText}
         ref={ref}
       />
     );
@@ -29,7 +29,7 @@ function createTextFormControl(defaultVal, ref, isNewTripForm) {
   return (
     <Form.Control
       type="text"
-      defaultValue={defaultVal}
+      defaultValue={defaultText}
       ref={ref}
     />
   );
@@ -39,16 +39,17 @@ function createTextFormControl(defaultVal, ref, isNewTripForm) {
  * Returns a Form.Control element with input type 'date' and other props
  * specified by the function parameters.
  *
+ * @param {string} defaultDate Default ISO date string in the form input.
  * @param {React.RefObject} refArr The list of refs attached to the emails
  *     inputted in the form.
  * @return {JSX.Element} The Form.Control element.
  */
-function createDateFormControl(defaultValue, ref) {
+function createDateFormControl(defaultDate, ref) {
   return (
     <Form.Control
       type="date"
       ref={ref}
-      defaultValue={defaultValue}
+      defaultValue={defaultDate}
     />
   );
 }
@@ -57,19 +58,19 @@ function createDateFormControl(defaultValue, ref) {
  * Returns a Form.Control element with input type 'email' and other props
  * specified by the function parameters.
  *
- * @param {string} defaultVal Text default value in the form input
+ * @param {string} defaultEmail Default text value in the form input.
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
  * @param {number} idx Index of the email Form.Control used for key prop.
  * @param {boolean} isNewTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
  * @return {JSX.Element} The Form.Control element.
  */
-function createEmailFormControl(defaultVal, ref, idx, isNewTripForm) {
+function createEmailFormControl(defaultEmail, ref, idx, isNewTripForm) {
   if (isNewTripForm) {
     return (
       <Form.Control
         type="email"
-        placeholder={defaultVal}
+        placeholder={defaultEmail}
         ref={ref}
         key={idx}
       />
@@ -78,7 +79,7 @@ function createEmailFormControl(defaultVal, ref, idx, isNewTripForm) {
   return (
     <Form.Control
       type="email"
-      defaultValue={defaultVal}
+      defaultValue={defaultEmail}
       ref={ref}
       key={idx}
     />
@@ -89,20 +90,27 @@ function createEmailFormControl(defaultVal, ref, idx, isNewTripForm) {
  * Returns multiple Form.Control elements with input type 'email' and other
  * props specified by the function parameters.
  *
+ * One is added to the index of the emails show in order to display all
+ * collaborators except the current user.
+ *
  * TODO(Issue #67): Email verification before submitting the form.
  *
- * @param {string} defaultVal Text placehold in the form input
- * @param {React.RefObject} refArr The list of refs attached to the emails
- *     inputted in the form.
+ * TODO(Issue #72): More intuitive remove collaborator when !`isNewTripForm`.
+ *
+ * @param {!Array<string>} defaultEmailArr Array of the emails to be displayed
+ *     in the default form fields.
+ * @param {!Array<React.RefObject>} refArr Array of refs attached to the
+ *     emails inputted in the form.
  * @param {boolean} isNewTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
  * @return {JSX.Element} The Form.Control element.
  */
-function createMultiFormControl(defaultVal, refArr, isNewTripForm) {
+function createMultiFormControl(defaultEmailArr, refArr, isNewTripForm) {
   return (
     <>
       {refArr.map((ref, idx) =>
-        createEmailFormControl(defaultVal, ref, idx, isNewTripForm)
+        createEmailFormControl(defaultEmailArr[idx + 1],
+                                 ref, idx, isNewTripForm)
       )}
     </>
   );
@@ -115,7 +123,7 @@ function createMultiFormControl(defaultVal, refArr, isNewTripForm) {
  *                           input prop.
  * @param {string} formLabel Label/title for the form input.
  * @param {string} inputType Input type of the form.
- * @param {string} defaultVal Text default value in the form input.
+ * @param {string} defaultVal Default value in the form input.
  * @param {React.RefObject} ref Ref attatched to the valued inputted in the form.
  * @param {string} subFormText Subtext instructions under a form input.
  * @param {boolean} isNewTripForm True if form is adding new trip, false if
@@ -185,10 +193,13 @@ class SaveTripModal extends React.Component {
     this.startDateRef = React.createRef();
     this.endDateRef = React.createRef();
 
-    // Create the number of collaborator input box refs as number of
-    // collaborators specified in prop `defaultFormObj`
+    // Create the number of collaborator input box refs as one less than the
+    // number of collaborators specified in prop `defaultFormObj` (do not
+    // include current user in list)
+    //
+    // TODO(Issue 71): Give user option to remove themself as collab. from trip.
     const collaboratorsRefArr = [];
-    for (let i = 0; i < this.props.defaultFormObj.collaborators.length; i++) {
+    for (let i = 1; i < this.props.defaultFormObj.collaborators.length; i++) {
       collaboratorsRefArr.push(React.createRef())
     }
     this.state = { collaboratorsRefArr: collaboratorsRefArr }
