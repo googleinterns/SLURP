@@ -121,11 +121,7 @@ function createTrip(db, tripId, rawTripObj) {
 
   addTripToFirestore(db, tripId, formattedTripObj)
       .then(docRef => {
-        if (tripId === null) {
-          console.log("Document created with ID: ", docRef.id);
-        } else {
-          console.log("Document overwritten with ID: ", tripId);
-        }
+        console.log("Document written with ID: ", docRef.id);
       })
       .catch(error => {
         console.error("Error adding document: ", error);
