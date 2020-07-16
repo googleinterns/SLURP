@@ -81,8 +81,8 @@ function formatTripData(rawTripObj) {
   {
     trip_creation_time: firebase.firestore.Timestamp.now(),
     name:               getTripName(rawTripObj.name),
-    description:        getTripDestination(rawTripObj.destination),
-    destination:        rawTripObj.description,
+    description:        rawTripObj.description,
+    destination:        getTripDestination(rawTripObj.destination),
     start_date:         getTimestampFromDateString(rawTripObj.startDate),
     end_date:           getTimestampFromDateString(rawTripObj.endDate),
     collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails)
