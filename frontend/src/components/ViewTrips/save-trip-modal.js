@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import createTrip from './create-new-trip.js';
 
 /**
- * Returns a Form.Control element with input type 'text' and other fields
+ * Returns a Form.Control element with input type 'text' and other props
  * specified by the function parameters.
  *
  * @param {string} defaultVal Text default value in the form input
@@ -36,7 +36,7 @@ function createTextFormControl(defaultVal, ref, isNewTripForm) {
 }
 
 /**
- * Returns a Form.Control element with input type 'text' and other fields
+ * Returns a Form.Control element with input type 'date' and other props
  * specified by the function parameters.
  *
  * @param {React.RefObject} refArr The list of refs attached to the emails
@@ -54,7 +54,7 @@ function createDateFormControl(defaultValue, ref) {
 }
 
 /**
- * Returns a Form.Control element with input type 'text' and other fields
+ * Returns a Form.Control element with input type 'email' and other props
  * specified by the function parameters.
  *
  * @param {string} defaultVal Text default value in the form input
@@ -86,8 +86,8 @@ function createEmailFormControl(defaultVal, ref, idx, isNewTripForm) {
 }
 
 /**
- * Returns a Form.Control element with input type 'text' and other fields
- * specified by the function parameters.
+ * Returns multiple Form.Control elements with input type 'email' and other
+ * props specified by the function parameters.
  *
  * TODO(Issue #67): Email verification before submitting the form.
  *
@@ -144,7 +144,6 @@ function createFormGroup(controlId, formLabel, inputType,
       <Form.Label>{formLabel}</Form.Label>
       <Form.Group controlId={controlId}>
           {formControl}
-        {/* Temporary instructions until fix Issue #52 */}
       </Form.Group>
     </>
   )
