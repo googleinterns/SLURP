@@ -44,9 +44,9 @@ const Trip = (props) => {
   return (
     <div>
       <h2>{props.tripObj.name}</h2>
-      <p>{props.tripObj.description}</p>
-      <p>{getDateRange(props.tripObj)}</p>
       <p>{props.tripObj.destination}</p>
+      <p>{getDateRange(props.tripObj)}</p>
+      <p>{props.tripObj.description}</p>
       <p>{getCollaboratorEmails(props.tripObj.collaborators)}</p>
 
       {/* TODO(Issue 15): Add edit trip page. */}
