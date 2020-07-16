@@ -7,17 +7,17 @@ import ViewActivitiesButton from './view-activities-button.js';
 
 /**
  * Returns the date range of the trip associated with the Trip document data
- * `tripObj`.
+ * `tripData`.
  *
- * Note: tripObj will always contain valid star_date and end_date fields.
+ * Note: tripData will always contain valid star_date and end_date fields.
  *
- * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
+ * @param {firebase.firestore.DocumentData} tripData Object containing the fields
  *    and values for a Trip document.
  * @return Date range of the trip (if it exists).
  */
-export function getDateRange(tripObj) {
-  const startDate = tripObj.start_date.toDate();
-  const endDate = tripObj.end_date.toDate();
+export function getDateRange(tripData) {
+  const startDate = tripData.start_date.toDate();
+  const endDate = tripData.end_date.toDate();
   return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
       `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
       `${endDate.getDate()}/${endDate.getFullYear()}`;
@@ -41,25 +41,25 @@ function timestampToISOString(timestamp) {
  * on the 'display' side.
  *
  * @param {Object} props These are the props for this component:
- * - tripObj: JS object holding a Trip document fields and corresponding values.
+ * - tripData: Object holding a Trip document fields and corresponding values.
  * - tripId: Document ID for the current Trip document.
  * - handleEditTrip: Handler that displays the edit trip modal.
  * - key: Special React attribute that ensures a new Trip instance is
  *        created whenever this key is updated
  */
 const Trip = (props) => {
-  const name = props.tripObj.name;
-  const description = props.tripObj.description;
-  const destination = props.tripObj.destination;
+  const name = props.tripData.name;
+  const description = props.tripData.description;
+  const destination = props.tripData.destination;
   const collaboratorEmailsStr =
-      getCollaboratorEmails(props.tripObj.collaborators);
+      getCollaboratorEmails(props.tripData.collaborators);
 
   const placeholderObj = {
     name:          name,
     description:   description,
     destination:   destination,
-    startDate:     timestampToISOString(props.tripObj.start_date),
-    endDate:       timestampToISOString(props.tripObj.end_date),
+    startDate:     timestampToISOString(props.tripData.start_date),
+    endDate:       timestampToISOString(props.tripData.end_date),
     collaborators: collaboratorEmailsStr.split(', ')
   };
 
@@ -67,7 +67,7 @@ const Trip = (props) => {
     <div>
       <h2>{name}</h2>
       <p>{description}</p>
-      <p>{getDateRange(props.tripObj)}</p>
+      <p>{getDateRange(props.tripData)}</p>
       <p>{destination}</p>
       <p>{collaboratorEmailsStr}</p>
 

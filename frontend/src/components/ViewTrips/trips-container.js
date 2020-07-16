@@ -36,7 +36,7 @@ function queryUserTrips(db, userEmail) {
 function serveTrips(querySnapshot, handleEditTrip) {
   return new Promise(function(resolve) {
     const tripsContainer = querySnapshot.docs.map(doc =>
-        ( <Trip tripObj={doc.data()} tripId={doc.id}
+        ( <Trip tripData={doc.data()} tripId={doc.id}
                 handleEditTrip={handleEditTrip} key={doc.id} />
         )
     );
