@@ -21,7 +21,7 @@ class ActivityDay extends React.Component {
       <div className='activity-day'>
         <h4>{time.timestampToDateFormatted(date.getTime())}</h4>
         {sortedActivities.map((activity, index) => (
-          <Activity activity={activity} key={index + id} className="activity"/>
+          <Activity activity={activity} key={index} className="activity"/>
         ))}
       </div>
     );

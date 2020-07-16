@@ -12,8 +12,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
     minute: '2-digit', 
     timeZone: timezone
   };
-  const formatted = date.toLocaleTimeString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleTimeString('en-US', formatOptions);;
 }
 
 /**
@@ -32,8 +31,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
     day: 'numeric',  
     timeZone: timezone
   };
-  const formatted = date.toLocaleDateString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleDateString('en-US', formatOptions);
 }
 
 /** 
@@ -55,6 +53,5 @@ export function timestampToFormatted(msTimestamp, timezone = "America/New_York")
     minute: '2-digit', 
     timeZone: timezone
   };
-  let formatted = date.toLocaleString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleString('en-US', formatOptions);
 }
