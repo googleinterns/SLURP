@@ -22,7 +22,7 @@ class ViewTrips extends React.Component {
                    refreshSaveTripModal: false,
                    modalTitle: null,
                    tripId: null,
-                   placeholderObj: {
+                   defaultFormObj: {
                                      name:          null,
                                      description:   null,
                                      destination:   null,
@@ -71,7 +71,7 @@ class ViewTrips extends React.Component {
   /**
    * Handler that displays the add trip page.
    *
-   * Sets state for the states `title`, `tripId`, and `placeholderObj` in order
+   * Sets state for the states `title`, `tripId`, and `defaultFormObj` in order
    * to ensure the modal has the visual characteristics of an "add trip" modal
    * and creates a new Trip document in the database.
    */
@@ -79,7 +79,7 @@ class ViewTrips extends React.Component {
     this.setState({
       title: 'Add New Trip',
       tripId: null,
-      placeholderObj: {
+      defaultFormObj: {
         name:          'Enter Trip Name',
         description:   'Enter Trip Description',
         destination:   'Enter Trip Destination',
@@ -94,16 +94,16 @@ class ViewTrips extends React.Component {
   /**
    * Handler that displays the edit trip page.
    *
-   * Sets state for the states `title`, `tripId`, and `placeholderObj` in order
+   * Sets state for the states `title`, `tripId`, and `defaultFormObj` in order
    * to ensure the modal has the visual characteristics of an "edit trip" modal
    * and overwrites and existing Trip document in the database.
    *
    */
-  showEditTripModal = (tripId, placeholderObj) => {
+  showEditTripModal = (tripId, tripData) => {
     this.setState({
       title: 'Edit Trip',
       tripId: tripId,
-      placeholderObj: placeholderObj
+      defaultFormObj: tripData
     });
     this.showSaveTripModal();
   }
@@ -120,7 +120,7 @@ class ViewTrips extends React.Component {
           refreshTripsContainer={this.refreshTripsContainer}
           title={this.state.title}
           tripId={this.state.tripId}
-          placeholderObj={this.state.placeholderObj}
+          defaultFormObj={this.state.defaultFormObj}
           key={this.state.refreshSaveTripModal}
         />
         <div className="manage-trips-bar">
