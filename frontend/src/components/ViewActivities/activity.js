@@ -48,10 +48,10 @@ class Activity extends React.Component {
    */
   editActivity() {
     let newVals = {};
-    if (this.editTitleRef.current.value !== "") {
+    if (this.editTitleRef.current.value !== '') {
       newVals[DB.ACTIVITIES_TITLE] = this.editTitleRef.current.value;
     }
-    if (this.editDescriptionRef.current.value !== "") {
+    if (this.editDescriptionRef.current.value !== '') {
       newVals[DB.ACTIVITIES_DESCRIPTION] = this.editDescriptionRef.current.value;
     }
     if (Object.keys(newVals).length !== 0) {
@@ -88,31 +88,31 @@ class Activity extends React.Component {
     } else { // Edit mode.
       return (
         // TODO: Save form. (#48)
-        <Form className="activity-editor" onSubmit={this.finishEditActivity}>
-          <Form.Group as={Row} controlId="formActivityTitle">
+        <Form className='activity-editor' onSubmit={this.finishEditActivity}>
+          <Form.Group as={Row} controlId='formActivityTitle'>
             <Col sm={2}><Form.Label>Title:</Form.Label></Col>
-            <Col><Form.Control type="text" placeholder={activity[DB.ACTIVITIES_TITLE]} ref={this.editTitleRef}/></Col>
+            <Col><Form.Control type='text' placeholder={activity[DB.ACTIVITIES_TITLE]} ref={this.editTitleRef}/></Col>
           </Form.Group>
-          <Form.Group as={Row} controlId="formActivityStartTime">
+          <Form.Group as={Row} controlId='formActivityStartTime'>
             <Col sm={2}><Form.Label>From:</Form.Label></Col>
-            <Col sm={4}><Form.Control type="date" label="date" ref={this.editStartDateRef}/></Col>
-            <Col sm={2}><Form.Control type="time" label="time" ref={this.editStartTimeRef}/></Col>
+            <Col sm={4}><Form.Control type='date' label='date' ref={this.editStartDateRef}/></Col>
+            <Col sm={2}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
-          <Form.Group as={Row} controlId="formActivityStartTime">
+          <Form.Group as={Row} controlId='formActivityStartTime'>
             <Col sm={2}><Form.Label>To:</Form.Label></Col>
-            <Col sm={4}><Form.Control type="date" label="date" ref={this.editEndDateRef}/></Col>
-            <Col sm={2}><Form.Control type="time" label="time" ref={this.editEndTimeRef}/></Col>
+            <Col sm={4}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
+            <Col sm={2}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
-          <Form.Group as={Row} controlId="formActivityTitle">
+          <Form.Group as={Row} controlId='formActivityTitle'>
             <Col sm={2}><Form.Label>Description:</Form.Label></Col>
-            <Col><Form.Control type="text" 
-              placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, "Add some details!")}
+            <Col><Form.Control type='text' 
+              placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!')}
               ref={this.editDescriptionRef} />
             </Col>
           </Form.Group>
-          <Button type="submit" className="float-right">Done!</Button>
+          <Button type='submit' className='float-right'>Done!</Button>
         </Form>
       )
     }

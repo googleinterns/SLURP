@@ -42,9 +42,9 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * @param {int} msTimestamp 
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like 
- * "Monday, January 19, 1970, 02:48 AM"
+ * 'Monday, January 19, 1970, 02:48 AM'
  */
-export function timestampToFormatted(msTimestamp, timezone = "America/New_York") {
+export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
   let date = new Date(msTimestamp);
   let formatOptions = { 
     weekday: 'long', 
