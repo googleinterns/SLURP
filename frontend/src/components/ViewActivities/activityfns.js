@@ -1,5 +1,6 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
+import Firebase from 'firebase';
 
 const db = app.firestore();
 
@@ -65,12 +66,17 @@ export function getField(activity, fieldName, defaultValue){
  * @param {string} tripId Database ID of the trip whose actiivty should be modified.
  * @param {string} activityId Database ID of the activity to be modified.
  * @param {Object} newValues Dictionary of the new values in {fieldName: newValue} form
+ * @returns true if the write was successful, false otherwise.
  */
 export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
-  if (newValues === null) {
-    return false;
-  }
+  newValues = {
+    ...newValues, 
+    "fillerstamp": Firebase.database.ServerValue.TIMESTAMP
+  };
+
+  console.log(Firebase.database.ServerValue.TIMESTAMP);
+  console.log(newValues);
 
   const act = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
     .collection(DB.COLLECTION_ACTIVITIES).doc(activityId);
