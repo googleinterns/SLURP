@@ -20,13 +20,25 @@ function redirectToSignIn() {
 }
 
 /**
+ * Checks that the user is logged in by seeing if the current user is set to
+ * null (which is what Firebase Auth returns if the user is not logged in). If
+ * not, they are redirected to the SIGN_IN page.
+ *
+ * @returns {Boolean} True if the user is signed in, false otherwise.
+ */
+function isUserLoggedIn() {
+  if (getCurrentUser() === null) {
+    redirectToSignIn();
+    return false;
+  }
+  return true;
+}
+
+/**
  * @returns {String} The user's display name.
  */
 export function getUserDisplayName() {
-  if (!getCurrentUser()) {
-    redirectToSignIn();
-    return null;
-  }
+  if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().displayName;
 }
 
@@ -34,10 +46,7 @@ export function getUserDisplayName() {
  * @returns {String} The user's email.
  */
 export function getUserEmail() {
-  if (!getCurrentUser()) {
-    redirectToSignIn();
-    return null;
-  }
+  if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().email;
 }
 
@@ -45,10 +54,7 @@ export function getUserEmail() {
  * @returns {String} The user's profile picture URL.
  */
 export function getUserPhotoUrl() {
-  if (!getCurrentUser()) {
-    redirectToSignIn();
-    return null;
-  }
+  if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().photoURL;
 }
 
@@ -56,10 +62,7 @@ export function getUserPhotoUrl() {
  * @returns {String} The user's unique ID.
  */
 export function getUserUid() {
-  if (!getCurrentUser()) {
-    redirectToSignIn();
-    return null;
-  }
+  if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().uid;
 }
 
