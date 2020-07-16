@@ -1,7 +1,7 @@
 import React from 'react';
-import Trip from './trip.js';
 
-import * as DATABASE from '../../constants/database.js';
+import Trip from './trip.js';
+import * as DB from '../../constants/database.js';
 
 
 /**
@@ -15,8 +15,8 @@ import * as DATABASE from '../../constants/database.js';
  *    containing the query results with zero or more Trip  documents.
  */
 function queryUserTrips(db, userEmail) {
-  return db.collection(DATABASE.COLLECTION_TRIPS)
-      .where(DATABASE.TRIPS_COLLABORATORS, 'array-contains', userEmail)
+  return db.collection(DB.COLLECTION_TRIPS)
+      .where(DB.TRIPS_COLLABORATORS, 'array-contains', userEmail)
       .get();
 }
 

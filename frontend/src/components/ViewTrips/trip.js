@@ -7,7 +7,11 @@ import ViewActivitiesButton from './view-activities-button.js';
  * Returns the date range of the trip associated with the Trip document data
  * `tripObj`.
  *
- * Note: tripObj will always contain valid star_date and end_date fields.
+ * Notes:
+ *  - tripObj will always contain valid start_date and end_date fields.
+ *  - When the Firestore Timestamps contained in `tripObj` converted to js
+ *    dates, the months are 0 indexed rather than 1 indexed so they must be
+ *    incremented by 1 in order for the month to be correct.
  *
  * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
  *    and values for a Trip document.
