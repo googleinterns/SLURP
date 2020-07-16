@@ -44,7 +44,7 @@ class Activity extends React.Component {
 
   /**
    * Edit an activity in the database upon form submission.
-   * TODO: Update times as well! This only does the text field forms (#46).
+   * TODO: Update times as well! This only does the text field forms (#64).
    */
   editActivity() {
     let newVals = {};
