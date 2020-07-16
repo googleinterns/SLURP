@@ -10,15 +10,26 @@ import createTrip from './create-new-trip.js';
  * Returns a Form.Control element with input type 'text' and other fields
  * specified by the function parameters.
  *
- * @param {string} placeholder Text placehold in the form input
+ * @param {string} defaultVal Text default value in the form input
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
+ * @param {boolean} isNewTripForm True if form is adding new trip, false if
+ *     form is editting existing trip.
  * @return {JSX.Element} The Form.Control element.
  */
-function createTextFormControl(placeholder, ref) {
+function createTextFormControl(defaultVal, ref, isNewTripForm) {
+  if (isNewTripForm) {
+    return (
+      <Form.Control
+        type="text"
+        placeholder={defaultVal}
+        ref={ref}
+      />
+    );
+  }
   return (
     <Form.Control
       type="text"
-      placeholder={placeholder}
+      defaultValue={defaultVal}
       ref={ref}
     />
   );
@@ -46,26 +57,53 @@ function createDateFormControl(defaultValue, ref) {
  * Returns a Form.Control element with input type 'text' and other fields
  * specified by the function parameters.
  *
- * TODO(Issue #67): Email verification before submitting the form.
- *
- * @param {string} placeholder Text placehold in the form input
- * @param {React.RefObject} refArr The list of refs attached to the emails
- *     inputted in the form.
+ * @param {string} defaultVal Text default value in the form input
+ * @param {React.RefObject} ref Ref attached to the value inputted in the form.
+ * @param {number} idx Index of the email Form.Control used for key prop.
+ * @param {boolean} isNewTripForm True if form is adding new trip, false if
+ *     form is editting existing trip.
  * @return {JSX.Element} The Form.Control element.
  */
-function createMultiFormControl(placeholder, refArr) {
+function createEmailFormControl(defaultVal, ref, idx, isNewTripForm) {
+  if (isNewTripForm) {
+    return (
+      <Form.Control
+        type="email"
+        placeholder={defaultVal}
+        ref={ref}
+        key={idx}
+      />
+    );
+  }
+  return (
+    <Form.Control
+      type="email"
+      defaultValue={defaultVal}
+      ref={ref}
+      key={idx}
+    />
+  );
+}
+
+/**
+ * Returns a Form.Control element with input type 'text' and other fields
+ * specified by the function parameters.
+ *
+ * TODO(Issue #67): Email verification before submitting the form.
+ *
+ * @param {string} defaultVal Text placehold in the form input
+ * @param {React.RefObject} refArr The list of refs attached to the emails
+ *     inputted in the form.
+ * @param {boolean} isNewTripForm True if form is adding new trip, false if
+ *     form is editting existing trip.
+ * @return {JSX.Element} The Form.Control element.
+ */
+function createMultiFormControl(defaultVal, refArr, isNewTripForm) {
   return (
     <>
-      {refArr.map((ref, idx) => {
-        return (
-          <Form.Control
-            type="email"
-            placeholder={placeholder}
-            ref={ref}
-            key={idx}
-          />
-        );
-      })}
+      {refArr.map((ref, idx) =>
+        createEmailFormControl(defaultVal, ref, idx, isNewTripForm)
+      )}
     </>
   );
 }
@@ -77,22 +115,25 @@ function createMultiFormControl(placeholder, refArr) {
  *                           input prop.
  * @param {string} formLabel Label/title for the form input.
  * @param {string} inputType Input type of the form.
- * @param {string} placeholder Text placeholder in the form input.
+ * @param {string} defaultVal Text default value in the form input.
  * @param {React.RefObject} ref Ref attatched to the valued inputted in the form.
  * @param {string} subFormText Subtext instructions under a form input.
+ * @param {boolean} isNewTripForm True if form is adding new trip, false if
+ *     form is editting existing trip.
  * @return {JSX.Element} The Form.Group element.
  */
-function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
+function createFormGroup(controlId, formLabel, inputType,
+                          defaultVal, ref, isNewTripForm) {
   let formControl;
   switch(inputType) {
     case 'text':
-      formControl = createTextFormControl(placeholder, ref);
+      formControl = createTextFormControl(defaultVal, ref, isNewTripForm);
       break;
     case 'date':
-      formControl = createDateFormControl(placeholder, ref);
+      formControl = createDateFormControl(defaultVal, ref);
       break;
     case 'emails':
-      formControl = createMultiFormControl(placeholder, ref);
+      formControl = createMultiFormControl(defaultVal, ref, isNewTripForm);
       break;
     default:
       console.error('There should be no other input type')
@@ -115,7 +156,7 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  * This component "acts" as a parent of the (non-existant) AddTripModal and
  * EditTripModal components. The only differences in the implementation between
  * the two fake components are dervied from the props `title`, `tripid`, and
- * `placeholderObj` (see below).
+ * `defaultFormObj` (see below).
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
@@ -126,7 +167,7 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  * - title: The title of the modal.
  * - tripId: For adding a new trip, this will be null. For editting an existing
  *        trip, this will the document id associated with the trip.
- * - placeholderObj: Object containing the placeholder/default values for the
+ * - defaultFormObj: Object containing the placeholder/default values for the
  *        form input text boxes.
  * - key: Special React attribute that ensures a new AddTripModal instance is
  *        created whenever this key is updated
@@ -146,9 +187,9 @@ class SaveTripModal extends React.Component {
     this.endDateRef = React.createRef();
 
     // Create the number of collaborator input box refs as number of
-    // collaborators specified in the placeholderObj
+    // collaborators specified in prop `defaultFormObj`
     const collaboratorsRefArr = [];
-    for (let i = 0; i < this.props.placeholderObj.collaborators.length; i++) {
+    for (let i = 0; i < this.props.defaultFormObj.collaborators.length; i++) {
       collaboratorsRefArr.push(React.createRef())
     }
     this.state = { collaboratorsRefArr: collaboratorsRefArr }
@@ -185,6 +226,8 @@ class SaveTripModal extends React.Component {
 
   /** @inheritdoc */
   render() {
+    const isNewTripForm = this.props.tripId === null;
+
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
@@ -194,18 +237,22 @@ class SaveTripModal extends React.Component {
         <Form>
           <Modal.Body>
             {createFormGroup('tripNameGroup', 'Trip Name', 'text',
-                    this.props.placeholderObj.name, this.nameRef)}
+                this.props.defaultFormObj.name, this.nameRef, isNewTripForm)}
             {createFormGroup('tripDescripGroup', 'Trip Description', 'text',
-                    this.props.placeholderObj.description, this.descriptionRef)}
+                this.props.defaultFormObj.description, this.descriptionRef,
+                isNewTripForm)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
-                    this.props.placeholderObj.destination, this.destinationRef)}
+                this.props.defaultFormObj.destination, this.destinationRef,
+                isNewTripForm)}
             {createFormGroup('tripStartDateGroup', 'Start Date', 'date',
-                    this.props.placeholderObj.startDate, this.startDateRef)}
+                this.props.defaultFormObj.startDate, this.startDateRef,
+                isNewTripForm)}
             {createFormGroup('tripEndDateGroup', 'End Date', 'date',
-                    this.props.placeholderObj.endDate, this.endDateRef)}
+                this.props.defaultFormObj.endDate, this.endDateRef,
+                isNewTripForm)}
             {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'emails',
-                    this.props.placeholderObj.collaborators,
-                    this.state.collaboratorsRefArr)}
+                this.props.defaultFormObj.collaborators,
+                this.state.collaboratorsRefArr, isNewTripForm)}
             <Button onClick={this.addCollaboratorRef}>
               Add Another Collaborator
             </Button>
