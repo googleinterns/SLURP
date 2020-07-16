@@ -103,7 +103,7 @@ function createEmailFormControl(defaultEmail, ref, idx, isNewTripForm) {
  *     emails inputted in the form.
  * @param {boolean} isNewTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
- * @return {JSX.Element} The Form.Control element.
+ * @return {JSX.Element} The Form.Control elements.
  */
 function createMultiFormControl(defaultEmailArr, refArr, isNewTripForm) {
   return (
@@ -160,10 +160,13 @@ function createFormGroup(controlId, formLabel, inputType,
 /**
  * Component corresponding to the save trips modal.
  *
- * This component "acts" as a parent of the (non-existant) AddTripModal and
+ * This component acts as a "pseudo-parent" of the AddTripModal and
  * EditTripModal components. The only differences in the implementation between
  * the two fake components are dervied from the props `title`, `tripid`, and
- * `defaultFormObj` (see below).
+ * `defaultFormObj` (see below). The primary difference between the add and
+ * edit trip modals is the former displays placeholder values in the empty form
+ * fields whereas the latter displays the current values of the trip in the
+ * respective form fields.
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
