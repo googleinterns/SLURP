@@ -72,7 +72,7 @@ export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
   newValues = {
     ...newValues, 
-    'fillerstamp': Firebase.database.ServerValue.TIMESTAMP
+    'fillerstamp': Firebase.firestore.Timestamp.now()
   };
 
   const act = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
