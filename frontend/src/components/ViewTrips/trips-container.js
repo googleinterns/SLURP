@@ -28,14 +28,18 @@ function queryUserTrips(db, userEmail) {
  *
  * @param {Promise<!firebase.firestore.QuerySnapshot>} querySnapshot Promise
  *    object containing the query results with zero or more Trip documents.
+ * @param {EventHandler} handleEditTrip Displays the edit trip modal.
  * @return {Promise<!Array<Trip>>} Promise object containing an array
  *    of Trip React/HTML elements corresponding to the Trip documents included
  *    in `querySnapshot`.
  */
-function serveTrips(querySnapshot) {
+function serveTrips(querySnapshot, handleEditTrip) {
   return new Promise(function(resolve) {
     const tripsContainer = querySnapshot.docs.map(doc =>
-        ( <Trip key={doc.id} tripObj={doc.data()} tripId={doc.id} /> ));
+        ( <Trip tripObj={doc.data()} tripId={doc.id}
+                handleEditTrip={handleEditTrip} key={doc.id} />
+        )
+    );
     resolve(tripsContainer);
   });
 }
@@ -60,6 +64,7 @@ function getErrorElement(error) {
  *
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
+ * - handleEditTrip: Handler that displays the edit trip modal.
  * - key: Special React attribute that ensures a new TripsContainer instance is
  *        created whenever this key is updated (Remove when fix Issue #62).
  * @extends React.Component
@@ -76,7 +81,8 @@ class TripsContainer extends React.Component {
     try {
       const querySnapshot = await queryUserTrips(
           this.props.db, getCurUserEmail());
-      let tripsContainer = await serveTrips(querySnapshot);
+      let tripsContainer = await serveTrips(querySnapshot,
+                                            this.props.handleEditTrip);
       this.setState({ trips: tripsContainer });
     }
     catch (error) {

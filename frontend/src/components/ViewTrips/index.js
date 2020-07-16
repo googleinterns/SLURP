@@ -98,20 +98,12 @@ class ViewTrips extends React.Component {
    * to ensure the modal has the visual characteristics of an "edit trip" modal
    * and overwrites and existing Trip document in the database.
    *
-   * TODO(Issue #69): Get individual tripId and trip data for placeholderObj.
    */
-  showEditTripModal = () => {
+  showEditTripModal = (tripId, placeholderObj) => {
     this.setState({
       title: 'Edit Trip',
-      tripId: null,
-      placeholderObj: {
-        name:          null,
-        description:   null,
-        destination:   null,
-        startDate:     null,
-        endDate:       null,
-        collaborators: []
-      }
+      tripId: tripId,
+      placeholderObj: placeholderObj
     });
     this.showSaveTripModal();
   }
@@ -138,6 +130,7 @@ class ViewTrips extends React.Component {
         </div>
         <TripsContainer
           db={db}
+          handleEditTrip={this.showEditTripModal}
           key={this.state.refreshTripsContainer}
         />
       </div>

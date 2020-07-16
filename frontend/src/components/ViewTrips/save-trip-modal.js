@@ -120,8 +120,8 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  * @param {Object} props These are the props for this component:
  * - db: Firestore database instance.
  * - show: Boolean that determines if the add trips modal should be displayed.
- * - handleClose: The function that handles closing the add trips modal.
- * - refreshTripsContainer: Function that handles refreshing the TripsContainer
+ * - handleClose: Event handler responsible for closing the add trips modal.
+ * - refreshTripsContainer: Handler that refreshes the TripsContainer
  *        component upon trip creation (Remove when fix Issue #62).
  * - title: The title of the modal.
  * - tripId: For adding a new trip, this will be null. For editting an existing

@@ -29,6 +29,10 @@ export function getCollaboratorEmails(collaboratorUidArr) {
   return collaboratorEmailArr.join(', ');
 }
 
+function timestampToISOString(timestamp) {
+  return timestamp.toDate().toISOString().substring(0,10);
+}
+
 /**
  * Component corresponding to the container containing an individual trip.
  *
@@ -39,18 +43,41 @@ export function getCollaboratorEmails(collaboratorUidArr) {
  * @param {Object} props These are the props for this component:
  * - tripObj: JS object holding a Trip document fields and corresponding values.
  * - tripId: Document ID for the current Trip document.
+ * - handleEditTrip: Handler that displays the edit trip modal.
+ * - key: Special React attribute that ensures a new Trip instance is
+ *        created whenever this key is updated
  */
 const Trip = (props) => {
+  const name = props.tripObj.name;
+  const description = props.tripObj.description;
+  const destination = props.tripObj.destination;
+  const collaboratorEmailsStr =
+      getCollaboratorEmails(props.tripObj.collaborators);
+
+  const placeholderObj = {
+    name:          name,
+    description:   description,
+    destination:   destination,
+    startDate:     timestampToISOString(props.tripObj.start_date),
+    endDate:       timestampToISOString(props.tripObj.end_date),
+    collaborators: collaboratorEmailsStr.split(', ')
+  };
+
   return (
     <div>
-      <h2>{props.tripObj.name}</h2>
-      <p>{props.tripObj.description}</p>
+      <h2>{name}</h2>
+      <p>{description}</p>
       <p>{getDateRange(props.tripObj)}</p>
-      <p>{props.tripObj.destination}</p>
-      <p>{getCollaboratorEmails(props.tripObj.collaborators)}</p>
+      <p>{destination}</p>
+      <p>{collaboratorEmailsStr}</p>
 
-      {/* TODO(Issue 15): Add edit trip page. */}
-      <Button type='button' onClick={null} variant='primary'>Edit</Button>
+      <Button
+        type='button'
+        onClick={() => props.handleEditTrip(props.tripId, placeholderObj)}
+        variant='primary'
+      >
+        Edit
+      </Button>
       <ViewActivitiesButton tripId={props.tripId} />
     </div>
   );
