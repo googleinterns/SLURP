@@ -189,7 +189,7 @@ class AddTripModal extends React.Component {
 
           <Modal.Footer>
             <Button variant='secondary' onClick={this.props.handleClose}>
-              Close
+              Cancel
             </Button>
             <Button variant='primary' onClick={this.handleCreateNewTrip}>
               Add Trip
