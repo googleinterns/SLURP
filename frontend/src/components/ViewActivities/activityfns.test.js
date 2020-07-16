@@ -91,3 +91,9 @@ describe('sortByDate tests', () => {
     expect(activityFns.sortByDate(tripActivities)).toEqual(expected);
   })
 })
+
+test('getField', () => {
+  const activity = {field1: "yes"};
+  expect(activityFns.getField(activity, "field1", "nooo")).toBe("yes");
+  expect(activityFns.getField(activity, "field2", 4)).toBe(4);
+})

@@ -39,3 +39,19 @@ export function compareActivities(a, b) {
   }
   return -1;
 }
+
+
+/**
+ * Get the field of field name `fieldName` from `activity` or the default value.
+ * 
+ * @param {Object} activity 
+ * @param {string} fieldName 
+ * @param defaultValue 
+ * @returns `activity[fieldName]` if possible, else `defaultValue`.
+ */
+export function getField(activity, fieldName, defaultValue) {
+  if (activity[fieldName] === null || activity[fieldName] === undefined) {
+    return defaultValue;
+  }
+  return activity[fieldName];
+}
