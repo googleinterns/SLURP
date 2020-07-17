@@ -112,6 +112,9 @@ class EditActivity extends React.Component {
     const activity = this.props.activity;
     const titleWidth = 3;
     const countryWidth = 6;
+    const dateWidth = 4;
+    const timeWidth = 2;
+    const tzPickerWidth = 3;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         <Form.Group as={Row} controlId='formActivityTitle'>
@@ -128,15 +131,15 @@ class EditActivity extends React.Component {
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityStartTime'>
           <Col sm={titleWidth}><Form.Label>From:</Form.Label></Col>
-          <Col sm={4}><Form.Control type='date' label='date' ref={this.editStartDateRef}/></Col>
-          <Col sm={2}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
-          <Col sm={3}>{this.timezonePicker("start")}</Col>
+          <Col sm={dateWidth}><Form.Control type='date' label='date' ref={this.editStartDateRef}/></Col>
+          <Col sm={timeWidth}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
+          <Col sm={tzPickerWidth}>{this.timezonePicker("start")}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityEndTime'>
           <Col sm={titleWidth}><Form.Label>To:</Form.Label></Col>
-          <Col sm={4}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
-          <Col sm={2}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
-          <Col sm={3}>{this.timezonePicker("end")}</Col>
+          <Col sm={dateWidth}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
+          <Col sm={timeWidth}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
+          <Col sm={tzPickerWidth}>{this.timezonePicker("end")}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityTitle'>
           <Col sm={titleWidth}><Form.Label>Description:</Form.Label></Col>
