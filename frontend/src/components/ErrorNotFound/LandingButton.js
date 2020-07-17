@@ -23,4 +23,4 @@ const LandingButton = () => {
   );
 }
 
-export default SignInButton;
+export default LandingButton;
