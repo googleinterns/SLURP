@@ -1,10 +1,12 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { AuthContext } from '../Auth';
 
 import * as firebase from 'firebase/app';
 import app from '../Firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
-import {VIEW_TRIPS} from '../../constants/routes';
+import { VIEW_TRIPS } from '../../constants/routes';
 
 // Configure FirebaseUI.
 const uiConfig = {
@@ -34,10 +36,21 @@ function handleAuthError(error) {
 }
 
 /**
- * SignIn component that defines the sign-in page of the application.
+ * SignIn component that defines the sign-in page of the application. If the
+ * the user is already logged in, they will immediately be redirected to the
+ * VIEW_TRIPS page. Otherwise, they be given a number of providers through which
+ * they can sign in.
  */
 class SignIn extends React.Component {
+  static contextType = AuthContext;
+
+  /** @inheritdoc */
   render() {
+    // Immediately go to VIEW_TRIPS page if the user is already logged in.
+    if (this.context !== null) {
+      return <Redirect to={VIEW_TRIPS} />;
+    }
+
     return (
       <div>
         <h1>Please sign in:</h1>
