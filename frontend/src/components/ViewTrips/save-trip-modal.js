@@ -111,7 +111,7 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
 /**
  * Component corresponding to the save trips modal.
  *
- * This component "acts" as a parent of the (non-existant) AddTripModal and
+ * This component "acts" as a parent of the (non-existent) AddTripModal and
  * EditTripModal components. The only differences in the implementation between
  * the two fake components are dervied from the props `tripid` and
  * `placeholderObj` (see below).
