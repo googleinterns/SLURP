@@ -1,10 +1,14 @@
 import React from 'react';
 
+import app from '../Firebase';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
-import createTrip from './create-new-trip.js';
+import { COLLECTION_TRIPS } from '../../constants/database.js';
+import { formatTripData } from '../Utils/filter-input.js';
+
+const db = app.firestore();
 
 /**
  * Returns a Form.Control element with input type 'text' and other props
@@ -119,12 +123,12 @@ function createMultiFormControl(defaultEmailArr, refArr, isAddTripForm) {
 /**
  * Returns a Form.Group element with components specified by the input args.
  *
- * @param {string} controlId prop that accessibly wires the nested label and
+ * @param {string} controlId Prop that accessibly wires the nested label and
  *                           input prop.
  * @param {string} formLabel Label/title for the form input.
  * @param {string} inputType Input type of the form.
  * @param {string} defaultVal Default value in the form input.
- * @param {React.RefObject} ref Ref attatched to the valued inputted in the form.
+ * @param {React.RefObject} ref Ref attached to the values inputted in the form.
  * @param {string} subFormText Subtext instructions under a form input.
  * @param {boolean} isAddTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
@@ -148,12 +152,10 @@ function createFormGroup(controlId, formLabel, inputType,
   }
 
   return (
-    <>
+    <Form.Group controlId={controlId}>
       <Form.Label>{formLabel}</Form.Label>
-      <Form.Group controlId={controlId}>
-          {formControl}
-      </Form.Group>
-    </>
+      {formControl}
+    </Form.Group>
   )
 }
 
@@ -162,19 +164,17 @@ function createFormGroup(controlId, formLabel, inputType,
  *
  * This component acts as a "pseudo-parent" of the AddTripModal and
  * EditTripModal components. The only differences in the implementation between
- * the two fake components are dervied from the props `title`, `tripid`, and
+ * the two fake components are dervied from the props  `tripid` and
  * `defaultFormObj` (see below). The primary difference between the add and
  * edit trip modals is the former displays placeholder values in the empty form
  * fields whereas the latter displays the current values of the trip in the
  * respective form fields.
  *
  * @param {Object} props These are the props for this component:
- * - db: Firestore database instance.
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: Event handler responsible for closing the add trips modal.
  * - refreshTripsContainer: Handler that refreshes the TripsContainer
  *        component upon trip creation (Remove when fix Issue #62).
- * - title: The title of the modal.
  * - tripId: For adding a new trip, this will be null. For editting an existing
  *        trip, this will the document id associated with the trip.
  * - defaultFormObj: Object containing the placeholder/default values for the
@@ -195,6 +195,7 @@ class SaveTripModal extends React.Component {
     this.destinationRef = React.createRef();
     this.startDateRef = React.createRef();
     this.endDateRef = React.createRef();
+
     this.isAddTripForm = this.props.tripId === null;
 
     // Create the number of collaborator input box refs as one less than the
@@ -209,6 +210,7 @@ class SaveTripModal extends React.Component {
     this.state = { collaboratorsRefArr: collaboratorsRefArr }
   }
 
+  /** Adds a new Ref element to the state variable `collaboratorsRefArr`. */
   addCollaboratorRef = () => {
     this.setState({ collaboratorsRefArr:
                     this.state.collaboratorsRefArr.concat([React.createRef()]) }
@@ -216,14 +218,44 @@ class SaveTripModal extends React.Component {
   }
 
   /**
-   * Upon submission of the form, a new Trip document is created and the add
-   * trip modal is closed.
+   * Creates a new Trip document in firestore with data in `tripData`.
    *
-   * @param e Event object corresponding to (add trip) submit button click.
+   * @param {Object} tripData Data the new trip document will contain.
    */
-  handleCreateNewTrip = (e) => {
-    e.preventDefault();
-    createTrip(this.props.db, this.props.tripId,
+  addNewTrip(tripData) {
+    db.collection(COLLECTION_TRIPS)
+        .add(tripData)
+        .then(docRef => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
+  }
+
+  /**
+   * Updates an existing Trip document in firestore with data in `tripData`.
+   *
+   * @param {string} tripId The document ID of the trip that is updated.
+   * @param {Object} tripData Data the new trip document will contain.
+   */
+  updateExistingTrip(tripId, tripData) {
+    db.collection(COLLECTION_TRIPS)
+        .doc(tripId)
+        .set(tripData)
+        .then(() => {
+          console.log("Document written with ID: ", tripId);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
+  }
+
+  /**
+   * Formats/cleans the form data and saves the Trip document in firestore.
+   */
+  saveTrip() {
+    const tripData = formatTripData(
         {
           name: this.nameRef.current.value,
           description: this.descriptionRef.current.value,
@@ -232,10 +264,35 @@ class SaveTripModal extends React.Component {
           endDate: this.endDateRef.current.value,
           collaboratorEmails:
               this.state.collaboratorsRefArr.map(ref => ref.current.value)
-        });
+        }
+    );
 
+    if (this.isAddTripForm) {
+      this.addNewTrip(tripData);
+    } else {
+      this.updateExistingTrip(this.props.tripId, tripData);
+    }
+
+  }
+
+  /**
+   * Handles submission of the form which includes:
+   *  - Creation of the trip.
+   *  - Refreshing the trips container.
+   *  - Closing the modal.
+   */
+  handleSubmitForm = () => {
+    this.saveTrip();
     this.props.refreshTripsContainer();
     this.props.handleClose();
+  }
+
+  /** Gets the Modal title based the type of modal (edit or add trip). */
+  getModalTitle = () => {
+    if (this.isAddTripForm) {
+      return 'Add New Trip';
+    }
+    return 'Edit Trip';
   }
 
   /** @inheritdoc */
@@ -243,7 +300,7 @@ class SaveTripModal extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{this.props.title}</Modal.Title>
+          <Modal.Title>{this.getModalTitle()}</Modal.Title>
         </Modal.Header>
 
         <Form>
@@ -251,7 +308,7 @@ class SaveTripModal extends React.Component {
             {createFormGroup('tripNameGroup', 'Trip Name', 'text',
                 this.props.defaultFormObj.name, this.nameRef,
                 this.isAddTripForm)}
-            {createFormGroup('tripDescripGroup', 'Trip Description', 'text',
+            {createFormGroup('tripDescGroup', 'Trip Description', 'text',
                 this.props.defaultFormObj.description, this.descriptionRef,
                 this.isAddTripForm)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
@@ -273,9 +330,9 @@ class SaveTripModal extends React.Component {
 
           <Modal.Footer>
             <Button variant='secondary' onClick={this.props.handleClose}>
-              Close
+              Cancel
             </Button>
-            <Button variant='primary' onClick={this.handleCreateNewTrip}>
+            <Button variant='primary' onClick={this.handleSubmitForm}>
               Save Trip
             </Button>
           </Modal.Footer>

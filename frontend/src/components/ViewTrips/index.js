@@ -2,12 +2,10 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import app from '../Firebase/';
 import Header from '../Header/';
 import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
-const db = app.firestore();
 
 /**
  * ViewTrips component that defines the page where a user can view and manage
@@ -20,7 +18,6 @@ class ViewTrips extends React.Component {
     this.state = { showModal: false,
                    refreshTripsContainer: false,
                    refreshSaveTripModal: false,
-                   modalTitle: null,
                    tripId: null,
                    defaultFormObj: {
                                      name:          null,
@@ -71,13 +68,12 @@ class ViewTrips extends React.Component {
   /**
    * Handler that displays the add trip page.
    *
-   * Sets state for the states `title`, `tripId`, and `defaultFormObj` in order
+   * Sets state for the states `tripId` and `placeholderObj` in order
    * to ensure the modal has the visual characteristics of an "add trip" modal
    * and creates a new Trip document in the database.
    */
   showAddTripModal = () => {
     this.setState({
-      title: 'Add New Trip',
       tripId: null,
       defaultFormObj: {
         name:          'Enter Trip Name',
@@ -94,14 +90,13 @@ class ViewTrips extends React.Component {
   /**
    * Handler that displays the edit trip page.
    *
-   * Sets state for the states `title`, `tripId`, and `defaultFormObj` in order
+   * Sets state for the states `tripId` and `placeholderObj` in order
    * to ensure the modal has the visual characteristics of an "edit trip" modal
    * and overwrites and existing Trip document in the database.
    *
    */
   showEditTripModal = (tripId, tripData) => {
     this.setState({
-      title: 'Edit Trip',
       tripId: tripId,
       defaultFormObj: tripData
     });
@@ -114,11 +109,9 @@ class ViewTrips extends React.Component {
       <div className="view-trips-page">
         <Header />
         <SaveTripModal
-          db={db}
           show={this.state.showModal}
           handleClose={this.hideSaveTripModal}
           refreshTripsContainer={this.refreshTripsContainer}
-          title={this.state.title}
           tripId={this.state.tripId}
           defaultFormObj={this.state.defaultFormObj}
           key={this.state.refreshSaveTripModal}
@@ -129,7 +122,6 @@ class ViewTrips extends React.Component {
           </Button>
         </div>
         <TripsContainer
-          db={db}
           handleEditTrip={this.showEditTripModal}
           key={this.state.refreshTripsContainer}
         />
