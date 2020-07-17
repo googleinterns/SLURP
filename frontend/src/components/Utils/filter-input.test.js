@@ -5,7 +5,7 @@ import { getUidFromUserEmail } from './temp-auth-utils';
 import { getCleanedTextInput, getTimestampFromDateString,
          getCollaboratorUidArray }  from './filter-input.js';
 
-describe('getCleanedTextInputtests', () => {
+describe('getCleanedTextInput tests', () => {
   test('No input entered in form (empty string)', () => {
     const testDefaultValue = 'Untitled Trip';
     const testRawName = '';
