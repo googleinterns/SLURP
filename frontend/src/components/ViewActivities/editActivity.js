@@ -10,7 +10,7 @@ import * as time from '../Utils/time.js';
  * 
  * @param {Object} props This component expects the following props:
  * - `activity` The activity to display.
- * - `submitFunction` The function to run upon submission.
+ * - `submitFunction` The function to run upon submission to trigger card flip.
  */
 class EditActivity extends React.Component {
   /** @inheritdoc */
@@ -59,7 +59,7 @@ class EditActivity extends React.Component {
     }
   }
 
-  /** Runs when the `submit` button is pressed.  */
+  /** Runs when the `submit` button on the form is pressed.  */
   finishEditActivity(event) {
     event.preventDefault();
     this.editActivity();
@@ -72,7 +72,7 @@ class EditActivity extends React.Component {
   /**
    * Returns a dropdown of all the timezones.
    * 
-   * @param st either "start" or "end"
+   * @param st either "start" or "end" depending on whether the timezone is for the start or end timezone.
    */
   timezonePicker(st) {
     return (
@@ -89,7 +89,7 @@ class EditActivity extends React.Component {
     )
   }
   /**
-   * Create a dropdown of all the countries 
+   * Create a dropdown of all the countries.
    * 
    * @param ref The reference to attach to the dropdown.
    * @param tzchange The function to run to update the time zone picker.

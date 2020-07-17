@@ -1,4 +1,6 @@
-// This file contains all the countries and their 2-letter country codes.
+// This file contains all the countries and their 2-letter country codes. 
+// It also contains a list of all the countries for which there are accompanying country codes-  
+// called countryList. It's at the bottom of this (very long) file.
 export const topNCountries = 10; // Number of "popular countries" to display first
 export const countryCodes = {
 "United States Minor Outlying Islands"	: "UM", 
