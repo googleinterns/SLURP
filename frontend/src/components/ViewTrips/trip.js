@@ -2,7 +2,8 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import { getUserEmailFromUid } from '../Utils/temp-auth-utils.js'
+import { timestampToISOString } from '../Utils/time.js';
+import { getUserEmailFromUid } from '../Utils/temp-auth-utils.js';
 import ViewActivitiesButton from './view-activities-button.js';
 
 /**
@@ -27,14 +28,16 @@ export function getDateRange(tripData) {
       `${endDate.getDate()}/${endDate.getFullYear()}`;
 }
 
+/**
+ * Returns a string with comma separated collaborator emails.
+ *
+ * @param {!Array<string>} collaboratorUidArr Array of collaborator uids.
+ * @return {string} Comma separated string of collaborator emails.
+ */
 export function getCollaboratorEmails(collaboratorUidArr) {
   const collaboratorEmailArr =
       collaboratorUidArr.map(uid => getUserEmailFromUid(uid));
   return collaboratorEmailArr.join(', ');
-}
-
-function timestampToISOString(timestamp) {
-  return timestamp.toDate().toISOString().substring(0,10);
 }
 
 /**

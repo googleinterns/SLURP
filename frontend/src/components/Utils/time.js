@@ -73,3 +73,13 @@ export function getTimestampFromDateString(dateStr) {
   const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
   return firebase.firestore.Timestamp.fromDate(date);
 }
+
+/**
+ * Returns a date string in ISO format.
+ *
+ * @param {firebase.firestore.Timestamp} timestamp Firestore timestamp object.
+ * @return {string} ISO formatted date string.
+ */
+export function timestampToISOString(timestamp) {
+  return timestamp.toDate().toISOString().substring(0,10);
+}
