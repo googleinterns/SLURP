@@ -1,9 +1,7 @@
 import React from 'react';
 
 import app from '../Firebase';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { Button, Modal, Form }  from 'react-bootstrap';
 
 import { COLLECTION_TRIPS } from '../../constants/database.js';
 import { formatTripData } from '../Utils/filter-input.js';
