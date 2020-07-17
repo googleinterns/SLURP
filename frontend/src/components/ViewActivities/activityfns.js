@@ -51,13 +51,14 @@ export function compareActivities(a, b) {
  * @param {Object} activity 
  * @param {string} fieldName 
  * @param defaultValue 
+ * @param prefix The prefix to put before a returned value if the field exists.
  * @returns `activity[fieldName]` if possible, else `defaultValue`.
  */
-export function getField(activity, fieldName, defaultValue){
+export function getField(activity, fieldName, defaultValue, prefix=""){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
     return defaultValue;
   }
-  return activity[fieldName];
+  return prefix + activity[fieldName];
 }
 
 /**

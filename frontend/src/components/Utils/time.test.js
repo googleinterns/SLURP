@@ -61,7 +61,7 @@ describe('timezones for country', () => {
   test('legit country no spaces', () => {
     const actual = utils.timezonesForCountry("China");
     const expected = ["Asia/Shanghai", "Asia/Urumqi"];
-    expect(actual.sort()).toBe(expected.sort());
+    expect(new Set(actual.sort())).toEqual(new Set(expected.sort()));
   })
 
   test('legit country, yes spaces', () => {

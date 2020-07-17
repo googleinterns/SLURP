@@ -1,4 +1,5 @@
 // This file contains all the countries and their 2-letter country codes.
+export const topNCountries = 10; // Number of "popular countries" to display first
 export const countryCodes = {
 "United States Minor Outlying Islands"	: "UM", 
 "United States of America"	: "US", 
@@ -10,7 +11,6 @@ export const countryCodes = {
 "India"	: "IN", 
 "Italy"	: "IT", 
 "Jamaica"	: "JM", 
-"Sweden"	: "SE",   
 "Andorra"	: "AD", 
 "United Arab Emirates"	: "AE", 
 "Afghanistan"	: "AF", 
@@ -210,6 +210,7 @@ export const countryCodes = {
 "Somalia"	: "SO", 
 "Suriname"	: "SR", 
 "South Sudan"	: "SS", 
+"Sweden"	: "SE",   
 "Sao Tome and Principe"	: "ST", 
 "El Salvador"	: "SV", 
 "Sint Maarten (Dutch part)"	: "SX", 
@@ -249,3 +250,4 @@ export const countryCodes = {
 "South Africa"	: "ZA", 
 "Zambia"	: "ZM", 
 "Zimbabwe"	: "ZW"}
+export const countryList = Object.keys(countryCodes);
