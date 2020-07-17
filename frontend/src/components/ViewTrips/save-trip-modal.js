@@ -1,9 +1,7 @@
 import React from 'react';
 
 import app from '../Firebase';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { Button, Modal, Form }  from 'react-bootstrap';
 
 import { COLLECTION_TRIPS } from '../../constants/database.js';
 import { formatTripData } from '../Utils/filter-input.js';
@@ -228,8 +226,8 @@ class SaveTripModal extends React.Component {
   /** Adds a new Ref element to the state variable `collaboratorsRefArr`. */
   addCollaboratorRef = () => {
     this.setState({ collaboratorsRefArr:
-                    this.state.collaboratorsRefArr.concat([React.createRef()]) }
-                 );
+                      this.state.collaboratorsRefArr.concat([React.createRef()])
+                  });
   }
 
   /**
@@ -278,7 +276,7 @@ class SaveTripModal extends React.Component {
           startDate: this.startDateRef.current.value,
           endDate: this.endDateRef.current.value,
           collaboratorEmails:
-              this.state.collaboratorsRefArr.map(ref => ref.current.value)
+              this.state.collaboratorsRefArr.map(ref => ref.current.value),
         }
     );
 
