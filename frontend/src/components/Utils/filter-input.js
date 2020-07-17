@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app';
 
 import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
+import { getTimestampFromDateString } from './time.js'
 
 /**
  * Return a string containing the cleaned text input.
