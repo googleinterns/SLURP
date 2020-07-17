@@ -1,29 +1,16 @@
 import * as firebase from 'firebase/app';
 
-import { COLLECTION_TRIPS } from '../../constants/database.js';
+
 import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
 
 /**
- * Return a string containing the trip name given the trip name entered in the
- * add trip form.
+ * Return a string containing the cleaned text input.
  *
- * @param {string} rawName String containing trip name entered in add trip form.
- * @return {string} Cleaned trip name.
+ * @param {string} rawInput String containing raw form input.
+ * @return {string} Cleaned string.
  */
-export function getTripName(rawName) {
-  return rawName === '' ? 'Untitled Trip' : rawName;
-}
-
-/**
- * Return a string containing the trip destination given the trip destination
- * entered in the add trip form.
- *
- * @param {string} rawName String containing trip description entered in the
- *     add trip form.
- * @return {string} Cleaned trip description.
- */
-export function getTripDestination(rawDestination) {
-  return rawDestination === '' ? 'No Destination' : rawDestination;
+export function getCleanedTextInput(rawInput, defaultValue) {
+  return rawInput === '' ? defaultValue : rawInput;
 }
 
 /**
@@ -46,6 +33,9 @@ export function getTimestampFromDateString(dateStr) {
  * Return an array of collaborator uids given the emails provided in the
  * add trip form.
  *
+ * TODO(#72 & #67): Remove 'remove empty fields' once there is better way to
+ * remove collaborators (#72) and there is email validation (#67).
+ *
  * @param {!Array{string}} collaboratorEmailsArr Array of emails corresponding
  *     to the  collaborators of the trip (not including the trip creator email).
  * @return {!Array{string}} Array of all collaborator uids (including trip
@@ -53,6 +43,8 @@ export function getTimestampFromDateString(dateStr) {
  */
 export function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [getCurUserEmail()].concat(collaboratorEmailArr);
+
+  // Removes empty fields (temporary).
   while (collaboratorEmailArr.includes('')) {
     const emptyStrIdx = collaboratorEmailArr.indexOf('');
     collaboratorEmailArr.splice(emptyStrIdx, 1);
@@ -76,13 +68,17 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  * @return {Object} Formatted/cleaned version of `rawTripObj` holding the data
  *     for the new Trip document that is to be created.
  */
-function formatTripData(rawTripObj) {
+export function formatTripData(rawTripObj) {
+  const defaultName = "Untitled Trip";
+  const defaultDestination = "No Destination"
+
   const formattedTripObj =
   {
     trip_creation_time: firebase.firestore.Timestamp.now(),
-    name:               getTripName(rawTripObj.name),
+    name:               getCleanedTextInput(rawTripObj.name, defaultName),
     description:        rawTripObj.description,
-    destination:        getTripDestination(rawTripObj.destination),
+    destination:        getCleanedTextInput(rawTripObj.destination,
+                                                 defaultDestination),
     start_date:         getTimestampFromDateString(rawTripObj.startDate),
     end_date:           getTimestampFromDateString(rawTripObj.endDate),
     collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails)
@@ -90,36 +86,3 @@ function formatTripData(rawTripObj) {
 
   return formattedTripObj;
 }
-
-/**
- * Adds a new Trip document to firestore with data in `tripObj` and returns a
- * Promise containing a reference to the newly created document.
- *
- * @param {firebase.firestore.Firestore} db The Firestore database instance.
- * @param {Object} tripObj A JS Object containing the Trip document fields.
- */
-export function addTripToFirestore(db, tripObj) {
-  return db.collection(COLLECTION_TRIPS)
-    .add(tripObj)
-}
-
-/**
- * Formats/cleans form data and creates new Trip document in firestore.
- *
- * @param {firebase.firestore.Firestore} db The Firestore database instance.
- * @param {Object} rawTripObj A JS Object containing the raw form data from the
- *    add trip form.
- */
-function createTrip(db, rawTripObj) {
-  const formattedTripObj = formatTripData(rawTripObj);
-
-  addTripToFirestore(db, formattedTripObj)
-      .then(docRef => {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(error => {
-        console.error("Error adding document: ", error);
-      });
-}
-
-export default createTrip;

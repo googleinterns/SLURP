@@ -1,8 +1,14 @@
 /**
- * Temporary hardcoded function that returns the current users email.
+ * @fileoverview This is a temporary file that is used to implement 'fake'
+ * versions of the Auth utility functions used in the ViewTrips components.
  *
- * TODO(Issue 55): Remove this function and replace any calls to it with Auth
- *                 component function.
+ * TODO(Issue 55): Remove this whole file function and replace any imports to
+ *                 this file with Auth utils.
+ */
+
+
+/**
+ * Temporary hardcoded function that returns the current users email.
  *
  * @return Hardcoded user email string.
  */
@@ -13,9 +19,6 @@ export function getCurUserEmail() {
 /**
  * Temporary hardcoded function that returns the user's uid given the user's
  * email.
- *
- * TODO(Issue 55): Remove this function and replace any calls to it with Auth
- *                 component function.
  *
  * @param {string} userEmail A users email.
  * @return {string} The 'fake' uid associated with the user email that is
@@ -28,9 +31,6 @@ export function getUidFromUserEmail(userEmail) {
 /**
  * Temporary hardcoded function that returns the a user's email given the
  * fake uid that was stored in the Trip document.
- *
- * TODO(Issue 55): Remove this function and replace any calls to it with Auth
- *                 component function.
  *
  * @param {string} uid Fake string uid that is in the form '_userEmail_'.
  * @return {string} The email corresponding to the fake uid.
