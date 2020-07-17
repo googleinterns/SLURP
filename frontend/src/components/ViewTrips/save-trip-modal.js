@@ -14,18 +14,20 @@ const db = app.firestore();
  * Returns a Form.Control element with input type 'text' and other props
  * specified by the function parameters.
  *
- * @param {string} defaultText Default text value in the form input.
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
  * @param {boolean} isAddTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
+ * @param {string} placeholder Placeholder text value in the form input.
+ * @param {!string=} defaultText Optional default text value in the form input.
  * @return {JSX.Element} The Form.Control element.
  */
-function createTextFormControl(defaultText, ref, isAddTripForm) {
+function createTextFormControl(ref, isAddTripForm,
+                                placeholder, defaultText = null) {
   if (isAddTripForm) {
     return (
       <Form.Control
         type='text'
-        placeholder={defaultText}
+        placeholder={placeholder}
         ref={ref}
       />
     );
@@ -33,6 +35,7 @@ function createTextFormControl(defaultText, ref, isAddTripForm) {
   return (
     <Form.Control
       type='text'
+      placeholder={placeholder}
       defaultValue={defaultText}
       ref={ref}
     />
@@ -43,12 +46,12 @@ function createTextFormControl(defaultText, ref, isAddTripForm) {
  * Returns a Form.Control element with input type 'date' and other props
  * specified by the function parameters.
  *
- * @param {string} defaultDate Default ISO date string in the form input.
- * @param {React.RefObject} refArr The list of refs attached to the emails
- *     inputted in the form.
+ * @param {React.RefObject} ref Ref attached to the date inputted in the form.
+ * @param {string=} defaultDate Optional default ISO date string placed in the
+ *     form input.
  * @return {JSX.Element} The Form.Control element.
  */
-function createDateFormControl(defaultDate, ref) {
+function createDateFormControl(ref, defaultDate = '') {
   return (
     <Form.Control
       type='date'
@@ -62,19 +65,22 @@ function createDateFormControl(defaultDate, ref) {
  * Returns a Form.Control element with input type 'email' and other props
  * specified by the function parameters.
  *
- * @param {string} defaultEmail Default text value in the form input.
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
  * @param {number} idx Index of the email Form.Control used for key prop.
  * @param {boolean} isAddTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
+ * @param {string} placeholder Placeholder text value in the form input.
+ * @param {!Array<string>=} defaultEmailArr Array of the emails to be displayed
+ *     in the default form fields.
  * @return {JSX.Element} The Form.Control element.
  */
-function createEmailFormControl(defaultEmail, ref, idx, isAddTripForm) {
+function createEmailFormControl(ref, idx, isAddTripForm,
+                                  placeholder, defaultEmailArr = null) {
   if (isAddTripForm) {
     return (
       <Form.Control
         type='email'
-        placeholder={defaultEmail}
+        placeholder={placeholder}
         ref={ref}
         key={idx}
       />
@@ -83,7 +89,8 @@ function createEmailFormControl(defaultEmail, ref, idx, isAddTripForm) {
   return (
     <Form.Control
       type='email'
-      defaultValue={defaultEmail}
+      placeholder={placeholder}
+      defaultValue={defaultEmailArr[idx + 1]}
       ref={ref}
       key={idx}
     />
@@ -101,20 +108,22 @@ function createEmailFormControl(defaultEmail, ref, idx, isAddTripForm) {
  *
  * TODO(Issue #72): More intuitive remove collaborator when !`isAddTripForm`.
  *
- * @param {!Array<string>} defaultEmailArr Array of the emails to be displayed
- *     in the default form fields.
  * @param {!Array<React.RefObject>} refArr Array of refs attached to the
  *     emails inputted in the form.
  * @param {boolean} isAddTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
+ * @param {string} placeholder Placeholder text value in the form input.
+ * @param {!Array<string>=} defaultEmailArr Array of the emails to be displayed
+ *     in the default form fields.
  * @return {JSX.Element} The Form.Control elements.
  */
-function createMultiFormControl(defaultEmailArr, refArr, isAddTripForm) {
+function createMultiFormControl(refArr, isAddTripForm,
+                                    placeholder, defaultEmailArr = null) {
   return (
     <>
       {refArr.map((ref, idx) =>
-        createEmailFormControl(defaultEmailArr[idx + 1],
-                                 ref, idx, isAddTripForm)
+        createEmailFormControl(ref, idx, isAddTripForm,
+                                 placeholder, defaultEmailArr)
       )}
     </>
   );
@@ -127,25 +136,27 @@ function createMultiFormControl(defaultEmailArr, refArr, isAddTripForm) {
  *                           input prop.
  * @param {string} formLabel Label/title for the form input.
  * @param {string} inputType Input type of the form.
- * @param {string} defaultVal Default value in the form input.
  * @param {React.RefObject} ref Ref attached to the values inputted in the form.
- * @param {string} subFormText Subtext instructions under a form input.
  * @param {boolean} isAddTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
+ * @param {string} placeholder Placeholder text value in the form input.
+ * @param {string} defaultVal Default value in the form input.
  * @return {JSX.Element} The Form.Group element.
  */
 function createFormGroup(controlId, formLabel, inputType,
-                          defaultVal, ref, isAddTripForm) {
+                          ref, isAddTripForm, placeholder, defaultVal) {
   let formControl;
   switch(inputType) {
     case 'text':
-      formControl = createTextFormControl(defaultVal, ref, isAddTripForm);
+      formControl = createTextFormControl(ref, isAddTripForm,
+                                            placeholder, defaultVal);
       break;
     case 'date':
-      formControl = createDateFormControl(defaultVal, ref);
+      formControl = createDateFormControl(ref, defaultVal);
       break;
     case 'emails':
-      formControl = createMultiFormControl(defaultVal, ref, isAddTripForm);
+      formControl = createMultiFormControl(ref, isAddTripForm,
+                                            placeholder, defaultVal);
       break;
     default:
       console.error('There should be no other input type')
@@ -198,14 +209,18 @@ class SaveTripModal extends React.Component {
 
     this.isAddTripForm = this.props.tripId === null;
 
-    // Create the number of collaborator input box refs as one less than the
-    // number of collaborators specified in prop `defaultFormObj` (do not
-    // include current user in list)
+    // For edit trips, create the number of collaborator input box refs as one
+    // less than the number of collaborators specified in prop `defaultFormObj`
+    // (do not include current user in list).
     //
     // TODO(Issue 71): Give user option to remove themself as collab. from trip.
     const collaboratorsRefArr = [];
-    for (let i = 1; i < this.props.defaultFormObj.collaborators.length; i++) {
-      collaboratorsRefArr.push(React.createRef())
+    if (this.isAddTripForm) {
+      collaboratorsRefArr.push(React.createRef());
+    } else {
+      for (let i = 1; i < this.props.defaultFormObj.collaborators.length; i++) {
+        collaboratorsRefArr.push(React.createRef())
+      }
     }
     this.state = { collaboratorsRefArr: collaboratorsRefArr }
   }
@@ -306,23 +321,23 @@ class SaveTripModal extends React.Component {
         <Form>
           <Modal.Body>
             {createFormGroup('tripNameGroup', 'Trip Name', 'text',
-                this.props.defaultFormObj.name, this.nameRef,
-                this.isAddTripForm)}
+                this.nameRef, this.isAddTripForm, 'Enter Trip Name',
+                this.props.defaultFormObj.name)}
             {createFormGroup('tripDescGroup', 'Trip Description', 'text',
-                this.props.defaultFormObj.description, this.descriptionRef,
-                this.isAddTripForm)}
+                this.descriptionRef, this.isAddTripForm,
+                'Enter Trip Description', this.props.defaultFormObj.description)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
-                this.props.defaultFormObj.destination, this.destinationRef,
-                this.isAddTripForm)}
+                this.destinationRef, this.isAddTripForm,
+                'Enter Trip Destination', this.props.defaultFormObj.destination)}
             {createFormGroup('tripStartDateGroup', 'Start Date', 'date',
-                this.props.defaultFormObj.startDate, this.startDateRef,
-                this.isAddTripForm)}
+                this.startDateRef, this.isAddTripForm, '',
+                this.props.defaultFormObj.startDate)}
             {createFormGroup('tripEndDateGroup', 'End Date', 'date',
-                this.props.defaultFormObj.endDate, this.endDateRef,
-                this.isAddTripForm)}
+                this.endDateRef, this.isAddTripForm, '',
+                this.props.defaultFormObj.endDate)}
             {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'emails',
-                this.props.defaultFormObj.collaborators,
-                this.state.collaboratorsRefArr, this.isAddTripForm)}
+                this.state.collaboratorsRefArr, this.isAddTripForm,
+                'person@email.xyz', this.props.defaultFormObj.collaborators)}
             <Button onClick={this.addCollaboratorRef}>
               Add Another Collaborator
             </Button>
