@@ -24,7 +24,7 @@ function createTextFormControl(defaultText, ref, isAddTripForm) {
   if (isAddTripForm) {
     return (
       <Form.Control
-        type="text"
+        type='text'
         placeholder={defaultText}
         ref={ref}
       />
@@ -32,7 +32,7 @@ function createTextFormControl(defaultText, ref, isAddTripForm) {
   }
   return (
     <Form.Control
-      type="text"
+      type='text'
       defaultValue={defaultText}
       ref={ref}
     />
@@ -51,7 +51,7 @@ function createTextFormControl(defaultText, ref, isAddTripForm) {
 function createDateFormControl(defaultDate, ref) {
   return (
     <Form.Control
-      type="date"
+      type='date'
       ref={ref}
       defaultValue={defaultDate}
     />
@@ -73,7 +73,7 @@ function createEmailFormControl(defaultEmail, ref, idx, isAddTripForm) {
   if (isAddTripForm) {
     return (
       <Form.Control
-        type="email"
+        type='email'
         placeholder={defaultEmail}
         ref={ref}
         key={idx}
@@ -82,7 +82,7 @@ function createEmailFormControl(defaultEmail, ref, idx, isAddTripForm) {
   }
   return (
     <Form.Control
-      type="email"
+      type='email'
       defaultValue={defaultEmail}
       ref={ref}
       key={idx}
@@ -162,7 +162,7 @@ function createFormGroup(controlId, formLabel, inputType,
 /**
  * Component corresponding to the save trips modal.
  *
- * This component acts as a "pseudo-parent" of the AddTripModal and
+ * This component acts as a 'pseudo-parent' of the AddTripModal and
  * EditTripModal components. The only differences in the implementation between
  * the two fake components are dervied from the props  `tripid` and
  * `defaultFormObj` (see below). The primary difference between the add and
@@ -226,10 +226,10 @@ class SaveTripModal extends React.Component {
     db.collection(COLLECTION_TRIPS)
         .add(tripData)
         .then(docRef => {
-          console.log("Document written with ID: ", docRef.id);
+          console.log('Document written with ID: ', docRef.id);
         })
         .catch(error => {
-          console.error("Error adding document: ", error);
+          console.error('Error adding document: ', error);
         });
   }
 
@@ -244,10 +244,10 @@ class SaveTripModal extends React.Component {
         .doc(tripId)
         .set(tripData)
         .then(() => {
-          console.log("Document written with ID: ", tripId);
+          console.log('Document written with ID: ', tripId);
         })
         .catch(error => {
-          console.error("Error adding document: ", error);
+          console.error('Error adding document: ', error);
         });
   }
 
