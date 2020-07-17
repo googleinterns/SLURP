@@ -115,15 +115,14 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
  *
  * This component "acts" as a parent of the (non-existant) AddTripModal and
  * EditTripModal components. The only differences in the implementation between
- * the two fake components are dervied from the props `title`, `tripid`, and
+ * the two fake components are dervied from the props `tripid` and
  * `placeholderObj` (see below).
  *
  * @param {Object} props These are the props for this component:
- * - show: Boolean that determines if the add trips modal should be displayed.
- * - handleClose: The function that handles closing the add trips modal.
+ * - show: Boolean that determines if the save trips modal should be displayed.
+ * - handleClose: Handler that closes the save trips modal upon calling.
  * - refreshTripsContainer: Function that handles refreshing the TripsContainer
- *        component upon trip creation (Remove when fix Issue #62).
- * - title: The title of the modal.
+ *        component upon trip saving (Remove when fix Issue #62).
  * - tripId: For adding a new trip, this will be null. For editting an existing
  *        trip, this will the document id associated with the trip.
  * - placeholderObj: Object containing the placeholder/default values for the
@@ -233,12 +232,20 @@ class SaveTripModal extends React.Component {
     this.props.handleClose();
   }
 
+  /** Gets the Modal title based the type of modal (edit or add trip). */
+  getModalTitle = () => {
+    if (this.isAddTripForm) {
+      return 'Add New Trip';
+    }
+    return 'Edit Trip';
+  }
+
   /** @inheritdoc */
   render() {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{this.props.title}</Modal.Title>
+          <Modal.Title>{this.getModalTitle()}</Modal.Title>
         </Modal.Header>
 
         <Form>
