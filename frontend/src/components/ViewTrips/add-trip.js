@@ -1,10 +1,14 @@
 import React from 'react';
 
+import app from '../Firebase';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
-import createTrip from './create-new-trip.js';
+import { COLLECTION_TRIPS } from '../../constants/database.js';
+import { formatTripData } from '../Utils/filter-input.js';
+
+const db = app.firestore();
 
 /**
  * Returns a Form.Control element with input type 'text' and other fields
@@ -131,6 +135,7 @@ class AddTripModal extends React.Component {
     this.state = { collaboratorsRefArr: [React.createRef()] }
   }
 
+  /** Adds a new Ref element to the state variable `collaboratorsRefArr`. */
   addCollaboratorRef = () => {
     this.setState({ collaboratorsRefArr:
                     this.state.collaboratorsRefArr.concat([React.createRef()]) }
@@ -138,14 +143,10 @@ class AddTripModal extends React.Component {
   }
 
   /**
-   * Upon submission of the form, a new Trip document is created and the add
-   * trip modal is closed.
-   *
-   * @param e Event object corresponding to (add trip) submit button click.
+   * Formats/cleans the form data and create a new Trip document in firestore.
    */
-  handleCreateNewTrip = (e) => {
-    e.preventDefault();
-    createTrip(
+  createTrip() {
+    const tripData = formatTripData(
         {
           name: this.nameRef.current.value,
           description: this.descriptionRef.current.value,
@@ -154,8 +155,27 @@ class AddTripModal extends React.Component {
           endDate: this.endDateRef.current.value,
           collaboratorEmails:
               this.state.collaboratorsRefArr.map(ref => ref.current.value)
-        });
+        }
+    );
 
+    db.collection(COLLECTION_TRIPS)
+        .add(tripData)
+        .then(docRef => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
+  }
+
+  /**
+   * Handles submission of the form which includes:
+   *  - Creation of the trip.
+   *  - Refreshing the trips container.
+   *  - Closing the modal.
+   */
+  handleSubmitForm = () => {
+    this.createTrip();
     this.props.refreshTripsContainer();
     this.props.handleClose();
   }
@@ -191,7 +211,7 @@ class AddTripModal extends React.Component {
             <Button variant='secondary' onClick={this.props.handleClose}>
               Cancel
             </Button>
-            <Button variant='primary' onClick={this.handleCreateNewTrip}>
+            <Button variant='primary' onClick={this.handleSubmitForm}>
               Add Trip
             </Button>
           </Modal.Footer>

@@ -1,33 +1,16 @@
 import * as firebase from 'firebase/app';
 
-import app from '../Firebase/';
 
-import { COLLECTION_TRIPS } from '../../constants/database.js';
 import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
 
-const db = app.firestore();
-
 /**
- * Return a string containing the trip name given the trip name entered in the
- * add trip form.
+ * Return a string containing the cleaned text input.
  *
- * @param {string} rawName String containing trip name entered in add trip form.
- * @return {string} Cleaned trip name.
+ * @param {string} rawInput String containing raw form input.
+ * @return {string} Cleaned string.
  */
-export function getTripName(rawName) {
-  return rawName === '' ? 'Untitled Trip' : rawName;
-}
-
-/**
- * Return a string containing the trip destination given the trip destination
- * entered in the add trip form.
- *
- * @param {string} rawName String containing trip description entered in the
- *     add trip form.
- * @return {string} Cleaned trip description.
- */
-export function getTripDestination(rawDestination) {
-  return rawDestination === '' ? 'No Destination' : rawDestination;
+export function getCleanedTextInput(rawInput, defaultValue) {
+  return rawInput === '' ? defaultValue : rawInput;
 }
 
 /**
@@ -85,13 +68,17 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  * @return {Object} Formatted/cleaned version of `rawTripObj` holding the data
  *     for the new Trip document that is to be created.
  */
-function formatTripData(rawTripObj) {
+export function formatTripData(rawTripObj) {
+  const defaultName = "Untitled Trip";
+  const defaultDestination = "No Destination"
+
   const formattedTripObj =
   {
     trip_creation_time: firebase.firestore.Timestamp.now(),
-    name:               getTripName(rawTripObj.name),
+    name:               getCleanedTextInput(rawTripObj.name, defaultName),
     description:        rawTripObj.description,
-    destination:        getTripDestination(rawTripObj.destination),
+    destination:        getCleanedTextInput(rawTripObj.destination,
+                                                 defaultDestination),
     start_date:         getTimestampFromDateString(rawTripObj.startDate),
     end_date:           getTimestampFromDateString(rawTripObj.endDate),
     collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails)
@@ -99,37 +86,3 @@ function formatTripData(rawTripObj) {
 
   return formattedTripObj;
 }
-
-/**
- * Adds a new Trip document to firestore with data in `tripObj` and returns a
- * Promise containing a reference to the newly created document.
- *
- * @param {firebase.firestore.Firestore} db The Firestore database instance.
- * @param {Object} tripObj A JS Object containing the Trip document fields.
- * @return {Promise<firebase.firestore.DocumentReference>} Promise with the
- *     document reference upon successful creation of the trip document.
- */
-export function addTripToFirestore(db, tripObj) {
-  return db.collection(COLLECTION_TRIPS)
-    .add(tripObj)
-}
-
-/**
- * Formats/cleans form data and creates new Trip document in firestore.
- *
- * @param {Object} rawTripObj A JS Object containing the raw form data from the
- *    add trip form.
- */
-function createTrip(rawTripObj) {
-  const formattedTripObj = formatTripData(rawTripObj);
-
-  addTripToFirestore(db, formattedTripObj)
-      .then(docRef => {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(error => {
-        console.error("Error adding document: ", error);
-      });
-}
-
-export default createTrip;

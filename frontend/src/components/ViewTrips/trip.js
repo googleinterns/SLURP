@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import { getUserEmailFromUid } from './temp-auth-utils.js'
+import { getUserEmailFromUid } from '../Utils/temp-auth-utils.js'
 import ViewActivitiesButton from './view-activities-button.js';
 
 /**
