@@ -110,39 +110,39 @@ class EditActivity extends React.Component {
 
   render() {
     const activity = this.props.activity;
-    const titleWidth = 3;
-    const countryWidth = 6;
-    const dateWidth = 4;
-    const timeWidth = 2;
-    const tzPickerWidth = 3;
+    const TITLEWIDTH = 3;
+    const COUNTRYWIDTH = 6;
+    const DATEWIDTH = 4;
+    const TIMEWIDTH = 2;
+    const TZPICKERWIDTH = 3;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         <Form.Group as={Row} controlId='formActivityTitle'>
-          <Col sm={titleWidth}><Form.Label>Title:</Form.Label></Col>
+          <Col sm={TITLEWIDTH}><Form.Label>Title:</Form.Label></Col>
           <Col><Form.Control type='text' placeholder={activity[DB.ACTIVITIES_TITLE]} ref={this.editTitleRef}/></Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityStartLocation'>
-          <Col sm={titleWidth}><Form.Label>Start Location:</Form.Label></Col>
-          <Col sm={countryWidth}>{this.countriesDropdown(this.editStartLocRef, this.startTimeTzUpdate)}</Col>
+          <Col sm={TITLEWIDTH}><Form.Label>Start Location:</Form.Label></Col>
+          <Col sm={COUNTRYWIDTH}>{this.countriesDropdown(this.editStartLocRef, this.startTimeTzUpdate)}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityStartLocation'>
-          <Col sm={titleWidth}><Form.Label>End Location:</Form.Label></Col>
-          <Col sm={countryWidth}>{this.countriesDropdown(this.editEndLocRef, this.endTimeTzUpdate)}</Col>
+          <Col sm={TITLEWIDTH}><Form.Label>End Location:</Form.Label></Col>
+          <Col sm={COUNTRYWIDTH}>{this.countriesDropdown(this.editEndLocRef, this.endTimeTzUpdate)}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityStartTime'>
-          <Col sm={titleWidth}><Form.Label>From:</Form.Label></Col>
-          <Col sm={dateWidth}><Form.Control type='date' label='date' ref={this.editStartDateRef}/></Col>
-          <Col sm={timeWidth}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
-          <Col sm={tzPickerWidth}>{this.timezonePicker("start")}</Col>
+          <Col sm={TITLEWIDTH}><Form.Label>From:</Form.Label></Col>
+          <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editStartDateRef}/></Col>
+          <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
+          <Col sm={TZPICKERWIDTH}>{this.timezonePicker("start")}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityEndTime'>
-          <Col sm={titleWidth}><Form.Label>To:</Form.Label></Col>
-          <Col sm={dateWidth}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
-          <Col sm={timeWidth}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
-          <Col sm={tzPickerWidth}>{this.timezonePicker("end")}</Col>
+          <Col sm={TITLEWIDTH}><Form.Label>To:</Form.Label></Col>
+          <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
+          <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
+          <Col sm={TZPICKERWIDTH}>{this.timezonePicker("end")}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityTitle'>
-          <Col sm={titleWidth}><Form.Label>Description:</Form.Label></Col>
+          <Col sm={TITLEWIDTH}><Form.Label>Description:</Form.Label></Col>
           <Col><Form.Control type='text' 
             placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!')}
             ref={this.editDescriptionRef} />
