@@ -1,3 +1,5 @@
+import * as moment from 'moment-timezone';
+import { countryCodes } from '../../constants/countries.js';
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time.
  *
@@ -57,4 +59,23 @@ export function timestampToFormatted(msTimestamp, timezone = 'America/New_York')
   };
   let formatted = date.toLocaleString('en-US', formatOptions);
   return formatted;
+}
+
+/**
+ * Returns all the time zones in a country (in pretty format).
+ * 
+ * @param {string} countryName The name of the country for which to get the time zones.
+ * @returns The list of time zones in the provided country.
+ */
+export function timezonesForCountry(countryName) {
+  let zones;
+  try {
+    const countryCode = countryCodes[countryName];
+    zones = moment.tz.zonesForCountry(countryCode);
+  } catch (e) {
+    zones = moment.tz.names();
+  }
+  return zones.map(e => {
+    return e.replace(/[_]/g, " ");
+  });
 }

@@ -56,3 +56,25 @@ test('other full timestamp format', () => {
   expect(actualCentral).toEqual(expectedCentral);
   expect(actualSingapore).toEqual(expectedSingapore);
 })
+
+describe('timezones for country', () => {
+  test('legit country no spaces', () => {
+    const actual = utils.timezonesForCountry("China");
+    const expected = ["Asia/Shanghai", "Asia/Urumqi"];
+    expect(actual.sort()).toBe(expected.sort());
+  })
+
+  test('legit country, yes spaces', () => {
+    const actual = utils.timezonesForCountry("United States of America");
+    expect(actual).toContain("America/Anchorage");
+    expect(actual).toContain("America/New York");
+    expect(actual).not.toContain("Africa/Accra");
+  })
+
+  test('not legit country (spaces and non spaces)', () => {
+    const actual = utils.timezonesForCountry("MURICA");
+    expect(actual).toContain("America/New York");
+    expect(actual).toContain("Europe/Paris");
+    expect(actual).toContain("Africa/Accra");
+  })
+})
