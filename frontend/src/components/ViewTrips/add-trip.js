@@ -76,12 +76,12 @@ function createMultiFormControl(placeholder, refArr) {
 /**
  * Returns a Form.Group element with components specified by the input args.
  *
- * @param {string} controlId prop that accessibly wires the nested label and
+ * @param {string} controlId Prop that accessibly wires the nested label and
  *                           input prop.
  * @param {string} formLabel Label/title for the form input.
  * @param {string} inputType Input type of the form.
  * @param {string} placeholder Text placeholder in the form input.
- * @param {React.RefObject} ref Ref attatched to the valued inputted in the form.
+ * @param {React.RefObject} ref Ref attached to the values inputted in the form.
  * @param {string} subFormText Subtext instructions under a form input.
  * @return {JSX.Element} The Form.Group element.
  */
@@ -192,7 +192,7 @@ class AddTripModal extends React.Component {
           <Modal.Body>
             {createFormGroup('tripNameGroup', 'Trip Name', 'text',
                              'Enter Trip Name', this.nameRef)}
-            {createFormGroup('tripDescripGroup', 'Trip Description', 'text',
+            {createFormGroup('tripDescGroup', 'Trip Description', 'text',
                              'Enter Trip Description', this.descriptionRef)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
                              'Enter Trip Destination', this.destinationRef)}
