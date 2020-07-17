@@ -1,6 +1,5 @@
 import * as firebase from 'firebase/app';
 
-
 import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
 
 /**
