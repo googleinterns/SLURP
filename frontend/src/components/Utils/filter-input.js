@@ -1,6 +1,6 @@
 import * as firebase from 'firebase/app';
 
-import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
+import { getCurUserEmail, getUserUidFromUserEmail } from './temp-auth-utils.js'
 import { getTimestampFromDateString } from './time.js'
 
 /**
@@ -33,7 +33,8 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
     const emptyStrIdx = collaboratorEmailArr.indexOf('');
     collaboratorEmailArr.splice(emptyStrIdx, 1);
   }
-  return collaboratorEmailArr.map(userEmail => getUidFromUserEmail(userEmail));
+  return collaboratorEmailArr
+             .map(userEmail => getUserUidFromUserEmail(userEmail));
 }
 
 /**

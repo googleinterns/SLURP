@@ -17,6 +17,15 @@ export function getCurUserEmail() {
 }
 
 /**
+ * Temporary hardcoded function that returns the current users uid.
+ *
+ * @return Hardcoded user email string.
+ */
+export function getCurUserUid() {
+  return getUserUidFromUserEmail(getCurUserEmail());
+}
+
+/**
  * Temporary hardcoded function that returns the user's uid given the user's
  * email.
  *
@@ -24,7 +33,7 @@ export function getCurUserEmail() {
  * @return {string} The 'fake' uid associated with the user email that is
  *     created with the form '_`userEmail`_'.
  */
-export function getUidFromUserEmail(userEmail) {
+export function getUserUidFromUserEmail(userEmail) {
   return '_' + userEmail + '_';
 }
 
@@ -38,3 +47,12 @@ export function getUidFromUserEmail(userEmail) {
 export function getUserEmailFromUid(uid) {
   return uid.substring(1, uid.length - 1);
 }
+
+const authUtils = {
+  getCurUserEmail,
+  getCurUserUid,
+  getUserUidFromUserEmail,
+  getUserEmailFromUid
+}
+
+export default authUtils;
