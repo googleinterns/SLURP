@@ -1,7 +1,10 @@
+import * as firebase from 'firebase/app';
+import 'firebase/firebase-firestore';
+
 import * as utils from './time.js';
 
 const TZ_CHICAGO = 'America/Chicago';
-const TZ_SINGAPORE = 'Asia/Singapore'; 
+const TZ_SINGAPORE = 'Asia/Singapore';
 
 test('new york date timestamp format', () => {
   // Month parameter is zero indexed so it's actually the 10th month.
@@ -56,3 +59,35 @@ test('other full timestamp format', () => {
   expect(actualCentral).toEqual(expectedCentral);
   expect(actualSingapore).toEqual(expectedSingapore);
 })
+
+const mockTimeNow = 0;
+jest.mock('firebase/app', () => ({
+    firestore: {
+      Timestamp: {
+          now: () => mockTimeNow,
+          fromDate: (date) => date,
+      }
+    }
+}));
+describe('getTimeStampFromDateString tests', () => {
+  test('No date entered in form', () => {
+    const expectedTimestamp = mockTimeNow;
+    const testRawDate = '';
+
+    const testTimestamp = utils.getTimestampFromDateString(testRawDate);
+
+    expect(testTimestamp).toEqual(expectedTimestamp);
+  });
+
+  test('Date entered in form', () => {
+    const testDate = new Date(2020, 5, 4); // July 4, 2020
+    const expectedTimestamp = firebase.firestore.Timestamp.fromDate(testDate);
+
+    // This is the type of string (yyyy-mm-dd) that is returned from the form
+    // input type 'date'.
+    const testRawDate = testDate.toISOString().substring(0,10);
+    const testTimestamp = utils.getTimestampFromDateString(testRawDate);
+
+    expect(testTimestamp).toEqual(expectedTimestamp);
+  });
+});
