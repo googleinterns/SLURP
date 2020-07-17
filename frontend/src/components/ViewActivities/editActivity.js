@@ -48,10 +48,10 @@ class EditActivity extends React.Component {
     if (this.editDescriptionRef.current.value !== '') {
       newVals[DB.ACTIVITIES_DESCRIPTION] = this.editDescriptionRef.current.value;
     }
-    if (this.editStartLocRef.current.value !== ''){
+    if (this.editStartLocRef.current.value !== 'No Change'){
       newVals[DB.ACTIVITIES_START_COUNTRY] = this.editStartLocRef.current.value;
     }
-    if (this.editEndLocRef.current.value !== ''){
+    if (this.editEndLocRef.current.value !== 'No Change'){
       newVals[DB.ACTIVITIES_END_COUNTRY] = this.editEndLocRef.current.value;
     }
     if (Object.keys(newVals).length !== 0) {
@@ -75,7 +75,6 @@ class EditActivity extends React.Component {
    * @param st either "start" or "end"
    */
   timezonePicker(st) {
-    console.log(this.state.startTz);
     return (
       <div>
       <Form.Control as="select"
@@ -98,9 +97,10 @@ class EditActivity extends React.Component {
   countriesDropdown(ref, tzref) {
     return (
       <Form.Control as="select" ref={ref} onChange={tzref}>
+        <option key="-1">No Change</option>
         {countryList.map((item, index) => {
           return (
-            <option eventKey={index}>{item}</option>
+            <option key={index} eventKey={index}>{item}</option>
           );
         })}
       </Form.Control>
