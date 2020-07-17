@@ -32,7 +32,7 @@ jest.mock('firebase/app', () => ({
     firestore: {
       Timestamp: {
           now: () => mockTimeNow,
-          fromDate: (date) => date
+          fromDate: (date) => date,
       }
     }
 }));
@@ -50,7 +50,7 @@ describe('getTimeStampFromDateString tests', () => {
     const testDate = new Date(2020, 5, 4); // July 4, 2020
     const expectedTimestamp = firebase.firestore.Timestamp.fromDate(testDate);
 
-    // This is the type of string (yyy-mm-dd) that is returned from the form
+    // This is the type of string (yyyy-mm-dd) that is returned from the form
     // input type 'date'.
     const testRawDate = testDate.toISOString().substring(0,10);
     const testTimestamp = getTimestampFromDateString(testRawDate);
@@ -63,7 +63,7 @@ const mockCurUserEmail = 'cur.user@email.com';
 // TODO(Issue #55): Replace mock with real auth file once integrated.
 jest.mock('./temp-auth-utils.js', () => ({
     getCurUserEmail: () => mockCurUserEmail,
-    getUidFromUserEmail: (userEmail) => '_' + userEmail + '_'
+    getUidFromUserEmail: (userEmail) => '_' + userEmail + '_',
 }));
 describe('getCollaboratorUidArray tests', () => {
   test('No collaborators entered', () => {
