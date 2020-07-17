@@ -1,4 +1,4 @@
-import { getUidFromUserEmail } from './temp-auth-utils';
+import { getUserUidFromUserEmail } from './temp-auth-utils';
 import { getCleanedTextInput, getCollaboratorUidArray }  from './filter-input.js';
 
 describe('getCleanedTextInput tests', () => {
@@ -27,11 +27,11 @@ const mockCurUserEmail = 'cur.user@email.com';
 // TODO(Issue #55): Replace mock with real auth file once integrated.
 jest.mock('./temp-auth-utils.js', () => ({
     getCurUserEmail: () => mockCurUserEmail,
-    getUidFromUserEmail: (userEmail) => '_' + userEmail + '_',
+    getUserUidFromUserEmail: (userEmail) => '_' + userEmail + '_',
 }));
 describe('getCollaboratorUidArray tests', () => {
   test('No collaborators entered', () => {
-    const expectedUidArr = [getUidFromUserEmail(mockCurUserEmail)];
+    const expectedUidArr = [getUserUidFromUserEmail(mockCurUserEmail)];
     // This is the list that is created when there are no collaborators added
     // (automatically one empty string from the constructor created ref).
     const testEmailArr = [''];
@@ -44,8 +44,8 @@ describe('getCollaboratorUidArray tests', () => {
   test('Some added collaborators', () => {
     const person1Email = 'p1@gmail.com';
     const person2Email = 'p2@outlook.com';
-    const expectedUidArr = [getUidFromUserEmail(mockCurUserEmail),
-        getUidFromUserEmail(person1Email), getUidFromUserEmail(person2Email)];
+    const expectedUidArr = [getUserUidFromUserEmail(mockCurUserEmail),
+        getUserUidFromUserEmail(person1Email), getUserUidFromUserEmail(person2Email)];
     const testEmailArr = [person1Email, person2Email];
 
     const testUidArr = getCollaboratorUidArray(testEmailArr);
@@ -56,8 +56,8 @@ describe('getCollaboratorUidArray tests', () => {
   test('Some added collaborators and some blank entries', () => {
     const person1Email = 'p1@gmail.com';
     const person2Email = 'p2@outlook.com';
-    const expectedUidArr = [getUidFromUserEmail(mockCurUserEmail),
-        getUidFromUserEmail(person1Email), getUidFromUserEmail(person2Email)];
+    const expectedUidArr = [getUserUidFromUserEmail(mockCurUserEmail),
+        getUserUidFromUserEmail(person1Email), getUserUidFromUserEmail(person2Email)];
     const testEmailArr = ['', person1Email, '', person2Email, ''];
 
     const testUidArr = getCollaboratorUidArray(testEmailArr);
