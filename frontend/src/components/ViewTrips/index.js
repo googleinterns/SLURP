@@ -2,12 +2,10 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import app from '../Firebase/';
 import Header from '../Header/';
 import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
-const db = app.firestore();
 
 /**
  * ViewTrips component that defines the page where a user can view and manage
@@ -122,7 +120,6 @@ class ViewTrips extends React.Component {
       <div className="view-trips-page">
         <Header />
         <SaveTripModal
-          db={db}
           show={this.state.showModal}
           handleClose={this.hideSaveTripModal}
           refreshTripsContainer={this.refreshTripsContainer}
@@ -137,7 +134,6 @@ class ViewTrips extends React.Component {
           </Button>
         </div>
         <TripsContainer
-          db={db}
           key={this.state.refreshTripsContainer}
         />
       </div>

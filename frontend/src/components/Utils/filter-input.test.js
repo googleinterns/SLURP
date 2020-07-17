@@ -1,48 +1,29 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-firestore';
 
-import { getUidFromUserEmail } from './temp-auth-utils.js'
-import { getTripName, getTripDestination, getTimestampFromDateString,
-         getCollaboratorUidArray }  from './create-new-trip.js'
+import { getUidFromUserEmail } from './temp-auth-utils';
+import { getCleanedTextInput, getTimestampFromDateString,
+         getCollaboratorUidArray }  from './filter-input.js';
 
-
-describe('getTripName tests', () => {
-  test('No name entered in form', () => {
-    const expectedTripName = 'Untitled Trip';
+describe('getCleanedTextInput tests', () => {
+  test('No input entered in form (empty string)', () => {
+    const testDefaultValue = 'Untitled Trip';
     const testRawName = '';
+    const expectedTripName = testDefaultValue;
 
-    const testTripName = getTripName(testRawName);
+    const testTripName = getCleanedTextInput(testRawName, testDefaultValue);
 
     expect(testTripName).toEqual(expectedTripName);
   });
 
-  test('Name entered in form', () => {
+  test('Input entered into form', () => {
+    const testDefaultValue = 'Untitled Trip';
     const testRawName = 'Trip to No Man\'s Land';
     const expectedTripName = testRawName;
 
-    const testTripName = getTripName(testRawName);
+    const testTripName = getCleanedTextInput(testRawName, testDefaultValue);
 
     expect(testTripName).toEqual(expectedTripName);
-  });
-});
-
-describe('getTripDestination tests', () => {
-  test('No destination entered in form', () => {
-    const expectedTripDestination = 'No Destination';
-    const testRawDestination = '';
-
-    const testTripDestination = getTripDestination(testRawDestination);
-
-    expect(testTripDestination).toEqual(expectedTripDestination);
-  });
-
-  test('Destination entered in form', () => {
-    const testRawDestination = 'Belgium';
-    const expectedTripDestination = testRawDestination;
-
-    const testTripDestination = getTripDestination(testRawDestination);
-
-    expect(testTripDestination).toEqual(expectedTripDestination);
   });
 });
 

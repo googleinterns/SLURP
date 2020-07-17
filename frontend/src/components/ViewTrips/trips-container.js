@@ -1,8 +1,12 @@
 import React from 'react';
 
+import app from '../Firebase/';
+
 import * as DB from '../../constants/database.js';
-import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
+import { getCurUserEmail, getUidFromUserEmail } from '../Utils/temp-auth-utils.js'
 import Trip from './trip.js';
+
+const db = app.firestore();
 
 /**
  * Returns a promise of a query object containg the array of Trip Documents
@@ -59,7 +63,6 @@ function getErrorElement(error) {
  * props
  *
  * @param {Object} props These are the props for this component:
- * - db: Firestore database instance.
  * - key: Special React attribute that ensures a new TripsContainer instance is
  *        created whenever this key is updated (Remove when fix Issue #62).
  * @extends React.Component
@@ -74,8 +77,7 @@ class TripsContainer extends React.Component {
   /** @inheritdoc */
   async componentDidMount() {
     try {
-      const querySnapshot = await queryUserTrips(
-          this.props.db, getCurUserEmail());
+      const querySnapshot = await queryUserTrips(db, getCurUserEmail());
       let tripsContainer = await serveTrips(querySnapshot);
       this.setState({ trips: tripsContainer });
     }
