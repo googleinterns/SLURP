@@ -2,6 +2,7 @@ import React from 'react';
 import app from '../Firebase';
 import { getUserUid } from '../AuthUtils';
 import ActivityList from './activitylist.js';
+import * as ErrorComponents from './ErrorComponents.js';
 
 import * as DB from '../../constants/database.js';
 
@@ -52,13 +53,7 @@ class ViewActivities extends React.Component {
   render() {
     // Case where there was a Firebase error.
     if (this.state.error !== undefined) {
-      // TODO (Issue #74): Redirect to an error page instead.
-      return (
-        <div>
-          Oops, looks like something went wrong. Please wait a few minutes and
-          try again.
-        </div>
-      );
+      return <div><ErrorComponents.ErrorGeneral /></div>;
     }
     // Case where the trip details are still being fetched.
     if (this.state.isLoading) {
@@ -68,13 +63,11 @@ class ViewActivities extends React.Component {
     }
     // Case where the trip could not be found.
     else if (this.state.collaborators === undefined) {
-      // TODO (Issue #74): Redirect to an error page instead.
-      return <div>Sorry, we couldn't find the trip you were looking for.</div>;
+      return <div><ErrorComponents.ErrorTripNotFound /></div>;
     }
     // Case where the current user is not authorized to view the page
     else if (!this.state.collaborators.includes(getUserUid())) {
-      // TODO (Issue #74): Redirect to an error page instead.
-      return <div>Sorry, you're not authorized to view this trip.</div>;
+      return <div><ErrorComponents.ErrorNotCollaborator/></div>;
     }
     else {
       return (
