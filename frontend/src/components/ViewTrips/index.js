@@ -76,13 +76,13 @@ class ViewTrips extends React.Component {
     this.setState({
       tripId: null,
       defaultFormObj: {
-        name:          'Enter Trip Name',
-        description:   'Enter Trip Description',
-        destination:   'Enter Trip Destination',
-        startDate:     '',
-        endDate:       '',
-        collaborators: ['person@email.xyz']
-      }
+                        name:          null,
+                        description:   null,
+                        destination:   null,
+                        startDate:     null,
+                        endDate:       null,
+                        collaborators: []
+                      }
     });
     this.showSaveTripModal();
   }
