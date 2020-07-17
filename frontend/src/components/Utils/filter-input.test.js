@@ -1,9 +1,5 @@
-import * as firebase from 'firebase/app';
-import 'firebase/firebase-firestore';
-
 import { getUidFromUserEmail } from './temp-auth-utils';
-import { getCleanedTextInput, getTimestampFromDateString,
-         getCollaboratorUidArray }  from './filter-input.js';
+import { getCleanedTextInput, getCollaboratorUidArray }  from './filter-input.js';
 
 describe('getCleanedTextInput tests', () => {
   test('No input entered in form (empty string)', () => {
@@ -27,43 +23,11 @@ describe('getCleanedTextInput tests', () => {
   });
 });
 
-const mockTimeNow = 0;
-jest.mock('firebase/app', () => ({
-    firestore: {
-      Timestamp: {
-          now: () => mockTimeNow,
-          fromDate: (date) => date
-      }
-    }
-}));
-describe('getTimeStampFromDateString tests', () => {
-  test('No date entered in form', () => {
-    const expectedTimestamp = mockTimeNow;
-    const testRawDate = '';
-
-    const testTimestamp = getTimestampFromDateString(testRawDate);
-
-    expect(testTimestamp).toEqual(expectedTimestamp);
-  });
-
-  test('Date entered in form', () => {
-    const testDate = new Date(2020, 5, 4); // July 4, 2020
-    const expectedTimestamp = firebase.firestore.Timestamp.fromDate(testDate);
-
-    // This is the type of string (yyy-mm-dd) that is returned from the form
-    // input type 'date'.
-    const testRawDate = testDate.toISOString().substring(0,10);
-    const testTimestamp = getTimestampFromDateString(testRawDate);
-
-    expect(testTimestamp).toEqual(expectedTimestamp);
-  });
-});
-
 const mockCurUserEmail = 'cur.user@email.com';
 // TODO(Issue #55): Replace mock with real auth file once integrated.
 jest.mock('./temp-auth-utils.js', () => ({
     getCurUserEmail: () => mockCurUserEmail,
-    getUidFromUserEmail: (userEmail) => '_' + userEmail + '_'
+    getUidFromUserEmail: (userEmail) => '_' + userEmail + '_',
 }));
 describe('getCollaboratorUidArray tests', () => {
   test('No collaborators entered', () => {

@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app';
 
-import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
+import { getCurUserEmail, getUserUidFromUserEmail } from './temp-auth-utils.js'
+import { getTimestampFromDateString } from './time.js'
 
 /**
  * Return a string containing the cleaned text input.
@@ -10,22 +11,6 @@ import { getCurUserEmail, getUidFromUserEmail } from './temp-auth-utils.js'
  */
 export function getCleanedTextInput(rawInput, defaultValue) {
   return rawInput === '' ? defaultValue : rawInput;
-}
-
-/**
- * Return a Firestore Timestamp corresponding to the date in `dateStr`.
- *
- * @param {string} dateStr String containing a date in the form 'yyyy-mm-dd'.
- * @return {firebase.firestore.Timestamp} Firestore timestamp object created.
- */
-export function getTimestampFromDateString(dateStr) {
-  const dateParts = dateStr.split('-').map(str => +str);
-  if (dateParts.length === 1 && dateParts[0] === 0) {
-    return firebase.firestore.Timestamp.now();
-  }
-
-  const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-  return firebase.firestore.Timestamp.fromDate(date);
 }
 
 /**
@@ -48,7 +33,8 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
     const emptyStrIdx = collaboratorEmailArr.indexOf('');
     collaboratorEmailArr.splice(emptyStrIdx, 1);
   }
-  return collaboratorEmailArr.map(userEmail => getUidFromUserEmail(userEmail));
+  return collaboratorEmailArr
+             .map(userEmail => getUserUidFromUserEmail(userEmail));
 }
 
 /**
@@ -71,8 +57,7 @@ export function formatTripData(rawTripObj) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
 
-  const formattedTripObj =
-  {
+  const formattedTripObj = {
     trip_creation_time: firebase.firestore.Timestamp.now(),
     name:               getCleanedTextInput(rawTripObj.name, defaultName),
     description:        rawTripObj.description,
@@ -80,7 +65,7 @@ export function formatTripData(rawTripObj) {
                                                  defaultDestination),
     start_date:         getTimestampFromDateString(rawTripObj.startDate),
     end_date:           getTimestampFromDateString(rawTripObj.endDate),
-    collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails)
+    collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails),
   };
 
   return formattedTripObj;

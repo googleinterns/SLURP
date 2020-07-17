@@ -17,7 +17,7 @@ class ViewTrips extends React.Component {
     super();
     this.state = { showModal: false,
                    refreshTripsContainer: false,
-                   refreshAddTripModal: false
+                   refreshAddTripModal: false,
                  };
   }
 

@@ -3,7 +3,7 @@ import React from 'react';
 import app from '../Firebase/';
 
 import * as DB from '../../constants/database.js';
-import { getCurUserEmail, getUidFromUserEmail } from '../Utils/temp-auth-utils.js'
+import { getCurUserUid } from '../Utils/temp-auth-utils.js'
 import Trip from './trip.js';
 
 const db = app.firestore();
@@ -13,15 +13,13 @@ const db = app.firestore();
  * corresponding to the trips that the current user is a collaborator on.
  *
  * @param {firebase.firestore.Firestore} db The Firestore database instance.
- * @param {string} userEmail The email corresponding to the current user
- *    logged in.
  * @return {Promise<!firebase.firestore.QuerySnapshot>} Promise object
  *    containing the query results with zero or more Trip  documents.
  */
-function queryUserTrips(db, userEmail) {
-  const userUid = getUidFromUserEmail(userEmail);
+function queryUserTrips(db) {
+  const curUserUid = getCurUserUid();
   return db.collection(DB.COLLECTION_TRIPS)
-      .where(DB.TRIPS_COLLABORATORS, 'array-contains', userUid)
+      .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
       .orderBy(DB.TRIPS_CREATION_TIME, 'desc')
       .get();
 }
@@ -77,7 +75,7 @@ class TripsContainer extends React.Component {
   /** @inheritdoc */
   async componentDidMount() {
     try {
-      const querySnapshot = await queryUserTrips(db, getCurUserEmail());
+      const querySnapshot = await queryUserTrips(db);
       let tripsContainer = await serveTrips(querySnapshot);
       this.setState({ trips: tripsContainer });
     }
