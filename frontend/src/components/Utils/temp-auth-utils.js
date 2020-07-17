@@ -19,7 +19,7 @@ export function getCurUserEmail() {
 /**
  * Temporary hardcoded function that returns the current users uid.
  *
- * @return Hardcoded user email string.
+ * @return Hardcoded user uid string.
  */
 export function getCurUserUid() {
   return getUserUidFromUserEmail(getCurUserEmail());
