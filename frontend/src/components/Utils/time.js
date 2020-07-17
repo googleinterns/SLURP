@@ -61,7 +61,7 @@ export function timestampToFormatted(msTimestamp, timezone = "America/New_York")
 /**
  * Return a Firestore Timestamp corresponding to the date in `dateStr`.
  *
- * @param {string} dateStr String containing a date in the form 'yyyy-mm-dd'.
+ * @param {string} dateStr String containing a date in the form 'YYYY-MM-DD'.
  * @return {firebase.firestore.Timestamp} Firestore timestamp object created.
  */
 export function getTimestampFromDateString(dateStr) {
@@ -75,10 +75,10 @@ export function getTimestampFromDateString(dateStr) {
 }
 
 /**
- * Returns a date string in ISO format.
+ * Formats a Firestore timestamp into a date string in ISO format.
  *
  * @param {firebase.firestore.Timestamp} timestamp Firestore timestamp object.
- * @return {string} ISO formatted date string.
+ * @return {string} ISO formatted date string: "YYYY-MM-DD or 2020-05-12".
  */
 export function timestampToISOString(timestamp) {
   return timestamp.toDate().toISOString().substring(0,10);
