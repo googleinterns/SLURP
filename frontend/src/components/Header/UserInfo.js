@@ -1,8 +1,11 @@
-import React from 'react';
+import React  from 'react';
+import { useHistory } from 'react-router-dom';
 import authUtils from '../AuthUtils';
 
 import '../../styles/header.css';
 import Button from 'react-bootstrap/Button';
+
+import { LANDING } from '../../constants/routes.js';
 
 // To set spacing between each element of the component.
 const BOOTSTRAP_SPACING_CLASS =
@@ -13,29 +16,37 @@ const BOOTSTRAP_SPACING_CLASS =
  * log in), the user's display name, and a Sign Out button. This component is to
  * be used with the Header component.
  */
-class UserInfo extends React.Component {
-  /** @inheritdoc */
-  render() {
-    return (
-      <div className='d-flex flex-row'>
-        <img
-            className={BOOTSTRAP_SPACING_CLASS}
-            src={authUtils.getUserPhotoUrl()}
-            alt='Your Profile'
-        />
-        <p className={BOOTSTRAP_SPACING_CLASS}>
-          {authUtils.getUserDisplayName()}
-        </p>
-        <Button
-            className={BOOTSTRAP_SPACING_CLASS}
-            variant='secondary'
-            onClick={authUtils.signOut}
-        >
-          Sign Out
-        </Button>
-      </div>
-    );
+const UserInfo = () => {
+  const history = useHistory();
+
+  /**
+   * Redirects the user to the LANDING page first before actually signing them
+   * out.
+   */
+  function signOutAndRedirectToLanding() {
+    history.push(LANDING);
+    authUtils.signOut();
   }
+
+  return (
+    <div className='d-flex flex-row'>
+      <img
+          className={BOOTSTRAP_SPACING_CLASS}
+          src={authUtils.getUserPhotoUrl()}
+          alt='Your Profile'
+      />
+      <p className={BOOTSTRAP_SPACING_CLASS}>
+        {authUtils.getUserDisplayName()}
+      </p>
+      <Button
+          className={BOOTSTRAP_SPACING_CLASS}
+          variant='secondary'
+          onClick={signOutAndRedirectToLanding}
+      >
+        Sign Out
+      </Button>
+    </div>
+  );
 }
 
 export default UserInfo;
