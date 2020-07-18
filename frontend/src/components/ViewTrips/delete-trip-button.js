@@ -80,7 +80,14 @@ const DeleteTripsButton = (props) => {
    * TODO(Issue #62): Remove refreshTripsContainer.
    */
   async function deleteTrip() {
-    await deleteTripActivities();
+    await deleteTripActivities()
+        .then(() => {
+          console.log("Activity subcollection successfully deleted for trip" +
+                      " with id: ", props.tripId);
+        })
+        .catch(error => {
+          console.error("Error deleting activities subcollection: ", error);
+        });
 
     db.collection(DB.COLLECTION_TRIPS)
         .doc(props.tripId)
