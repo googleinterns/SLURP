@@ -123,6 +123,7 @@ class ViewTrips extends React.Component {
         </div>
         <TripsContainer
           handleEditTrip={this.showEditTripModal}
+          refreshTripsContainer={this.refreshTripsContainer}
           key={this.state.refreshTripsContainer}
         />
       </div>
