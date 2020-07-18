@@ -17,9 +17,17 @@ const db = app.firestore();
  *        component upon trip creation (Remove when fix Issue #62).
  */
 const DeleteTripsButton = (props) => {
-  /**
+   /**
    * Deletes documents in query with a batch delete.
-   */
+   *
+   * This was derived from the delete collection snippets in the documentation
+   * at https://firebase.google.com/docs/firestore/manage-data/delete-data.
+    *
+    * @param {firebase.firestore.Firestore} db Firestore database instance.
+    * @param {firebase.firestore.Query} query Query containing documents from
+    *     the activities subcollection of a trip documents.
+    * @param {Function} resolve Resolve function that returns a void Promise.
+    */
   async function deleteQueryBatch(db, query, resolve) {
     const snapshot = await query.get();
 
@@ -47,6 +55,9 @@ const DeleteTripsButton = (props) => {
   /**
    * Deletes a trips subcollection of activities corrsponding to the
    * `tripId` prop.
+   *
+   * This was derived from the delete collection snippets in the documentation
+   * at https://firebase.google.com/docs/firestore/manage-data/delete-data.
    *
    * TODO(Issue #81): Consider deleting data with callabable cloud function
    * https://firebase.google.com/docs/firestore/solutions/delete-collections
