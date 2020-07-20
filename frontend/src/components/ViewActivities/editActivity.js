@@ -75,17 +75,17 @@ class EditActivity extends React.Component {
     newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef, '', '');
 
     // Start time fields!
-    // let newStart = {};
-    // if (this.editStartTimeRef.current.value !== '') {
-    //   newStart[DB.ACTIVITIES_START_TIME] = this.editStartTimeRef.current.value;
-    // }
-    // if (this.editStartDateRef.current.value !== '') {
-    //   newStart[DB.ACTIVITIES_START_DATE] = this.editStartDateRef.current.value;
-    // }
-    // newStart[DB.ACTIVITIES_START_TIME] = this.startTzRef.current.value;
-    // newVals[DB.ACTIVITIES_START_TIME] = time.getFirebaseTime(newStart);
+    const startTime = getRefValue(this.editStartTimeRef, '');
+    const startDate = getRefValue(this.editStartDateRef, '');
+    const startTz = newVals[DB.ACTIVITIES_START_TZ];
+    newVals[DB.ACTIVITIES_START_TIME] = time.getFirebaseTime(startTime, startDate, startTz);
 
-    console.log("writing...", newVals)
+    // End time fields!
+    const endTime = getRefValue(this.editEndTimeRef, '');
+    const endDate = getRefValue(this.editEndDateRef, '');
+    const endTz = newVals[DB.ACTIVITIES_END_TZ];
+    newVals[DB.ACTIVITIES_END_TIME] = time.getFirebaseTime(endTime, endDate, endTz);
+
     writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }
 
