@@ -104,8 +104,9 @@ class EditActivity extends React.Component {
    * Returns a dropdown of all the timezones.
    * 
    * @param st either 'start' or 'end' depending on whether the timezone is for the start or end timezone.
+   * @param defaultTz The default time zone.
    */
-  timezonePicker(st) {
+  timezonePicker(st, defaultTz) {
     return (
       <div>
       <Form.Control as='select'
@@ -113,6 +114,9 @@ class EditActivity extends React.Component {
         key={st === 'start' ? this.state.startTzRef : this.state.endTzRef}
       >
         {time.timezonesForCountry(this.editStartLocRef).map((item, index) => {
+            if (item === defaultTz) {
+              return (<option selected key={index}>{item}</option>);
+            }
             return (<option key={index}>{item}</option>);
           })}
       </Form.Control>
@@ -175,7 +179,7 @@ class EditActivity extends React.Component {
           <Col sm={TITLEWIDTH}><Form.Label>To:</Form.Label></Col>
           <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
           <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezonePicker('end')}</Col>
+          <Col sm={TZPICKERWIDTH}>{this.timezonePicker('end', getField(activity, DB.ACTIVITIES_END_TZ))}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityTitle'>
           <Col sm={TITLEWIDTH}><Form.Label>Description:</Form.Label></Col>
