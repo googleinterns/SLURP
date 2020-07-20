@@ -1,6 +1,5 @@
 import * as moment from 'moment-timezone';
 import { countryCodes } from '../../constants/countries.js';
-import { firestore } from 'firebase';
 
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time.

@@ -47,7 +47,6 @@ export function compareActivities(a, b) {
 
 /**
  * Get the field of field name `fieldName` from `activity  or the default value.
- * TODO: 3RD ARG NULL TESTS
  * 
  * @param {Object} activity 
  * @param {string} fieldName 

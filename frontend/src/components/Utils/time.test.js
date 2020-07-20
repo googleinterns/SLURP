@@ -95,7 +95,14 @@ test('other date barebones format', () => {
   const actualSingapore = utils.getDateBarebones(testDate, TZ_SINGAPORE);
   expect(actualCentral).toEqual(expectedCentral);
   expect(actualSingapore).toEqual(expectedSingapore);
-})
+});
+
+test('24h crazy queries', () => {  
+  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
+  const expected = "02:03";
+  expect(utils.get24hTime(testDate, '')).toBe(expected);
+  expect(utils.get24hTime(testDate, null)).toBe(expected);
+});
 
 test('UTC time 24h format', () => {
   // Month parameter is zero indexed so it's actually the 10th month.
@@ -120,11 +127,4 @@ test('barebones crazy queries', () => {
   const expected = "2020-08-23";
   expect(utils.getDateBarebones(testDate, '')).toBe(expected);
   expect(utils.getDateBarebones(testDate, null)).toBe(expected);
-})
-
-test('24h crazy queries', () => {  
-  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
-  const expected = "02:03";
-  expect(utils.get24hTime(testDate, '')).toBe(expected);
-  expect(utils.get24hTime(testDate, null)).toBe(expected);
 })
