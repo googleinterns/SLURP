@@ -73,7 +73,10 @@ class EditActivity extends React.Component {
   /**
    * Returns a dropdown of all the timezones.
    * 
-   * @param st either 'start' or 'end' depending on whether the timezone is for the start or end timezone.
+   * @param st either 'start' or 'end' depending on whether the 
+   * timezone is for the start or end timezone.
+   * 
+   * Tests done manually via UI. 
    */
   timezonePicker(st) {
     let ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
