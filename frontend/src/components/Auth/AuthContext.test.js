@@ -4,12 +4,18 @@ import { AuthContext, AuthProvider } from './AuthContext.js';
 
 jest.useFakeTimers();
 
-// Mock the the Firebase Auth onAuthStateChanged function, which pauses for 1
-// second before returning a fake user with only a name field set.
+// All times are in milliseconds.
+const TIME_BEFORE_USER_IS_LOADED = 500;
+const TIME_WHEN_USER_IS_LOADED = 1000;
+const TIME_AFTER_USER_IS_LOADED = 2000;
+
+// Mock the the Firebase Auth onAuthStateChanged function, which pauses for the
+// time given by TIME_WHEN_USER_IS_LOADED, then returns a fake user with only
+// the property `name: 'Keiffer'`.
 const mockOnAuthStateChanged = jest.fn(callback => {
   setTimeout(() => {
     callback({ name: 'Keiffer' })
-  }, 1000);
+  }, TIME_WHEN_USER_IS_LOADED);
 });
 jest.mock('firebase/app', () => {
   return {
@@ -25,18 +31,18 @@ jest.mock('firebase/app', () => {
   }
 });
 
+afterEach(cleanup);
+
 describe('AuthProvider component', () => {
   beforeEach(() => { render(<AuthProvider />) });
 
-  afterEach(cleanup);
-
   it('initially displays "Loading"', () => {
-    act(() => jest.advanceTimersByTime(500));
+    act(() => jest.advanceTimersByTime(TIME_BEFORE_USER_IS_LOADED));
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
   it('returns a provider when onAuthStateChanged is called', () => {
-    act(() => jest.advanceTimersByTime(2000));
+    act(() => jest.advanceTimersByTime(TIME_AFTER_USER_IS_LOADED));
     expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
   });
 });
@@ -62,17 +68,13 @@ describe('AuthContext Consumer component', () => {
     );
   });
 
-  afterEach(() => {
-    cleanup();
-  });
-
   it('initially displays "Loading"', () => {
-    act(() => jest.advanceTimersByTime(500));
+    act(() => jest.advanceTimersByTime(TIME_BEFORE_USER_IS_LOADED));
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
   it('displays the current user when they are authenticated', () => {
-    act(() => jest.advanceTimersByTime(2000));
+    act(() => jest.advanceTimersByTime(TIME_AFTER_USER_IS_LOADED));
     expect(screen.getByText('Keiffer')).toBeInTheDocument();
   });
 });
