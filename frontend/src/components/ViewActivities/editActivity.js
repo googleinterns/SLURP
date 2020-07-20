@@ -37,6 +37,7 @@ class EditActivity extends React.Component {
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
     this.finishEditActivity = this.finishEditActivity.bind(this);
+    this.timezonePicker = this.timezonePicker.bind(this);
 
     // References. 
     this.editTitleRef = React.createRef();
@@ -103,10 +104,22 @@ class EditActivity extends React.Component {
   /**
    * Returns a dropdown of all the timezones.
    * 
-   * @param st either 'start' or 'end' depending on whether the timezone is for the start or end timezone.
    * @param defaultTz The default time zone.
+   * @param st either 'start' or 'end' depending on whether the 
+   * timezone is for the start or end timezone.
+   * 
+   * Tests done manually via UI. 
    */
   timezonePicker(st, defaultTz) {
+    let ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
+    let dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
+    let timezones;
+    if (ref.current == null) {
+      // If activity[key] DNE, then timezones will just return all tzs anyway
+      timezones = time.timezonesForCountry(this.props.activity[dbEntry]);
+    } else {
+      timezones = time.timezonesForCountry(ref.current.value);
+    }
     return (
       <div>
       <Form.Control as='select'
@@ -127,7 +140,6 @@ class EditActivity extends React.Component {
    * Create a dropdown of all the countries.
    * 
    * @param ref The reference to attach to the dropdown.
-   * @param tzchange The function to run to update the time zone picker.
    */
   countriesDropdown(ref, tzref) {
     return (
