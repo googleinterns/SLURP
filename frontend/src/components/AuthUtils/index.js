@@ -5,6 +5,7 @@
  * retrieved.
  */
 
+import app from '../Firebase';
 import { AuthUtilsConsumer, getCurrentUser } from './AuthUtilsConsumer.js';
 import { SIGN_IN } from '../../constants/routes.js';
 
@@ -66,12 +67,17 @@ export function getCurUserUid() {
   return getCurrentUser().uid;
 }
 
+export function signOut() {
+  app.auth().signOut();
+}
+
 // Can also access the auth functions in the named authUtils variable.
 const authUtils = {
   getCurUserDisplayName,
   getCurUserEmail,
   getCurUserPhotoUrl,
-  getCurUserUid
+  getCurUserUid,
+  signOut
 };
 export default authUtils;
 
