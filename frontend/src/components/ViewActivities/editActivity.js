@@ -48,8 +48,8 @@ class EditActivity extends React.Component {
     this.editDescriptionRef = React.createRef();
     this.editStartLocRef = React.createRef();
     this.editEndLocRef = React.createRef();
-    this.startTzRef = React.createRef();
-    this.endTzRef = React.createRef();
+    this.editStartTzRef = React.createRef();
+    this.editEndTzRef = React.createRef();
   }
   
   /**
@@ -71,8 +71,8 @@ class EditActivity extends React.Component {
     newVals[DB.ACTIVITIES_END_COUNTRY] = 
       getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
     
-    newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.startTzRef, '', '');
-    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.endTzRef, '', '');
+    newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef, '', '');
+    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef, '', '');
 
     // Start time fields!
     // let newStart = {};
@@ -85,10 +85,8 @@ class EditActivity extends React.Component {
     // newStart[DB.ACTIVITIES_START_TIME] = this.startTzRef.current.value;
     // newVals[DB.ACTIVITIES_START_TIME] = time.getFirebaseTime(newStart);
 
-
-    if (Object.keys(newVals).length !== 0) {
-      writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
-    }
+    console.log("writing...", newVals)
+    writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }
 
   /** Runs when the `submit` button on the form is pressed.  */
@@ -98,8 +96,8 @@ class EditActivity extends React.Component {
     this.props.submitFunction();
   }
 
-  startTimeTzUpdate = () => { this.setState({startTzRef : !this.state.startTzRef})};
-  endTimeTzUpdate = () => { this.setState({endTzRef : !this.state.endTzRef})};
+  startTimeTzUpdate = () => { this.setState({startTz : !this.state.startTz})};
+  endTimeTzUpdate = () => { this.setState({endTz : !this.state.endTz})};
 
   /**
    * Returns a dropdown of all the timezones.
@@ -120,35 +118,38 @@ class EditActivity extends React.Component {
     } else {
       timezones = time.timezonesForCountry(ref.current.value);
     }
+
     return (
       <div>
       <Form.Control as='select'
-        ref={st === 'start' ? this.startTzRef : this.endTzRef}
-        key={st === 'start' ? this.state.startTzRef : this.state.endTzRef}
+        ref={st === 'start' ? this.editStartTzRef : this.editEndTzRef}
+        key={st === 'start' ? this.state.startTz : this.state.endTz}
       >
-        {time.timezonesForCountry(this.editStartLocRef).map((item, index) => {
-            if (item === defaultTz) {
-              return (<option selected key={index}>{item}</option>);
-            }
-            return (<option key={index}>{item}</option>);
-          })}
+        {timezones.map((item, index) => {
+          if (item === defaultTz) {
+            return (<option selected key={index}>{item}</option>);
+          }
+          return (<option key={index}>{item}</option>);
+        })}
       </Form.Control>
       </div>
     )
   }
+
   /**
    * Create a dropdown of all the countries.
    * 
    * @param ref The reference to attach to the dropdown.
+   * @param defaultCountry The default country for the dropdown.
    */
-  countriesDropdown(ref, tzref) {
+  countriesDropdown(ref, tzref, defaultCountry) {
     return (
       <Form.Control as='select' ref={ref} onChange={tzref}>
-        <option key='-1'>No Change</option>
         {countryList.map((item, index) => {
-          return (
-            <option key={index}>{item}</option>
-          );
+          if (item === defaultCountry) {
+            return (<option selected>{item}</option>);
+          }
+          return (<option key={index}>{item}</option>);
         })}
       </Form.Control>
     );
@@ -167,15 +168,27 @@ class EditActivity extends React.Component {
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         <Form.Group as={Row} controlId='formActivityTitle'>
           <Col sm={TITLEWIDTH}><Form.Label>Title:</Form.Label></Col>
-          <Col><Form.Control type='text' placeholder={activity[DB.ACTIVITIES_TITLE]} ref={this.editTitleRef}/></Col>
+          <Col>
+            <Form.Control type='text'
+             placeholder={activity[DB.ACTIVITIES_TITLE]} 
+             ref={this.editTitleRef}/>
+          </Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityStartLocation'>
           <Col sm={TITLEWIDTH}><Form.Label>Start Location:</Form.Label></Col>
-          <Col sm={COUNTRYWIDTH}>{this.countriesDropdown(this.editStartLocRef, this.startTimeTzUpdate)}</Col>
+          <Col sm={COUNTRYWIDTH}>
+            {this.countriesDropdown(this.editStartLocRef,
+              this.startTimeTzUpdate, 
+              getField(activity, DB.ACTIVITIES_START_COUNTRY))}
+          </Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityStartLocation'>
           <Col sm={TITLEWIDTH}><Form.Label>End Location:</Form.Label></Col>
-          <Col sm={COUNTRYWIDTH}>{this.countriesDropdown(this.editEndLocRef, this.endTimeTzUpdate)}</Col>
+          <Col sm={COUNTRYWIDTH}>
+            {this.countriesDropdown(this.editEndLocRef, 
+              this.endTimeTzUpdate, 
+              getField(activity, DB.ACTIVITIES_END_COUNTRY))}
+          </Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityStartTime'>
           <Col sm={TITLEWIDTH}><Form.Label>From:</Form.Label></Col>
@@ -185,13 +198,17 @@ class EditActivity extends React.Component {
                 getField(activity, DB.ACTIVITIES_START_TZ))}/>
           </Col>
           <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezonePicker('start', getField(activity, DB.ACTIVITIES_START_TZ))}</Col>
+          <Col sm={TZPICKERWIDTH}>
+            {this.timezonePicker('start', getField(activity, DB.ACTIVITIES_START_TZ))}
+          </Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityEndTime'>
           <Col sm={TITLEWIDTH}><Form.Label>To:</Form.Label></Col>
           <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
           <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezonePicker('end', getField(activity, DB.ACTIVITIES_END_TZ))}</Col>
+          <Col sm={TZPICKERWIDTH}>
+            {this.timezonePicker('end', getField(activity, DB.ACTIVITIES_END_TZ))}
+          </Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityTitle'>
           <Col sm={TITLEWIDTH}><Form.Label>Description:</Form.Label></Col>
