@@ -128,3 +128,14 @@ test('barebones crazy queries', () => {
   expect(utils.getDateBarebones(testDate, '')).toBe(expected);
   expect(utils.getDateBarebones(testDate, null)).toBe(expected);
 })
+
+test('firestore Timestamp format', () => {
+  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3))
+  // central = 'Saturday, August 22, 2020, 9:03 PM';
+  // singapore = 'Sunday, August 23, 2020, 10:03 AM';
+  const actualCentral = utils.getFirebaseTime("21:03", "2020-08-22", TZ_CHICAGO)
+  const actualSingapore = utils.getFirebaseTime("10:03", "2020-08-23", TZ_SINGAPORE);
+  console.log(actualCentral);
+  expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
+  expect(actualSingapore.toDate()).toEqual(testDate);
+});
