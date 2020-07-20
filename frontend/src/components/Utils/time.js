@@ -80,11 +80,23 @@ export function timezonesForCountry(countryName) {
 /**
  * NOTE TO SEL FREMEMBER TEST TIMEZOE=''
  * @param {string} msTimestamp Milliseconds since epoch
- * @param {}} timezone 
+ * @param {string} timezone The timezone
  */
 export function getDateBarebones(msTimestamp, timezone = null) {
   if (timezone === null) {
-    return moment.tz(parseFloat(msTimestamp)).format('YYYY-MM-DD');
+    return moment.tz(parseFloat(msTimestamp), '').format('YYYY-MM-DD');
   }
   return moment.tz(parseFloat(msTimestamp), timezone).format('YYYY-MM-DD');
+}
+
+/**
+ * SAME NOTE
+ * @param {string} msTimestamp Milliseconds since epoch
+ * @param {string} timezone The timezone.
+ */
+export function get24hTime(msTimestamp, timezone=null) {
+  if (timezone === null) {
+    return moment.tz(parseFloat(msTimestamp), '').format('HH:mm');
+  }
+  return moment.tz(parseFloat(msTimestamp), timezone).format('HH:mm');
 }

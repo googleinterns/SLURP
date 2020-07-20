@@ -96,3 +96,22 @@ test('other date barebones format', () => {
   expect(actualCentral).toEqual(expectedCentral);
   expect(actualSingapore).toEqual(expectedSingapore);
 })
+
+test('UTC time barebones format', () => {
+  // Month parameter is zero indexed so it's actually the 10th month.
+  const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
+  const expected = '14:19';
+  console.log(testDate);
+  const actual = utils.get24hTime(testDate);
+  expect(actual).toEqual(expected);
+});
+
+test('other time barebones format', () => {
+  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
+  const expectedCentral = '21:03';
+  const expectedSingapore = '10:03';
+  const actualCentral = utils.get24hTime(testDate, TZ_CHICAGO);
+  const actualSingapore = utils.get24hTime(testDate, TZ_SINGAPORE);
+  expect(actualCentral).toEqual(expectedCentral);
+  expect(actualSingapore).toEqual(expectedSingapore);
+})
