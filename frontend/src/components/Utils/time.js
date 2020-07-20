@@ -14,8 +14,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
     minute: '2-digit', 
     timeZone: timezone
   };
-  const formatted = date.toLocaleTimeString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleTimeString('en-US', formatOptions);
 }
 
 /**
@@ -34,8 +33,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
     day: 'numeric',  
     timeZone: timezone
   };
-  const formatted = date.toLocaleDateString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleDateString('en-US', formatOptions);
 }
 
 /** 
@@ -57,8 +55,7 @@ export function timestampToFormatted(msTimestamp, timezone = 'America/New_York')
     minute: '2-digit', 
     timeZone: timezone
   };
-  let formatted = date.toLocaleString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleString('en-US', formatOptions);
 }
 
 /**
@@ -78,4 +75,22 @@ export function timezonesForCountry(countryName) {
   return zones.map(e => {
     return e.replace(/[_]/g, ' ');
   });
+}
+
+/**
+ * NOTE TO SEL FREMEMBER TEST TIMEZOE=''
+ * @param {} msTimestamp 
+ * @param {*} timezone 
+ */
+export function getDateBarebones(msTimestamp, timezone = 'America/New York') {
+  const date = new Date(msTimestamp);
+  const formatOptions = { 
+    year: 'numeric', 
+    month: 'numeric', 
+    day: 'numeric',  
+    timeZone: timezone
+  };
+  const formatted = date.toLocaleDateString('zh-Hans-CN', formatOptions)
+                        .replace(/\//g, '-');
+  return formatted;
 }
