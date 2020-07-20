@@ -1,27 +1,12 @@
 import React from 'react';
 import { Button, Col, Form, Row, FormControl } from 'react-bootstrap';
-import { getField, writeActivity } from './activityfns.js';
+import { getField, writeActivity, getRefValue } from './activityfns.js';
 import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
 
 /**
- * Get the value of a reference. 
- * 
- * @param {Reference} ref Reference to get the value of.
- * @param {string} noChangeValue The "null" or "none" value that ref could be.
- * @param {string} defaultValue Value to return if ref.current.value === noChangeValue.
- * @returns defaultValue if ref.current.value === noChangeValue, else ref.current.value.
- */
-function getRefValue(ref, noChangeValue, defaultValue=null) {
-  if (ref.current.value === noChangeValue) {
-    return defaultValue;
-  } 
-  return ref.current.value;
-}
-
-/**
- * The form that's used when the user is editing an activity
+ * The form that's used when the user is editing an activity.
  * 
  * @param {Object} props This component expects the following props:
  * - `activity` The activity to display.
@@ -54,7 +39,6 @@ class EditActivity extends React.Component {
   
   /**
    * Edit an activity in the database upon form submission.
-   * TODO: Update times as well! This only does the text field forms (#64).
    */
   editActivity() {
     const activity = this.props.activity;
