@@ -79,18 +79,12 @@ export function timezonesForCountry(countryName) {
 
 /**
  * NOTE TO SEL FREMEMBER TEST TIMEZOE=''
- * @param {} msTimestamp 
- * @param {*} timezone 
+ * @param {string} msTimestamp Milliseconds since epoch
+ * @param {}} timezone 
  */
-export function getDateBarebones(msTimestamp, timezone = 'America/New York') {
-  const date = new Date(msTimestamp);
-  const formatOptions = { 
-    year: 'numeric', 
-    month: 'numeric', 
-    day: 'numeric',  
-    timeZone: timezone
-  };
-  const formatted = date.toLocaleDateString('zh-Hans-CN', formatOptions)
-                        .replace(/\//g, '-');
-  return formatted;
+export function getDateBarebones(msTimestamp, timezone = null) {
+  if (timezone === null) {
+    return moment.tz(parseFloat(msTimestamp)).format('YYYY-MM-DD');
+  }
+  return moment.tz(parseFloat(msTimestamp), timezone).format('YYYY-MM-DD');
 }

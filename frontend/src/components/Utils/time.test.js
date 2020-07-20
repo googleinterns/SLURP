@@ -78,3 +78,21 @@ describe('timezones for country', () => {
     expect(actual).toContain('Africa/Accra');
   })
 })
+
+test('new york date barebones format', () => {
+  // Month parameter is zero indexed so it's actually the 10th month.
+  const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
+  const expected = '2020-10-03';
+  const actual = utils.getDateBarebones(testDate);
+  expect(actual).toEqual(expected);
+});
+
+test('other date barebones format', () => {
+  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
+  const expectedCentral = '2020-08-22';
+  const expectedSingapore = '2020-08-23';
+  const actualCentral = utils.getDateBarebones(testDate, TZ_CHICAGO);
+  const actualSingapore = utils.getDateBarebones(testDate, TZ_SINGAPORE);
+  expect(actualCentral).toEqual(expectedCentral);
+  expect(actualSingapore).toEqual(expectedSingapore);
+})
