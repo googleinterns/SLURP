@@ -47,6 +47,7 @@ export function compareActivities(a, b) {
 
 /**
  * Get the field of field name `fieldName` from `activity  or the default value.
+ * TODO: 3RD ARG NULL TESTS
  * 
  * @param {Object} activity 
  * @param {string} fieldName 
@@ -54,7 +55,7 @@ export function compareActivities(a, b) {
  * @param prefix The prefix to put before a returned value if the field exists.
  * @returns `activity[fieldName]` if possible, else `defaultValue`.
  */
-export function getField(activity, fieldName, defaultValue, prefix=''){
+export function getField(activity, fieldName, defaultValue=null, prefix=''){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
     return defaultValue;
   }

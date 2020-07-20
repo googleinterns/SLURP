@@ -13,7 +13,7 @@ import * as time from '../Utils/time.js';
  * @param {string} defaultValue Value to return if ref.current.value === noChangeValue.
  * @returns defaultValue if ref.current.value === noChangeValue, else ref.current.value.
  */
-function getRefValue(ref, noChangeValue, defaultValue) {
+function getRefValue(ref, noChangeValue, defaultValue=null) {
   if (ref.current.value === noChangeValue) {
     return defaultValue;
   } 
@@ -152,7 +152,6 @@ class EditActivity extends React.Component {
 
 
   render() {
-    console.log(this.props.activity);
     const activity = this.props.activity;
     const TITLEWIDTH = 2;
     const COUNTRYWIDTH = 6;
@@ -189,10 +188,14 @@ class EditActivity extends React.Component {
           <Col sm={TITLEWIDTH}><Form.Label>From:</Form.Label></Col>
           <Col sm={DATEWIDTH}>
             <FormControl type='date' label='date' ref={this.editStartDateRef} 
-              value={time.getDateBarebones(getField(activity, DB.ACTIVITIES_START_TIME, ''), 
+              defaultValue={time.getDateBarebones(getField(activity, DB.ACTIVITIES_START_TIME), 
               getField(activity, DB.ACTIVITIES_START_TZ))}/>
           </Col>
-          <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
+          <Col sm={TIMEWIDTH}>
+            <FormControl type='time' label='time' ref={this.editStartTimeRef}
+              defaultValue={time.get24hTime(getField(activity, DB.ACTIVITIES_START_TIME), 
+              getField(activity, DB.ACTIVITIES_START_TZ))}/>
+          </Col>
           <Col sm={TZPICKERWIDTH}>
             {this.timezonePicker('start', getField(activity, DB.ACTIVITIES_START_TZ))}
           </Col>
@@ -201,10 +204,14 @@ class EditActivity extends React.Component {
           <Col sm={TITLEWIDTH}><Form.Label>To:</Form.Label></Col>
           <Col sm={DATEWIDTH}>
             <Form.Control type='date' label='date' ref={this.editEndDateRef}
-              value={time.getDateBarebones(getField(activity, DB.ACTIVITIES_END_TIME, ''), 
+              defaultValue={time.getDateBarebones(getField(activity, DB.ACTIVITIES_END_TIME), 
               getField(activity, DB.ACTIVITIES_END_TZ))}/>
           </Col>
-          <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
+          <Col sm={TIMEWIDTH}>
+            <Form.Control type='time' label='time' ref={this.editEndTimeRef}
+              defaultValue={time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
+              getField(activity, DB.ACTIVITIES_END_TZ))}/>
+          </Col>
           <Col sm={TZPICKERWIDTH}>
             {this.timezonePicker('end', getField(activity, DB.ACTIVITIES_END_TZ))}
           </Col>
