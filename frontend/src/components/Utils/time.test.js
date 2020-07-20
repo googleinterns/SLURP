@@ -95,9 +95,16 @@ test('other date barebones format', () => {
   const actualSingapore = utils.getDateBarebones(testDate, TZ_SINGAPORE);
   expect(actualCentral).toEqual(expectedCentral);
   expect(actualSingapore).toEqual(expectedSingapore);
-})
+});
 
-test('UTC time barebones format', () => {
+test('24h crazy queries', () => {  
+  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
+  const expected = "02:03";
+  expect(utils.get24hTime(testDate, '')).toBe(expected);
+  expect(utils.get24hTime(testDate, null)).toBe(expected);
+});
+
+test('UTC time 24h format', () => {
   // Month parameter is zero indexed so it's actually the 10th month.
   const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
   const expected = '14:19';
@@ -105,7 +112,7 @@ test('UTC time barebones format', () => {
   expect(actual).toEqual(expected);
 });
 
-test('other time barebones format', () => {
+test('other time 24h format', () => {
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
   const expectedCentral = '21:03';
   const expectedSingapore = '10:03';
@@ -115,13 +122,9 @@ test('other time barebones format', () => {
   expect(actualSingapore).toEqual(expectedSingapore);
 })
 
-test('firestore Timestamp format', () => {
-  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3))
-  // central = 'Saturday, August 22, 2020, 9:03 PM';
-  // singapore = 'Sunday, August 23, 2020, 10:03 AM';
-  const actualCentral = utils.getFirebaseTime("21:03", "2020-08-22", TZ_CHICAGO)
-  const actualSingapore = utils.getFirebaseTime("10:03", "2020-08-23", TZ_SINGAPORE);
-  console.log(actualCentral);
-  expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
-  expect(actualSingapore.toDate()).toEqual(testDate);
-});
+test('barebones crazy queries', () => {  
+  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
+  const expected = "2020-08-23";
+  expect(utils.getDateBarebones(testDate, '')).toBe(expected);
+  expect(utils.getDateBarebones(testDate, null)).toBe(expected);
+})

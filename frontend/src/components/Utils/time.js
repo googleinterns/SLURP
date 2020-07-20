@@ -80,11 +80,13 @@ export function timezonesForCountry(countryName) {
 }
 
 /**
- * NOTE TO SEL FREMEMBER TEST TIMEZOE=''
- * @param {string} msTimestamp Milliseconds since epoch
- * @param {string} timezone The timezone
+ * Get a date in 'YYYY-MM-DD' format. 
+ * 
+ * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {string} timezone The timezone which the string should be returned in.
+ * @returns {string} The date in 'YYYY-MM-DD' format. 
  */
-export function getDateBarebones(msTimestamp, timezone = null) {
+export function getDateBarebones(msTimestamp, timezone=null) {
   if (timezone === null) {
     return moment.tz(parseFloat(msTimestamp), '').format('YYYY-MM-DD');
   }
@@ -92,9 +94,11 @@ export function getDateBarebones(msTimestamp, timezone = null) {
 }
 
 /**
- * SAME NOTE
- * @param {string} msTimestamp Milliseconds since epoch
- * @param {string} timezone The timezone.
+ * Get a time in 24-hour ('HH:mm') format. 
+ * 
+ * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {string} timezone The timezone which the string should be returned in.
+ * @returns {string} The time in 24-hour (HH:mm) format.   
  */
 export function get24hTime(msTimestamp, timezone=null) {
   if (timezone === null) {
@@ -104,11 +108,12 @@ export function get24hTime(msTimestamp, timezone=null) {
 }
 
 /**
- * TODO
- * 
- * @param {*} time 
- * @param {*} date 
- * @param {*} tz 
+ * Get a Firebase Timestamp object for time.
+ *
+ * @param {string} time The time in 'HH:mm' format.
+ * @param {string} date The date in 'YYYY-MM-DD' format.
+ * @param {string} tz The timezone in which the date takes place.
+ * @returns {firestore.Timestamp} Firestore timestamp object at the same time. 
  */
 export function getFirebaseTime(time, date, tz) {
   const mtzDate = moment.tz(time + " " + date, "HH:mm YYYY-MM-DD", tz);

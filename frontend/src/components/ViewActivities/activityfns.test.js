@@ -98,4 +98,5 @@ test('getField', () => {
   expect(activityFns.getField(activity, 'field2', 4)).toBe(4);
   expect(activityFns.getField(activity, 'field1', 'nooo', 'aww ')).toBe('aww yes');
   expect(activityFns.getField(activity, 'field2', 4, ' and')).toBe(4);
+  expect(activityFns.getField(activity, 'field2')).toBeNull();
 })
