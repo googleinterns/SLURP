@@ -20,11 +20,11 @@ class UserInfo extends React.Component {
       <div className='d-flex flex-row'>
         <img
             className={BOOTSTRAP_SPACING_CLASS}
-            src={authUtils.getUserPhotoUrl()}
+            src={authUtils.getCurUserPhotoUrl()}
             alt='Your Profile'
         />
         <p className={BOOTSTRAP_SPACING_CLASS}>
-          {authUtils.getUserDisplayName()}
+          {authUtils.getCurUserDisplayName()}
         </p>
         <Button
             className={BOOTSTRAP_SPACING_CLASS}
