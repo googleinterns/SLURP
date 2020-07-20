@@ -81,25 +81,28 @@ const DeleteTripsButton = (props) => {
    * TODO(Issue #62): Remove refreshTripsContainer.
    */
   async function deleteTrip() {
-    await deleteTripActivities()
-        .then(() => {
-          console.log("Activity subcollection successfully deleted for trip" +
-                      " with id: ", props.tripId);
-        })
-        .catch(error => {
-          console.error("Error deleting activities subcollection: ", error);
-        });
+    if (window.confirm('Are you sure you want to delete this trip? This' +
+        ' action cannot be undone!')) {
+      await deleteTripActivities()
+          .then(() => {
+            console.log("Activity subcollection successfully deleted for trip" +
+                        " with id: ", props.tripId);
+          })
+          .catch(error => {
+            console.error("Error deleting activities subcollection: ", error);
+          });
 
-    db.collection(DB.COLLECTION_TRIPS)
-        .doc(props.tripId)
-        .delete()
-        .then(() => {
-          console.log("Document successfully deleted with id: ", props.tripId);
-        }).catch(error => {
-          console.error("Error removing document: ", error);
-        });
+      db.collection(DB.COLLECTION_TRIPS)
+          .doc(props.tripId)
+          .delete()
+          .then(() => {
+            console.log("Document successfully deleted with id: ", props.tripId);
+          }).catch(error => {
+            console.error("Error removing document: ", error);
+          });
 
-    props.refreshTripsContainer();
+      props.refreshTripsContainer();
+   }
   }
 
   return (
