@@ -6,21 +6,6 @@ import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
 
 /**
- * Get the value of a reference. 
- * 
- * @param {Reference} ref Reference to get the value of.
- * @param {string} noChangeValue The "null" or "none" value that ref could be.
- * @param {string} defaultValue Value to return if ref.current.value === noChangeValue.
- * @returns defaultValue if ref.current.value === noChangeValue, else ref.current.value.
- */
-function getRefValue(ref, noChangeValue, defaultValue=null) {
-  if (ref.current.value === noChangeValue) {
-    return defaultValue;
-  } 
-  return ref.current.value;
-}
-
-/**
  * The form that's used when the user is editing an activity
  * 
  * @param {Object} props This component expects the following props:
@@ -52,41 +37,27 @@ class EditActivity extends React.Component {
     this.editEndTzRef = React.createRef();
   }
   
-  /**
+ /**
    * Edit an activity in the database upon form submission.
    * TODO: Update times as well! This only does the text field forms (#64).
    */
   editActivity() {
-    const activity = this.props.activity;
-
     let newVals = {};
-    // All the text fields. 
-    newVals[DB.ACTIVITIES_TITLE] = 
-      getRefValue(this.editTitleRef, '', activity[DB.ACTIVITIES_TITLE])
-    newVals[DB.ACTIVITIES_DESCRIPTION] = 
-      getRefValue(this.editDescriptionRef, '', activity[DB.ACTIVITIES_DESCRIPTION]);
-
-    newVals[DB.ACTIVITIES_START_COUNTRY] = 
-      getRefValue(this.editStartLocRef, 'No Change', activity[DB.ACTIVITIES_START_COUNTRY]);
-    newVals[DB.ACTIVITIES_END_COUNTRY] = 
-      getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
-    
-    newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef, '', '');
-    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef, '', '');
-
-    // Start time fields!
-    const startTime = getRefValue(this.editStartTimeRef, '');
-    const startDate = getRefValue(this.editStartDateRef, '');
-    const startTz = newVals[DB.ACTIVITIES_START_TZ];
-    newVals[DB.ACTIVITIES_START_TIME] = time.getFirebaseTime(startTime, startDate, startTz);
-
-    // End time fields!
-    const endTime = getRefValue(this.editEndTimeRef, '');
-    const endDate = getRefValue(this.editEndDateRef, '');
-    const endTz = newVals[DB.ACTIVITIES_END_TZ];
-    newVals[DB.ACTIVITIES_END_TIME] = time.getFirebaseTime(endTime, endDate, endTz);
-
-    writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
+    if (this.editTitleRef.current.value !== '') {
+      newVals[DB.ACTIVITIES_TITLE] = this.editTitleRef.current.value;
+    }
+    if (this.editDescriptionRef.current.value !== '') {
+      newVals[DB.ACTIVITIES_DESCRIPTION] = this.editDescriptionRef.current.value;
+    }
+    if (this.editStartLocRef.current.value !== 'No Change'){
+      newVals[DB.ACTIVITIES_START_COUNTRY] = this.editStartLocRef.current.value;
+    }
+    if (this.editEndLocRef.current.value !== 'No Change'){
+      newVals[DB.ACTIVITIES_END_COUNTRY] = this.editEndLocRef.current.value;
+    }
+    if (Object.keys(newVals).length !== 0) {
+      writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
+    }
   }
 
   /** Runs when the `submit` button on the form is pressed.  */

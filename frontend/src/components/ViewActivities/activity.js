@@ -51,8 +51,6 @@ class Activity extends React.Component {
             {utils.getField(activity, DB.ACTIVITIES_START_COUNTRY, '', ' at ')}</p>
           <p>End time: {time.timestampToFormatted(activity[DB.ACTIVITIES_END_TIME])} 
             {utils.getField(activity, DB.ACTIVITIES_END_COUNTRY, '', ' at ')}</p>
-          <p>start: {utils.getField(activity, DB.ACTIVITIES_START_TZ)}</p>  
-          <p>end: {utils.getField(activity, DB.ACTIVITIES_END_TZ)}</p> 
         </Card.Body>
       );
     } else { // Edit mode.
