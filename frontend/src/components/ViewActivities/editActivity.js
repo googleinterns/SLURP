@@ -4,6 +4,9 @@ import { getField, writeActivity } from './activityfns.js';
 import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
+import app from '../Firebase';
+
+const db = app.firestore();
 
 /**
  * The form that's used when the user is editing an activity
@@ -22,6 +25,7 @@ class EditActivity extends React.Component {
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
     this.finishEditActivity = this.finishEditActivity.bind(this);
+    this.deleteActivity = this.deleteActivity.bind(this);
 
     // References. 
     this.editTitleRef = React.createRef();
@@ -100,13 +104,29 @@ class EditActivity extends React.Component {
         <option key="-1">No Change</option>
         {countryList.map((item, index) => {
           return (
-            <option key={index} eventKey={index}>{item}</option>
+            <option key={index}>{item}</option>
           );
         })}
       </Form.Control>
     );
   }
 
+  /**
+   * Delete this activity. 
+   * 
+   * @returns true if the activity was successfully deleted.
+   */
+  async deleteActivity() {
+    if (window.confirm(`Are you sure you want to delete ${this.props.activity[DB.ACTIVITIES_TITLE]}?
+This action cannot be undone!`)) {
+      const a = await db.collection(DB.COLLECTION_TRIPS).doc(this.props.activity.tripId)
+        .collection(DB.COLLECTION_ACTIVITIES).doc(this.props.activity.id)
+        .delete();
+      return a ? true : false;
+    } else {
+      return false;
+    }
+  }
 
   render() {
     const activity = this.props.activity;
@@ -148,7 +168,12 @@ class EditActivity extends React.Component {
             ref={this.editDescriptionRef} />
           </Col>
         </Form.Group>
-        <Button type='submit' className='float-right'>Done!</Button>
+        <Form.Group as="row" controlId='buttons'>
+          <Button type='submit' className='float-right'>Done!</Button>
+          <Button type='button' onClick={this.deleteActivity}> 
+            Delete
+          </Button>
+        </Form.Group>
       </Form>
     );
   }
