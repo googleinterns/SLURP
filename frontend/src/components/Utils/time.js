@@ -1,5 +1,7 @@
 import * as moment from 'moment-timezone';
 import { countryCodes } from '../../constants/countries.js';
+import { firestore } from 'firebase';
+
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time.
  *
@@ -99,4 +101,16 @@ export function get24hTime(msTimestamp, timezone=null) {
     return moment.tz(parseFloat(msTimestamp), '').format('HH:mm');
   }
   return moment.tz(parseFloat(msTimestamp), timezone).format('HH:mm');
+}
+
+/**
+ * TODO
+ * 
+ * @param {*} time 
+ * @param {*} date 
+ * @param {*} tz 
+ */
+export function getFirebaseTime(time, date, tz) {
+  const mtzDate = moment.tz(time + " " + date, "HH:mm YYYY-MM-DD", tz);
+  return new firestore.Timestamp(mtzDate.valueOf() / 1000, 0);
 }

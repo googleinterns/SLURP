@@ -101,7 +101,6 @@ test('UTC time barebones format', () => {
   // Month parameter is zero indexed so it's actually the 10th month.
   const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
   const expected = '14:19';
-  console.log(testDate);
   const actual = utils.get24hTime(testDate);
   expect(actual).toEqual(expected);
 });
@@ -115,3 +114,14 @@ test('other time barebones format', () => {
   expect(actualCentral).toEqual(expectedCentral);
   expect(actualSingapore).toEqual(expectedSingapore);
 })
+
+test('firestore Timestamp format', () => {
+  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3))
+  // central = 'Saturday, August 22, 2020, 9:03 PM';
+  // singapore = 'Sunday, August 23, 2020, 10:03 AM';
+  const actualCentral = utils.getFirebaseTime("21:03", "2020-08-22", TZ_CHICAGO)
+  const actualSingapore = utils.getFirebaseTime("10:03", "2020-08-23", TZ_SINGAPORE);
+  console.log(actualCentral);
+  expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
+  expect(actualSingapore.toDate()).toEqual(testDate);
+});
