@@ -76,14 +76,14 @@ class EditActivity extends React.Component {
   /**
    * Returns a dropdown of all the timezones.
    * 
-   * @param st either "start" or "end" depending on whether the timezone is for the start or end timezone.
+   * @param st either 'start' or 'end' depending on whether the timezone is for the start or end timezone.
    */
   timezonePicker(st) {
     return (
       <div>
-      <Form.Control as="select"
-        ref={st === "start" ? this.startTz : this.endTz}
-        key={st === "start" ? this.state.startTz : this.state.endTz}
+      <Form.Control as='select'
+        ref={st === 'start' ? this.startTz : this.endTz}
+        key={st === 'start' ? this.state.startTz : this.state.endTz}
       >
         {time.timezonesForCountry(this.editStartLocRef).map((item, index) => {
             return (<option key={index}>{item}</option>);
@@ -100,8 +100,8 @@ class EditActivity extends React.Component {
    */
   countriesDropdown(ref, tzref) {
     return (
-      <Form.Control as="select" ref={ref} onChange={tzref}>
-        <option key="-1">No Change</option>
+      <Form.Control as='select' ref={ref} onChange={tzref}>
+        <option key='-1'>No Change</option>
         {countryList.map((item, index) => {
           return (
             <option key={index}>{item}</option>
@@ -153,13 +153,13 @@ This action cannot be undone!`)) {
           <Col sm={TITLEWIDTH}><Form.Label>From:</Form.Label></Col>
           <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editStartDateRef}/></Col>
           <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezonePicker("start")}</Col>
+          <Col sm={TZPICKERWIDTH}>{this.timezonePicker('start')}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityEndTime'>
           <Col sm={TITLEWIDTH}><Form.Label>To:</Form.Label></Col>
           <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
           <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezonePicker("end")}</Col>
+          <Col sm={TZPICKERWIDTH}>{this.timezonePicker('end')}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityTitle'>
           <Col sm={TITLEWIDTH}><Form.Label>Description:</Form.Label></Col>
@@ -168,7 +168,7 @@ This action cannot be undone!`)) {
             ref={this.editDescriptionRef} />
           </Col>
         </Form.Group>
-        <Form.Group as="row" controlId='buttons'>
+        <Form.Group as='row' controlId='buttons'>
           <Button type='submit' className='float-right'>Done!</Button>
           <Button type='button' onClick={this.deleteActivity}> 
             Delete
