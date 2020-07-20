@@ -76,6 +76,6 @@ export function timezonesForCountry(countryName) {
     zones = moment.tz.names();
   }
   return zones.map(e => {
-    return e.replace(/[_]/g, " ");
+    return e.replace(/[_]/g, ' ');
   });
 }
