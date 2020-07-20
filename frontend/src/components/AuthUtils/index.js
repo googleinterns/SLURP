@@ -20,35 +20,50 @@ function redirectToSignIn() {
   window.location.href = SIGN_IN;
 }
 
-export function getUserDisplayName() {
-  if (!getCurrentUser()) {
+/**
+ * Checks that the user is logged in by seeing if the current user is set to
+ * null (which is what Firebase Auth returns if the user is not logged in). If
+ * not, they are redirected to the SIGN_IN page.
+ *
+ * @returns {Boolean} True if the user is signed in, false otherwise.
+ */
+function isUserLoggedIn() {
+  if (getCurrentUser() === null) {
     redirectToSignIn();
-    return null;
+    return false;
   }
+  return true;
+}
+
+/**
+ * @returns {String} The user's display name.
+ */
+export function getCurUserDisplayName() {
+  if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().displayName;
 }
 
-export function getUserEmail() {
-  if (!getCurrentUser()) {
-    redirectToSignIn();
-    return null;
-  }
+/**
+ * @returns {String} The user's email.
+ */
+export function getCurUserEmail() {
+  if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().email;
 }
 
-export function getUserPhotoUrl() {
-  if (!getCurrentUser()) {
-    redirectToSignIn();
-    return null;
-  }
+/**
+ * @returns {String} The user's profile picture URL.
+ */
+export function getCurUserPhotoUrl() {
+  if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().photoURL;
 }
 
-export function getUserUid() {
-  if (!getCurrentUser()) {
-    redirectToSignIn();
-    return null;
-  }
+/**
+ * @returns {String} The user's unique ID.
+ */
+export function getCurUserUid() {
+  if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().uid;
 }
 
@@ -58,11 +73,10 @@ export function signOut() {
 
 // Can also access the auth functions in the named authUtils variable.
 const authUtils = {
-  getUserDisplayName,
-  getUserEmail,
-  getUserPhotoUrl,
-  getUserUid,
-  signOut
+  getCurUserDisplayName,
+  getCurUserEmail,
+  getCurUserPhotoUrl,
+  getCurUserUid
 };
 export default authUtils;
 

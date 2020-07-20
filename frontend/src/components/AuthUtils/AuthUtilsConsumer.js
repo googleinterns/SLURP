@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../Auth';
 
-let currentUser;
+let currentUser = null;
 
 /**
  * React Context Consumer component that only gets the value of the current

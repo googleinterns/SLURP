@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 
-import { SIGN_IN } from '../../constants/routes';
+import { SIGN_IN } from '../../constants/routes.js';
 
 /**
  * SignInButton component used for the Landing page to redirect to the SignIn
