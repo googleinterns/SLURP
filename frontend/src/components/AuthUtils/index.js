@@ -76,7 +76,8 @@ const authUtils = {
   getCurUserDisplayName,
   getCurUserEmail,
   getCurUserPhotoUrl,
-  getCurUserUid
+  getCurUserUid,
+  signOut
 };
 export default authUtils;
 
