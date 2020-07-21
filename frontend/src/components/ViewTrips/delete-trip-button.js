@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import * as DB from '../../constants/database.js';
 
 const db = app.firestore();
+const LIMIT_QUERY_DOCS_RETRIEVED = 5;
 
 /**
  * Component used to delete a Trip.
@@ -67,7 +68,7 @@ const DeleteTripsButton = (props) => {
         .doc(props.tripId)
         .collection(DB.COLLECTION_ACTIVITIES)
         .orderBy(DB.ACTIVITIES_TITLE)
-        .limit(3);
+        .limit(LIMIT_QUERY_DOCS_RETRIEVED);
 
     return new Promise((resolve, reject) => {
       deleteQueryBatch(db, query, resolve).catch(reject);
