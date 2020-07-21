@@ -34,11 +34,12 @@ function createTextFormControl(placeholder, ref) {
  *     inputted in the form.
  * @return {JSX.Element} The Form.Control element.
  */
-function createDateFormControl(ref) {
+function createDateFormControl(defaultValue, ref) {
   return (
     <Form.Control
       type="date"
       ref={ref}
+      defaultValue={defaultValue}
     />
   );
 }
@@ -90,7 +91,7 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
       formControl = createTextFormControl(placeholder, ref);
       break;
     case 'date':
-      formControl = createDateFormControl(ref);
+      formControl = createDateFormControl(placeholder, ref);
       break;
     case 'emails':
       formControl = createMultiFormControl(placeholder, ref);
@@ -108,29 +109,48 @@ function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
 }
 
 /**
- * Component corresponding to add trips modal.
+ * Component corresponding to the save trips modal.
+ *
+ * This component "acts" as a parent of the (non-existent) AddTripModal and
+ * EditTripModal components. The only differences in the implementation between
+ * the two fake components are dervied from the props `tripid` and
+ * `placeholderObj` (see below).
  *
  * @param {Object} props These are the props for this component:
- * - show: Boolean that determines if the add trips modal should be displayed.
- * - handleClose: The function that handles closing the add trips modal.
+ * - show: Boolean that determines if the save trips modal should be displayed.
+ * - handleClose: Handler that closes the save trips modal upon calling.
  * - refreshTripsContainer: Function that handles refreshing the TripsContainer
- *        component upon trip creation (Remove when fix Issue #62).
+ *        component upon trip saving (Remove when fix Issue #62).
+ * - tripId: For adding a new trip, this will be null. For editting an existing
+ *        trip, this will the document id associated with the trip.
+ * - placeholderObj: Object containing the placeholder/default values for the
+ *        form input text boxes.
  * - key: Special React attribute that ensures a new AddTripModal instance is
  *        created whenever this key is updated
  *
  * @extends React.Component
  */
-class AddTripModal extends React.Component {
+class SaveTripModal extends React.Component {
   /** @inheritdoc */
   constructor(props) {
     super(props);
 
+    // Create Refs to reference form input elements
     this.nameRef = React.createRef();
     this.descriptionRef = React.createRef();
     this.destinationRef = React.createRef();
     this.startDateRef = React.createRef();
     this.endDateRef = React.createRef();
-    this.state = { collaboratorsRefArr: [React.createRef()] }
+
+    this.isAddTripForm = this.props.tripId === null;
+
+    // Create the number of collaborator input box refs as number of
+    // collaborators specified in the placeholderObj
+    const collaboratorsRefArr = [];
+    for (let i = 0; i < this.props.placeholderObj.collaborators.length; i++) {
+      collaboratorsRefArr.push(React.createRef())
+    }
+    this.state = { collaboratorsRefArr: collaboratorsRefArr }
   }
 
   /** Adds a new Ref element to the state variable `collaboratorsRefArr`. */
@@ -141,9 +161,43 @@ class AddTripModal extends React.Component {
   }
 
   /**
-   * Formats/cleans the form data and create a new Trip document in firestore.
+   * Creates a new Trip document in firestore with data in `tripData`.
+   *
+   * @param {Object} tripData Data the new trip document will contain.
    */
-  createTrip() {
+  addNewTrip(tripData) {
+    db.collection(COLLECTION_TRIPS)
+        .add(tripData)
+        .then(docRef => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
+  }
+
+  /**
+   * Updates an existing Trip document in firestore with data in `tripData`.
+   *
+   * @param {string} tripId The document ID of the trip that is updated.
+   * @param {Object} tripData Data the new trip document will contain.
+   */
+  updateExistingTrip(tripId, tripData) {
+    db.collection(COLLECTION_TRIPS)
+        .doc(tripId)
+        .set(tripData)
+        .then(() => {
+          console.log("Document written with ID: ", tripId);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
+  }
+
+  /**
+   * Formats/cleans the form data and saves the Trip document in firestore.
+   */
+  saveTrip() {
     const tripData = formatTripData(
         {
           name: this.nameRef.current.value,
@@ -156,14 +210,12 @@ class AddTripModal extends React.Component {
         }
     );
 
-    db.collection(COLLECTION_TRIPS)
-        .add(tripData)
-        .then(docRef => {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(error => {
-          console.error("Error adding document: ", error);
-        });
+    if (this.isAddTripForm) {
+      this.addNewTrip(tripData);
+    } else {
+      this.updateExistingTrip(this.props.tripId, tripData);
+    }
+
   }
 
   /**
@@ -173,9 +225,17 @@ class AddTripModal extends React.Component {
    *  - Closing the modal.
    */
   handleSubmitForm = () => {
-    this.createTrip();
+    this.saveTrip();
     this.props.refreshTripsContainer();
     this.props.handleClose();
+  }
+
+  /** Gets the Modal title based the type of modal (edit or add trip). */
+  getModalTitle = () => {
+    if (this.isAddTripForm) {
+      return 'Add New Trip';
+    }
+    return 'Edit Trip';
   }
 
   /** @inheritdoc */
@@ -183,23 +243,24 @@ class AddTripModal extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New Trip</Modal.Title>
+          <Modal.Title>{this.getModalTitle()}</Modal.Title>
         </Modal.Header>
 
         <Form>
           <Modal.Body>
             {createFormGroup('tripNameGroup', 'Trip Name', 'text',
-                             'Enter Trip Name', this.nameRef)}
+                    this.props.placeholderObj.name, this.nameRef)}
             {createFormGroup('tripDescGroup', 'Trip Description', 'text',
-                             'Enter Trip Description', this.descriptionRef)}
+                    this.props.placeholderObj.description, this.descriptionRef)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
-                             'Enter Trip Destination', this.destinationRef)}
+                    this.props.placeholderObj.destination, this.destinationRef)}
             {createFormGroup('tripStartDateGroup', 'Start Date', 'date',
-                            '', this.startDateRef)}
+                    this.props.placeholderObj.startDate, this.startDateRef)}
             {createFormGroup('tripEndDateGroup', 'End Date', 'date',
-                            '', this.endDateRef)}
+                    this.props.placeholderObj.endDate, this.endDateRef)}
             {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'emails',
-                      'person@email.xyz', this.state.collaboratorsRefArr)}
+                    this.props.placeholderObj.collaborators,
+                    this.state.collaboratorsRefArr)}
             <Button onClick={this.addCollaboratorRef}>
               Add Another Collaborator
             </Button>
@@ -210,7 +271,7 @@ class AddTripModal extends React.Component {
               Cancel
             </Button>
             <Button variant='primary' onClick={this.handleSubmitForm}>
-              Add Trip
+              Save Trip
             </Button>
           </Modal.Footer>
         </Form>
@@ -219,4 +280,4 @@ class AddTripModal extends React.Component {
   }
 };
 
-export default AddTripModal;
+export default SaveTripModal;
