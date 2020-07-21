@@ -73,7 +73,7 @@ export function timezonesForCountry(countryName) {
     const countryCode = countryCodes[countryName];
     zones = moment.tz.zonesForCountry(countryCode);
   } catch (e) {
-    zones = moment.tz.names();
+    zones = moment.tz.names(); // List of all timezones.
   }
   return zones.map(e => {
     return e.replace(/[_]/g, ' ');
