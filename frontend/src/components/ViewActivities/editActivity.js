@@ -4,6 +4,7 @@ import { getField, writeActivity } from './activityfns.js';
 import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
+import * as formElements from './editActivityFormElements.js';
 
 /**
  * The form that's used when the user is editing an activity.
@@ -127,45 +128,54 @@ class EditActivity extends React.Component {
   }
 
   render() {
-    const activity = this.props.activity;
     const TITLEWIDTH = 3;
-    const COUNTRYWIDTH = 6;
-    const DATEWIDTH = 4;
-    const TIMEWIDTH = 2;
-    const TZPICKERWIDTH = 3;
+const COUNTRYWIDTH = 6;
+const DATEWIDTH = 4;
+const TIMEWIDTH = 2;
+const TZPICKERWIDTH = 3;
+    const activity = this.props.activity;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
-        <Form.Group as={Row} controlId='formActivityTitle'>
-          <Col sm={TITLEWIDTH}><Form.Label>Title:</Form.Label></Col>
-          <Col><Form.Control type='text' placeholder={activity[DB.ACTIVITIES_TITLE]} ref={this.editTitleRef}/></Col>
-        </Form.Group>
-        <Form.Group as={Row} controlId='formActivityStartLocation'>
-          <Col sm={TITLEWIDTH}><Form.Label>Start Location:</Form.Label></Col>
-          <Col sm={COUNTRYWIDTH}>{this.countriesDropdown(this.editStartLocRef, this.startTimeTzUpdate)}</Col>
-        </Form.Group>
-        <Form.Group as={Row} controlId='formActivityStartLocation'>
-          <Col sm={TITLEWIDTH}><Form.Label>End Location:</Form.Label></Col>
-          <Col sm={COUNTRYWIDTH}>{this.countriesDropdown(this.editEndLocRef, this.endTimeTzUpdate)}</Col>
-        </Form.Group>
-        <Form.Group as={Row} controlId='formActivityStartTime'>
-          <Col sm={TITLEWIDTH}><Form.Label>From:</Form.Label></Col>
-          <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editStartDateRef}/></Col>
-          <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezoneDropdown('start')}</Col>
-        </Form.Group>
-        <Form.Group as={Row} controlId='formActivityEndTime'>
-          <Col sm={TITLEWIDTH}><Form.Label>To:</Form.Label></Col>
-          <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
-          <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezoneDropdown('end')}</Col>
-        </Form.Group>
-        <Form.Group as={Row} controlId='formActivityTitle'>
-          <Col sm={TITLEWIDTH}><Form.Label>Description:</Form.Label></Col>
-          <Col><Form.Control type='text' 
-            placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!')}
-            ref={this.editDescriptionRef} />
-          </Col>
-        </Form.Group>
+        {formElements.textElementFormGroup(
+            'formActivityTitle',          // controlId
+            'Title:',                     // formLabel
+            activity[DB.ACTIVITIES_TITLE],// placeHolder 
+            this.editTitleRef             // ref
+          )}
+        {formElements.locationElementFormGroup(
+          'formActivityStartLocation', // controlId
+          'Start Location:', // formLabel
+          this.countriesDropdown(this.editStartLocRef, this.startTimeTzUpdate)
+          )}
+        {formElements.locationElementFormGroup(
+          'formActivityEndLocation', // controlId
+          'End Location:', // formLabel
+          this.countriesDropdown(this.editEndLocRef, this.endTimeTzUpdate)
+          )}
+        {formElements.dateTimeTzFormGroup(
+          'formActivityStartTime', // controlId
+          'From:', // formLabel
+          this.editStartDateRef, // dateRef
+          null, // dateDefault 
+          this.editStartTimeRef, // timeRef, 
+          null, //timeDefault, 
+          this.timezoneDropdown('start') // tzpicker 
+          )}
+        {formElements.dateTimeTzFormGroup(
+          'formActivityEndTime', // controlId
+          'To:', // formLabel
+          this.editEndDateRef, // dateRef
+          null, // dateDefault 
+          this.editEndTimeRef, // timeRef, 
+          null, //timeDefault, 
+          this.timezoneDropdown('end') // tzpicker 
+          )}
+        {formElements.textElementFormGroup(
+            'formActivityDescription', // controlId
+            'Description:', // formLabel
+            getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder 
+            this.editDescriptionRef // ref
+          )}
         <Button type='submit' className='float-right'>Done!</Button>
       </Form>
     );
