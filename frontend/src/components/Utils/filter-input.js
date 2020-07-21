@@ -28,7 +28,7 @@ export function getCleanedTextInput(rawInput, defaultValue) {
 export function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [getCurUserEmail()].concat(collaboratorEmailArr);
 
-  // Removes empty fields (temporary).
+  // Removes empty fields (temporary until fix #67 & #72).
   while (collaboratorEmailArr.includes('')) {
     const emptyStrIdx = collaboratorEmailArr.indexOf('');
     collaboratorEmailArr.splice(emptyStrIdx, 1);
