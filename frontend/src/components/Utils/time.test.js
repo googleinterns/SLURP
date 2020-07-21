@@ -51,16 +51,12 @@ test('new york full timestamp format', () => {
 
 test('other full timestamp format', () => {
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
-  const expectedCentral = 'Saturday, August 22, 2020 9:03 PM';
-  const expectedSingapore = 'Sunday, August 23, 2020 10:03 AM';
+  const expectedCentral = 'Saturday, August 22, 2020 9:03 PM CDT';
+  const expectedSingapore = 'Sunday, August 23, 2020 10:03 AM +08';
   const actualCentral = utils.timestampToFormatted(testDate, 'America/Chicago');
   const actualSingapore = utils.timestampToFormatted(testDate, 'Asia/Singapore');
-  expect({ a: actualCentral }).toMatchObject({ 
-    a: expect.stringContaining(expectedCentral) 
-  });
-  expect({ a: actualSingapore }).toMatchObject({ 
-    a: expect.stringContaining(expectedSingapore) 
-  });
+  expect(actualCentral).toEqual(expectedCentral);
+  expect(actualSingapore).toEqual(expectedSingapore);
 })
 
 describe('timezones for country', () => {
