@@ -77,10 +77,11 @@ class EditActivity extends React.Component {
    * The dropdown's values change based on the corrresponding country dropdown to
    * reduce scrolling and ensure that the location corresponds to the time zone.
    * 
+   * Tests done manually using UI.
+   * 
    * @param st Either 'start' or 'end' depending on whether the 
    * timezone is for the start or end timezone.
-   * 
-   * Tests done manually using UI. 
+   * @returns HTML dropdown item.
    */
   timezoneDropdown(st) {
     let ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
@@ -93,7 +94,6 @@ class EditActivity extends React.Component {
       timezones = time.timezonesForCountry(ref.current.value);
     }
     return (
-      <div>
       <Form.Control as='select'
         ref={st === 'start' ? this.startTz : this.endTz}
         key={st === 'start' ? this.state.startTz : this.state.endTz}
@@ -102,7 +102,6 @@ class EditActivity extends React.Component {
           return (<option key={index}>{item}</option>);
         })}
       </Form.Control>
-      </div>
     )
   }
   /**
