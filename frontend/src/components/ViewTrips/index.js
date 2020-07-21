@@ -2,27 +2,10 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import app from '../Firebase/';
 import Header from '../Header/';
-import AddTrip from './add-trip.js'
+import AddTripModal from './add-trip.js'
 import TripsContainer from './trips-container.js';
 
-const db = app.firestore();
-
-/**
- * Temporary hardcoded function that returns the current users email.
- *
- * The hardcoded string was created based on one of the manually created test
- * Trip Documents. This function will be implemented in the user authentication
- * JS module using Firebase's Authentication API.
- *
- * TODO(Issue 16): Remove this function once implemented in authentication
- *                 module.
- * @return Hardcoded user email string.
- */
-function getUserEmail() {
-  return 'matt.murdock';
-}
 
 /**
  * ViewTrips component that defines the page where a user can view and manage
@@ -32,11 +15,43 @@ class ViewTrips extends React.Component {
   /** @inheritdoc */
   constructor() {
     super();
-    this.state = { showModal: false };
+    this.state = { showModal: false,
+                   refreshTripsContainer: false,
+                   refreshAddTripModal: false,
+                 };
   }
 
-  /** Property that sets `showModal` to true --> displays add trip page. */
-  showAddTripModal = () => { this.setState({ showModal: true }); }
+  /**
+   * Flips `refreshTripsContainer` property which causes that TripsContainer
+   * component to be reloaded.
+   *
+   * This allows a trip creator's view trips page to be updated in real time.
+   *
+   * In the future, the use of refreshTripContainer and the key prop on Trips
+   * container should be removed with the addition of real time listening with
+   * onShapshot (Issue #62).
+   */
+  refreshTripsContainer = () => {
+    this.setState({ refreshTripsContainer: !this.state.refreshTripsContainer });
+  }
+
+  /**
+   * Flips `refreshAddTripModal` property which causes that AddTripModal
+   * component to be reloaded.
+   *
+   * This was done to prevent bugs where multiple component input fields would
+   * persist from one instance of the modal to the next when view trips page
+   * was not refreshed in between.
+   */
+  refreshAddTripModal = () => {
+    this.setState({ refreshAddTripModal: !this.state.refreshAddTripModal });
+  }
+
+  /** Property that refreshes and displays add trip page. */
+  showAddTripModal = () => {
+    this.refreshAddTripModal()
+    this.setState({ showModal: true });
+  }
 
   /** Property that sets `showModal` to false --> hides add trip page. */
   hideAddTripModal = () => { this.setState({ showModal: false }); }
@@ -46,16 +61,20 @@ class ViewTrips extends React.Component {
     return (
       <div className="view-trips-page">
         <Header />
-        <AddTrip
+        <AddTripModal
           show={this.state.showModal}
           handleClose={this.hideAddTripModal}
-          userEmail={getUserEmail()} />
+          refreshTripsContainer={this.refreshTripsContainer}
+          key={this.state.refreshAddTripModal}
+        />
         <div className="manage-trips-bar">
           <Button type='button' onClick={this.showAddTripModal}>
             + New Trip
           </Button>
         </div>
-        <TripsContainer db={db} userEmail={getUserEmail()} />
+        <TripsContainer
+          key={this.state.refreshTripsContainer}
+        />
       </div>
     );
   }

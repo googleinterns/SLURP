@@ -1,22 +1,26 @@
 import React from 'react';
 
-import Trip from './trip.js';
-import * as DB from '../../constants/database.js';
+import app from '../Firebase/';
 
+import * as DB from '../../constants/database.js';
+import { getCurUserUid } from '../Utils/temp-auth-utils.js'
+import Trip from './trip.js';
+
+const db = app.firestore();
 
 /**
  * Returns a promise of a query object containg the array of Trip Documents
  * corresponding to the trips that the current user is a collaborator on.
  *
  * @param {firebase.firestore.Firestore} db The Firestore database instance.
- * @param {string} userEmail The email corresponding to the current user
- *    logged in.
  * @return {Promise<!firebase.firestore.QuerySnapshot>} Promise object
  *    containing the query results with zero or more Trip  documents.
  */
-function queryUserTrips(db, userEmail) {
+function queryUserTrips(db) {
+  const curUserUid = getCurUserUid();
   return db.collection(DB.COLLECTION_TRIPS)
-      .where(DB.TRIPS_COLLABORATORS, 'array-contains', userEmail)
+      .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
+      .orderBy(DB.TRIPS_CREATION_TIME, 'desc')
       .get();
 }
 
@@ -57,8 +61,8 @@ function getErrorElement(error) {
  * props
  *
  * @param {Object} props These are the props for this component:
- * - db: Firestore database instance.
- * - userEmail: The current user's email.
+ * - key: Special React attribute that ensures a new TripsContainer instance is
+ *        created whenever this key is updated (Remove when fix Issue #62).
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
@@ -71,8 +75,7 @@ class TripsContainer extends React.Component {
   /** @inheritdoc */
   async componentDidMount() {
     try {
-      const querySnapshot = await queryUserTrips(
-          this.props.db, this.props.userEmail);
+      const querySnapshot = await queryUserTrips(db);
       let tripsContainer = await serveTrips(querySnapshot);
       this.setState({ trips: tripsContainer });
     }

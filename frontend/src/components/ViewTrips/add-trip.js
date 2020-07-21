@@ -1,9 +1,12 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
 
-import createTrip from './create-new-trip.js'
+import app from '../Firebase';
+import { Button, Modal, Form }  from 'react-bootstrap';
+
+import { COLLECTION_TRIPS } from '../../constants/database.js';
+import { formatTripData } from '../Utils/filter-input.js';
+
+const db = app.firestore();
 
 /**
  * Returns a Form.Control element with input type 'text' and other fields
@@ -24,6 +27,51 @@ function createTextFormControl(placeholder, ref) {
 }
 
 /**
+ * Returns a Form.Control element with input type 'date' and other fields
+ * specified by the function parameters.
+ *
+ * @param {React.RefObject} refArr The list of refs attached to the emails
+ *     inputted in the form.
+ * @return {JSX.Element} The Form.Control element.
+ */
+function createDateFormControl(ref) {
+  return (
+    <Form.Control
+      type="date"
+      ref={ref}
+    />
+  );
+}
+
+/**
+ * Returns a Form.Control element with input type 'email' and other fields
+ * specified by the function parameters.
+ *
+ * TODO(Issue #67): Email verification before submitting the form.
+ *
+ * @param {string} placeholder Text placehold in the form input
+ * @param {React.RefObject} refArr The list of refs attached to the emails
+ *     inputted in the form.
+ * @return {JSX.Element} The Form.Control element.
+ */
+function createMultiFormControl(placeholder, refArr) {
+  return (
+    <>
+      {refArr.map((ref, idx) => {
+        return (
+          <Form.Control
+            type="email"
+            placeholder={placeholder}
+            ref={ref}
+            key={idx}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+/**
  * Returns a Form.Group element with components specified by the input args.
  *
  * @param {string} controlId Prop that accessibly wires the nested label and
@@ -35,25 +83,26 @@ function createTextFormControl(placeholder, ref) {
  * @param {string} subFormText Subtext instructions under a form input.
  * @return {JSX.Element} The Form.Group element.
  */
-function createFormGroup(controlId, formLabel, inputType,
-                                    placeholder, ref, subFormText = '') {
+function createFormGroup(controlId, formLabel, inputType, placeholder, ref) {
   let formControl;
-  if (inputType === 'text') {
-    formControl = createTextFormControl(placeholder, ref)
-  } else {
-    // TODO(Issue #52): Create diff form inputs for start & end dates
-    //                  and collaborator emails.
-    console.error('Only text form inputs are implemented as of now');
+  switch(inputType) {
+    case 'text':
+      formControl = createTextFormControl(placeholder, ref);
+      break;
+    case 'date':
+      formControl = createDateFormControl(ref);
+      break;
+    case 'emails':
+      formControl = createMultiFormControl(placeholder, ref);
+      break;
+    default:
+      console.error('There should be no other input type')
   }
 
   return (
     <Form.Group controlId={controlId}>
       <Form.Label>{formLabel}</Form.Label>
         {formControl}
-      {/* Temporary instructions until fix Issue #52 */}
-      <Form.Text className="text-muted">
-        {subFormText}
-      </Form.Text>
     </Form.Group>
   )
 }
@@ -64,11 +113,14 @@ function createFormGroup(controlId, formLabel, inputType,
  * @param {Object} props These are the props for this component:
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: The function that handles closing the add trips modal.
- * - userEmail: The current user's email.
+ * - refreshTripsContainer: Function that handles refreshing the TripsContainer
+ *        component upon trip creation (Remove when fix Issue #62).
+ * - key: Special React attribute that ensures a new AddTripModal instance is
+ *        created whenever this key is updated
  *
  * @extends React.Component
  */
-class AddTrip extends React.Component {
+class AddTripModal extends React.Component {
   /** @inheritdoc */
   constructor(props) {
     super(props);
@@ -78,25 +130,51 @@ class AddTrip extends React.Component {
     this.destinationRef = React.createRef();
     this.startDateRef = React.createRef();
     this.endDateRef = React.createRef();
-    this.collaboratorsRef = React.createRef();
+    this.state = { collaboratorsRefArr: [React.createRef()] }
+  }
+
+  /** Adds a new Ref element to the state variable `collaboratorsRefArr`. */
+  addCollaboratorRef = () => {
+    this.setState({ collaboratorsRefArr:
+                      this.state.collaboratorsRefArr.concat([React.createRef()])
+                  });
   }
 
   /**
-   * Upon submission of the form, a new Trip document is created and the add
-   * trip modal is closed.
-   *
-   * TODO(Merge PR #54): Remove console.log statment.
+   * Formats/cleans the form data and create a new Trip document in firestore.
    */
-  handleSubmitNewTrip = () => {
-    console.log('New trip submitted.');
-    createTrip({name: this.nameRef.current.value,
-               description: this.descriptionRef.current.value,
-               destination: this.destinationRef.current.value,
-               startDate: this.startDateRef.current.value,
-               endDate: this.endDateRef.current.value,
-               collaborators: this.collaboratorsRef.current.value
-    });
+  createTrip() {
+    const tripData = formatTripData(
+        {
+          name: this.nameRef.current.value,
+          description: this.descriptionRef.current.value,
+          destination: this.destinationRef.current.value,
+          startDate: this.startDateRef.current.value,
+          endDate: this.endDateRef.current.value,
+          collaboratorEmails:
+              this.state.collaboratorsRefArr.map(ref => ref.current.value),
+        }
+    );
 
+    db.collection(COLLECTION_TRIPS)
+        .add(tripData)
+        .then(docRef => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
+  }
+
+  /**
+   * Handles submission of the form which includes:
+   *  - Creation of the trip.
+   *  - Refreshing the trips container.
+   *  - Closing the modal.
+   */
+  handleSubmitForm = () => {
+    this.createTrip();
+    this.props.refreshTripsContainer();
     this.props.handleClose();
   }
 
@@ -116,23 +194,22 @@ class AddTrip extends React.Component {
                              'Enter Trip Description', this.descriptionRef)}
             {createFormGroup('tripDestGroup', 'Trip Destination', 'text',
                              'Enter Trip Destination', this.destinationRef)}
-            {createFormGroup('tripStartDateGroup', 'Start Date', 'text',
-                            'Enter Trip Start Date', this.startDateRef,
-                            'Enter date in the form: \'mm/dd/yyyy\'')}
-            {createFormGroup('tripEndDateGroup', 'End Date', 'text',
-                          'Enter Trip End Date', this.endDateRef,
-                          'Enter date in the form: \'mm/dd/yyyy\'')}
-            {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'text',
-                           'Enter Collaborator Emails', this.collaboratorsRef,
-                           'Enter emails in the form: \'user1@email.com, ...,' +
-                           ' userx@email.com\'')}
+            {createFormGroup('tripStartDateGroup', 'Start Date', 'date',
+                            '', this.startDateRef)}
+            {createFormGroup('tripEndDateGroup', 'End Date', 'date',
+                            '', this.endDateRef)}
+            {createFormGroup('tripCollabsGroup', 'Trip Collaborators', 'emails',
+                      'person@email.xyz', this.state.collaboratorsRefArr)}
+            <Button onClick={this.addCollaboratorRef}>
+              Add Another Collaborator
+            </Button>
           </Modal.Body>
 
           <Modal.Footer>
             <Button variant='secondary' onClick={this.props.handleClose}>
-              Close
+              Cancel
             </Button>
-            <Button variant='primary' onClick={this.handleSubmitNewTrip}>
+            <Button variant='primary' onClick={this.handleSubmitForm}>
               Add Trip
             </Button>
           </Modal.Footer>
@@ -142,4 +219,4 @@ class AddTrip extends React.Component {
   }
 };
 
-export default AddTrip;
+export default AddTripModal;

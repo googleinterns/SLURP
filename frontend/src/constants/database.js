@@ -8,6 +8,7 @@ export const TRIPS_DESTINATION = 'destination';
 export const TRIPS_COLLABORATORS = 'collaborators';
 export const TRIPS_START_DATE = 'start_date';
 export const TRIPS_END_DATE = 'end_date';
+export const TRIPS_CREATION_TIME = 'trip_creation_time';
 
 export const COLLECTION_ACTIVITIES = 'activities';
 export const ACTIVITIES_START_TIME = 'start_time';
