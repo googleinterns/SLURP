@@ -6,8 +6,8 @@ import { getUserEmailFromUid } from '../Utils/temp-auth-utils.js'
 import ViewActivitiesButton from './view-activities-button.js';
 
 /**
- * Returns the date range of the trip associated with the Trip document data
- * `tripObj`.
+ * Returns the string date range of the trip associated with the Trip document
+ * data `tripObj`.
  *
  * Notes:
  *  - tripObj will always contain valid start_date and end_date fields.
@@ -17,7 +17,7 @@ import ViewActivitiesButton from './view-activities-button.js';
  *
  * @param {firebase.firestore.DocumentData} tripObj Object containing the fields
  *    and values for a Trip document.
- * @return Date range of the trip (if it exists).
+ * @return {string} Date range of the trip.
  */
 export function getDateRange(tripObj) {
   const startDate = tripObj.start_date.toDate();
@@ -27,6 +27,13 @@ export function getDateRange(tripObj) {
       `${endDate.getDate()}/${endDate.getFullYear()}`;
 }
 
+/**
+ *
+ * @param {!Array<!string>} collaboratorUidArr Array of collaborator uids
+ *     stored in trip document.
+ * @returns {string} Collaborator emails in comma separated string.
+ *     Ex: "person1@email.com, person2@email.com".
+ */
 export function getCollaboratorEmails(collaboratorUidArr) {
   const collaboratorEmailArr =
       collaboratorUidArr.map(uid => getUserEmailFromUid(uid));
