@@ -99,13 +99,13 @@ class Activity extends React.Component {
             <Col sm={2}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
-          <Form.Group as={Row} controlId='formActivityStartTime'>
+          <Form.Group as={Row} controlId='formActivityEndTime'>
             <Col sm={2}><Form.Label>To:</Form.Label></Col>
             <Col sm={4}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
             <Col sm={2}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
-          <Form.Group as={Row} controlId='formActivityTitle'>
+          <Form.Group as={Row} controlId='formActivityDescription'>
             <Col sm={2}><Form.Label>Description:</Form.Label></Col>
             <Col><Form.Control type='text' 
               placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!')}
