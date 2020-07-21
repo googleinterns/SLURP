@@ -62,12 +62,12 @@ const Trip = (props) => {
   const collaboratorEmailsStr =
       getCollaboratorEmails(props.tripData.collaborators);
 
-  const placeholderObj = {
+  const formattedTripData = {
     name:          name,
     description:   description,
     destination:   destination,
-    startDate:     timestampToISOString(props.tripData.start_date),
-    endDate:       timestampToISOString(props.tripData.end_date),
+    start_date:    timestampToISOString(props.tripData.start_date),
+    end_date:      timestampToISOString(props.tripData.end_date),
     collaborators: collaboratorEmailsStr.split(', ')
   };
 
@@ -81,7 +81,7 @@ const Trip = (props) => {
 
       <Button
         type='button'
-        onClick={() => props.handleEditTrip(props.tripId, placeholderObj)}
+        onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
         variant='primary'
       >
         Edit
