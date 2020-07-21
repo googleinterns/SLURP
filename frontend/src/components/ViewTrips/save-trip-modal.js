@@ -288,6 +288,13 @@ class SaveTripModal extends React.Component {
     return 'Edit Trip';
   }
 
+  /** Returns the default form value for the trip field specified by `field`.
+   *
+   * @param {!string} field A trip document field
+   *     (the constants in `database.js`).
+   * @return {?string} Default form value for edit trip modal or null for
+   *     add trip modals.
+   */
   getDefaultFormField = (field) => {
     if (this.isAddTripForm) {
       return null;
