@@ -55,7 +55,7 @@ class ViewActivities extends React.Component {
           <Modal.Header>Add New Activity</Modal.Header>
           <Modal.Body>
             <EditActivity activity={this.emptyActivity(tripId)} 
-              submitFunction={this.doneAddingActivity}/> 
+              submitFunction={this.doneAddingActivity} new={true}/> 
           </Modal.Body>
         </Modal.Dialog>
       );

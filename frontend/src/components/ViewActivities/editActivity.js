@@ -12,6 +12,7 @@ import * as formElements from './editActivityFormElements.js';
  * @param {Object} props This component expects the following props:
  * - `activity` The activity to display.
  * - `submitFunction` The function to run upon submission to trigger card flip.
+ * - `new` Whether or not we're editing a new activity. Affects required fields.
  */
 class EditActivity extends React.Component {
   /** @inheritdoc */
@@ -46,7 +47,7 @@ class EditActivity extends React.Component {
 
     let newVals = {};
     // All the text fields. 
-    newVals[DB.ACTIVITIES_TITLE] = 
+    newVals[DB.ACTIVITIES_TITLE] =
       getRefValue(this.editTitleRef, '', activity[DB.ACTIVITIES_TITLE])
     newVals[DB.ACTIVITIES_DESCRIPTION] = 
       getRefValue(this.editDescriptionRef, '', activity[DB.ACTIVITIES_DESCRIPTION]);
@@ -143,12 +144,13 @@ class EditActivity extends React.Component {
 
   render() {
     const activity = this.props.activity;
+    const newAct = this.props.new;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         {formElements.textElementFormGroup( // TITLE
             'formActivityTitle',          // controlId
             'Title:',                     // formLabel
-            activity[DB.ACTIVITIES_TITLE],// placeHolder 
+            getField(activity, DB.ACTIVITIES_TITLE, 'What will you be doing?'), // placeHolder 
             this.editTitleRef             // ref
           )}
         {formElements.locationElementFormGroup( // START LOCATION
