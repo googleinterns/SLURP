@@ -1,5 +1,6 @@
 import * as moment from 'moment-timezone';
 import { countryCodes } from '../../constants/countries.js';
+import { firestore } from 'firebase';
 
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time.
@@ -71,7 +72,7 @@ export function timezonesForCountry(countryName) {
     const countryCode = countryCodes[countryName];
     zones = moment.tz.zonesForCountry(countryCode);
   } catch (e) {
-    zones = moment.tz.names(); // List of all timezones.
+    zones = moment.tz.names();
   }
   return zones.map(e => {
     return e.replace(/[_]/g, ' ');
@@ -79,11 +80,11 @@ export function timezonesForCountry(countryName) {
 }
 
 /**
- * Get a date in 'YYYY-MM-DD' form. 
+ * Get a date in 'YYYY-MM-DD' format. 
  * 
  * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
- * @returns {string} The date in 'YYYY-MM-DD' form. 
+ * @returns {string} The date in 'YYYY-MM-DD' format. 
  */
 export function getDateBarebones(msTimestamp, timezone=null) {
   if (timezone === null) {
@@ -93,15 +94,28 @@ export function getDateBarebones(msTimestamp, timezone=null) {
 }
 
 /**
- * Get a time in 24-hour ('HH:mm') form. 
+ * Get a time in 24-hour ('HH:mm') format. 
  * 
  * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
- * @returns {string} The time in 24-hour (HH:mm) form.   
+ * @returns {string} The time in 24-hour (HH:mm) format.   
  */
 export function get24hTime(msTimestamp, timezone=null) {
   if (timezone === null) {
     return moment.tz(parseFloat(msTimestamp), '').format('HH:mm');
   }
   return moment.tz(parseFloat(msTimestamp), timezone).format('HH:mm');
+}
+
+/**
+ * Get a Firebase Timestamp object for time.
+ *
+ * @param {string} time The time in 'HH:mm' format.
+ * @param {string} date The date in 'YYYY-MM-DD' format.
+ * @param {string} tz The timezone in which the date takes place.
+ * @returns {firestore.Timestamp} Firestore timestamp object at the same time. 
+ */
+export function getFirebaseTime(time, date, tz) {
+  const mtzDate = moment.tz(time + " " + date, "HH:mm YYYY-MM-DD", tz);
+  return new firestore.Timestamp(mtzDate.valueOf() / 1000, 0);
 }
