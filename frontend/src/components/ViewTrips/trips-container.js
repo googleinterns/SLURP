@@ -40,10 +40,13 @@ function queryUserTrips(db) {
 function serveTrips(querySnapshot, handleEditTrip, refreshTripsContainer) {
   return new Promise(function(resolve) {
     const tripsContainer = querySnapshot.docs.map(doc =>
-        ( <Trip tripData={doc.data()} tripId={doc.id}
-                handleEditTrip={handleEditTrip}
-                refreshTripsContainer={refreshTripsContainer}
-                key={doc.id} />
+        ( <Trip
+            tripData={doc.data()}
+            tripId={doc.id}
+            handleEditTrip={handleEditTrip}
+            refreshTripsContainer={refreshTripsContainer}
+            key={doc.id}
+          />
         )
     );
     resolve(tripsContainer);
@@ -53,7 +56,7 @@ function serveTrips(querySnapshot, handleEditTrip, refreshTripsContainer) {
 /**
  * Returns a `<div>` element with the specified error message.
  *
- * @param {string} error Error message in `componentDidMount()` catch statement.
+ * @param {!string} error Error message in `componentDidMount` catch statement.
  * @return {Promise<HTMLDivElement>} Promise object containing a `<div>` element
  *    with the error message `error` inside.
  */
