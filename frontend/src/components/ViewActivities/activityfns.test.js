@@ -1,6 +1,4 @@
 import * as activityFns from './activityfns.js';
-import { getActivityList } from './activitylist.js';
-import { get24hTime } from '../Utils/time.js';
 
 const ten = new Date(Date.UTC(2020, 4, 2, 10,  0));          // May 2, 2020 10:00
 const eleven = new Date(Date.UTC(2020, 4, 2, 11, 0));        // May 2, 2020 11:00
