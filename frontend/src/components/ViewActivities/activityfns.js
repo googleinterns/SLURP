@@ -81,8 +81,8 @@ export async function writeActivity(tripId, activityId, newValues) {
   
   try {
     // Note: newValues cannot contain lists. Check documentation for update().
-    const a = await act.update(newValues);
-    return a ? true : false;
+    await act.update(newValues);
+    return true;
   } catch (e) {
     console.log(e);
     return false;

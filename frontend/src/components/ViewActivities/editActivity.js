@@ -117,12 +117,12 @@ class EditActivity extends React.Component {
    * @returns true if the activity was successfully deleted.
    */
   async deleteActivity() {
-    if (window.confirm(`Are you sure you want to delete ${this.props.activity[DB.ACTIVITIES_TITLE]}?
-This action cannot be undone!`)) {
-      const a = await db.collection(DB.COLLECTION_TRIPS).doc(this.props.activity.tripId)
+    if (window.confirm(`Are you sure you want to delete ${this.props.activity[DB.ACTIVITIES_TITLE]}?`
+        + 'This action cannot be undone!')) {
+      await db.collection(DB.COLLECTION_TRIPS).doc(this.props.activity.tripId)
         .collection(DB.COLLECTION_ACTIVITIES).doc(this.props.activity.id)
         .delete();
-      return a ? true : false;
+      return true;
     } else {
       return false;
     }
