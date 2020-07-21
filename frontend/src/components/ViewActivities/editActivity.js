@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormControl } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { getField, writeActivity, getRefValue } from './activityfns.js';
 import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
