@@ -119,7 +119,6 @@ class EditActivity extends React.Component {
     );
   }
 
-
   render() {
     const activity = this.props.activity;
     const TITLEWIDTH = 3;
