@@ -2,7 +2,7 @@
  * @fileoverview This is a temporary file that is used to implement 'fake'
  * versions of the Auth utility functions used in the ViewTrips components.
  *
- * TODO(Issue 55): Remove this whole file function and replace any imports to
+ * TODO(Issue #55): Remove this whole file function and replace any imports to
  *                 this file with Auth utils.
  */
 

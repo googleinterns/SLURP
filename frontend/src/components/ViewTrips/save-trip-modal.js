@@ -191,7 +191,8 @@ class SaveTripModal extends React.Component {
     // less than the number of collaborators specified in prop `defaultFormObj`
     // (do not include current user in list).
     //
-    // TODO(Issue 71): Give user option to remove themself as collab. from trip.
+    // TODO(Issue #71): Give user option to remove themself as a collaborator
+    //                  from current trip.
     const collaboratorsRefArr = [];
     if (this.isAddTripForm) {
       collaboratorsRefArr.push(React.createRef());
