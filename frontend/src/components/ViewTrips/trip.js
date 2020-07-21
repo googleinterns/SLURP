@@ -8,8 +8,8 @@ import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 
 /**
- * Returns the date range of the trip associated with the Trip document data
- * `tripData`.
+ * Returns the string date range of the trip associated with the Trip document
+ * data `tripObj`.
  *
  * Notes:
  *  - tripObj will always contain valid start_date and end_date fields.
@@ -19,7 +19,7 @@ import ViewActivitiesButton from './view-activities-button.js';
  *
  * @param {firebase.firestore.DocumentData} tripData Object containing the fields
  *    and values for a Trip document.
- * @return Date range of the trip (if it exists).
+ * @return {string} Date range of the trip.
  */
 export function getDateRange(tripData) {
   const startDate = tripData.start_date.toDate();
@@ -30,10 +30,11 @@ export function getDateRange(tripData) {
 }
 
 /**
- * Returns a string with comma separated collaborator emails.
  *
- * @param {!Array<string>} collaboratorUidArr Array of collaborator uids.
- * @return {string} Comma separated string of collaborator emails.
+ * @param {!Array<!string>} collaboratorUidArr Array of collaborator uids
+ *     stored in trip document.
+ * @returns {string} Collaborator emails in comma separated string.
+ *     Ex: "person1@email.com, person2@email.com".
  */
 export function getCollaboratorEmails(collaboratorUidArr) {
   const collaboratorEmailArr =
