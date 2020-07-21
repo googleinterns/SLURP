@@ -3,7 +3,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 import { timestampToISOString } from '../Utils/time.js';
-import { getUserEmailFromUid } from '../Utils/temp-auth-utils.js';
+import { getUserEmailArrFromUserUidArr } from '../Utils/temp-auth-utils.js';
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 
@@ -37,8 +37,7 @@ export function getDateRange(tripData) {
  *     Ex: "person1@email.com, person2@email.com".
  */
 export function getCollaboratorEmails(collaboratorUidArr) {
-  const collaboratorEmailArr =
-      collaboratorUidArr.map(uid => getUserEmailFromUid(uid));
+  const collaboratorEmailArr = getUserEmailArrFromUserUidArr(collaboratorUidArr);
   return collaboratorEmailArr.join(', ');
 }
 
