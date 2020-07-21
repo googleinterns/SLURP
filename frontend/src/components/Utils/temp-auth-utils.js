@@ -1,58 +1,54 @@
+import authUtils from '../AuthUtils';
+
 /**
  * @fileoverview This is a temporary file that is used to implement 'fake'
  * versions of the Auth utility functions used in the ViewTrips components.
+ * As of right now, the only 'real' auth function used is `getCurUserEmail()`
+ * but a fake user uid is still used due to the lack of a set of functions
+ * that can convert  user email <--> user uid.
  *
  * TODO(Issue 55): Remove this whole file function and replace any imports to
  *                 this file with Auth utils.
  */
 
-
 /**
- * Temporary hardcoded function that returns the current users email.
+ * Temporary 'fake'/hardcoded function that returns the current users uid.
  *
- * @return Hardcoded user email string.
- */
-export function getCurUserEmail() {
-  return 'matt.murdock';
-}
-
-/**
- * Temporary hardcoded function that returns the current users uid.
- *
- * @return Hardcoded user uid string.
+ * @return Fake user uid string the form '_userEmail_'.
  */
 export function getCurUserUid() {
-  return getUserUidFromUserEmail(getCurUserEmail());
+  return getUserUidArrFromUserEmailArr([authUtils.getCurUserEmail()]).pop();
 }
 
 /**
- * Temporary hardcoded function that returns the user's uid given the user's
- * email.
+ * Temporary 'fake'/hardcoded function that returns the an array of 'fake' user
+ * uids given an array of user emails.
  *
- * @param {string} userEmail A users email.
- * @return {string} The 'fake' uid associated with the user email that is
- *     created with the form '_`userEmail`_'.
+ * @param {!Array<!string>} userEmailArr Array of user email strings.
+ * @return {!Array<!string>} Array of fake uuids corresponding to the user
+ *     emails in `userEmailArr`.
  */
-export function getUserUidFromUserEmail(userEmail) {
-  return '_' + userEmail + '_';
+export function getUserUidArrFromUserEmailArr(userEmailArr) {
+  return userEmailArr.map(userEmail => '_' + userEmail + '_');
 }
 
 /**
- * Temporary hardcoded function that returns the a user's email given the
- * fake uid that was stored in the Trip document.
+ * Temporary 'fake'/hardcoded function that returns the an array of user emails
+ * given an array of 'fake' user uids.
  *
- * @param {string} uid Fake string uid that is in the form '_userEmail_'.
- * @return {string} The email corresponding to the fake uid.
+ * @param {!Array<!string>} uuidArr Array of fake user uids that are
+ *     in the form '_userEmail_'.
+ * @return {!Array<!string>} Array of user emails corresponding to the user
+ *     uids in `uuidArr`.
  */
-export function getUserEmailFromUid(uid) {
-  return uid.substring(1, uid.length - 1);
+export function getUserEmailArrFromUserUidArr(uuidArr) {
+  return uuidArr.map(uuid => uuid.substring(1, uuid.length - 1));
 }
 
-const authUtils = {
-  getCurUserEmail,
+const fakeAuthUtils = {
   getCurUserUid,
-  getUserUidFromUserEmail,
-  getUserEmailFromUid
+  getUserUidArrFromUserEmailArr,
+  getUserEmailArrFromUserUidArr,
 }
 
-export default authUtils;
+export default fakeAuthUtils;
