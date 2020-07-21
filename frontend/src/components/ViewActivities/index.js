@@ -27,14 +27,30 @@ class ViewActivities extends React.Component {
   addActivity = (e) => {
     e.preventDefault();
     this.setState({ addingActivity: true });
+
+    const newData = this.emptyActivity(this.props.match.params.tripId);
+    this.setState({ newAct: newData });
   }
 
-  doneAddingActivity = () => { this.setState({ addingActivity: false }) };
+  /**
+   * Runs when the user is done adding an activity.
+   */
+  doneAddingActivity = () => { 
+    this.setState({ 
+      addingActivity: false,
+       newAct: null 
+    }); 
+  };
 
   emptyActivity = (tripId) => {
-    const data = { 'fillerstamp' : firestore.Timestamp.now() };
-    db.collection(DB.COLLECTION_TRIPS).doc(tripId)
-      .collection(DB.COLLECTION_ACTIVITIES).add(data);
+    const newAct = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
+      .collection(DB.COLLECTION_ACTIVITIES).doc();
+    const data = { 
+      fillerstamp : firestore.Timestamp.now(), 
+      id: newAct.id, 
+      tripId: tripId
+    };
+    newAct.set(data);
     return data;
   }
 
@@ -50,11 +66,15 @@ class ViewActivities extends React.Component {
         </div>
       );
     } else {
+      if (this.state.newAct === null) {
+        this.doneAddingActivity();
+        return <div></div>
+      }
       return (
         <Modal.Dialog>
           <Modal.Header>Add New Activity</Modal.Header>
           <Modal.Body>
-            <EditActivity activity={this.emptyActivity(tripId)} 
+            <EditActivity activity={this.state.newAct} 
               submitFunction={this.doneAddingActivity} new={true}/> 
           </Modal.Body>
         </Modal.Dialog>
