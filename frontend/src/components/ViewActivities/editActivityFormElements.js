@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 
 // This file waas written after #87 was created. 
 // As a result, some fields and functions may not be used yet. 
