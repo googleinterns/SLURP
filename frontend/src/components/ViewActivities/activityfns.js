@@ -1,6 +1,7 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
-import Firebase from 'firebase';
+import { firestore } from 'firebase';
+
 
 const db = app.firestore();
 
@@ -72,7 +73,7 @@ export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
   newValues = {
     ...newValues, 
-    'fillerstamp': Firebase.firestore.Timestamp.now()
+    'fillerstamp': firestore.Timestamp.now()
   };
 
   const activity = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
