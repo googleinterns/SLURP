@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app';
 
-import { getCurUserEmail, getUserUidFromUserEmail } from './temp-auth-utils.js'
+import authUtils from '../AuthUtils';
+import { getUserUidArrFromUserEmailArr } from './temp-auth-utils.js'
 import { getTimestampFromDateString } from './time.js'
 
 /**
@@ -26,15 +27,15 @@ export function getCleanedTextInput(rawInput, defaultValue) {
  *     creator uid).
  */
 export function getCollaboratorUidArray(collaboratorEmailArr) {
-  collaboratorEmailArr = [getCurUserEmail()].concat(collaboratorEmailArr);
+  collaboratorEmailArr = [authUtils.getCurUserEmail()]
+                          .concat(collaboratorEmailArr);
 
   // Removes empty fields (temporary until fix #67 & #72).
   while (collaboratorEmailArr.includes('')) {
     const emptyStrIdx = collaboratorEmailArr.indexOf('');
     collaboratorEmailArr.splice(emptyStrIdx, 1);
   }
-  return collaboratorEmailArr
-             .map(userEmail => getUserUidFromUserEmail(userEmail));
+  return getUserUidArrFromUserEmailArr(collaboratorEmailArr);
 }
 
 /**
