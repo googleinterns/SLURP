@@ -78,17 +78,19 @@ class EditActivity extends React.Component {
    * The dropdown's values change based on the corrresponding country dropdown to
    * reduce scrolling and ensure that the location corresponds to the time zone.
    * 
-   * @param st Either 'start' or 'end' depending on whether the 
+   * Tests done manually using UI.
+   * 
+   * @param {string} st Either 'start' or 'end' depending on whether the 
    * timezone is for the start or end timezone.
-   * @param defaultTz The default time zone.
-   * @returns HTML dropdown item.
+   * @param {string} defaultTz The default time zone.
+   * @returns {HTML} HTML dropdown item.
    */
-  timezoneDropdown(st, defaultTz) {
-    let ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
-    let dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
+  timezoneDropdown(st) {
+    const ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
+    const dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
     let timezones;
     if (ref.current == null) {
-      // If activity[key] DNE, then timezones will just return all tzs anyway
+      // If activity[key] DNE, then timezones will just return all tzs anyway.
       timezones = time.timezonesForCountry(this.props.activity[dbEntry]);
     } else {
       timezones = time.timezonesForCountry(ref.current.value);
@@ -113,9 +115,10 @@ class EditActivity extends React.Component {
    * so when the country changes here, the values in the timezone dropdown 
    * change as well. 
    * 
-   * @param ref The reference to attach to the dropdown.
-   * @param tzref The corresponding time zone reference field. 
-   * @param defaultCountry The default country for the dropdown.
+   * @param {ref} ref The reference to attach to the dropdown.
+   * @param {ref} tzref The corresponding time zone reference field. 
+   * @param {string} defaultCountry The default country for the dropdown.
+   * @returns {HTML} HTML dropdown of all the countries with timezones.
    */
   countriesDropdown(ref, tzref, defaultCountry) {
     return (
@@ -138,46 +141,46 @@ class EditActivity extends React.Component {
             this.editTitleRef             // ref
           )}
         {formElements.locationElementFormGroup( // START LOCATION
-          'formActivityStartLocation', // controlId
-          'Start Location:', // formLabel
+          'formActivityStartLocation',                 // controlId
+          'Start Location:',                           // formLabel
           this.countriesDropdown(this.editStartLocRef, // defaultValue ref
-            this.startTimeTzUpdate, // countriesDropdown tzref
+            this.startTimeTzUpdate,                          // countriesDropdown tzref
             getField(activity, DB.ACTIVITIES_START_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.locationElementFormGroup( // END LOCATION
-          'formActivityEndLocation', // controlId
-          'End Location:', // formLabel
+          'formActivityEndLocation',                 // controlId
+          'End Location:',                           // formLabel
           this.countriesDropdown(this.editEndLocRef, // defaultValue ref
             this.endTimeTzUpdate, // countriesDropdown tzref
             getField(activity, DB.ACTIVITIES_END_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.dateTimeTzFormGroup( // START TIME
-          'formActivityStartTime', // controlId
-          'From:', // formLabel
-          this.editStartDateRef, // dateRef
+          'formActivityStartTime',                         // controlId
+          'From:',                                         // formLabel
+          this.editStartDateRef,                           // dateRef
           time.getDateBarebones(getField(activity, DB.ACTIVITIES_START_TIME), 
               getField(activity, DB.ACTIVITIES_START_TZ)), // dateDefault 
-          this.editStartTimeRef, // timeRef, 
+          this.editStartTimeRef,                           // timeRef, 
           time.get24hTime(getField(activity, DB.ACTIVITIES_START_TIME), 
               getField(activity, DB.ACTIVITIES_START_TZ)), //timeDefault, 
-          this.timezoneDropdown('start') // tzpicker 
+          this.timezoneDropdown('start')                   // tzpicker 
           )}
         {formElements.dateTimeTzFormGroup( // END TIME
-          'formActivityEndTime', // controlId
-          'To:', // formLabel
-          this.editEndDateRef, // dateRef
+          'formActivityEndTime',                         // controlId
+          'To:',                                         // formLabel
+          this.editEndDateRef,                           // dateRef
           time.getDateBarebones(getField(activity, DB.ACTIVITIES_END_TIME), 
               getField(activity, DB.ACTIVITIES_END_TZ)), // dateDefault 
-          this.editEndTimeRef, // timeRef, 
+          this.editEndTimeRef,                           // timeRef, 
           time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
               getField(activity, DB.ACTIVITIES_END_TZ)), //timeDefault, 
-          this.timezoneDropdown('end') // tzpicker 
+          this.timezoneDropdown('end')                   // tzpicker 
           )}
         {formElements.textElementFormGroup( // DESCRIPTION
             'formActivityDescription', // controlId
-            'Description:', // formLabel
+            'Description:',            // formLabel
             getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder 
-            this.editDescriptionRef // ref
+            this.editDescriptionRef    // ref
           )}
         <Button type='submit' className='float-right'>Done!</Button>
       </Form>

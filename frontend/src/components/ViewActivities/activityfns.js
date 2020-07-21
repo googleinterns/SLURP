@@ -48,11 +48,12 @@ export function compareActivities(a, b) {
 /**
  * Get the field of field name `fieldName` from `activity  or the default value.
  * 
- * @param {Object} activity 
- * @param {string} fieldName 
- * @param defaultValue 
- * @param prefix The prefix to put before a returned value if the field exists.
- * @returns `activity[fieldName]` if possible, else `defaultValue`.
+ * @param {Object} activity Activity to get field from.
+ * @param {string} fieldName Name of the field in the activity to get. 
+ * @param defaultValue Default value to return if activity[fieldName] can't be found. 
+ * Can be any type.
+ * @param {string} prefix The prefix to put before a returned value if the field exists.
+ * @returns `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
  */
 export function getField(activity, fieldName, defaultValue=null, prefix=''){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
@@ -67,7 +68,7 @@ export function getField(activity, fieldName, defaultValue=null, prefix=''){
  * @param {string} tripId Database ID of the trip whose actiivty should be modified.
  * @param {string} activityId Database ID of the activity to be modified.
  * @param {Object} newValues Dictionary of the new values in {fieldName: newValue} form
- * @returns true if the write was successful, false otherwise.
+ * @returns {boolean} true if the write was successful, false otherwise.
  */
 export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
