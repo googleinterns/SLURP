@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { getField, writeActivity } from './activityfns.js';
+import { Button, Form, FormControl } from 'react-bootstrap';
+import { getField, writeActivity, getRefValue } from './activityfns.js';
 import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
@@ -38,27 +38,40 @@ class EditActivity extends React.Component {
     this.editEndTzRef = React.createRef();
   }
   
- /**
+  /**
    * Edit an activity in the database upon form submission.
-   * TODO: Update times as well! This only does the text field forms (#64).
    */
   editActivity() {
+    const activity = this.props.activity;
+
     let newVals = {};
-    if (this.editTitleRef.current.value !== '') {
-      newVals[DB.ACTIVITIES_TITLE] = this.editTitleRef.current.value;
-    }
-    if (this.editDescriptionRef.current.value !== '') {
-      newVals[DB.ACTIVITIES_DESCRIPTION] = this.editDescriptionRef.current.value;
-    }
-    if (this.editStartLocRef.current.value !== 'No Change'){
-      newVals[DB.ACTIVITIES_START_COUNTRY] = this.editStartLocRef.current.value;
-    }
-    if (this.editEndLocRef.current.value !== 'No Change'){
-      newVals[DB.ACTIVITIES_END_COUNTRY] = this.editEndLocRef.current.value;
-    }
-    if (Object.keys(newVals).length !== 0) {
-      writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
-    }
+    // All the text fields. 
+    newVals[DB.ACTIVITIES_TITLE] = 
+      getRefValue(this.editTitleRef, '', activity[DB.ACTIVITIES_TITLE])
+    newVals[DB.ACTIVITIES_DESCRIPTION] = 
+      getRefValue(this.editDescriptionRef, '', activity[DB.ACTIVITIES_DESCRIPTION]);
+
+    newVals[DB.ACTIVITIES_START_COUNTRY] = 
+      getRefValue(this.editStartLocRef, 'No Change', activity[DB.ACTIVITIES_START_COUNTRY]);
+    newVals[DB.ACTIVITIES_END_COUNTRY] = 
+      getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
+    
+    newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef, '', '');
+    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef, '', '');
+
+    // Start time fields!
+    const startTime = getRefValue(this.editStartTimeRef, '');
+    const startDate = getRefValue(this.editStartDateRef, '');
+    const startTz = newVals[DB.ACTIVITIES_START_TZ];
+    newVals[DB.ACTIVITIES_START_TIME] = time.getFirebaseTime(startTime, startDate, startTz);
+
+    // End time fields!
+    const endTime = getRefValue(this.editEndTimeRef, '');
+    const endDate = getRefValue(this.editEndDateRef, '');
+    const endTz = newVals[DB.ACTIVITIES_END_TZ];
+    newVals[DB.ACTIVITIES_END_TIME] = time.getFirebaseTime(endTime, endDate, endTz);
+
+    writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }
 
   /** Runs when the `submit` button on the form is pressed.  */
@@ -74,7 +87,7 @@ class EditActivity extends React.Component {
   endTimeTzUpdate = () => { this.setState({endTz : !this.state.endTz})};
 
   /**
-   * Returns a dropdown of all the timezones.
+   * Returns a dropdown of all the timezones.  
    * The dropdown's values change based on the corrresponding country dropdown to
    * reduce scrolling and ensure that the location corresponds to the time zone.
    * 
@@ -95,7 +108,7 @@ class EditActivity extends React.Component {
     }
 
     return (
-      <Form.Control as='select'
+      <FormControl as='select'
         ref={st === 'start' ? this.editStartTzRef : this.editEndTzRef}
         key={st === 'start' ? this.state.startTz : this.state.endTz}
         defaultValue={defaultTz}
@@ -103,7 +116,7 @@ class EditActivity extends React.Component {
         {timezones.map((item, index) => {
           return (<option key={index}>{item}</option>);
         })}
-      </Form.Control>
+      </FormControl>
     )
   }
 
@@ -119,13 +132,14 @@ class EditActivity extends React.Component {
    */
   countriesDropdown(ref, tzref, defaultCountry) {
     return (
-      <Form.Control as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>
+      <FormControl as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>
         {countryList.map((item, index) => {
           return (<option key={index}>{item}</option>);
         })}
-      </Form.Control>
+      </FormControl>
     );
   }
+
 
   render() {
     const activity = this.props.activity;
