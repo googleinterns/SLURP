@@ -1,5 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import { AuthProvider, PrivateRoute } from '../Auth';
+import { AuthUtilsConsumer } from '../AuthUtils';
 
 import LandingPage from '../Landing';
 import SignInPage from '../SignIn'
@@ -14,14 +16,18 @@ import * as ROUTES from '../../constants/routes';
 class App extends React.Component {
   render() {
     return (
-      <Router>
-        <div>
-          <Route exact path={ROUTES.LANDING} component={LandingPage} />
-          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-          <Route path={ROUTES.VIEW_TRIPS} component={ViewTripsPage} />
-          <Route path={ROUTES.VIEW_ACTIVITIES + '/:tripId'} component={ViewActivitiesPage} />
-        </div>
-      </Router>
+      <AuthProvider>
+        <AuthUtilsConsumer>
+          <Router>
+            <div>
+              <Route exact path={ROUTES.LANDING} component={LandingPage} />
+              <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+              <PrivateRoute path={ROUTES.VIEW_TRIPS} component={ViewTripsPage} />
+              <PrivateRoute path={ROUTES.VIEW_ACTIVITIES + '/:tripId'} component={ViewActivitiesPage} />
+            </div>
+          </Router>
+        </AuthUtilsConsumer>
+      </AuthProvider>
     );
   }
 };
