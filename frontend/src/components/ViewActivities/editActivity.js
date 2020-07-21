@@ -6,7 +6,7 @@ import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
 
 /**
- * The form that's used when the user is editing an activity
+ * The form that's used when the user is editing an activity.
  * 
  * @param {Object} props This component expects the following props:
  * - `activity` The activity to display.
@@ -22,7 +22,7 @@ class EditActivity extends React.Component {
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
     this.finishEditActivity = this.finishEditActivity.bind(this);
-    this.timezonePicker = this.timezonePicker.bind(this);
+    this.timezoneDropdown = this.timezoneDropdown.bind(this);
 
     // References. 
     this.editTitleRef = React.createRef();
@@ -67,18 +67,22 @@ class EditActivity extends React.Component {
     this.props.submitFunction();
   }
 
+  // "Flip switch" on timezone dropdown so the dropdown's contents update to the 
+  // selected country's timezones. 
   startTimeTzUpdate = () => { this.setState({startTz : !this.state.startTz})};
   endTimeTzUpdate = () => { this.setState({endTz : !this.state.endTz})};
 
   /**
    * Returns a dropdown of all the timezones.
+   * The dropdown's values change based on the corrresponding country dropdown to
+   * reduce scrolling and ensure that the location corresponds to the time zone.
    * 
-   * @param st either 'start' or 'end' depending on whether the 
+   * @param st Either 'start' or 'end' depending on whether the 
    * timezone is for the start or end timezone.
    * 
-   * Tests done manually via UI. 
+   * Tests done manually using UI. 
    */
-  timezonePicker(st) {
+  timezoneDropdown(st) {
     let ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
     let dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
     let timezones;
@@ -102,9 +106,13 @@ class EditActivity extends React.Component {
     )
   }
   /**
-   * Create a dropdown of all the countries.
+   * Create a dropdown of all the countries. 
+   * This dropdown is linked to the corresponding timezone dropdown, 
+   * so when the country changes here, the values in the timezone dropdown 
+   * change as well. 
    * 
    * @param ref The reference to attach to the dropdown.
+   * @param tzref The corresponding time zone reference field. 
    */
   countriesDropdown(ref, tzref) {
     return (
@@ -144,13 +152,13 @@ class EditActivity extends React.Component {
           <Col sm={TITLEWIDTH}><Form.Label>From:</Form.Label></Col>
           <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editStartDateRef}/></Col>
           <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editStartTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezonePicker('start')}</Col>
+          <Col sm={TZPICKERWIDTH}>{this.timezoneDropdown('start')}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityEndTime'>
           <Col sm={TITLEWIDTH}><Form.Label>To:</Form.Label></Col>
           <Col sm={DATEWIDTH}><Form.Control type='date' label='date' ref={this.editEndDateRef}/></Col>
           <Col sm={TIMEWIDTH}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
-          <Col sm={TZPICKERWIDTH}>{this.timezonePicker('end')}</Col>
+          <Col sm={TZPICKERWIDTH}>{this.timezoneDropdown('end')}</Col>
         </Form.Group>
         <Form.Group as={Row} controlId='formActivityTitle'>
           <Col sm={TITLEWIDTH}><Form.Label>Description:</Form.Label></Col>
