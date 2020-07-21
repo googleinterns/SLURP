@@ -65,7 +65,7 @@ export function timestampToFormatted(msTimestamp, timezone = 'America/New_York')
  * Returns all the time zones in a country (in pretty format).
  * 
  * @param {string} countryName The name of the country for which to get the time zones.
- * @returns The list of time zones in the provided country.
+ * @returns {Array.<string>} The list of time zones in the provided country.
  */
 export function timezonesForCountry(countryName) {
   let zones;
