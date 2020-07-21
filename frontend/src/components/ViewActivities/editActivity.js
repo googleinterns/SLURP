@@ -128,11 +128,6 @@ class EditActivity extends React.Component {
   }
 
   render() {
-    const TITLEWIDTH = 3;
-const COUNTRYWIDTH = 6;
-const DATEWIDTH = 4;
-const TIMEWIDTH = 2;
-const TZPICKERWIDTH = 3;
     const activity = this.props.activity;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
