@@ -76,7 +76,7 @@ export async function writeActivity(tripId, activityId, newValues) {
     'fillerstamp': firestore.Timestamp.now()
   };
 
-  const activity = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
+  const act = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
     .collection(DB.COLLECTION_ACTIVITIES).doc(activityId);
   
   try {
