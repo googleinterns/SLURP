@@ -1,5 +1,3 @@
-import authUtils from '../AuthUtils';
-
 /**
  * @fileoverview This is a temporary file that is used to implement 'fake'
  * versions of the Auth utility functions used in the ViewTrips components.
@@ -7,14 +5,15 @@ import authUtils from '../AuthUtils';
  * but a fake user uid is still used due to the lack of a set of functions
  * that can convert  user email <--> user uid.
  *
- * TODO(Issue 55): Remove this whole file function and replace any imports to
+ * TODO(Issue #55): Remove this whole file function and replace any imports to
  *                 this file with Auth utils.
  */
+import authUtils from '../AuthUtils';
 
 /**
  * Temporary 'fake'/hardcoded function that returns the current users uid.
  *
- * @return Fake user uid string the form '_userEmail_'.
+ * @return {!string} Fake user uid string the form '_userEmail_'.
  */
 export function getCurUserUid() {
   return getUserUidArrFromUserEmailArr([authUtils.getCurUserEmail()]).pop();

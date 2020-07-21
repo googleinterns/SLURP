@@ -17,9 +17,9 @@ import ViewActivitiesButton from './view-activities-button.js';
  *    dates, the months are 0 indexed rather than 1 indexed so they must be
  *    incremented by 1 in order for the month to be correct.
  *
- * @param {firebase.firestore.DocumentData} tripData Object containing the fields
- *    and values for a Trip document.
- * @return {string} Date range of the trip.
+ * @param {!firebase.firestore.DocumentData} tripData Object containing the
+ *     fields and values for a Trip document.
+ * @return {!string} Date range of the trip.
  */
 export function getDateRange(tripData) {
   const startDate = tripData.start_date.toDate();
@@ -33,7 +33,7 @@ export function getDateRange(tripData) {
  *
  * @param {!Array<!string>} collaboratorUidArr Array of collaborator uids
  *     stored in trip document.
- * @returns {string} Collaborator emails in comma separated string.
+ * @returns {!string} Collaborator emails in comma separated string.
  *     Ex: "person1@email.com, person2@email.com".
  */
 export function getCollaboratorEmails(collaboratorUidArr) {

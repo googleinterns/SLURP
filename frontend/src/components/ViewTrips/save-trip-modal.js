@@ -13,7 +13,7 @@ const db = app.firestore();
  * specified by the function parameters.
  *
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
- * @param {string} placeholder Placeholder text value in the form input.
+ * @param {!string} placeholder Placeholder text value in the form input.
  * @param {?string} defaultText Optional default text value in the form input.
  *     Null if no default text.
  * @return {JSX.Element} The Form.Control element.
@@ -54,8 +54,8 @@ function createDateFormControl(ref, defaultDate) {
  *
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
  * @param {number} idx Index of the email Form.Control used for key prop.
- * @param {string} placeholder Placeholder text value in the form input.
- * @param {?Array<string>} defaultEmailArr Array of the emails to be displayed
+ * @param {!string} placeholder Placeholder text value in the form input.
+ * @param {?Array<!string>} defaultEmailArr Array of the emails to be displayed
  *     in the default form fields. Null if no default emails.
  * @return {JSX.Element} The Form.Control element.
  */
@@ -96,8 +96,8 @@ function createEmailFormControl(ref, idx, placeholder, defaultEmailArr) {
  *     emails inputted in the form.
  * @param {boolean} isAddTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
- * @param {string} placeholder Placeholder text value in the form input.
- * @param {!Array<string>=} defaultEmailArr Array of the emails to be displayed
+ * @param {!string} placeholder Placeholder text value in the form input.
+ * @param {?Array<!string>} defaultEmailArr Array of the emails to be displayed
  *     in the default form fields.
  * @return {JSX.Element} The Form.Control elements.
  */
@@ -114,13 +114,13 @@ function createMultiFormControl(refArr, placeholder, defaultEmailArr) {
 /**
  * Returns a Form.Group element with components specified by the input args.
  *
- * @param {string} controlId Prop that accessibly wires the nested label and
+ * @param {!string} controlId Prop that accessibly wires the nested label and
  *                           input prop.
- * @param {string} formLabel Label/title for the form input.
- * @param {string} inputType Input type of the form.
- * @param {React.RefObject} ref Ref attached to the values inputted in the form.
- * @param {string} placeholder Placeholder text value in the form input.
- * @param {string} defaultVal Default value in the form input.
+ * @param {!string} formLabel Label/title for the form input.
+ * @param {!string} inputType Input type of the form.
+ * @param {!React.RefObject} ref Ref attached to the values inputted in the form.
+ * @param {!string} placeholder Placeholder text value in the form input.
+ * @param {?string|?Array<!string>} defaultVal Default value in the form input.
  * @return {JSX.Element} The Form.Group element.
  */
 function createFormGroup(controlId, formLabel, inputType,
@@ -191,7 +191,8 @@ class SaveTripModal extends React.Component {
     // less than the number of collaborators specified in prop `defaultFormObj`
     // (do not include current user in list).
     //
-    // TODO(Issue 71): Give user option to remove themself as collab. from trip.
+    // TODO(Issue #71): Give user option to remove themself as a collaborator
+    //                  from current trip.
     const collaboratorsRefArr = [];
     if (this.isAddTripForm) {
       collaboratorsRefArr.push(React.createRef());
@@ -213,7 +214,7 @@ class SaveTripModal extends React.Component {
   /**
    * Creates a new Trip document in firestore with data in `tripData`.
    *
-   * @param {Object} tripData Data the new trip document will contain.
+   * @param {!Object} tripData Data the new trip document will contain.
    */
   addNewTrip(tripData) {
     db.collection(DB.COLLECTION_TRIPS)
@@ -229,8 +230,8 @@ class SaveTripModal extends React.Component {
   /**
    * Updates an existing Trip document in firestore with data in `tripData`.
    *
-   * @param {string} tripId The document ID of the trip that is updated.
-   * @param {Object} tripData Data the new trip document will contain.
+   * @param {!string} tripId The document ID of the trip that is updated.
+   * @param {!Object} tripData Data the new trip document will contain.
    */
   updateExistingTrip(tripId, tripData) {
     db.collection(DB.COLLECTION_TRIPS)
