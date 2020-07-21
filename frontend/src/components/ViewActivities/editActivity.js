@@ -108,7 +108,7 @@ class EditActivity extends React.Component {
     }
 
     return (
-      <FormControl as='select'
+      <Form.Control as='select'
         ref={st === 'start' ? this.editStartTzRef : this.editEndTzRef}
         key={st === 'start' ? this.state.startTz : this.state.endTz}
         defaultValue={defaultTz}
@@ -116,7 +116,7 @@ class EditActivity extends React.Component {
         {timezones.map((item, index) => {
           return (<option key={index}>{item}</option>);
         })}
-      </FormControl>
+      </Form.Control>
     )
   }
 
@@ -132,11 +132,11 @@ class EditActivity extends React.Component {
    */
   countriesDropdown(ref, tzref, defaultCountry) {
     return (
-      <FormControl as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>
+      <Form.Control as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>
         {countryList.map((item, index) => {
           return (<option key={index}>{item}</option>);
         })}
-      </FormControl>
+      </Form.Control>
     );
   }
 
