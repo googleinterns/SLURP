@@ -19,14 +19,7 @@ class ViewTrips extends React.Component {
                    refreshTripsContainer: false,
                    refreshSaveTripModal: false,
                    tripId: null,
-                   defaultFormObj: {
-                                     name:          null,
-                                     description:   null,
-                                     destination:   null,
-                                     startDate:     null,
-                                     endDate:       null,
-                                     collaborators: []
-                                   }
+                   defaultFormObj: null,
                  };
   }
 
@@ -75,14 +68,7 @@ class ViewTrips extends React.Component {
   showAddTripModal = () => {
     this.setState({
       tripId: null,
-      defaultFormObj: {
-                        name:          null,
-                        description:   null,
-                        destination:   null,
-                        startDate:     null,
-                        endDate:       null,
-                        collaborators: []
-                      }
+      defaultFormObj: null,
     });
     this.showSaveTripModal();
   }
