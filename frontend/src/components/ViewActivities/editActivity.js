@@ -7,14 +7,14 @@ import * as time from '../Utils/time.js';
 import * as formElements from './editActivityFormElements.js';
 
 /**
- * The form that's used when the user is editing an activity.
+ * React component for the form that's used when the user is editing an activity.
  * 
- * @param {Object} props This component expects the following props:
- * - `activity` The activity to display.
- * - `submitFunction` The function to run upon submission to trigger card flip.
+ * @property {Object} props ReactJS props. 
+ * @property {ActivityInfo} props.activity The activity to display.
+ * @property {function} props.submitFunction The function to run upon submission.
  */
 class EditActivity extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor(props){
     super(props);
 
@@ -101,7 +101,7 @@ class EditActivity extends React.Component {
     let dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
     let timezones;
     if (ref.current == null) {
-      // If activity[key] DNE, then timezones will just return all tzs anyway
+      // If activity[key] DNE, then timezones will just return all tzs anyway.
       timezones = time.timezonesForCountry(this.props.activity[dbEntry]);
     } else {
       timezones = time.timezonesForCountry(ref.current.value);
@@ -129,6 +129,7 @@ class EditActivity extends React.Component {
    * @param ref The reference to attach to the dropdown.
    * @param tzref The corresponding time zone reference field. 
    * @param defaultCountry The default country for the dropdown.
+   * @return {HTML} HTML dropdown of all the countries with timezones.
    */
   countriesDropdown(ref, tzref, defaultCountry) {
     return (
@@ -191,7 +192,7 @@ class EditActivity extends React.Component {
             'formActivityDescription', // controlId
             'Description:', // formLabel
             getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder 
-            this.editDescriptionRef // ref
+            this.editDescriptionRef                                             // ref
           )}
         <Button type='submit' className='float-right'>Done!</Button>
       </Form>

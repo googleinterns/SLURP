@@ -3,44 +3,46 @@ import { countryCodes } from '../../constants/countries.js';
 import { firestore } from 'firebase';
 
 /**
- * Format a timestamp (in milliseconds) into a pretty string with just the time.
+ * Format a timestamp (in milliseconds) into a pretty string with just the time like
+ * '10.19 AM'.
  *
- * @param {int} msTimestamp 
- * @param {string} timezone 
- * @returns {string} Time formatted into a string like '10:19 AM'.
+ * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {string} timezone Timezone in which to convert.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
   return moment.tz(parseFloat(msTimestamp), timezone).format('LT');
 }
 
 /**
- * Format a timestamp (in milliseconds) into a pretty string with just the date.
+ * Format a timestamp (in milliseconds) into a pretty string with just the date, like
+ *  'Monday, January 19, 1970'.
  *
- * @param {string} msTimestamp 
- * @param {string} timezone 
- * @returns {string} Time formatted into a string like 'Monday, January 19, 1970'.
+ * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {string} timezone Timezone in which to convert.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
   return moment.tz(parseFloat(msTimestamp), timezone).format('dddd, LL');
 }
 
 /** 
- * Format a timestamp (in milliseconds) into a pretty string.
+ * Format a timestamp (in milliseconds) into a pretty string like 
+ * 'Monday, January 19, 1970, 02:48 AM'.
  * 
- * @param {string} msTimestamp 
- * @param {string} timezone 
- * @returns {string} Time formatted into a string like 
- * 'Monday, January 19, 1970 02:48 AM PST'
+ * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {string} timezone Timezone in which to convert.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
   return moment.tz(parseFloat(msTimestamp), timezone).format('LLLL z');
 }
 
 /**
- * Returns all the time zones in a country (in pretty format).
+ * Returns all the time zones in a country (in displayable format).
  * 
  * @param {string} countryName The name of the country for which to get the time zones.
- * @returns The list of time zones in the provided country.
+ * @return {string[]} The list of time zones in the provided country.
  */
 export function timezonesForCountry(countryName) {
   let zones;
