@@ -14,8 +14,6 @@ const LIMIT_QUERY_DOCS_RETRIEVED = 5;
  *
  * @param {Object} props These are the props for this component:
  * - tripId: Document ID for the current Trip document.
- * - refreshTripsContainer: Handler that refreshes the TripsContainer
- *        component upon trip creation (Remove when fix Issue #62).
  */
 const DeleteTripsButton = (props) => {
    /**
@@ -78,8 +76,6 @@ const DeleteTripsButton = (props) => {
   /**
    * Deletes a trip and its subcollection of activities corrsponding to the
    * `tripId` prop and then refreshes the TripsContainer component.
-   *
-   * TODO(Issue #62): Remove refreshTripsContainer.
    */
   async function deleteTrip() {
     if (window.confirm('Are you sure you want to delete this trip? This' +
@@ -101,9 +97,7 @@ const DeleteTripsButton = (props) => {
           }).catch(error => {
             console.error("Error removing document: ", error);
           });
-
-      props.refreshTripsContainer();
-   }
+    }
   }
 
   return (

@@ -16,25 +16,10 @@ class ViewTrips extends React.Component {
   constructor() {
     super();
     this.state = { showModal: false,
-                   refreshTripsContainer: false,
                    refreshSaveTripModal: false,
                    tripId: null,
                    defaultFormObj: null,
                  };
-  }
-
-  /**
-   * Handler that flips `refreshTripsContainer` property which causes that
-   * TripsContainer component to be reloaded.
-   *
-   * This allows a trip creator's view trips page to be updated in real time.
-   *
-   * In the future, the use of refreshTripContainer and the key prop on Trips
-   * container should be removed with the addition of real time listening with
-   * onShapshot (Issue #62).
-   */
-  refreshTripsContainer = () => {
-    this.setState({ refreshTripsContainer: !this.state.refreshTripsContainer });
   }
 
   /**
@@ -97,7 +82,6 @@ class ViewTrips extends React.Component {
         <SaveTripModal
           show={this.state.showModal}
           handleClose={this.hideSaveTripModal}
-          refreshTripsContainer={this.refreshTripsContainer}
           tripId={this.state.tripId}
           defaultFormObj={this.state.defaultFormObj}
           key={this.state.refreshSaveTripModal}
@@ -109,8 +93,6 @@ class ViewTrips extends React.Component {
         </div>
         <TripsContainer
           handleEditTrip={this.showEditTripModal}
-          refreshTripsContainer={this.refreshTripsContainer}
-          key={this.state.refreshTripsContainer}
         />
       </div>
     );
