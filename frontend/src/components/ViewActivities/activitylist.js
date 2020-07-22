@@ -35,7 +35,7 @@ export async function getActivityList(tripId) {
         tripActivities.push(data);
       })
     }).catch(error => {
-      console.log('It seems that an error has occured.', error);
+      console.error('It seems that an error has occured.', error);
       tripActivities = null;
     }).then( () => resolve(tripActivities) );
   })
