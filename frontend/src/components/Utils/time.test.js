@@ -42,11 +42,9 @@ test('other time timestamp format', () => {
 test('new york full timestamp format', () => {
   // Month parameter is zero indexed so it's actually the 10th month.
   const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
-  const expected = 'Saturday, October 3, 2020 10:19 AM';
+  const expected = 'Saturday, October 3, 2020 10:19 AM EDT';
   const actual = utils.timestampToFormatted(testDate);
-  expect({a: actual}).toMatchObject({
-    a: expect.stringContaining(expected)
-  });
+  expect(actual).toEqual(expected);
 });
 
 test('other full timestamp format', () => {
