@@ -20,11 +20,6 @@ class Activity extends React.Component {
     super(props);
 
     this.state = { editing: false };
-
-    // Bind state users/modifiers to `this`.
-    this.setEditActivity = this.setEditActivity.bind(this);
-    this.finishEditActivity = this.finishEditActivity.bind(this);
-    this.displayCard = this.displayCard.bind(this);
   }
 
   /**
@@ -34,17 +29,13 @@ class Activity extends React.Component {
 
   /**
    * Set the activity into viewing mode.
-   * 
-   * @param {event} event The form's event.
    */
-  finishEditActivity(event) {
-    this.setState({editing: false});
-  };
+  finishEditActivity = () => { this.setState({editing: false}); };
 
   /**
-   * Display the current activity, either in view or display mode.
+   * Display the current activity, either in view or edit mode.
    */
-  displayCard() {
+  displayCard = () => {
     let activity = this.props.activity;
     if (!this.state.editing) { // View mode.
       return (
@@ -70,7 +61,9 @@ class Activity extends React.Component {
           <Accordion.Toggle as={Card.Header} eventKey='0' align='center'>
             {activity[DB.ACTIVITIES_TITLE]}
           </Accordion.Toggle>
-          <Accordion.Collapse eventKey='0' className={'view-activity' + (this.state.editing? ' edit': '')}>
+          <Accordion.Collapse eventKey='0' 
+            className={'view-activity' + (this.state.editing? ' edit': '')}
+            >
             { this.displayCard() }
           </Accordion.Collapse>
         </Card>
