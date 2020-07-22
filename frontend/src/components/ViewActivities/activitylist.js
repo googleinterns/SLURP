@@ -10,7 +10,7 @@ const db = app.firestore();
 /**
  * Gets the list of activities from the server. 
  * 
- * @param {string} tripId The trip ID.
+ * @param {!string} tripId The trip ID.
  * @return {ActivityInfo[]} The list of trip activities.
  */
 export async function getActivityList(tripId) {

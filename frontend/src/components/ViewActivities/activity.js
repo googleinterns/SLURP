@@ -34,6 +34,8 @@ class Activity extends React.Component {
 
   /**
    * Display the current activity, either in view or edit mode.
+   * 
+   * @return {HTML} The current activity in correct mode.
    */
   displayCard = () => {
     let activity = this.props.activity;

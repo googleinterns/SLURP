@@ -24,7 +24,7 @@ const db = app.firestore();
 
 /**
  * Sort a list of trip activities by date. 
- * @param {ActivityInfo[]} tripActivities Array of activities.
+ * @param {!ActivityInfo[]} tripActivities Array of activities.
  * @return {DayOfActivities[]} List of trip activities in the form
  * <pre><code>[ , ...]</code></pre>
  * in chronological order by date.
@@ -50,8 +50,8 @@ export function sortByDate(tripActivities) {
 /**
  * Put<code>a</code> and<code>b</code> in display order. 
  * This function is a comparator.
- * @param {ActivityInfo} a Dictionary representing activity a and its fields. 
- * @param {ActivityInfo} b Dictionary representing activity b and its fields.
+ * @param {!ActivityInfo} a Dictionary representing activity a and its fields. 
+ * @param {!ActivityInfo} b Dictionary representing activity b and its fields.
  * @return {int} <code>-1</code> if <code>a</code> comes before <code>b</code>, else <code>1</code>. 
  */
 export function compareActivities(a, b) {
@@ -69,11 +69,11 @@ export function compareActivities(a, b) {
 /**
  * Get the field of field name fieldName from activity  or the default value.
  * 
- * @param {ActivityInfo} activity The activity from which to get the field.
- * @param {string} fieldName Name of field to get.
- * @param {*} defaultValue Value if field is not found/is null.
- * @param {string} prefix The prefix to put before a returned value if the field exists.
- * @returns {*} <code>activity[fieldName]</code> if possible, else <code>defaultValue</code>.
+ * @param {!ActivityInfo} activity The activity from which to get the field.
+ * @param {!string} fieldName Name of field to get.
+ * @param {*} [defaultValue=null] Value if field is not found/is null.
+ * @param {string} [prefix=''] The prefix to put before a returned value if the field exists.
+ * @return {*} <code>activity[fieldName]</code> if possible, else <code>defaultValue</code>.
  */
 export function getField(activity, fieldName, defaultValue=null, prefix=''){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
@@ -85,10 +85,10 @@ export function getField(activity, fieldName, defaultValue=null, prefix=''){
 /**
  * Write contents into an activity already existing in the database.
  * 
- * @param {string} tripId Database ID of the trip whose actiivty should be modified.
- * @param {string} activityId Database ID of the activity to be modified.
+ * @param {!string} tripId Database ID of the trip whose actiivty should be modified.
+ * @param {!string} activityId Database ID of the activity to be modified.
  * @param {Object} newValues Dictionary of the new values in <code>{fieldName: newValue}</code> form
- * @returns {boolean} <code>true</code> if the write was successful, <code>false</code> otherwise. 
+ * @return {boolean} <code>true</code> if the write was successful, <code>false</code> otherwise. 
  */
 export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
@@ -113,10 +113,12 @@ export async function writeActivity(tripId, activityId, newValues) {
 /**
  * Get the value of a reference. 
  * 
- * @param {Reference} ref Reference to get the value of.
- * @param {string} ignoreValue The "null" or "none" value that ref could be.
- * @param {string} defaultValue Value to return if ref.current.value === ignoreValue.
- * @returns defaultValue if ref.current.value === ignoreValue, else ref.current.value.
+ * Note: This function breaks if <code>ref.current</code> is null. This is intentional.
+ * 
+ * @param {!Reference} ref Reference to get the value of.
+ * @param {?string} ignoreValue The "null" or "none" value that ref could be.
+ * @param {?string} [defaultValue=null] Value to return if ref.current.value === ignoreValue.
+ * @return defaultValue if ref.current.value === ignoreValue, else ref.current.value.
  */
 export function getRefValue(ref, ignoreValue, defaultValue=null) {
   if (ref.current.value === ignoreValue) {
