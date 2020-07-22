@@ -18,7 +18,13 @@ const db = app.firestore();
 function getErrorElement(error) {
   return new Promise(function(resolve) {
     console.log(`Error in Trips Container: ${error}`);
-  resolve(( <div><p>Error: Unable to load your trips.</p></div> ));
+    resolve(
+      <div>
+        <p>Oops, it looks like we were unable to load your trips.
+                      Please wait a few minutes and try again.
+        </p>
+      </div>
+    );
   });
 }
 
@@ -37,7 +43,19 @@ class TripsContainer extends React.Component {
     this.state = {trips: []};
   }
 
-  serveUserTrips = () => {
+  /**
+   * When the TripsContainer mounts, a listener is attached to the QuerySnapshot
+   * event that grabs all trip documents where the current user uid is contained
+   * in the collaborator uid array (collaborators field). This allows real-time
+   * updates for all collaborators on a trip whenever a trip is updated (add,
+   * edit, or delete).
+   *
+   * In the case where there is an error, an error component is returned in
+   * place of the array of trips.
+   *
+   * @override
+   */
+  async componentDidMount() {
     const curUserUid = getCurUserUid();
     db.collection(DB.COLLECTION_TRIPS)
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
@@ -58,11 +76,6 @@ class TripsContainer extends React.Component {
           let errorElement = getErrorElement(error);
           this.setState({ trips: errorElement });
         });
-  }
-
-  /** @inheritdoc */
-  async componentDidMount() {
-    this.serveUserTrips();
   }
 
   /** @inheritdoc */
