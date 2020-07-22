@@ -109,7 +109,7 @@ This file structure is largely the same as that used during portfolio creation p
 Servlets developed in the backend must be routed to the prefix `/api/v1` in the `@WebServlet` annotation, e.g.:
 ```
 @WebServlet("/api/v1/test-servlet")
-public class DataServlet extends HttpServlet { ... }
+public class TestServlet extends HttpServlet { ... }
 ```
 
 The servlet can then be accessed from the frontend with a fetch request, e.g. `fetch('api/v1/test-servlet').then( ... )`.
