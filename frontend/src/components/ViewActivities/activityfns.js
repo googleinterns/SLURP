@@ -6,7 +6,7 @@ const db = app.firestore();
 
 /**
  * An activity object. 
- * @typedef {Object} Activity
+ * @typedef {Object} ActivityInfo
  * @property {string} id The activity's ID in the database.
  * @property {string} tripId The activity's tripId in the database.
  * @property {string} title The activity's title.
@@ -18,13 +18,13 @@ const db = app.firestore();
 /**
  * A single activity day. A single instance looks like:
  * <pre><code> ['MM/DD/YYYY', [activities on that day]] </code></pre>
- * @typedef {Array.<string, Activity[]>} DayOfActivities
+ * @typedef {Array.<string, ActivityInfo[]>} DayOfActivities
  * 
  */
 
 /**
  * Sort a list of trip activities by date. 
- * @param {Activity[]} tripActivities Array of activities.
+ * @param {ActivityInfo[]} tripActivities Array of activities.
  * @return {DayOfActivities[]} List of trip activities in the form
  * <pre><code>[ , ...]</code></pre>
  * in chronological order by date.
@@ -50,8 +50,8 @@ export function sortByDate(tripActivities) {
 /**
  * Put <code>a</code> and <code>b</code> in display order. 
  * This function is a comparator.
- * @param {Activity} a Dictionary representing activity a and its fields. 
- * @param {Activity} b Dictionary representing activity b and its fields.
+ * @param {ActivityInfo} a Dictionary representing activity a and its fields. 
+ * @param {ActivityInfo} b Dictionary representing activity b and its fields.
  * @return {int} <c>-1</c> if <c>a</c> comes before <c>b</c>, else <c>1</c>. 
  */
 export function compareActivities(a, b) {
@@ -69,7 +69,7 @@ export function compareActivities(a, b) {
 /**
  * Get the field of field name fieldName from activity  or the default value.
  * 
- * @param {Activity} activity The activity from which to get the field.
+ * @param {ActivityInfo} activity The activity from which to get the field.
  * @param {string} fieldName Name of field to get.
  * @param {*} defaultValue Value if field is not found/is null.
  * @returns {*} <c>activity[fieldName]</c> if possible, else <c>defaultValue</c>.

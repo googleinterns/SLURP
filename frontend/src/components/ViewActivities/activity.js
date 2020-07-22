@@ -6,7 +6,9 @@ import { getField, writeActivity } from './activityfns.js';
 import { Accordion, Button, Card, Col, Form, Row } from 'react-bootstrap';
 
 /**
- * Returns a dropdown of all the timezones.
+ * Return a dropdown of all the timezones.
+ * 
+ * @return {HTML} Dropdown of all the timezones.
  */
 function timezonePicker() {
   // TODO: Make this dropdown. (#51)
@@ -14,14 +16,14 @@ function timezonePicker() {
 }
 
 /**
- * A single activity. 
+ * React component for a single activity. 
  * 
- * @param {Object} props This component expects the following props:
- * - `activity` {Object} The activity to display.
+ * @property {Object} props ReactJS props. 
+ * @property {ActivityInfo} props.activity The activity to display.
  *    (MUST contain 'id' field with database activity id and 'tripId' field.)
  */
 class Activity extends React.Component {
-  /** {@inheritdoc} */
+  /** @override */
   constructor(props) {
     super(props);
 
@@ -66,6 +68,8 @@ class Activity extends React.Component {
 
   /**
    * Set the activity into viewing mode.
+   * 
+   * @param {event} event The form's event.
    */
   finishEditActivity(event) {
     this.setState({editing: false});
@@ -118,7 +122,7 @@ class Activity extends React.Component {
     }
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     const activity = this.props.activity;
     return (
