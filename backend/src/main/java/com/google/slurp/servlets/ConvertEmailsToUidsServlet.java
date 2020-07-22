@@ -21,15 +21,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
-* Servlet that returns some example content.
-*/
-@WebServlet("/api/v1/test-servlet")
-public class DataServlet extends HttpServlet {
+ * Servlet that converts a given POST request of user emails to the corresponding user UIDs, sending
+ * this back as the response.
+ */
+@WebServlet("/api/v1/convert-emails-to-uids")
+public class ConvertEmailsToUidsServlet extends HttpServlet {
 
- @Override
- public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-   response.setContentType("text/html;");
-   response.getWriter().println("Hello world from data servlet!");
- }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+  }
 }
-
