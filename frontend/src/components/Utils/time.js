@@ -6,7 +6,7 @@ import { countryCodes } from '../../constants/countries.js';
  *
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
- * @returns {string} Time formatted into desired pretty string.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
   const date = new Date(msTimestamp);
@@ -25,7 +25,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  *
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
- * @returns {string} Time formatted into desired pretty string.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
   const date = new Date(msTimestamp);
@@ -46,7 +46,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * 
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
- * @returns {string} Time formatted into desired pretty string.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
   let date = new Date(msTimestamp);
@@ -64,10 +64,10 @@ export function timestampToFormatted(msTimestamp, timezone = 'America/New_York')
 }
 
 /**
- * Returns all the time zones in a country (in pretty format).
+ * Returns all the time zones in a country (in displayable format).
  * 
  * @param {string} countryName The name of the country for which to get the time zones.
- * @returns {Array.<string>} The list of time zones in the provided country.
+ * @return {string[]} The list of time zones in the provided country.
  */
 export function timezonesForCountry(countryName) {
   let zones;
