@@ -9,7 +9,7 @@ import { LANDING } from '../../constants/routes.js';
  * Component that redirects the user back to the landing page when they
  * encounter a 404 error.
  */
-const LandingButton = () => {
+const GoToLandingButton = () => {
   const history = useHistory();
 
   function goToLanding() {
@@ -23,4 +23,4 @@ const LandingButton = () => {
   );
 }
 
-export default LandingButton;
+export default GoToLandingButton;
