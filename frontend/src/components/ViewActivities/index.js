@@ -42,6 +42,12 @@ class ViewActivities extends React.Component {
     }); 
   };
 
+  /**
+   * Create an empty activity (with filler information) to edit and then display.
+   * Allows us to use editActivity instead of creating a whole new form for it. 
+   * 
+   * @param {string} tripId The tripId to attach to this new activity.
+   */
   emptyActivity = (tripId) => {
     const newAct = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
       .collection(DB.COLLECTION_ACTIVITIES).doc();

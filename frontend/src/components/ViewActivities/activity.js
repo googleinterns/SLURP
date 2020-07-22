@@ -54,9 +54,13 @@ class Activity extends React.Component {
         </Card.Body>
       );
     } else { // Edit mode.
-      return ( <EditActivity activity={this.props.activity} 
-        submitFunction={this.finishEditActivity} 
-        new={false} />);
+      return ( 
+        <EditActivity 
+          activity={this.props.activity} 
+          submitFunction={this.finishEditActivity} 
+          new={false} 
+        />
+      );
     }
   }
 
