@@ -38,7 +38,7 @@ class ViewActivities extends React.Component {
   doneAddingActivity = () => { 
     this.setState({ 
       addingActivity: false,
-       newAct: null 
+      newAct: null 
     }); 
   };
 
