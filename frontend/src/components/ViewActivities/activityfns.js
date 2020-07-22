@@ -17,7 +17,7 @@ const db = app.firestore();
 
 /**
  * A single activity day. A single instance looks like:
- * <pre><code> ['MM/DD/YYYY', [activities on that day]] </pre></code>
+ * <pre><code> ['MM/DD/YYYY', [activities on that day]] </code></pre>
  * @typedef {Array.<string, Activity[]>} DayOfActivities
  * 
  */
@@ -26,7 +26,7 @@ const db = app.firestore();
  * Sort a list of trip activities by date. 
  * @param {Activity[]} tripActivities Array of activities.
  * @return {DayOfActivities[]} List of trip activities in the form
- * <pre><code>[ , ...]</pre></code> 
+ * <pre><code>[ , ...]</code></pre>
  * in chronological order by date.
  */
 export function sortByDate(tripActivities) {
@@ -48,11 +48,11 @@ export function sortByDate(tripActivities) {
 }
 
 /**
- * Put a and b in display order. 
+ * Put <code>a</code> and <code>b</code> in display order. 
  * This function is a comparator.
  * @param {Activity} a Dictionary representing activity a and its fields. 
  * @param {Activity} b Dictionary representing activity b and its fields.
- * @return {int} -1 if a comes before b, else 1. 
+ * @return {int} <c>-1</c> if <c>a</c> comes before <c>b</c>, else <c>1</c>. 
  */
 export function compareActivities(a, b) {
   if (a[DB.ACTIVITIES_START_TIME] < b[DB.ACTIVITIES_START_TIME]) {
@@ -72,7 +72,7 @@ export function compareActivities(a, b) {
  * @param {Activity} activity The activity from which to get the field.
  * @param {string} fieldName Name of field to get.
  * @param {*} defaultValue Value if field is not found/is null.
- * @returns {*} activity[fieldName] if possible, else defaultValue.
+ * @returns {*} <c>activity[fieldName]</c> if possible, else <c>defaultValue</c>.
  */
 export function getField(activity, fieldName, defaultValue){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
@@ -82,12 +82,12 @@ export function getField(activity, fieldName, defaultValue){
 }
 
 /**
- * Write contents into an activity in the database.
+ * Write contents into an activity already existing in the database.
  * 
  * @param {string} tripId Database ID of the trip whose actiivty should be modified.
  * @param {string} activityId Database ID of the activity to be modified.
- * @param {Object} newValues Dictionary of the new values in {fieldName: newValue} form
- * @returns {boolean} `true` if the write was successful, `false` otherwise. 
+ * @param {Object} newValues Dictionary of the new values in <c>{fieldName: newValue}</c> form
+ * @returns {boolean} <C>true</c> if the write was successful, <C>false</c> otherwise. 
  */
 export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
