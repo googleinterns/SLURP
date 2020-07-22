@@ -52,7 +52,7 @@ export function sortByDate(tripActivities) {
  * This function is a comparator.
  * @param {ActivityInfo} a Dictionary representing activity a and its fields. 
  * @param {ActivityInfo} b Dictionary representing activity b and its fields.
- * @return {int} <c>-1</c> if <c>a</c> comes before <c>b</c>, else <c>1</c>. 
+ * @return {int} <code>-1</code> if <code>a</code> comes before <code>b</code>, else <code>1</code>. 
  */
 export function compareActivities(a, b) {
   if (a[DB.ACTIVITIES_START_TIME] < b[DB.ACTIVITIES_START_TIME]) {
@@ -72,7 +72,7 @@ export function compareActivities(a, b) {
  * @param {ActivityInfo} activity The activity from which to get the field.
  * @param {string} fieldName Name of field to get.
  * @param {*} defaultValue Value if field is not found/is null.
- * @returns {*} <c>activity[fieldName]</c> if possible, else <c>defaultValue</c>.
+ * @returns {*} <code>activity[fieldName]</code> if possible, else <code>defaultValue</code>.
  */
 export function getField(activity, fieldName, defaultValue){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
@@ -86,8 +86,8 @@ export function getField(activity, fieldName, defaultValue){
  * 
  * @param {string} tripId Database ID of the trip whose actiivty should be modified.
  * @param {string} activityId Database ID of the activity to be modified.
- * @param {Object} newValues Dictionary of the new values in <c>{fieldName: newValue}</c> form
- * @returns {boolean} <C>true</c> if the write was successful, <C>false</c> otherwise. 
+ * @param {Object} newValues Dictionary of the new values in <code>{fieldName: newValue}</code> form
+ * @returns {boolean} <code>true</code> if the write was successful, <code>false</code> otherwise. 
  */
 export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
