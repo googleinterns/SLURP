@@ -15,7 +15,6 @@ import com.google.firebase.FirebaseOptions;
  */
 @WebListener
 public class ServerListener implements ServletContextListener {
-
   /**
    * {@inheritDoc}
    *
@@ -27,8 +26,8 @@ public class ServerListener implements ServletContextListener {
 
     try {
       FirebaseOptions options = new FirebaseOptions.Builder()
-          .setCredentials(GoogleCredentials.getApplicationDefault())
-          .build();
+                                    .setCredentials(GoogleCredentials.getApplicationDefault())
+                                    .build();
 
       FirebaseApp.initializeApp(options);
     } catch (IOException error) {
