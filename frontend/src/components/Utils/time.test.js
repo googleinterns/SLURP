@@ -135,7 +135,6 @@ test('firestore Timestamp format', () => {
   // singapore = 'Sunday, August 23, 2020, 10:03 AM';
   const actualCentral = utils.getFirebaseTime("21:03", "2020-08-22", TZ_CHICAGO)
   const actualSingapore = utils.getFirebaseTime("10:03", "2020-08-23", TZ_SINGAPORE);
-  console.log(actualCentral);
   expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
   expect(actualSingapore.toDate()).toEqual(testDate);
 });
