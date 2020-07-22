@@ -10,7 +10,7 @@
 /**
  * Temporary hardcoded function that returns the current users email.
  *
- * @return {!string} Hardcoded user email string.
+ * @return {string} Hardcoded user email string.
  */
 export function getCurUserEmail() {
   return 'matt.murdock';
@@ -19,7 +19,7 @@ export function getCurUserEmail() {
 /**
  * Temporary hardcoded function that returns the current users uid.
  *
- * @return {!string} Hardcoded user uid string.
+ * @return {string} Hardcoded user uid string.
  */
 export function getCurUserUid() {
   return getUserUidFromUserEmail(getCurUserEmail());
@@ -29,8 +29,8 @@ export function getCurUserUid() {
  * Temporary hardcoded function that returns the user's uid given the user's
  * email.
  *
- * @param {!string} userEmail A users email.
- * @return {!string} The 'fake' uid associated with the user email that is
+ * @param {string} userEmail A users email.
+ * @return {string} The 'fake' uid associated with the user email that is
  *     created with the form '_`userEmail`_'.
  */
 export function getUserUidFromUserEmail(userEmail) {
@@ -41,8 +41,8 @@ export function getUserUidFromUserEmail(userEmail) {
  * Temporary hardcoded function that returns the a user's email given the
  * fake uid that was stored in the Trip document.
  *
- * @param {!string} uid Fake string uid that is in the form '_userEmail_'.
- * @return {!string} The email corresponding to the fake uid.
+ * @param {string} uid Fake string uid that is in the form '_userEmail_'.
+ * @return {string} The email corresponding to the fake uid.
  */
 export function getUserEmailFromUid(uid) {
   return uid.substring(1, uid.length - 1);
