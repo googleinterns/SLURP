@@ -66,7 +66,9 @@ class ViewActivities extends React.Component {
       // deployed build lol.
       return <div>Loading Part 2: Electric Boogaloo</div>;
     }
-    // Case where the trip could not be found.
+    // Case where the trip could not be found. A field is returned undefined if
+    // the trip does not exist, so we check that the retrieved collaborators is
+    // undefined.
     else if (this.state.collaborators === undefined) {
       // TODO (Issue #74): Redirect to an error page instead.
       return <div>Sorry, we couldn't find the trip you were looking for.</div>;
