@@ -11,6 +11,7 @@ const db = app.firestore();
  * Gets the list of activities from the server. 
  * 
  * @param {string} tripId The trip ID.
+ * @return {ActivityInfo[]} The list of trip activities.
  */
 export async function getActivityList(tripId) {
   return new Promise(function(resolve, reject) {
@@ -42,20 +43,20 @@ export async function getActivityList(tripId) {
 }
 
 /**
- * The list of activities. 
+ * React component for the list of activities. 
  * 
- * @param {Object} props This component expects the following props:
- * - `tripId` {string} The trip's ID.  
+ * @param {Object} props ReactJS props. 
+ * @param {string} props.tripId The trip's ID.  
  */
 class ActivityList extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor(props) {
     super(props);
     this.state = { days : [] };
   }
 
   /** 
-   * @inheritdoc
+   * @override
    * 
    * Get sorted list of activities from the database. 
    * 
@@ -75,7 +76,7 @@ class ActivityList extends React.Component {
     this.setState({days: activityFns.sortByDate(tripActivities)});
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     if (this.state === null) { return (<div></div>); }
     if (this.state.days === null) {

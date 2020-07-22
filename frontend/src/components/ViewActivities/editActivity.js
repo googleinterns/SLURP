@@ -7,14 +7,14 @@ import * as time from '../Utils/time.js';
 import * as formElements from './editActivityFormElements.js';
 
 /**
- * The form that's used when the user is editing an activity.
+ * React component for the form that's used when the user is editing an activity.
  * 
- * @param {Object} props This component expects the following props:
- * - `activity` The activity to display.
- * - `submitFunction` The function to run upon submission to trigger card flip.
+ * @property {Object} props ReactJS props. 
+ * @property {ActivityInfo} props.activity The activity to display.
+ * @property {function} props.submitFunction The function to run upon submission.
  */
 class EditActivity extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor(props){
     super(props);
 
@@ -82,7 +82,7 @@ class EditActivity extends React.Component {
    * 
    * @param {string} st Either 'start' or 'end' depending on whether the 
    * timezone is for the start or end timezone.
-   * @returns {HTML} HTML dropdown item.
+   * @return {HTML} HTML dropdown item.
    */
   timezoneDropdown(st) {
     const ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
@@ -113,7 +113,7 @@ class EditActivity extends React.Component {
    * 
    * @param {ref} ref The reference to attach to the dropdown.
    * @param {ref} tzref The corresponding time zone reference field. 
-   * @returns {HTML} HTML dropdown of all the countries with timezones.
+   * @return {HTML} HTML dropdown of all the countries with timezones.
    */
   countriesDropdown(ref, tzref) {
     return (
@@ -139,13 +139,13 @@ class EditActivity extends React.Component {
             this.editTitleRef             // ref
           )}
         {formElements.locationElementFormGroup(
-          'formActivityStartLocation',    // controlId
-          'Start Location:',              // formLabel
+          'formActivityStartLocation',                                         // controlId
+          'Start Location:',                                                   // formLabel
           this.countriesDropdown(this.editStartLocRef, this.startTimeTzUpdate) // dropdown
           )}
         {formElements.locationElementFormGroup(
-          'formActivityEndLocation', // controlId
-          'End Location:',           // formLabel
+          'formActivityEndLocation',                                       // controlId
+          'End Location:',                                                 // formLabel
           this.countriesDropdown(this.editEndLocRef, this.endTimeTzUpdate) // dropdown
           )}
         {formElements.dateTimeTzFormGroup(
@@ -167,10 +167,10 @@ class EditActivity extends React.Component {
           this.timezoneDropdown('end') // tzpicker 
           )}
         {formElements.textElementFormGroup(
-            'formActivityDescription', // controlId
-            'Description:',            // formLabel
+            'formActivityDescription',                                          // controlId
+            'Description:',                                                     // formLabel
             getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder 
-            this.editDescriptionRef    // ref
+            this.editDescriptionRef                                             // ref
           )}
         <Button type='submit' className='float-right'>Done!</Button>
       </Form>

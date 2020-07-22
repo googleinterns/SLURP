@@ -1,14 +1,33 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
-import Firebase from 'firebase';
+import { firestore } from 'firebase';
 
 const db = app.firestore();
 
 /**
+ * An activity object. 
+ * @typedef {Object} ActivityInfo
+ * @property {string} id The activity's ID in the database.
+ * @property {string} tripId The activity's tripId in the database.
+ * @property {string} title The activity's title.
+ * @property {long} start_time Number of seconds since epoch of activity's start time.
+ * @property {long} end_time Number of seconds since epoch of activity's end time.
+ * @property {string} [description] The activity's description.
+ */
+
+/**
+ * A single activity day. A single instance looks like:
+ * <pre><code> ['MM/DD/YYYY', [activities on that day]]</code></pre>
+ * @typedef {Array.<string, ActivityInfo[]>} DayOfActivities
+ * 
+ */
+
+/**
  * Sort a list of trip activities by date. 
- * @param {Array} tripActivities Array of activities.
- * @returns List of trip activities in the form
- * [ ['MM/DD/YYYY', [activities on that day]], ...] in chronological order by date.
+ * @param {ActivityInfo[]} tripActivities Array of activities.
+ * @return {DayOfActivities[]} List of trip activities in the form
+ * <pre><code>[ , ...]</code></pre>
+ * in chronological order by date.
  */
 export function sortByDate(tripActivities) {
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
@@ -29,9 +48,11 @@ export function sortByDate(tripActivities) {
 }
 
 /**
- * Put a and b in display order. 
- * @param {dictionary} a Dictionary representing activity a and its fields. 
- * @param {dictionary} b Dictionary representing activity b and its fields.
+ * Put<code>a</code> and<code>b</code> in display order. 
+ * This function is a comparator.
+ * @param {ActivityInfo} a Dictionary representing activity a and its fields. 
+ * @param {ActivityInfo} b Dictionary representing activity b and its fields.
+ * @return {int} <code>-1</code> if <code>a</code> comes before <code>b</code>, else <code>1</code>. 
  */
 export function compareActivities(a, b) {
   if (a[DB.ACTIVITIES_START_TIME] < b[DB.ACTIVITIES_START_TIME]) {
@@ -46,14 +67,13 @@ export function compareActivities(a, b) {
 
 
 /**
- * Get the field of field name `fieldName` from `activity  or the default value.
+ * Get the field of field name fieldName from activity  or the default value.
  * 
- * @param {Object} activity Activity to get field from.
- * @param {string} fieldName Name of the field in the activity to get. 
- * @param defaultValue Default value to return if activity[fieldName] can't be found. 
- * Can be any type.
+ * @param {ActivityInfo} activity The activity from which to get the field.
+ * @param {string} fieldName Name of field to get.
+ * @param {*} defaultValue Value if field is not found/is null.
  * @param {string} prefix The prefix to put before a returned value if the field exists.
- * @returns `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
+ * @returns {*} <code>activity[fieldName]</code> if possible, else <code>defaultValue</code>.
  */
 export function getField(activity, fieldName, defaultValue, prefix=''){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
@@ -63,18 +83,18 @@ export function getField(activity, fieldName, defaultValue, prefix=''){
 }
 
 /**
- * Write contents into an activity in the database.
+ * Write contents into an activity already existing in the database.
  * 
  * @param {string} tripId Database ID of the trip whose actiivty should be modified.
  * @param {string} activityId Database ID of the activity to be modified.
- * @param {Object} newValues Dictionary of the new values in {fieldName: newValue} form
- * @returns {boolean} true if the write was successful, false otherwise.
+ * @param {Object} newValues Dictionary of the new values in <code>{fieldName: newValue}</code> form
+ * @returns {boolean} <code>true</code> if the write was successful, <code>false</code> otherwise. 
  */
 export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
   newValues = {
     ...newValues, 
-    'fillerstamp': Firebase.firestore.Timestamp.now()
+    'fillerstamp': firestore.Timestamp.now()
   };
 
   const act = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
@@ -82,8 +102,8 @@ export async function writeActivity(tripId, activityId, newValues) {
   
   try {
     // Note: newValues cannot contain lists. Check documentation for update().
-    const a = await act.update(newValues);
-    return a ? true : false;
+    await act.update(newValues);
+    return true;
   } catch (e) {
     console.log(e);
     return false;
