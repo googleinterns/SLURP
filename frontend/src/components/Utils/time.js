@@ -64,7 +64,7 @@ export function timestampToFormatted(msTimestamp, timezone = 'America/New_York')
  * Returns all the time zones in a country (in pretty format).
  * 
  * @param {string} countryName The name of the country for which to get the time zones.
- * @returns The list of time zones in the provided country.
+ * @returns {Array.<string>} The list of time zones in the provided country.
  */
 export function timezonesForCountry(countryName) {
   let zones;
@@ -82,13 +82,13 @@ export function timezonesForCountry(countryName) {
 /**
  * Get a date in 'YYYY-MM-DD' format. 
  * 
- * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
  * @returns {string} The date in 'YYYY-MM-DD' format. 
  */
-export function getDateBarebones(msTimestamp, timezone=null) {
+export function getISODate(msTimestamp, timezone=null) {
   if (timezone === null) {
-    return moment.tz(parseFloat(msTimestamp), '').format('YYYY-MM-DD');
+    return moment.tz(parseFloat(msTimestamp), '').format('YYYY-MM-DD'); // GMT
   }
   return moment.tz(parseFloat(msTimestamp), timezone).format('YYYY-MM-DD');
 }
@@ -96,13 +96,13 @@ export function getDateBarebones(msTimestamp, timezone=null) {
 /**
  * Get a time in 24-hour ('HH:mm') format. 
  * 
- * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
  * @returns {string} The time in 24-hour (HH:mm) format.   
  */
 export function get24hTime(msTimestamp, timezone=null) {
   if (timezone === null) {
-    return moment.tz(parseFloat(msTimestamp), '').format('HH:mm');
+    return moment.tz(parseFloat(msTimestamp), '').format('HH:mm'); // GMT
   }
   return moment.tz(parseFloat(msTimestamp), timezone).format('HH:mm');
 }
