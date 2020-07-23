@@ -23,7 +23,8 @@
     "local": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docs": "./node_modules/.bin/jsdoc src -r -c ./.jsdoc.conf.json -d docs"
   },
   "engines": {
     "node": "10.x.x"
@@ -43,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jsdoc": "~3.6.5"
   }
 }
