@@ -6,7 +6,7 @@ import { firestore } from 'firebase';
  * Format a timestamp (in milliseconds) into a pretty string with just the time like
  * '10.19 AM'.
  *
- * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {number} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
  * @return {string} Time formatted into desired pretty string.
  */
@@ -18,7 +18,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  * Format a timestamp (in milliseconds) into a pretty string with just the date, like
  *  'Monday, January 19, 1970'.
  *
- * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {number} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
  * @return {string} Time formatted into desired pretty string.
  */
@@ -30,7 +30,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * Format a timestamp (in milliseconds) into a pretty string like 
  * 'Monday, January 19, 1970, 02:48 AM'.
  * 
- * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {number} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
  * @return {string} Time formatted into desired pretty string.
  */
@@ -60,7 +60,7 @@ export function timezonesForCountry(countryName) {
 /**
  * Get a date in 'YYYY-MM-DD' format. 
  * 
- * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
  * @returns {string} The date in 'YYYY-MM-DD' format. 
  */
@@ -74,7 +74,7 @@ export function getDateBarebones(msTimestamp, timezone=null) {
 /**
  * Get a time in 24-hour ('HH:mm') format. 
  * 
- * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
  * @returns {string} The time in 24-hour (HH:mm) format.   
  */
