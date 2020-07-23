@@ -23,11 +23,9 @@ import * as DB from '../../constants/database.js';
  * @return {string} Date range of the trip in the form 'MM/DD/YYYY - MM/DD/YYYY'.
  */
 export function getDateRange(startDateTimestamp, endDateTimestamp) {
-  const startDate = startDateTimestamp.toDate();
-  const endDate = endDateTimestamp.toDate();
-  return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
-      `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
-      `${endDate.getDate()}/${endDate.getFullYear()}`;
+  const startDate = startDateTimestamp.toDate().toLocaleDateString('en-US');
+  const endDate = endDateTimestamp.toDate().toLocaleDateString('en-US');
+  return startDate + ' - ' + endDate;
 }
 
 /**
