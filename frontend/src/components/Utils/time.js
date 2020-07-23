@@ -81,11 +81,11 @@ export function timezonesForCountry(countryName) {
 /**
  * Get a date in 'YYYY-MM-DD' form. 
  * 
- * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
  * @returns {string} The date in 'YYYY-MM-DD' form. 
  */
-export function getDateBarebones(msTimestamp, timezone=null) {
+export function getISODate(msTimestamp, timezone=null) {
   if (timezone === null) {
     return moment.tz(parseFloat(msTimestamp), '').format('YYYY-MM-DD'); // GMT
   }
@@ -95,7 +95,7 @@ export function getDateBarebones(msTimestamp, timezone=null) {
 /**
  * Get a time in 24-hour ('HH:mm') form. 
  * 
- * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
  * @returns {string} The time in 24-hour (HH:mm) form.   
  */

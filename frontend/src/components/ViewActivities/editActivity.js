@@ -158,7 +158,7 @@ class EditActivity extends React.Component {
           'formActivityStartTime',                         // controlId
           'From:',                                         // formLabel
           this.editStartDateRef,                           // dateRef
-          time.getDateBarebones(getField(activity, DB.ACTIVITIES_START_TIME), 
+          time.getISODate(getField(activity, DB.ACTIVITIES_START_TIME), 
               getField(activity, DB.ACTIVITIES_START_TZ)), // dateDefault 
           this.editStartTimeRef,                           // timeRef, 
           time.get24hTime(getField(activity, DB.ACTIVITIES_START_TIME), 
@@ -169,7 +169,7 @@ class EditActivity extends React.Component {
           'formActivityEndTime',                         // controlId
           'To:',                                         // formLabel
           this.editEndDateRef,                           // dateRef
-          time.getDateBarebones(getField(activity, DB.ACTIVITIES_END_TIME), 
+          time.getISODate(getField(activity, DB.ACTIVITIES_END_TIME), 
               getField(activity, DB.ACTIVITIES_END_TZ)), // dateDefault 
           this.editEndTimeRef,                           // timeRef, 
           time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
