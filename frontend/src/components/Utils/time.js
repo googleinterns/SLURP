@@ -77,9 +77,30 @@ export function getTimestampFromDateString(dateStr) {
 /**
  * Formats a Firestore timestamp into a date string in ISO format.
  *
+ * No tests for this function because there is no logic.
+ *
  * @param {firebase.firestore.Timestamp} timestamp Firestore timestamp object.
  * @return {string} ISO formatted date string: "YYYY-MM-DD or 2020-05-12".
  */
 export function timestampToISOString(timestamp) {
   return timestamp.toDate().toISOString().substring(0,10);
+}
+
+
+/**
+ * Returns the string date range of the trip associated with the Trip document
+ * start and end date timestamps.
+ *
+ * No tests for this function because there is no logic.
+ *
+ * @param {!firebase.firestore.Timestamp} startDateTimestamp Firestore timestamp
+ *     Object corresponding to the trip start date.
+ * @param {!firebase.firestore.Timestamp} endDateTimestamp Firestore timestamp
+ *     Object corresponding to the trip end date.
+ * @return {string} Date range of the trip in the form 'MM/DD/YYYY - MM/DD/YYYY'.
+ */
+export function getDateRangeString(startDateTimestamp, endDateTimestamp) {
+  const startDate = startDateTimestamp.toDate().toLocaleDateString('en-US');
+  const endDate = endDateTimestamp.toDate().toLocaleDateString('en-US');
+  return startDate + ' - ' + endDate;
 }
