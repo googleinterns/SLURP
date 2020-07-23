@@ -18,13 +18,13 @@ const db = app.firestore();
 function getErrorElement(error) {
   return new Promise(function(resolve) {
     console.log(`Error in Trips Container: ${error}`);
-    resolve((
+    resolve(
       <div>
         <p>Oops, it looks like we were unable to load your trips.
                       Please wait a few minutes and try again.
         </p>
       </div>
-  ));
+  );
   });
 }
 
