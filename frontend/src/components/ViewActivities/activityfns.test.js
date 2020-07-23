@@ -23,23 +23,23 @@ describe('Same day activity compareActivities', () => {
   const elevenToTwelve = createActivity(eleven, twelve);
 
   test('Overlapping activities', () => {
-    expect(activityFns.compareActivities(elevenToOne, tenToTwelve)).toBe(-1);
+    expect(activityFns.compareActivities(elevenToOne, tenToTwelve)).toBe(1);
   })
 
   test('One activity completely during another', () => {
-    expect(activityFns.compareActivities(tenToTwelve, elevenToElevenThirty)).toBe(1);
+    expect(activityFns.compareActivities(tenToTwelve, elevenToElevenThirty)).toBe(-1);
   })
 
   test('Activities with same start time', () => {
-    expect(activityFns.compareActivities(tenToEleven, tenToTwelve)).toBe(1);
+    expect(activityFns.compareActivities(tenToEleven, tenToTwelve)).toBe(-1);
   })
 
   test('Sequential activities', () => {
-    expect(activityFns.compareActivities(tenToEleven, elevenToTwelve)).toBe(1);
+    expect(activityFns.compareActivities(tenToEleven, elevenToTwelve)).toBe(-1);
   })
 
   test('Activities with same end time', () => {
-    expect(activityFns.compareActivities(elevenToTwelve, tenToTwelve)).toBe(-1);
+    expect(activityFns.compareActivities(elevenToTwelve, tenToTwelve)).toBe(1);
   })  
 })
 
@@ -47,8 +47,8 @@ test('compareActivities on different days', () => {
   const may10 = createActivity(may102pm, may102pm);
   const may15 = createActivity(may153am, may153am);
   const may01 = createActivity(may014pm, may014pm);
-  expect(activityFns.compareActivities(may10, may01)).toBe(-1);
-  expect(activityFns.compareActivities(may15, may01)).toBe(-1);
+  expect(activityFns.compareActivities(may10, may01)).toBe(1);
+  expect(activityFns.compareActivities(may15, may01)).toBe(1);
 })
 
 describe('sortByDate tests', () => {

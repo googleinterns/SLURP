@@ -29,13 +29,13 @@ export function getField(activity, fieldName, defaultValue=null, prefix=''){
  */
 export function compareActivities(a, b) {
   if (a[DB.ACTIVITIES_START_TIME] < b[DB.ACTIVITIES_START_TIME]) {
-    return 1;
+    return -1;
   } else if (a[DB.ACTIVITIES_START_TIME] > b[DB.ACTIVITIES_START_TIME]) {
-    return -1;
+    return 1;
   } else if (a[DB.ACTIVITIES_END_TIME] > b[DB.ACTIVITIES_END_TIME]) {
-    return -1;
+    return 1;
   }
-  return 1;
+  return -1;
 }
 
 /**
