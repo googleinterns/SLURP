@@ -10,6 +10,8 @@ import { firestore } from 'firebase';
  * @returns {string} Time formatted into a string like '10:19 AM'.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
+  // Formats from https://momentjs.com/docs/#/displaying/format/
+  // LT = Localized time
   return moment.tz(parseFloat(msTimestamp), timezone).format('LT');
 }
 
@@ -21,6 +23,9 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  * @returns {string} Time formatted into a string like 'Monday, January 19, 1970'.
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
+  // Formats from https://momentjs.com/docs/#/displaying/format/
+  // dddd = Day of the week (i.e. Monday)
+  // LL = "January 19, 1970"
   return moment.tz(parseFloat(msTimestamp), timezone).format('dddd, LL');
 }
 
@@ -33,6 +38,9 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * 'Monday, January 19, 1970 02:48 AM PST'
  */
 export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
+  // Formats from https://momentjs.com/docs/#/displaying/format/
+  // LLLL = "Monday, January 19, 1970 2:48 AM"
+  // z = "PST"
   return moment.tz(parseFloat(msTimestamp), timezone).format('LLLL z');
 }
 
