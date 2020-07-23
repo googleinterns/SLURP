@@ -56,20 +56,20 @@ class EditActivity extends React.Component {
     newVals[DB.ACTIVITIES_END_COUNTRY] = 
       getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
     
-    newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef, '', '');
-    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef, '', '');
+    newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef);
+    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef);
 
     // Start time fields!
-    const startTime = getRefValue(this.editStartTimeRef, '');
-    const startDate = getRefValue(this.editStartDateRef, '');
+    const startTime = getRefValue(this.editStartTimeRef);
+    const startDate = getRefValue(this.editStartDateRef);
     const startTz = newVals[DB.ACTIVITIES_START_TZ];
-    newVals[DB.ACTIVITIES_START_TIME] = time.getFirebaseTime(startTime, startDate, startTz);
+    newVals[DB.ACTIVITIES_START_TIME] = time.firebaseTsFromISO(startTime, startDate, startTz);
 
     // End time fields!
-    const endTime = getRefValue(this.editEndTimeRef, '');
-    const endDate = getRefValue(this.editEndDateRef, '');
+    const endTime = getRefValue(this.editEndTimeRef);
+    const endDate = getRefValue(this.editEndDateRef);
     const endTz = newVals[DB.ACTIVITIES_END_TZ];
-    newVals[DB.ACTIVITIES_END_TIME] = time.getFirebaseTime(endTime, endDate, endTz);
+    newVals[DB.ACTIVITIES_END_TIME] = time.firebaseTsFromISO(endTime, endDate, endTz);
 
     writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }

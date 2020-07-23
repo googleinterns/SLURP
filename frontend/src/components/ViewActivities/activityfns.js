@@ -98,7 +98,7 @@ export async function writeActivity(tripId, activityId, newValues) {
  * @param {string} defaultValue Value to return if ref.current.value === ignoreValue.
  * @returns defaultValue if ref.current.value === ignoreValue, else ref.current.value.
  */
-export function getRefValue(ref, ignoreValue, defaultValue=null) {
+export function getRefValue(ref, ignoreValue='', defaultValue=null) {
   if (ref.current.value === ignoreValue) {
     return defaultValue;
   } 

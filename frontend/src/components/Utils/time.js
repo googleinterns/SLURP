@@ -10,6 +10,7 @@ import { firestore } from 'firebase';
  * @returns {string} Time formatted into a string like '10:19 AM'.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
+  timezone = timezone.replace(/ /g, '_'); // If we're coming from the UI timezone
   const date = new Date(msTimestamp);
   const formatOptions = { 
     hour: 'numeric', 
@@ -27,6 +28,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  * @returns {string} Time formatted into a string like 'Monday, January 19, 1970'.
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
+  timezone = timezone.replace(/ /g, '_'); // If we're coming from the UI timezone
   const date = new Date(msTimestamp);
   const formatOptions = { 
     weekday: 'long', 
@@ -47,6 +49,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * 'Monday, January 19, 1970, 02:48 AM'
  */
 export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
+  timezone = timezone.replace(/ /g, '_'); // If we're coming from the UI timezone
   let date = new Date(msTimestamp);
   let formatOptions = { 
     weekday: 'long', 
@@ -115,7 +118,7 @@ export function get24hTime(msTimestamp, timezone=null) {
  * @param {string} tz The timezone in which the date takes place.
  * @returns {firestore.Timestamp} Firestore timestamp object at the same time. 
  */
-export function getFirebaseTime(time, date, tz) {
+export function firebaseTsFromISO(time, date, tz) {
   const mtzDate = moment.tz(time + " " + date, "HH:mm YYYY-MM-DD", tz);
   return new firestore.Timestamp(mtzDate.valueOf() / 1000, 0);
 }
