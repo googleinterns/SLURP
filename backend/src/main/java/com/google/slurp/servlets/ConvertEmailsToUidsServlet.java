@@ -66,8 +66,8 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
   }
 
   /**
-   * Given a list of emails that are not registered with SLURP, create user accounts for each of
-   * them and return the corresponding list of Firebase-generated user UIDs.
+   * Given a list of emails that are not yet associated with a user, create user accounts for each
+   * of them and return the corresponding list of Firebase-generated user UIDs.
    *
    * @param emails The list of emails to create users for in Firebase Auth.
    * @return The list of Firebase-generated user UIDs from the created users.
@@ -78,25 +78,28 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
                                          .map(email -> new CreateRequest().setEmail(email))
                                          .collect(Collectors.toList());
 
-    List<String> createdUids = new ArrayList<String>();
+    List<String> generatedUids = new ArrayList<String>();
     for (CreateRequest request : requests) {
       UserRecord userRecord = auth.createUser(request);
-      createdUids.add(userRecord.getUid());
+      generatedUids.add(userRecord.getUid());
     }
 
-    return createdUids;
+    return generatedUids;
   }
 
   /**
    * {@inheritDoc}
    *
    * Given a JSON array of user emails, sends back to the response a JSON array of the corresponding
-   * user UIDs. On error, sends an empty response.
+   * user UIDs. For any given email that is not yet associated with a user, a new account is created
+   * with that email and the generated UID is returned with the rest of the UIDs. On error, sends an
+   * empty response.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     List<UserIdentifier> userIdentifiers = getUserIdentifiers(request.getReader());
 
+    // Attempt to obtain the requested users from Firebase using the given emails.
     GetUsersResult result;
     try {
       result = auth.getUsersAsync(userIdentifiers)
@@ -110,6 +113,9 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
                                   .stream()
                                   .map(user -> user.getUid())
                                   .collect(Collectors.toList());
+
+    // Handle the emails not found in the database by creating new user accounts for them and
+    // obtaining the generated UIDs.
     List<String> remainingEmails = result.getNotFound()
                                          .stream()
                                          .map(user ->
@@ -124,7 +130,7 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
       error.printStackTrace();
       return;
     }
-
+    
     List<String> uidsToReturn = Stream.concat(userUids.stream(), remainingUids.stream())
                                       .collect(Collectors.toList());
     response.setContentType("application/json");

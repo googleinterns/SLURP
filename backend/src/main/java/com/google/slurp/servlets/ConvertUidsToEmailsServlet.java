@@ -39,11 +39,13 @@ import com.google.gson.reflect.TypeToken;
  */
 @WebServlet("/api/v1/convert-uids-to-emails")
 public class ConvertUidsToEmailsServlet extends HttpServlet {
+  private FirebaseAuth auth = FirebaseAuth.getInstance();
+
   /**
    * Constructs a list of <code>UserIdentifier</code> using the given JSON array supplied by the
    * POST request.
    *
-   * @param json The body of the POST request, expected to be String array of user UIDs.
+   * @param json The body of the POST request, expected to be a String array of user UIDs.
    * @return A list of UserIdentifier objects identified by user UID. Can then be used in a
    * <code>FirebaseAuth</code> instance's <code>getUsers</code> or <code>getUsersAsync</code>
    * functions.
@@ -66,9 +68,11 @@ public class ConvertUidsToEmailsServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     List<UserIdentifier> userIdentifiers = getUserIdentifiers(request.getReader());
 
+    // Attempt to obtain the requested users from Firebase using the given UIDs.
     GetUsersResult result;
     try {
-      result = FirebaseAuth.getInstance().getUsersAsync(userIdentifiers).get();
+      result = auth.getUsersAsync(userIdentifiers)
+                   .get();
     } catch (InterruptedException | ExecutionException error) {
       System.err.println("Error when asynchronously getting users:");
       error.printStackTrace();
