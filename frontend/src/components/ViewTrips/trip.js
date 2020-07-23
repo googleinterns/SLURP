@@ -20,7 +20,7 @@ import * as DB from '../../constants/database.js';
  *     Object corresponding to the trip start date.
  * @param {!firebase.firestore.Timestamp} endDateTimestamp Firestore timestamp
  *     Object corresponding to the trip end date.
- * @return {string} Date range of the trip in the form 'MM/DD/YYY - MM/DD/YYY'.
+ * @return {string} Date range of the trip in the form 'MM/DD/YYYY - MM/DD/YYYY'.
  */
 export function getDateRange(startDateTimestamp, endDateTimestamp) {
   const startDate = startDateTimestamp.toDate();
