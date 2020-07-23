@@ -14,7 +14,6 @@ const db = app.firestore();
  * @return {ActivityInfo[]} The list of trip activities.
  */
 export async function getActivityList(tripId) {
-  return new Promise(function(resolve, reject) {
     let tripActivities = [];
     
     db.collection(DB.COLLECTION_TRIPS).doc(tripId)
@@ -27,19 +26,18 @@ export async function getActivityList(tripId) {
         
         // TODO: if start date != end date, split into 2 days. (#37)
 
-        // Eliminate nanoseconds, convert to milliseconds.
-        data[DB.ACTIVITIES_START_TIME] =
-          data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
-        data[DB.ACTIVITIES_END_TIME] = 
-          data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
+      // Eliminate nanoseconds, convert to milliseconds.
+      data[DB.ACTIVITIES_START_TIME] =
+        data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
+      data[DB.ACTIVITIES_END_TIME] = 
+        data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
 
-        tripActivities.push(data);
-      })
-    }).catch(error => {
-      console.log('It seems that an error has occured.');
-      tripActivities = null;
-    }).then( () => resolve(tripActivities) );
-  })
+      tripActivities.push(data);
+    })
+  }).catch(error => {
+    console.log("It seems that an error has occured.");
+    tripActivities = null;
+  }).then( () => {return tripActivities} );
 }
 
 /**

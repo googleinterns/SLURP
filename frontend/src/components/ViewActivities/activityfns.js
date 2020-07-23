@@ -67,14 +67,14 @@ export function compareActivities(a, b) {
 
 
 /**
- * Get the field of field name fieldName from activity  or the default value.
+ * Get the field of field name `fieldName` from `activity` or the default value.
  * 
  * @param {ActivityInfo} activity The activity from which to get the field.
  * @param {string} fieldName Name of field to get.
  * @param {*} defaultValue Value if field is not found/is null.
  * @returns {*} <code>activity[fieldName]</code> if possible, else <code>defaultValue</code>.
  */
-export function getField(activity, fieldName, defaultValue){
+export function getField(activity, fieldName, defaultValue) {
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
     return defaultValue;
   }

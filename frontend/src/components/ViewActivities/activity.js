@@ -64,7 +64,9 @@ class Activity extends React.Component {
   /**
    * Set the activity into editing mode.
    */
-  setEditActivity = () => ( this.setState({editing: true}) );
+  setEditActivity() {
+    this.setState({editing: true});
+  }
 
   /**
    * Set the activity into viewing mode.
@@ -109,7 +111,7 @@ class Activity extends React.Component {
             <Col sm={2}><Form.Control type='time' label='time' ref={this.editEndTimeRef}/></Col>
             <Col sm={1}>{timezonePicker()}</Col>
           </Form.Group>
-          <Form.Group as={Row} controlId='formActivityDescription'>
+          <Form.Group as={Row} controlId="formActivityDescription">
             <Col sm={2}><Form.Label>Description:</Form.Label></Col>
             <Col><Form.Control type='text' 
               placeholder={getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!')}
