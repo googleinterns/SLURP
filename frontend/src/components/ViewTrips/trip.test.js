@@ -14,12 +14,12 @@ test('getDateRange test', () => {
 
   // Note that the months in JS dates are 0 indexed rather than 1 indexed so
   // they must be decremented by 1 in order for the month to be correct.
-  const testStartDate = firebase.firestore.Timestamp.fromDate(
+  const testStartDateTimestamp = firebase.firestore.Timestamp.fromDate(
       new Date(startYear, startMonth - 1, startDay));
-  const testEndDate = firebase.firestore.Timestamp.fromDate(
+  const testEndDateTimestamp = firebase.firestore.Timestamp.fromDate(
       new Date(endYear, endMonth - 1, endDay));
-  const testTripObj = {start_date: testStartDate, end_date: testEndDate};
-  const testDateRange = getDateRange(testTripObj);
+  const testDateRange = getDateRange(testStartDateTimestamp,
+                                     testEndDateTimestamp);
 
   const expectedDateRange = `${startMonth}/${startDay}/${startYear} - ` +
         `${endMonth}/${endDay}/${endYear}`;

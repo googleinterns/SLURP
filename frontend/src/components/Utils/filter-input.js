@@ -3,6 +3,7 @@ import * as firebase from 'firebase/app';
 import authUtils from '../AuthUtils';
 import { getUserUidArrFromUserEmailArr } from './temp-auth-utils.js'
 import { getTimestampFromDateString } from './time.js'
+import * as DB from '../../constants/database.js';
 
 /**
  * Return a string containing the cleaned text input.
@@ -58,16 +59,19 @@ export function formatTripData(rawTripObj) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
 
-  const formattedTripObj = {
-    trip_creation_time: firebase.firestore.Timestamp.now(),
-    name:               getCleanedTextInput(rawTripObj.name, defaultName),
-    description:        rawTripObj.description,
-    destination:        getCleanedTextInput(rawTripObj.destination,
-                                                 defaultDestination),
-    start_date:         getTimestampFromDateString(rawTripObj.startDate),
-    end_date:           getTimestampFromDateString(rawTripObj.endDate),
-    collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails),
-  };
+  const tripObj = {};
+  tripObj[DB.TRIPS_UPDATE_TIMESTAMP] = firebase.firestore.Timestamp.now();
+  tripObj[DB.TRIPS_TITLE] =
+      getCleanedTextInput(rawTripObj[DB.TRIPS_TITLE], defaultName);
+  tripObj[DB.TRIPS_DESCRIPTION] = rawTripObj[DB.TRIPS_DESCRIPTION];
+  tripObj[DB.TRIPS_DESTINATION] =
+      getCleanedTextInput(rawTripObj[DB.TRIPS_DESTINATION], defaultDestination);
+  tripObj[DB.TRIPS_START_DATE] =
+      getTimestampFromDateString(rawTripObj[DB.TRIPS_START_DATE]);
+  tripObj[DB.TRIPS_END_DATE] =
+      getTimestampFromDateString(rawTripObj[DB.TRIPS_END_DATE]);
+  tripObj[DB.TRIPS_COLLABORATORS] =
+      getCollaboratorUidArray(rawTripObj[DB.TRIPS_COLLABORATORS]);
 
-  return formattedTripObj;
+  return tripObj;
 }

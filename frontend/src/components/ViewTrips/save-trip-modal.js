@@ -39,7 +39,7 @@ class SaveTripModal extends React.Component {
     super(props);
 
     // Create Refs to reference form input elements
-    this.nameRef = React.createRef();
+    this.titleRef = React.createRef();
     this.descriptionRef = React.createRef();
     this.destinationRef = React.createRef();
     this.startDateRef = React.createRef();
@@ -57,7 +57,9 @@ class SaveTripModal extends React.Component {
     if (this.isAddTripForm) {
       collaboratorsRefArr.push(React.createRef());
     } else {
-      for (let i = 1; i < this.props.defaultFormObj.collaborators.length; i++) {
+      const numCollaborators =
+          this.props.defaultFormObj[DB.TRIPS_COLLABORATORS].length;
+      for (let i = 1; i < numCollaborators; i++) {
         collaboratorsRefArr.push(React.createRef())
       }
     }
@@ -109,17 +111,16 @@ class SaveTripModal extends React.Component {
    * Formats/cleans the form data and saves the Trip document in firestore.
    */
   saveTrip() {
-    const tripData = formatTripData(
-        {
-          name: this.nameRef.current.value,
-          description: this.descriptionRef.current.value,
-          destination: this.destinationRef.current.value,
-          startDate: this.startDateRef.current.value,
-          endDate: this.endDateRef.current.value,
-          collaboratorEmails:
-              this.state.collaboratorsRefArr.map(ref => ref.current.value),
-        }
-    );
+    const rawTripData = {};
+    rawTripData[DB.TRIPS_TITLE] = this.titleRef.current.value;
+    rawTripData[DB.TRIPS_DESCRIPTION] = this.descriptionRef.current.value;
+    rawTripData[DB.TRIPS_DESTINATION] = this.destinationRef.current.value;
+    rawTripData[DB.TRIPS_START_DATE] = this.startDateRef.current.value;
+    rawTripData[DB.TRIPS_END_DATE] = this.endDateRef.current.value;
+    rawTripData[DB.TRIPS_COLLABORATORS] =
+        this.state.collaboratorsRefArr.map(ref => ref.current.value);
+
+    const tripData = formatTripData(rawTripData);
 
     if (this.isAddTripForm) {
       this.addNewTrip(tripData);
@@ -171,12 +172,12 @@ class SaveTripModal extends React.Component {
         <Form>
           <Modal.Body>
             {createFormGroup(
-                 'tripNameGroup',                         // controlId
-                 'Trip Name',                             // formLabel
-                 'text',                                  // inputType
-                  this.nameRef,                           // ref
-                  'Enter Trip Name',                      // placeholder
-                  this.getDefaultFormField(DB.TRIPS_NAME) // defaultVal
+                 'tripTitleGroup',                         // controlId
+                 'Trip Title',                             // formLabel
+                 'text',                                   // inputType
+                  this.titleRef,                           // ref
+                  'Enter Trip Title',                      // placeholder
+                  this.getDefaultFormField(DB.TRIPS_TITLE) // defaultVal
             )}
             {createFormGroup(
                   'tripDescGroup',                               // controlId

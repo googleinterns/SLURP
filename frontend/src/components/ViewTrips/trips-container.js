@@ -18,13 +18,13 @@ const db = app.firestore();
 function getErrorElement(error) {
   return new Promise(function(resolve) {
     console.log(`Error in Trips Container: ${error}`);
-    resolve(
+    resolve((
       <div>
         <p>Oops, it looks like we were unable to load your trips.
                       Please wait a few minutes and try again.
         </p>
       </div>
-    );
+  ));
   });
 }
 
@@ -57,9 +57,10 @@ class TripsContainer extends React.Component {
    */
   async componentDidMount() {
     const curUserUid = getCurUserUid();
+
     db.collection(DB.COLLECTION_TRIPS)
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
-        .orderBy(DB.TRIPS_CREATION_TIME, 'desc')
+        .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
           const tripsContainer = querySnapshot.docs.map(doc =>
               ( <Trip
@@ -72,8 +73,8 @@ class TripsContainer extends React.Component {
           );
 
           this.setState({ trips: tripsContainer });
-        }, (error) => {
-          let errorElement = getErrorElement(error);
+        }, async (error) => {
+          const errorElement = await getErrorElement(error);
           this.setState({ trips: errorElement });
         });
   }
