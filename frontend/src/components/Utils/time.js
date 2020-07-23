@@ -5,7 +5,7 @@ import { firestore } from 'firebase';
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time.
  *
- * @param {number} msTimestamp 
+ * @param {number} msTimestamp // propagate from #88
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like '10:19 AM'.
  */
@@ -18,7 +18,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the date.
  *
- * @param {number} msTimestamp 
+ * @param {number} msTimestamp // propagate from #88
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like 'Monday, January 19, 1970'.
  */
@@ -32,7 +32,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
 /** 
  * Format a timestamp (in milliseconds) into a pretty string.
  * 
- * @param {number} msTimestamp 
+ * @param {number} msTimestamp # propagate from #88
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like 
  * 'Monday, January 19, 1970 02:48 AM PST'
