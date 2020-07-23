@@ -85,7 +85,7 @@ class EditActivity extends React.Component {
    * @param {string} defaultTz The default time zone.
    * @returns {HTML} HTML dropdown item.
    */
-  timezoneDropdown(st) {
+  timezoneDropdown(st, defaultTz) {
     const ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
     const dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
     let timezones;
@@ -144,14 +144,14 @@ class EditActivity extends React.Component {
           'formActivityStartLocation',                 // controlId
           'Start Location:',                           // formLabel
           this.countriesDropdown(this.editStartLocRef, // defaultValue ref
-            this.startTimeTzUpdate,                          // countriesDropdown tzref
+            this.editStartTzRef,                          // countriesDropdown tzref
             getField(activity, DB.ACTIVITIES_START_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.locationElementFormGroup( // END LOCATION
           'formActivityEndLocation',                 // controlId
           'End Location:',                           // formLabel
           this.countriesDropdown(this.editEndLocRef, // defaultValue ref
-            this.endTimeTzUpdate, // countriesDropdown tzref
+            this.editEndTzRef, // countriesDropdown tzref
             getField(activity, DB.ACTIVITIES_END_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.dateTimeTzFormGroup( // START TIME
