@@ -87,7 +87,7 @@ export function timezonesForCountry(countryName) {
  */
 export function getDateBarebones(msTimestamp, timezone=null) {
   if (timezone === null) {
-    return moment.tz(parseFloat(msTimestamp), '').format('YYYY-MM-DD');
+    return moment.tz(parseFloat(msTimestamp), '').format('YYYY-MM-DD'); // GMT
   }
   return moment.tz(parseFloat(msTimestamp), timezone).format('YYYY-MM-DD');
 }
@@ -101,7 +101,7 @@ export function getDateBarebones(msTimestamp, timezone=null) {
  */
 export function get24hTime(msTimestamp, timezone=null) {
   if (timezone === null) {
-    return moment.tz(parseFloat(msTimestamp), '').format('HH:mm');
+    return moment.tz(parseFloat(msTimestamp), '').format('HH:mm'); // GMT
   }
   return moment.tz(parseFloat(msTimestamp), timezone).format('HH:mm');
 }
