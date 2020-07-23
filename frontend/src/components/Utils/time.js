@@ -4,13 +4,15 @@ import { firestore } from 'firebase';
 
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time like
- * '10.19 AM'.
+ * '10:19 AM'.
  *
  * @param {number} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
  * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
+  // Formats from https://momentjs.com/docs/#/displaying/format/
+  // LT = Localized time
   return moment.tz(parseFloat(msTimestamp), timezone).format('LT');
 }
 
@@ -23,6 +25,9 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
+  // Formats from https://momentjs.com/docs/#/displaying/format/
+  // dddd = Day of the week (i.e. Monday)
+  // LL = "January 19, 1970"
   return moment.tz(parseFloat(msTimestamp), timezone).format('dddd, LL');
 }
 
@@ -35,6 +40,9 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
+  // Formats from https://momentjs.com/docs/#/displaying/format/
+  // LLLL = "Monday, January 19, 1970 2:48 AM"
+  // z = "PST"
   return moment.tz(parseFloat(msTimestamp), timezone).format('LLLL z');
 }
 
