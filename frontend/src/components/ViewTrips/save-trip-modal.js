@@ -126,7 +126,6 @@ class SaveTripModal extends React.Component {
     } else {
       this.updateExistingTrip(this.props.tripId, tripData);
     }
-
   }
 
   /**
