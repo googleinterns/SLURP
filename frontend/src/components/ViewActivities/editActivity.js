@@ -18,7 +18,7 @@ class EditActivity extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = {startTzRef: false, endTzRef: false};
+    this.state = {startTzChanged: false, endTzChanged: false};
 
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
@@ -70,8 +70,8 @@ class EditActivity extends React.Component {
 
   // "Flip switch" on timezone dropdown so the dropdown's contents update to the 
   // selected country's timezones. 
-  startTimeTzUpdate = () => { this.setState({startTz : !this.state.startTz})};
-  endTimeTzUpdate = () => { this.setState({endTz : !this.state.endTz})};
+  startTimeTzUpdate = () => { this.setState({startTzChanged : !this.state.startTzChanged})};
+  endTimeTzUpdate = () => { this.setState({endTzChanged : !this.state.endTzChanged})};
 
   /**
    * Returns a dropdown of all the timezones.
@@ -99,7 +99,7 @@ class EditActivity extends React.Component {
     return (
       <Form.Control as='select'
         ref={st === 'start' ? this.editStartTzRef : this.editEndTzRef}
-        key={st === 'start' ? this.state.startTz : this.state.endTz}
+        key={st === 'start' ? this.state.startTzChanged : this.state.endTzChanged}
         defaultValue={defaultTz}
       >
         {timezones.map((item, index) => {
