@@ -51,7 +51,7 @@ public class ConvertUidsToEmailsServlet extends HttpServlet {
    * functions.
    */
   private List<UserIdentifier> getUserIdentifiers(Reader json) {
-    Type typeOfListString = new TypeToken<List<String>>() {}.getType();
+    Type typeOfListString = new TypeToken<List<String>>(){}.getType();
     List<String> userUids = new Gson().fromJson(json, typeOfListString);
     return userUids.stream()
                    .map(uid -> new UidIdentifier(uid))

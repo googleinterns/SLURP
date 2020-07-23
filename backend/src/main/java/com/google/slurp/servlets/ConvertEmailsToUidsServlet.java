@@ -59,10 +59,11 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
    *         <code>getUsers</code> or <code>getUsersAsync</code> functions.
    */
   private List<UserIdentifier> getUserIdentifiers(Reader json) {
-    Type typeOfListString = new TypeToken<List<String>>() {
-    }.getType();
+    Type typeOfListString = new TypeToken<List<String>>(){}.getType();
     List<String> userEmails = new Gson().fromJson(json, typeOfListString);
-    return userEmails.stream().map(email -> new EmailIdentifier(email)).collect(Collectors.toList());
+    return userEmails.stream()
+                     .map(email -> new EmailIdentifier(email))
+                     .collect(Collectors.toList());
   }
 
   /**
@@ -130,7 +131,7 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
       error.printStackTrace();
       return;
     }
-    
+
     List<String> uidsToReturn = Stream.concat(userUids.stream(), remainingUids.stream())
                                       .collect(Collectors.toList());
     response.setContentType("application/json");
