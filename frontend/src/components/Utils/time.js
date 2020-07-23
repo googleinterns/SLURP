@@ -87,7 +87,7 @@ export function timezonesForCountry(countryName) {
  */
 export function getISODate(msTimestamp, timezone=null) {
   if (timezone === null) {
-    return moment.tz(parseFloat(msTimestamp), '').format('YYYY-MM-DD'); // GMT
+    timezone = ''; // GMT
   }
   return moment.tz(parseFloat(msTimestamp), timezone).format('YYYY-MM-DD');
 }

@@ -1,8 +1,42 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
+import * as time from '../Utils/time.js';
 import Firebase from 'firebase';
 
 const db = app.firestore();
+
+/**
+ * Get the field of field name `fieldName` from `activity  or the default value.
+ * 
+ * @param {Object} activity Activity to get field from.
+ * @param {string} fieldName Name of the field in the activity to get. 
+ * @param {*} defaultValue Default value to return if activity[fieldName] can't be found. 
+ * Can be any type.
+ * @param {string} prefix The prefix to put before a returned value if the field exists.
+ * @returns `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
+ */
+export function getField(activity, fieldName, defaultValue=null, prefix=''){
+  if (activity[fieldName] === null || activity[fieldName] === undefined) {
+    return defaultValue;
+  }
+  return prefix + activity[fieldName];
+}
+
+/**
+ * Put a and b in display order. 
+ * @param {dictionary} a Dictionary representing activity a and its fields. 
+ * @param {dictionary} b Dictionary representing activity b and its fields.
+ */
+export function compareActivities(a, b) {
+  if (a[DB.ACTIVITIES_START_TIME] < b[DB.ACTIVITIES_START_TIME]) {
+    return 1;
+  } else if (a[DB.ACTIVITIES_START_TIME] > b[DB.ACTIVITIES_START_TIME]) {
+    return -1;
+  } else if (a[DB.ACTIVITIES_END_TIME] > b[DB.ACTIVITIES_END_TIME]) {
+    return -1;
+  }
+  return 1;
+}
 
 /**
  * Sort a list of trip activities by date. 
@@ -13,8 +47,8 @@ const db = app.firestore();
 export function sortByDate(tripActivities) {
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
   for (let activity of tripActivities) {
-    const activityDate = new Date(activity[DB.ACTIVITIES_START_TIME]);
-    const dateKey = activityDate.toLocaleDateString()
+    const dateKey = time.getISODate(activity[DB.ACTIVITIES_START_TIME], 
+      getField(activity, DB.ACTIVITIES_START_TZ));
     if (activities.has(dateKey)) {
       activities.get(dateKey).add(activity);
     } else {
@@ -26,40 +60,6 @@ export function sortByDate(tripActivities) {
   let activitiesSorted = Array.from(activities).sort(compareActivities);
   
   return activitiesSorted;
-}
-
-/**
- * Put a and b in display order. 
- * @param {dictionary} a Dictionary representing activity a and its fields. 
- * @param {dictionary} b Dictionary representing activity b and its fields.
- */
-export function compareActivities(a, b) {
-  if (a[DB.ACTIVITIES_START_TIME] < b[DB.ACTIVITIES_START_TIME]) {
-    return -1;
-  } else if (a[DB.ACTIVITIES_START_TIME] > b[DB.ACTIVITIES_START_TIME]) {
-    return 1;
-  } else if (a[DB.ACTIVITIES_END_TIME] > b[DB.ACTIVITIES_END_TIME]) {
-    return 1;
-  }
-  return -1;
-}
-
-
-/**
- * Get the field of field name `fieldName` from `activity  or the default value.
- * 
- * @param {Object} activity Activity to get field from.
- * @param {string} fieldName Name of the field in the activity to get. 
- * @param defaultValue Default value to return if activity[fieldName] can't be found. 
- * Can be any type.
- * @param {string} prefix The prefix to put before a returned value if the field exists.
- * @returns `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
- */
-export function getField(activity, fieldName, defaultValue=null, prefix=''){
-  if (activity[fieldName] === null || activity[fieldName] === undefined) {
-    return defaultValue;
-  }
-  return prefix + activity[fieldName];
 }
 
 /**
