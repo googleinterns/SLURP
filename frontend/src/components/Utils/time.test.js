@@ -122,8 +122,8 @@ test('other time 24h format', () => {
 test('ISODate crazy queries', () => {  
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
   const expected = "2020-08-23";
-  expect(utils.getDateBarebones(testDate, '')).toBe(expected);
-  expect(utils.getDateBarebones(testDate, null)).toBe(expected);
+  expect(utils.getISODate(testDate, '')).toBe(expected);
+  expect(utils.getISODate(testDate, null)).toBe(expected);
 })
 
 test('firestore Timestamp format', () => {
@@ -132,7 +132,6 @@ test('firestore Timestamp format', () => {
   // singapore = 'Sunday, August 23, 2020, 10:03 AM';
   const actualCentral = utils.getFirebaseTime("21:03", "2020-08-22", TZ_CHICAGO)
   const actualSingapore = utils.getFirebaseTime("10:03", "2020-08-23", TZ_SINGAPORE);
-  console.log(actualCentral);
   expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
   expect(actualSingapore.toDate()).toEqual(testDate);
 });
