@@ -22,13 +22,32 @@ class ViewActivities extends React.Component {
   }
 
   /**
+   * Create an empty activity (with filler information) to edit and then display.
+   * Allows us to use editActivity instead of creating a whole new form for it. 
+   * 
+   * @param {string} tripId The tripId to attach to this new activity.
+   * @return {Object} Data filled into new Activity.
+   */
+  createEmptyActivity = (tripId) => {
+    const newAct = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
+      .collection(DB.COLLECTION_ACTIVITIES).doc();
+    const data = { 
+      fillerstamp : firestore.Timestamp.now(), 
+      id: newAct.id, 
+      tripId: tripId
+    };
+    newAct.set(data);
+    return data;
+  }
+
+  /**
    * Complete "Add Activity" operation
    */
   addActivity = (e) => {
     e.preventDefault();
     this.setState({ addingActivity: true });
 
-    const newData = this.emptyActivity(this.props.match.params.tripId);
+    const newData = this.createEmptyActivity(this.props.match.params.tripId);
     this.setState({ newAct: newData });
   }
 
@@ -41,24 +60,6 @@ class ViewActivities extends React.Component {
       newAct: null 
     }); 
   };
-
-  /**
-   * Create an empty activity (with filler information) to edit and then display.
-   * Allows us to use editActivity instead of creating a whole new form for it. 
-   * 
-   * @param {string} tripId The tripId to attach to this new activity.
-   */
-  emptyActivity = (tripId) => {
-    const newAct = db.collection(DB.COLLECTION_TRIPS).doc(tripId)
-      .collection(DB.COLLECTION_ACTIVITIES).doc();
-    const data = { 
-      fillerstamp : firestore.Timestamp.now(), 
-      id: newAct.id, 
-      tripId: tripId
-    };
-    newAct.set(data);
-    return data;
-  }
 
   render() {
     const tripId = this.props.match.params.tripId;
