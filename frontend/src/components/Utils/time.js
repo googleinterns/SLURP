@@ -5,7 +5,7 @@ import { firestore } from 'firebase';
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time.
  *
- * @param {int} msTimestamp 
+ * @param {number} msTimestamp 
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like '10:19 AM'.
  */
@@ -16,7 +16,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the date.
  *
- * @param {string} msTimestamp 
+ * @param {number} msTimestamp 
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like 'Monday, January 19, 1970'.
  */
@@ -27,7 +27,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
 /** 
  * Format a timestamp (in milliseconds) into a pretty string.
  * 
- * @param {string} msTimestamp 
+ * @param {number} msTimestamp 
  * @param {string} timezone 
  * @returns {string} Time formatted into a string like 
  * 'Monday, January 19, 1970 02:48 AM PST'
@@ -58,7 +58,7 @@ export function timezonesForCountry(countryName) {
 /**
  * Get a date in 'YYYY-MM-DD' format. 
  * 
- * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
  * @returns {string} The date in 'YYYY-MM-DD' format. 
  */
@@ -72,7 +72,7 @@ export function getDateBarebones(msTimestamp, timezone=null) {
 /**
  * Get a time in 24-hour ('HH:mm') format. 
  * 
- * @param {string} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
  * @returns {string} The time in 24-hour (HH:mm) format.   
  */
