@@ -117,6 +117,17 @@ The Jest testing framework was installed as a dependency. From the command line,
 ### Backend:
 JUnit and Maven is used to run backend testing, following the same structure as Week 5 of the Google STEP Internship.
 
+## Generating JSDoc
+JSDoc 3 is used to generate documentation for all JS source code for this
+project. To generate the docs for this project, run (from anywhere inside the
+project directory):
+```
+npm run docs
+```
+The generated documentation will live in the directory `frontend/docs`.
+The configuration rules for the JSDoc generation are specified in
+`/frontend/.jsdoc.conf.json`.
+
 ## Running Locally
 First, ensure that you have installed and are using Node 10!
 ```
