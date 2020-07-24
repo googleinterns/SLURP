@@ -62,7 +62,7 @@ public class ConvertUidsToEmailsServlet extends HttpServlet {
    * {@inheritDoc}
    *
    * Given a JSON array of user UIDs, sends back to the response a JSON array of the corresponding
-   * user emails. On error, sends an empty response.
+   * user emails in alphabetical order. On error, sends an empty response.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

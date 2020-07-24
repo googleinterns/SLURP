@@ -92,9 +92,9 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
    * {@inheritDoc}
    *
    * Given a JSON array of user emails, sends back to the response a JSON array of the corresponding
-   * user UIDs. For any given email that is not yet associated with a user, a new account is created
-   * with that email and the generated UID is returned with the rest of the UIDs. On error, sends an
-   * empty response.
+   * user UIDs in alphabetical order. For any given email that is not yet associated with a user, a
+   * new account is created with that email and the generated UID is returned with the rest of the
+   * UIDs. On error, sends an empty response.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
