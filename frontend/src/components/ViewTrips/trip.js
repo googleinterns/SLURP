@@ -4,31 +4,10 @@ import Button from 'react-bootstrap/Button';
 
 import { timestampToISOString } from '../Utils/time.js';
 import { getUserEmailArrFromUserUidArr } from '../Utils/temp-auth-utils.js';
+import { getDateRangeString } from '../Utils/time.js'
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 import * as DB from '../../constants/database.js';
-
-/**
- * Returns the string date range of the trip associated with the Trip document
- * start and end date timestamps.
- *
- * Note: When the Firestore Timestamps contained in `tripObj` converted to js
- *    dates, the months are 0 indexed rather than 1 indexed so they must be
- *    incremented by 1 in order for the month to be correct.
- *
- * @param {!firebase.firestore.Timestamp} startDateTimestamp Firestore timestamp
- *     Object corresponding to the trip start date.
- * @param {!firebase.firestore.Timestamp} endDateTimestamp Firestore timestamp
- *     Object corresponding to the trip end date.
- * @return {string} Date range of the trip in the form 'MM/DD/YYY - MM/DD/YYY'.
- */
-export function getDateRange(startDateTimestamp, endDateTimestamp) {
-  const startDate = startDateTimestamp.toDate();
-  const endDate = endDateTimestamp.toDate();
-  return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
-      `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
-      `${endDate.getDate()}/${endDate.getFullYear()}`;
-}
 
 /**
  *
@@ -82,7 +61,7 @@ const Trip = (props) => {
     <div>
       <h2>{title}</h2>
       <p>{destination}</p>
-      <p>{getDateRange(startDateTimestamp, endDateTimestamp)}</p>
+      <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
       <p>{description}</p>
       <p>{collaboratorEmailsStr}</p>
 
