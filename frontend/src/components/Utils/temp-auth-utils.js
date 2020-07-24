@@ -16,7 +16,7 @@ import authUtils from '../AuthUtils';
  * @return {string} Fake user uid string the form '_userEmail_'.
  */
 export function getCurUserUid() {
-  return getUserUidArrFromUserEmailArr([authUtils.getCurUserEmail()]).pop();
+  return '_' + authUtils.getCurUserEmail() + '_';
 }
 
 /**
