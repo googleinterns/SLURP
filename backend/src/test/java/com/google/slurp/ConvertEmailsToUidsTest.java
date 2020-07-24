@@ -30,6 +30,7 @@ public class ConvertEmailsToUidsTest extends Mockito {
   private static final String USER_1_UID = "\"Eq00IcXeNbfwgL8ZAIHw4Alp9i53\"";
   private static final String USER_2_UID = "\"IjtXS7Py9ZeorDRPmsY52RBWhop1\"";
 
+  // Lists of UIDs and expected lists of emails, constructed from the test users.
   private static final String TWO_EMAILS_LIST =
       String.format("[%s,%s]\n", USER_1_EMAIL, USER_2_EMAIL);
   private static final String EMPTY_EMAIL_LIST = "[]\n";

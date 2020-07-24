@@ -24,7 +24,7 @@ import org.mockito.Mockito;
 /** */
 @RunWith(JUnit4.class)
 public class ConvertUidsToEmailsTest extends Mockito {
-  // These are the test accounts registered with Firebase Authentication.
+  // These are the test accounts registered with Firebase Authentication, with some fake users.
   private static final String USER_1_UID = "\"Eq00IcXeNbfwgL8ZAIHw4Alp9i53\"";
   private static final String USER_2_UID = "\"IjtXS7Py9ZeorDRPmsY52RBWhop1\"";
   private static final String USER_1_EMAIL = "\"step2020.53.test1@gmail.com\"";
@@ -32,6 +32,7 @@ public class ConvertUidsToEmailsTest extends Mockito {
   private static final String USER_FAKE1_UID = "\"totally_legit_uid\"";
   private static final String USER_FAKE2_UID = "\"super_cool_dude\"";
 
+  // Lists of UIDs and expected lists of emails, constructed from the test users.
   private static final String TWO_UIDS_LIST = String.format("[%s,%s]\n", USER_1_UID, USER_2_UID);
   private static final String EMPTY_UID_LIST = "[]\n";
   private static final String UID_LIST_WITH_FAKE =
