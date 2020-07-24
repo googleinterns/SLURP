@@ -30,7 +30,7 @@ class ViewTrips extends React.Component {
     this.state = { showModal: false,
                    refreshSaveTripModal: false,
                    tripId: null,
-                   defaultFormObj: null,
+                   defaultFormData: null,
                  };
   }
 
@@ -65,7 +65,7 @@ class ViewTrips extends React.Component {
   showAddTripModal = () => {
     this.setState({
       tripId: null,
-      defaultFormObj: null,
+      defaultFormData: null,
     });
     this.showSaveTripModal();
   }
@@ -82,9 +82,10 @@ class ViewTrips extends React.Component {
   *     that will be editted.
    */
   showEditTripModal = (tripId, tripData) => {
+    console.log(tripData);
     this.setState({
       tripId: tripId,
-      defaultFormObj: tripData
+      defaultFormData: tripData,
     });
     this.showSaveTripModal();
   }
@@ -98,7 +99,7 @@ class ViewTrips extends React.Component {
           show={this.state.showModal}
           handleClose={this.hideSaveTripModal}
           tripId={this.state.tripId}
-          defaultFormObj={this.state.defaultFormObj}
+          defaultFormData={this.state.defaultFormData}
           key={this.state.refreshSaveTripModal}
         />
         <div className="manage-trips-bar">
