@@ -23,8 +23,8 @@ export function getCurUserUid() {
  * Temporary 'fake'/hardcoded function that returns the an array of 'fake' user
  * uids given an array of user emails.
  *
- * @param {!Array<string>} userEmailArr User email strings.
- * @return {!Array<string>} Fake uuids corresponding to the user emails
+ * @param {!string[]} userEmailArr User email strings.
+ * @return {!string[]} Fake uuids corresponding to the user emails
  *     in `userEmailArr`.
  */
 export function getUserUidArrFromUserEmailArr(userEmailArr) {
@@ -35,9 +35,9 @@ export function getUserUidArrFromUserEmailArr(userEmailArr) {
  * Temporary 'fake'/hardcoded function that returns the an array of user emails
  * given an array of 'fake' user uids.
  *
- * @param {!Array<string>} uuidArr Fake user uids that are in the
+ * @param {!string[]} uuidArr Fake user uids that are in the
  *     form `_userEmail_`.
- * @return {!Array<string>} User emails corresponding to the user uids
+ * @return {!string[]} User emails corresponding to the user uids
  *     in `uuidArr`.
  */
 export function getUserEmailArrFromUserUidArr(uuidArr) {
