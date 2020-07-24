@@ -25,8 +25,7 @@ const db = app.firestore();
 /**
  * Sort a list of trip activities by date. 
  * @param {!ActivityInfo[]} tripActivities Array of activities.
- * @return {DayOfActivities[]} List of trip activities in the form
- * <pre><code>[ , ...]</code></pre>
+ * @return {DayOfActivities[]} List of {@link DayOfActivities}
  * in chronological order by date.
  */
 export function sortByDate(tripActivities) {
