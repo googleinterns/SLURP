@@ -18,28 +18,28 @@ const LIMIT_QUERY_DOCS_RETRIEVED = 5;
  *        component upon trip creation (Remove when fix Issue #62).
  */
 const DeleteTripsButton = (props) => {
-   /**
+  /**
    * Deletes documents in query with a batch delete.
    *
    * This was taken from the delete collection snippets in the documentation
    * at https://firebase.google.com/docs/firestore/manage-data/delete-data.
-    *
-    * @param {firebase.firestore.Firestore} db Firestore database instance.
-    * @param {firebase.firestore.Query} query Query containing documents from
-    *     the activities subcollection of a trip documents.
-    * @param {Function} resolve Resolve function that returns a void Promise.
-    */
+   *
+   * @param {firebase.firestore.Firestore} db Firestore database instance.
+   * @param {firebase.firestore.Query} query Query containing documents from
+   *     the activities subcollection of a trip documents.
+   * @param {Function} resolve Resolve function that returns a void Promise.
+   */
   async function deleteQueryBatch(db, query, resolve) {
     const snapshot = await query.get();
 
     const batchSize = snapshot.size;
     if (batchSize === 0) {
-      // When there are no documents left, we are done
+      // When there are no documents left, we are done.
       resolve();
       return;
     }
 
-    // Delete documents in a batch
+    // Delete documents in a batch.
     const batch = db.batch();
     snapshot.docs.forEach((doc) => {
       batch.delete(doc.ref);
@@ -54,14 +54,14 @@ const DeleteTripsButton = (props) => {
   }
 
   /**
-   * Deletes a trips subcollection of activities corrsponding to the
+   * Deletes a trip's subcollection of activities corresponding to the
    * `tripId` prop.
    *
    * This was adapted from the delete collection snippets in the documentation
    * at https://firebase.google.com/docs/firestore/manage-data/delete-data.
    *
-   * TODO(Issue #81): Consider deleting data with callabable cloud function
-   * https://firebase.google.com/docs/firestore/solutions/delete-collections
+   * TODO(Issue #81): Consider deleting data with callable cloud function
+   * https://firebase.google.com/docs/firestore/solutions/delete-collections.
    */
   async function deleteTripActivities() {
     const query = db.collection(DB.COLLECTION_TRIPS)
