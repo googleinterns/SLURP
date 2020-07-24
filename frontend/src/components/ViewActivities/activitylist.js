@@ -49,8 +49,9 @@ class ActivityList extends React.Component {
         tripActivities.push(data);
       })
     });
-    this.setState({databaseChanged : !this.state.databaseChanged});
-    return tripActivities;
+    this.setState({
+      databaseChanged : !this.state.databaseChanged,
+       tripActivities: tripActivities});
   }
 
   /** 
