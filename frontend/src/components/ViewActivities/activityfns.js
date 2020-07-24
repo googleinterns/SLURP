@@ -1,31 +1,25 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
+import * as time from '../Utils/time.js';
 import Firebase from 'firebase';
 
 const db = app.firestore();
 
 /**
- * Sort a list of trip activities by date. 
- * @param {Array} tripActivities Array of activities.
- * @returns List of trip activities in the form
- * [ ['MM/DD/YYYY', [activities on that day]], ...] in chronological order by date.
+ * Get the field of field name `fieldName` from `activity  or the default value.
+ * 
+ * @param {Object} activity Activity to get field from.
+ * @param {string} fieldName Name of the field in the activity to get. 
+ * @param {?*} [defaultValue=null] Default value to return if activity[fieldName] can't be found. 
+ * Can be any type.
+ * @param {string} [prefix=''] The prefix to put before a returned value if the field exists.
+ * @return `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
  */
-export function sortByDate(tripActivities) {
-  let activities = new Map(); // { MM/DD/YYYY: [activities] }.
-  for (let activity of tripActivities) {
-    const activityDate = new Date(activity[DB.ACTIVITIES_START_TIME]);
-    const dateKey = activityDate.toLocaleDateString()
-    if (activities.has(dateKey)) {
-      activities.get(dateKey).add(activity);
-    } else {
-      activities.set(dateKey, new Set([activity]));
-    }
+export function getField(activity, fieldName, defaultValue=null, prefix=''){
+  if (activity[fieldName] === null || activity[fieldName] === undefined) {
+    return defaultValue;
   }
-
-  // Sort activities by date.
-  let activitiesSorted = Array.from(activities).sort(compareActivities);
-  
-  return activitiesSorted;
+  return prefix + activity[fieldName];
 }
 
 /**
@@ -44,22 +38,28 @@ export function compareActivities(a, b) {
   return -1;
 }
 
-
 /**
- * Get the field of field name `fieldName` from `activity  or the default value.
- * 
- * @param {Object} activity Activity to get field from.
- * @param {string} fieldName Name of the field in the activity to get. 
- * @param defaultValue Default value to return if activity[fieldName] can't be found. 
- * Can be any type.
- * @param {string} prefix The prefix to put before a returned value if the field exists.
- * @returns `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
+ * Sort a list of trip activities by date. 
+ * @param {Array} tripActivities Array of activities.
+ * @return List of trip activities in the form
+ * [ ['MM/DD/YYYY', [activities on that day]], ...] in chronological order by date.
  */
-export function getField(activity, fieldName, defaultValue=null, prefix=''){
-  if (activity[fieldName] === null || activity[fieldName] === undefined) {
-    return defaultValue;
+export function sortByDate(tripActivities) {
+  let activities = new Map(); // { MM/DD/YYYY: [activities] }.
+  for (let activity of tripActivities) {
+    const dateKey = time.getISODate(activity[DB.ACTIVITIES_START_TIME], 
+      getField(activity, DB.ACTIVITIES_START_TZ));
+    if (activities.has(dateKey)) {
+      activities.get(dateKey).add(activity);
+    } else {
+      activities.set(dateKey, new Set([activity]));
+    }
   }
-  return prefix + activity[fieldName];
+
+  // Sort activities by date.
+  let activitiesSorted = Array.from(activities).sort(compareActivities);
+  
+  return activitiesSorted;
 }
 
 /**
@@ -68,7 +68,7 @@ export function getField(activity, fieldName, defaultValue=null, prefix=''){
  * @param {string} tripId Database ID of the trip whose actiivty should be modified.
  * @param {string} activityId Database ID of the activity to be modified.
  * @param {Object} newValues Dictionary of the new values in {fieldName: newValue} form
- * @returns {boolean} true if the write was successful, false otherwise.
+ * @return {boolean} true if the write was successful, false otherwise.
  */
 export async function writeActivity(tripId, activityId, newValues) {
   // todo: check if tripId or activityId is not valid. (#58)
