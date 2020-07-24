@@ -114,7 +114,7 @@ class EditActivity extends React.Component {
   /**
    * Delete this activity. 
    * 
-   * @returns true if the activity was successfully deleted.
+   * @return true if the activity was successfully deleted.
    */
   async deleteActivity() {
     if (window.confirm(`Are you sure you want to delete ${this.props.activity[DB.ACTIVITIES_TITLE]}?`
