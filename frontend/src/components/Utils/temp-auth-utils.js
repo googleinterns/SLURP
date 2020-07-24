@@ -2,7 +2,7 @@
  * @fileoverview This is a temporary file that is used to implement 'fake'
  * versions of the Auth utility functions used in the ViewTrips components.
  *
- * TODO(Issue 55): Remove this whole file function and replace any imports to
+ * TODO(Issue #55): Remove this whole file function and replace any imports to
  *                 this file with Auth utils.
  */
 
@@ -10,7 +10,7 @@
 /**
  * Temporary hardcoded function that returns the current users email.
  *
- * @return Hardcoded user email string.
+ * @return {string} Hardcoded user email string.
  */
 export function getCurUserEmail() {
   return 'matt.murdock';
@@ -19,7 +19,7 @@ export function getCurUserEmail() {
 /**
  * Temporary hardcoded function that returns the current users uid.
  *
- * @return Hardcoded user uid string.
+ * @return {string} Hardcoded user uid string.
  */
 export function getCurUserUid() {
   return getUserUidFromUserEmail(getCurUserEmail());

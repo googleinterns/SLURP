@@ -48,9 +48,9 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  * attacks. Thus, no sanitization is needed for text inputs besides providing a
  * default value in a Trip field where applicable.
  *
- * @param {Object} rawTripObj A JS Object containing the raw form data from the
+ * @param {!Object} rawTripObj A JS Object containing the raw form data from the
  *     add trip form.
- * @return {Object} Formatted/cleaned version of `rawTripObj` holding the data
+ * @return {!Object} Formatted/cleaned version of `rawTripObj` holding the data
  *     for the new Trip document that is to be created.
  */
 export function formatTripData(rawTripObj) {

@@ -19,14 +19,7 @@ class ViewTrips extends React.Component {
                    refreshTripsContainer: false,
                    refreshSaveTripModal: false,
                    tripId: null,
-                   placeholderObj: {
-                                     name:          null,
-                                     description:   null,
-                                     destination:   null,
-                                     startDate:     null,
-                                     endDate:       null,
-                                     collaborators: []
-                                   }
+                   defaultFormObj: null,
                  };
   }
 
@@ -75,14 +68,7 @@ class ViewTrips extends React.Component {
   showAddTripModal = () => {
     this.setState({
       tripId: null,
-      placeholderObj: {
-        name:          'Enter Trip Name',
-        description:   'Enter Trip Description',
-        destination:   'Enter Trip Destination',
-        startDate:     '',
-        endDate:       '',
-        collaborators: ['person@email.xyz']
-      }
+      defaultFormObj: null,
     });
     this.showSaveTripModal();
   }
@@ -94,19 +80,11 @@ class ViewTrips extends React.Component {
    * to ensure the modal has the visual characteristics of an "edit trip" modal
    * and overwrites and existing Trip document in the database.
    *
-   * TODO(Issue #69): Get individual tripId and trip data for placeholderObj.
    */
-  showEditTripModal = () => {
+  showEditTripModal = (tripId, tripData) => {
     this.setState({
-      tripId: null,
-      placeholderObj: {
-        name:          null,
-        description:   null,
-        destination:   null,
-        startDate:     null,
-        endDate:       null,
-        collaborators: []
-      }
+      tripId: tripId,
+      defaultFormObj: tripData
     });
     this.showSaveTripModal();
   }
@@ -121,7 +99,7 @@ class ViewTrips extends React.Component {
           handleClose={this.hideSaveTripModal}
           refreshTripsContainer={this.refreshTripsContainer}
           tripId={this.state.tripId}
-          placeholderObj={this.state.placeholderObj}
+          defaultFormObj={this.state.defaultFormObj}
           key={this.state.refreshSaveTripModal}
         />
         <div className="manage-trips-bar">
@@ -130,6 +108,7 @@ class ViewTrips extends React.Component {
           </Button>
         </div>
         <TripsContainer
+          handleEditTrip={this.showEditTripModal}
           key={this.state.refreshTripsContainer}
         />
       </div>
