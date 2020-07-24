@@ -6,13 +6,25 @@ import Header from '../Header/';
 import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
+/**
+ * A trip object containing the data stored in a trip document in Firestore.
+ * @typedef {Object} TripData
+ * @property {string} title The trips's title.
+ * @property {string} description A description of the trip.
+ * @property {string} destination The general destination of the trip.
+ * @property {firebase.firestore.Timestamp} start_date Start date Firestore
+ *     timestamp object.
+ * @property {firebase.firestore.Timestamp} end_date End date Firestore
+ *     timestamp object
+ * @property {!string[]} collaborators An array of collaborator uids.
+ */
 
 /**
  * ViewTrips component that defines the page where a user can view and manage
  * their current trips.
  */
 class ViewTrips extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor() {
     super();
     this.state = { showModal: false,
@@ -65,6 +77,9 @@ class ViewTrips extends React.Component {
    * to ensure the modal has the visual characteristics of an "edit trip" modal
    * and overwrites and existing Trip document in the database.
    *
+  * @param {string} tripId Document ID for the current Trip document.
+  * @param {!TripData} tripData Contains the data for the Trip document that
+  *     that will be editted.
    */
   showEditTripModal = (tripId, tripData) => {
     this.setState({
@@ -74,7 +89,7 @@ class ViewTrips extends React.Component {
     this.showSaveTripModal();
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     return (
       <div className="view-trips-page">
