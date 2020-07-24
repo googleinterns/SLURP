@@ -7,7 +7,7 @@ import * as DB from '../../constants/database.js';
 
 /**
  * An object containing the raw input data from a SaveTripModal form.
- * @typedef {Object} rawTripData
+ * @typedef {Object} RawTripData
  * @property {string} title The trips's title.
  * @property {string} description A description of the trip.
  * @property {string} destination The general destination of the trip.
@@ -18,7 +18,7 @@ import * as DB from '../../constants/database.js';
 
 /**
  * A trip object containing the data stored in a trip document in Firestore.
- * @typedef {Object} tripData
+ * @typedef {Object} TripData
  * @property {string} title The trips's title.
  * @property {string} description A description of the trip.
  * @property {string} destination The general destination of the trip.
@@ -78,9 +78,9 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  * included. This means, only the value corresponding to each key needs to be
  * checked.
  *
- * @param {!rawTripData} rawTripData A JS Object containing the raw form data
+ * @param {!RawTripData} rawTripData A JS Object containing the raw form data
  *     from the add trip form.
- * @return {!tripData} Formatted/cleaned version of {@link rawTripData}
+ * @return {!TripData} Formatted/cleaned version of {@link RawTripData}
  *     holding the data for the new Trip document that is to be created.
  */
 export function formatTripData(rawTripData) {
