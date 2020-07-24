@@ -61,8 +61,11 @@ export function timestampToFormatted(msTimestamp, timezone = "America/New_York")
 /**
  * Return a Firestore Timestamp corresponding to the date in `dateStr`.
  *
+ * TODO(Issue #89): Remove this function when integrating timezones for the
+ * ViewTrips components.
+ *
  * @param {string} dateStr String containing a date in the form 'YYYY-MM-DD'.
- * @return {firebase.firestore.Timestamp} Firestore timestamp object created.
+ * @return {firebase.firestore.Timestamp} Firestore timestamp object.
  */
 export function getTimestampFromDateString(dateStr) {
   const dateParts = dateStr.split('-').map(str => +str);
@@ -78,6 +81,9 @@ export function getTimestampFromDateString(dateStr) {
  * Formats a Firestore timestamp into a date string in ISO format.
  *
  * No tests for this function because there is no logic.
+ *
+ * TODO(Issue #89): Remove this function when integrating timezones for the
+ * ViewTrips components.
  *
  * @param {firebase.firestore.Timestamp} timestamp Firestore timestamp object.
  * @return {string} ISO formatted date string: "YYYY-MM-DD or 2020-05-12".
