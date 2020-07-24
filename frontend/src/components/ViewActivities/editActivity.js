@@ -77,6 +77,7 @@ class EditActivity extends React.Component {
    * Returns a dropdown of all the timezones.
    * 
    * @param st either 'start' or 'end' depending on whether the timezone is for the start or end timezone.
+   * @return {HTML} timezone dropdown.
    */
   timezonePicker(st) {
     return (
@@ -97,6 +98,7 @@ class EditActivity extends React.Component {
    * 
    * @param ref The reference to attach to the dropdown.
    * @param tzchange The function to run to update the time zone picker.
+   * @return {HTML} Country dropdown.
    */
   countriesDropdown(ref, tzref) {
     return (
@@ -114,7 +116,7 @@ class EditActivity extends React.Component {
   /**
    * Delete this activity. 
    * 
-   * @return true if the activity was successfully deleted.
+   * @return {boolean} true if the activity was successfully deleted.
    */
   async deleteActivity() {
     if (window.confirm(`Are you sure you want to delete ${this.props.activity[DB.ACTIVITIES_TITLE]}?`
