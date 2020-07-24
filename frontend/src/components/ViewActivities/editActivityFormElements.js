@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 
-// This file waas written after #87 was created. 
+// This file was written after #87 was created. 
 // As a result, some fields and functions may not be used yet. 
 const TITLEWIDTH = 3;
 const COUNTRYWIDTH = 6;

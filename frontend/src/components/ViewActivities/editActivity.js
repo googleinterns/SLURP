@@ -80,10 +80,10 @@ class EditActivity extends React.Component {
    * 
    * Tests done manually using UI.
    * 
-   * @param {string} st Either 'start' or 'end' depending on whether the 
+   * @param {!string} st Either 'start' or 'end' depending on whether the 
    * timezone is for the start or end timezone.
-   * @param {string} defaultTz The default time zone.
-   * @returns {HTML} HTML dropdown item.
+   * @param {!string} defaultTz The default time zone.
+   * @return {HTML} HTML dropdown item.
    */
   timezoneDropdown(st, defaultTz) {
     const ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
@@ -118,7 +118,7 @@ class EditActivity extends React.Component {
    * @param {ref} ref The reference to attach to the dropdown.
    * @param {ref} tzref The corresponding time zone reference field. 
    * @param {string} defaultCountry The default country for the dropdown.
-   * @returns {HTML} HTML dropdown of all the countries with timezones.
+   * @return {HTML} HTML dropdown of all the countries with timezones.
    */
   countriesDropdown(ref, tzref, defaultCountry) {
     return (

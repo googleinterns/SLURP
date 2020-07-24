@@ -6,7 +6,7 @@ import { countryCodes } from '../../constants/countries.js';
  *
  * @param {int} msTimestamp 
  * @param {string} timezone 
- * @returns {string} Time formatted into a string like '10:19 AM'.
+ * @return {string} Time formatted into a string like '10:19 AM'.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
   const date = new Date(msTimestamp);
@@ -23,7 +23,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  *
  * @param {int} msTimestamp 
  * @param {string} timezone 
- * @returns {string} Time formatted into a string like 'Monday, January 19, 1970'.
+ * @return {string} Time formatted into a string like 'Monday, January 19, 1970'.
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
   const date = new Date(msTimestamp);
@@ -42,7 +42,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * 
  * @param {int} msTimestamp 
  * @param {string} timezone 
- * @returns {string} Time formatted into a string like 
+ * @return {string} Time formatted into a string like 
  * 'Monday, January 19, 1970, 02:48 AM'
  */
 export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
@@ -63,7 +63,7 @@ export function timestampToFormatted(msTimestamp, timezone = 'America/New_York')
  * Returns all the time zones in a country (in pretty format).
  * 
  * @param {string} countryName The name of the country for which to get the time zones.
- * @returns {Array.<string>} The list of time zones in the provided country.
+ * @return {Array.<string>} The list of time zones in the provided country.
  */
 export function timezonesForCountry(countryName) {
   let zones;
@@ -83,7 +83,7 @@ export function timezonesForCountry(countryName) {
  * 
  * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
- * @returns {string} The date in 'YYYY-MM-DD' form. 
+ * @return {string} The date in 'YYYY-MM-DD' form. 
  */
 export function getISODate(msTimestamp, timezone=null) {
   if (timezone === null) {
@@ -97,7 +97,7 @@ export function getISODate(msTimestamp, timezone=null) {
  * 
  * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
  * @param {string} timezone The timezone which the string should be returned in.
- * @returns {string} The time in 24-hour (HH:mm) form.   
+ * @return {string} The time in 24-hour (HH:mm) form.   
  */
 export function get24hTime(msTimestamp, timezone=null) {
   if (timezone === null) {
