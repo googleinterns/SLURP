@@ -15,6 +15,8 @@ import com.google.firebase.FirebaseOptions;
  */
 @WebListener
 public class ServerListener implements ServletContextListener {
+  public FirebaseApp app;
+
   /**
    * {@inheritDoc}
    *
@@ -29,7 +31,7 @@ public class ServerListener implements ServletContextListener {
                                     .setCredentials(GoogleCredentials.getApplicationDefault())
                                     .build();
 
-      FirebaseApp.initializeApp(options);
+      app = FirebaseApp.initializeApp(options);
     } catch (IOException error) {
       System.err.println("Error obtaining the Application Default Credentials:");
       error.printStackTrace();
@@ -38,9 +40,13 @@ public class ServerListener implements ServletContextListener {
 
   /**
    * {@inheritDoc}
+   *
+   * Delete the Firebase Admin app.
    */
   @Override
   public void contextDestroyed(ServletContextEvent event) {
     System.out.println("Server destroyed and shutting down...");
+
+    app.delete();
   }
 }
