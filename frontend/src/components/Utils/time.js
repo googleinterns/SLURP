@@ -80,7 +80,8 @@ export function getTimestampFromDateString(dateStr) {
 /**
  * Formats a Firestore timestamp into a date string in ISO format.
  *
- * No tests for this function because there is no logic.
+ * TODO(Issue #89): Remove this function when integrating timezones for the
+ * ViewTrips components.
  *
  * TODO(Issue #89): Remove this function when integrating timezones for the
  * ViewTrips components.
@@ -97,7 +98,8 @@ export function timestampToISOString(timestamp) {
  * Returns the string date range of the trip associated with the Trip document
  * start and end date timestamps.
  *
- * No tests for this function because there is no logic.
+ * TODO(Issue #89): Remove this function when integrating timezones for the
+ * ViewTrips components.
  *
  * @param {!firebase.firestore.Timestamp} startDateTimestamp Firestore timestamp
  *     Object corresponding to the trip start date.
