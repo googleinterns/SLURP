@@ -32,6 +32,10 @@ import * as DB from '../../constants/database.js';
 /**
  * Return a string containing the cleaned text input.
  *
+ * For text element inputs, React has built in protections against injection/XSS
+ * attacks. Thus, no sanitization is needed for text inputs besides providing a
+ * default value in a trip field where applicable.
+ *
  * @param {string} rawInput String containing raw form input.
  * @param {string} defaultValue The default value of the text input in case the
  *     rawInput is empty.
@@ -73,10 +77,6 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  * trip document (except timestamp) because each key-value pair is explicitly
  * included. This means, only the value corresponding to each key needs to be
  * checked.
- *
- * For text element inputs, React has built in protections against injection/XSS
- * attacks. Thus, no sanitization is needed for text inputs besides providing a
- * default value in a trip field where applicable.
  *
  * @param {!rawTripData} rawTripData A JS Object containing the raw form data
  *     from the add trip form.
