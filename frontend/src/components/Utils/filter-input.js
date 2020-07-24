@@ -80,8 +80,8 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  *
  * @param {!rawTripData} rawTripData A JS Object containing the raw form data
  *     from the add trip form.
- * @return {!tripData} Formatted/cleaned version of `rawTripData` holding the data
- *     for the new Trip document that is to be created.
+ * @return {!tripData} Formatted/cleaned version of {@link rawTripData}
+ *     holding the data for the new Trip document that is to be created.
  */
 export function formatTripData(rawTripData) {
   const defaultName = "Untitled Trip";
