@@ -6,9 +6,35 @@ import { getTimestampFromDateString } from './time.js'
 import * as DB from '../../constants/database.js';
 
 /**
+ * An object containing the raw input data from a SaveTripModal form.
+ * @typedef {Object} rawTripData
+ * @property {string} title The trips's title.
+ * @property {string} description A description of the trip.
+ * @property {string} destination The general destination of the trip.
+ * @property {string} start_date Start date string in the form 'YYYY-MM-DD'.
+ * @property {string} end_date End date string in the form 'YYYY-MM-DD'.
+ * @property {!string[]} collaborators An array of collaborator emails.
+ */
+
+/**
+ * A trip object containing the data stored in a trip document in Firestore.
+ * @typedef {Object} tripData
+ * @property {string} title The trips's title.
+ * @property {string} description A description of the trip.
+ * @property {string} destination The general destination of the trip.
+ * @property {firebase.firestore.Timestamp} start_date Start date Firestore
+ *     timestamp object.
+ * @property {firebase.firestore.Timestamp} end_date End date Firestore
+ *     timestamp object
+ * @property {!string[]} collaborators An array of collaborator uids.
+ */
+
+/**
  * Return a string containing the cleaned text input.
  *
  * @param {string} rawInput String containing raw form input.
+ * @param {string} defaultValue The default value of the text input in case the
+ *     rawInput is empty.
  * @return {string} Cleaned string.
  */
 export function getCleanedTextInput(rawInput, defaultValue) {
@@ -22,9 +48,9 @@ export function getCleanedTextInput(rawInput, defaultValue) {
  * TODO(#72 & #67): Remove 'remove empty fields' once there is better way to
  * remove collaborators (#72) and there is email validation (#67).
  *
- * @param {!Array{string}} collaboratorEmailsArr Array of emails corresponding
+ * @param {!string[]} collaboratorEmailsArr Array of emails corresponding
  *     to the  collaborators of the trip (not including the trip creator email).
- * @return {!Array{string}} Array of all collaborator uids (including trip
+ * @return {!string[]} Array of all collaborator uids (including trip
  *     creator uid).
  */
 export function getCollaboratorUidArray(collaboratorEmailArr) {
@@ -41,37 +67,39 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
 
 /**
  * Returns a formatted and cleaned trip object that will be used as the data
- * for the created Trip document.
+ * for the created trip document.
  *
- * We know that rawTripObj will contain all of the necessary fields because each
- * key-value pair is explicitly included. This means, only the value
- * corresponding to each key needs to be checked.
+ * We know that `rawTripData` will contain all of the necessary fields for a
+ * trip document (except timestamp) because each key-value pair is explicitly
+ * included. This means, only the value corresponding to each key needs to be
+ * checked.
+ *
  * For text element inputs, React has built in protections against injection/XSS
  * attacks. Thus, no sanitization is needed for text inputs besides providing a
- * default value in a Trip field where applicable.
+ * default value in a trip field where applicable.
  *
- * @param {!Object} rawTripObj A JS Object containing the raw form data from the
- *     add trip form.
- * @return {!Object} Formatted/cleaned version of `rawTripObj` holding the data
+ * @param {!rawTripData} rawTripData A JS Object containing the raw form data
+ *     from the add trip form.
+ * @return {!tripData} Formatted/cleaned version of `rawTripData` holding the data
  *     for the new Trip document that is to be created.
  */
-export function formatTripData(rawTripObj) {
+export function formatTripData(rawTripData) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
 
-  const tripObj = {};
-  tripObj[DB.TRIPS_UPDATE_TIMESTAMP] = firebase.firestore.Timestamp.now();
-  tripObj[DB.TRIPS_TITLE] =
-      getCleanedTextInput(rawTripObj[DB.TRIPS_TITLE], defaultName);
-  tripObj[DB.TRIPS_DESCRIPTION] = rawTripObj[DB.TRIPS_DESCRIPTION];
-  tripObj[DB.TRIPS_DESTINATION] =
-      getCleanedTextInput(rawTripObj[DB.TRIPS_DESTINATION], defaultDestination);
-  tripObj[DB.TRIPS_START_DATE] =
-      getTimestampFromDateString(rawTripObj[DB.TRIPS_START_DATE]);
-  tripObj[DB.TRIPS_END_DATE] =
-      getTimestampFromDateString(rawTripObj[DB.TRIPS_END_DATE]);
-  tripObj[DB.TRIPS_COLLABORATORS] =
-      getCollaboratorUidArray(rawTripObj[DB.TRIPS_COLLABORATORS]);
+  const tripData = {};
+  tripData[DB.TRIPS_UPDATE_TIMESTAMP] = firebase.firestore.Timestamp.now();
+  tripData[DB.TRIPS_TITLE] =
+      getCleanedTextInput(rawTripData[DB.TRIPS_TITLE], defaultName);
+  tripData[DB.TRIPS_DESCRIPTION] = rawTripData[DB.TRIPS_DESCRIPTION];
+  tripData[DB.TRIPS_DESTINATION] =
+     getCleanedTextInput(rawTripData[DB.TRIPS_DESTINATION], defaultDestination);
+  tripData[DB.TRIPS_START_DATE] =
+      getTimestampFromDateString(rawTripData[DB.TRIPS_START_DATE]);
+  tripData[DB.TRIPS_END_DATE] =
+      getTimestampFromDateString(rawTripData[DB.TRIPS_END_DATE]);
+  tripData[DB.TRIPS_COLLABORATORS] =
+      getCollaboratorUidArray(rawTripData[DB.TRIPS_COLLABORATORS]);
 
-  return tripObj;
+  return tripData;
 }
