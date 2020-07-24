@@ -67,7 +67,7 @@ const Trip = (props) => {
   formattedTripData[DB.TRIPS_DESTINATION] = destination;
   formattedTripData[DB.TRIPS_START_DATE] =
       timestampToISOString(startDateTimestamp);
-  formattedTripData[DB.TRIPS_START_DATE] =
+  formattedTripData[DB.TRIPS_END_DATE] =
       timestampToISOString(endDateTimestamp);
   formattedTripData[DB.TRIPS_COLLABORATORS] = collaboratorEmailsStr.split(', ');
 
