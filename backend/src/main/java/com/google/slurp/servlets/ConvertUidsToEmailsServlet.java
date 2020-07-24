@@ -81,6 +81,7 @@ public class ConvertUidsToEmailsServlet extends HttpServlet {
     List<String> userEmails = result.getUsers()
                                     .stream()
                                     .map(user -> user.getEmail())
+                                    .sorted()
                                     .collect(Collectors.toList());
 
     response.setContentType("application/json");

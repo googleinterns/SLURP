@@ -133,6 +133,7 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
     }
 
     List<String> uidsToReturn = Stream.concat(userUids.stream(), remainingUids.stream())
+                                      .sorted()
                                       .collect(Collectors.toList());
     response.setContentType("application/json");
     response.getWriter().println(new Gson().toJson(uidsToReturn));
