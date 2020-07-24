@@ -98,7 +98,7 @@ export async function getUserEmailArrFromUserUidArr(uidArr) {
   } catch(err) { // The response is empty, return an empty array.
     console.error('Error retrieving user emails.');
     return [];
-  };
+  }
 }
 
 /**
@@ -128,7 +128,7 @@ export async function getUserUidArrFromUserEmailArr(emailArr) {
   } catch(err) { // The response is empty, return an empty array.
     console.error('Error retrieving user UIDs.');
     return [];
-  };
+  }
 }
 
 // Can also access the auth functions in the named authUtils variable.
