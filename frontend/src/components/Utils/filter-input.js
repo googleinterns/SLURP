@@ -70,11 +70,11 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
 }
 
 /**
- * Returns a formatted and cleaned trip object that will be used as the data
- * for the created trip document.
+ * Returns a formatted and cleaned {@link TripData} object that will be used
+ * to instantiate the the created trip document.
  *
- * We know that `rawTripData` will contain all of the necessary fields for a
- * trip document (except timestamp) because each key-value pair is explicitly
+ * We know that {@link RawTripData} will contain all of the necessary fields for
+ * a trip document (except timestamp) because each key-value pair is explicitly
  * included. This means, only the value corresponding to each key needs to be
  * checked.
  *
