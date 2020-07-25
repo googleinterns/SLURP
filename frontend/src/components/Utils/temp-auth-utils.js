@@ -6,7 +6,7 @@
  * that can convert  user email <--> user uid.
  *
  * TODO(Issue #55): Remove this whole file function and replace any imports to
- *                 this file with Auth utils.
+ *                 this file with Auth utils once #63 is fixed.
  */
 import authUtils from '../AuthUtils';
 
