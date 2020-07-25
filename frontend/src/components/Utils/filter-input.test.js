@@ -35,7 +35,7 @@ jest.mock('./temp-auth-utils.js', () => ({
 }));
 describe('getCollaboratorUidArray tests', () => {
   test('No collaborators entered', () => {
-    const expectedUidArr = getUserUidArrFromUserEmailArr([mockCurUserEmail]);
+    const expectedUidArr = [`_${mockCurUserEmail}_`];
     // This is the list that is created when there are no collaborators added
     // (automatically one empty string from the constructor created ref).
     const testEmailArr = [''];
@@ -48,9 +48,9 @@ describe('getCollaboratorUidArray tests', () => {
   test('Some added collaborators', () => {
     const person1Email = 'p1@gmail.com';
     const person2Email = 'p2@outlook.com';
-    const expectedUidArr = getUserUidArrFromUserEmailArr([mockCurUserEmail,
-                                                          person1Email,
-                                                          person2Email]);
+    const expectedUidArr = [`_${mockCurUserEmail}_`,
+                            `_${person1Email}_`,
+                            `_${person2Email}_`];
     const testEmailArr = [person1Email, person2Email];
 
     const testUidArr = getCollaboratorUidArray(testEmailArr);
@@ -61,9 +61,9 @@ describe('getCollaboratorUidArray tests', () => {
   test('Some added collaborators and some blank entries', () => {
     const person1Email = 'p1@gmail.com';
     const person2Email = 'p2@outlook.com';
-    const expectedUidArr = getUserUidArrFromUserEmailArr([mockCurUserEmail,
-                                                          person1Email,
-                                                          person2Email]);
+    const expectedUidArr = [`_${mockCurUserEmail}_`,
+                            `_${person1Email}_`,
+                            `_${person2Email}_`];
     const testEmailArr = ['', person1Email, '', person2Email, ''];
 
     const testUidArr = getCollaboratorUidArray(testEmailArr);

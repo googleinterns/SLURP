@@ -11,6 +11,8 @@ const db = app.firestore();
 /**
  * Returns a `<div>` element with the specified error message.
  *
+ * TODO(Issue #9.): Turn this func into component and add to Errors directory.
+ *
  * @param {string} error Error message in `componentDidMount` catch statement.
  * @return {Promise<HTMLDivElement>} Promise object containing a `<div>` element
  *    with the error message `error` inside.

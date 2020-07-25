@@ -16,7 +16,7 @@ import authUtils from '../AuthUtils';
  * @return {string} Fake user uid string the form `_userEmail_`.
  */
 export function getCurUserUid() {
-  return getUserUidArrFromUserEmailArr([authUtils.getCurUserEmail()]).pop();
+  return '_' + authUtils.getCurUserEmail() + '_';
 }
 
 /**
@@ -35,11 +35,11 @@ export function getUserUidArrFromUserEmailArr(userEmailArr) {
  * Temporary 'fake'/hardcoded function that returns the an array of user emails
  * given an array of 'fake' user uids.
  *
- * @param {!string[]} uuidArr Fake user uids that are in the form `_userEmail_`.
+ * @param {!string[]} userUidArr Fake user uids in the form `_userEmail_`.
  * @return {!string[]} User emails corresponding to the user uids in `uuidArr`.
  */
-export function getUserEmailArrFromUserUidArr(uuidArr) {
-  return uuidArr.map(uuid => uuid.substring(1, uuid.length - 1));
+export function getUserEmailArrFromUserUidArr(userUidArr) {
+  return userUidArr.map(userUid => userUid.substring(1, userUid.length - 1));
 }
 
 const fakeAuthUtils = {

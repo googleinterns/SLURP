@@ -24,12 +24,12 @@ async function deleteQueryBatch(db, query, resolve) {
 
   const batchSize = snapshot.size;
   if (batchSize === 0) {
-    // When there are no documents left, we are done
+    // When there are no documents left, we are done.
     resolve();
     return;
   }
 
-  // Delete documents in a batch
+  // Delete documents in a batch.
   const batch = db.batch();
   snapshot.docs.forEach((doc) => {
     batch.delete(doc.ref);
@@ -51,7 +51,7 @@ async function deleteQueryBatch(db, query, resolve) {
  * at https://firebase.google.com/docs/firestore/manage-data/delete-data.
  *
  * TODO(Issue #81): Consider deleting data with callabable cloud function
- * https://firebase.google.com/docs/firestore/solutions/delete-collections
+ * https://firebase.google.com/docs/firestore/solutions/delete-collections.
  *
  * @param {string} tripId Document ID for the current Trip document.
  */
