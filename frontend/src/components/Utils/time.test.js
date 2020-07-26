@@ -80,10 +80,13 @@ describe('getTimeStampFromDateString tests', () => {
   });
 
   test('Date entered in form', () => {
+    const YEAR_2020 = 2020;
+    const MONTH_JULY = 5; // Date constructor uses 0 indexed month.
+    const DAY_4TH = 4;
+    const expectedTimestamp = new Date(YEAR_2020, MONTH_JULY, DAY_4TH);
     // This is the type of string (yyyy-mm-dd) that is returned from the form
     // input type 'date'.
     const testISODateStr = '2020-06-04'; // July 4, 2020
-    const expectedTimestamp = new Date(testISODateStr);
 
     const testTimestamp = utils.getTimestampFromDateString(testISODateStr);
 

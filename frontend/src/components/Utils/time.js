@@ -61,26 +61,25 @@ export function timestampToFormatted(msTimestamp, timezone = "America/New_York")
 /**
  * Return a Firestore Timestamp corresponding to the date in `dateStr`.
  *
- * TODO(Issue #89): Remove this function when integrating timezones for the
- * ViewTrips components.
+ * The date objects used to create the timezones will have the timezone of the
+ * current user's computer default timezone.
  *
  * @param {string} dateStr String containing a date in the form 'YYYY-MM-DD'.
- * @return {firebase.firestore.Timestamp} Firestore timestamp object.
+ * @return {firebase.firestore.Timestamp} Firestore timestamp object created.
  */
 export function getTimestampFromDateString(dateStr) {
-  const date = new Date(dateStr);
-  if (isNaN(date.valueOf())) {
+  const dateParts = dateStr.split('-').map(str => +str);
+  if (dateParts.length === 1 && dateParts[0] === 0) {
     return firebase.firestore.Timestamp.now();
   }
 
+  // Date constructor uses 0 indexed month so `dateParts[1]` is decremented by 1.
+  const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
   return firebase.firestore.Timestamp.fromDate(date);
 }
 
 /**
  * Formats a Firestore timestamp into a date string in ISO format.
- *
- * TODO(Issue #89): Remove this function when integrating timezones for the
- * ViewTrips components.
  *
  * TODO(Issue #89): Remove this function when integrating timezones for the
  * ViewTrips components.
@@ -97,6 +96,9 @@ export function timestampToISOString(timestamp) {
  * Returns the string date range of the trip associated with the Trip document
  * start and end date timestamps.
  *
+ * The date strings are created with locale and timezone of the current user's
+ * computer default timezone/locale .
+ *
  * TODO(Issue #89): Remove this function when integrating timezones for the
  * ViewTrips components.
  *
@@ -107,7 +109,7 @@ export function timestampToISOString(timestamp) {
  * @return {string} Date range of the trip in the form 'MM/DD/YYYY - MM/DD/YYYY'.
  */
 export function getDateRangeString(startDateTimestamp, endDateTimestamp) {
-  const startDate = startDateTimestamp.toDate().toLocaleDateString('en-US');
-  const endDate = endDateTimestamp.toDate().toLocaleDateString('en-US');
+  const startDate = startDateTimestamp.toDate().toLocaleDateString();
+  const endDate = endDateTimestamp.toDate().toLocaleDateString();
   return startDate + ' - ' + endDate;
 }
