@@ -72,7 +72,7 @@ const Trip = (props) => {
   return (
     <Card>
       <Accordion.Toggle as={Card.Header} eventKey={props.eventKey}>
-        {title}
+        <h4>{title}</h4>
       </Accordion.Toggle>
       <Accordion.Collapse eventKey={props.eventKey}>
         <Card.Body>
