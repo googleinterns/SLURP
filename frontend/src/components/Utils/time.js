@@ -68,12 +68,11 @@ export function timestampToFormatted(msTimestamp, timezone = "America/New_York")
  * @return {firebase.firestore.Timestamp} Firestore timestamp object.
  */
 export function getTimestampFromDateString(dateStr) {
-  const dateParts = dateStr.split('-').map(str => +str);
-  if (dateParts.length === 1 && dateParts[0] === 0) {
+  const date = new Date(dateStr);
+  if (isNaN(date.valueOf())) {
     return firebase.firestore.Timestamp.now();
   }
 
-  const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
   return firebase.firestore.Timestamp.fromDate(date);
 }
 

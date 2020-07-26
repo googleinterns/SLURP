@@ -80,13 +80,12 @@ describe('getTimeStampFromDateString tests', () => {
   });
 
   test('Date entered in form', () => {
-    const testDate = new Date(2020, 5, 4); // July 4, 2020
-    const expectedTimestamp = firebase.firestore.Timestamp.fromDate(testDate);
-
     // This is the type of string (yyyy-mm-dd) that is returned from the form
     // input type 'date'.
-    const testRawDate = testDate.toISOString().substring(0,10);
-    const testTimestamp = utils.getTimestampFromDateString(testRawDate);
+    const testISODateStr = '2020-06-04'; // July 4, 2020
+    const expectedTimestamp = new Date(testISODateStr);
+
+    const testTimestamp = utils.getTimestampFromDateString(testISODateStr);
 
     expect(testTimestamp).toEqual(expectedTimestamp);
   });
