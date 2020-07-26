@@ -46,8 +46,6 @@ const db = app.firestore();
  * @property {?DefaultFormData} props.defaultFormData: Object containing the
  *     default values for the form input text boxes. For adding a new trip, this
  *     will be null.
- * @property {*} props.key: Special React attribute that ensures a new
- *     `SaveTripModal` instance is created whenever this key is updated.
  * @extends React.Component
  */
 class SaveTripModal extends React.Component {
@@ -64,7 +62,7 @@ class SaveTripModal extends React.Component {
 
     this.isAddTripForm = this.props.tripId === null;
 
-    /** 
+    /**
      * For edit trips, create the number of collaborator input box refs as one
      * less than the number of collaborators specified in prop `defaultFormData`
      * (do not include current user in list).
