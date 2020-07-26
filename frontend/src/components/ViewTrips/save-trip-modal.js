@@ -64,12 +64,14 @@ class SaveTripModal extends React.Component {
 
     this.isAddTripForm = this.props.tripId === null;
 
-    // For edit trips, create the number of collaborator input box refs as one
-    // less than the number of collaborators specified in prop `defaultFormData`
-    // (do not include current user in list).
-    //
-    // TODO(Issue #71): Give user option to remove themself as a collaborator
-    //                  from current trip.
+    /** 
+     * For edit trips, create the number of collaborator input box refs as one
+     * less than the number of collaborators specified in prop `defaultFormData`
+     * (do not include current user in list).
+     *
+     * TODO(Issue #71): Give user option to remove themself as a collaborator
+     *                  from current trip.
+     */
     const collaboratorsRefArr = [];
     if (this.isAddTripForm) {
       collaboratorsRefArr.push(React.createRef());
