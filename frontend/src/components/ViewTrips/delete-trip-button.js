@@ -56,6 +56,8 @@ async function deleteQueryBatch(db, query, resolve) {
  * https://firebase.google.com/docs/firestore/solutions/delete-collections.
  *
  * @param {string} tripId Document ID for the current Trip document.
+ * @return {Promise<void>} Void promise used to call {@link deleteQueryBatch}
+ *     asynchronously and catch any potential errors.
  */
 async function deleteTripActivities(tripId) {
   const query = db.collection(DB.COLLECTION_TRIPS)
