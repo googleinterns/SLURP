@@ -1,32 +1,18 @@
 import * as firebase from 'firebase/app';
 
 import authUtils from '../AuthUtils';
-import { getUserUidArrFromUserEmailArr } from './temp-auth-utils.js'
-import { getTimestampFromDateString } from './time.js'
+import { getUserUidArrFromUserEmailArr } from './temp-auth-utils.js';
+import { getTimestampFromDateString } from './time.js';
 import * as DB from '../../constants/database.js';
 
 /**
- * An object containing the raw input data from a SaveTripModal form.
- * @typedef {Object} RawTripData
- * @property {string} title The trips's title.
- * @property {string} description A description of the trip.
- * @property {string} destination The general destination of the trip.
- * @property {string} start_date Start date string in the form 'YYYY-MM-DD'.
- * @property {string} end_date End date string in the form 'YYYY-MM-DD'.
- * @property {!string[]} collaborators An array of collaborator emails.
+ * {@link TripData} defined originally in `ViewTrips/trip.js`.
  */
 
 /**
- * A trip object containing the data stored in a trip document in Firestore.
- * @typedef {Object} TripData
- * @property {string} title The trips's title.
- * @property {string} description A description of the trip.
- * @property {string} destination The general destination of the trip.
- * @property {firebase.firestore.Timestamp} start_date Start date Firestore
- *     timestamp object.
- * @property {firebase.firestore.Timestamp} end_date End date Firestore
- *     timestamp object
- * @property {!string[]} collaborators An array of collaborator uids.
+ * @typedef { DefaultFormData } RawTripData
+ * {@link RawTripData} is an alias for the `typedef` {@link DefaultFormData}
+ * defined in `ViewTrips/save-trip-modal.js`.
  */
 
 /**
@@ -70,7 +56,7 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
 }
 
 /**
- * Returns a formatted and cleaned {@link TripData} object that will be used
+ * Returns a formatted and cleaned {@link RawTripData} object that will be used
  * to instantiate the the created trip document.
  *
  * We know that {@link RawTripData} will contain all of the necessary fields for

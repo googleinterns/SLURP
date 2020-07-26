@@ -10,6 +10,10 @@ import { createFormGroup } from './save-trip-form-elements.js';
 const db = app.firestore();
 
 /**
+ * {@link TripData} defined originally in `ViewTrips/trip.js`.
+ */
+
+/**
  * An object containing the default input data for a SaveTripModal form.
  * @typedef {Object} DefaultFormData
  * @property {string} title The trips's title.
@@ -18,19 +22,6 @@ const db = app.firestore();
  * @property {string} start_date Start date string in the form 'YYYY-MM-DD'.
  * @property {string} end_date End date string in the form 'YYYY-MM-DD'.
  * @property {!string[]} collaborators An array of collaborator emails.
- */
-
-/**
- * A trip object containing the data stored in a trip document in Firestore.
- * @typedef {Object} TripData
- * @property {string} title The trips's title.
- * @property {string} description A description of the trip.
- * @property {string} destination The general destination of the trip.
- * @property {firebase.firestore.Timestamp} start_date Start date Firestore
- *     timestamp object.
- * @property {firebase.firestore.Timestamp} end_date End date Firestore
- *     timestamp object
- * @property {!string[]} collaborators An array of collaborator uids.
  */
 
 /**

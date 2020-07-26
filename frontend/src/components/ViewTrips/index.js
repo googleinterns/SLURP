@@ -7,16 +7,7 @@ import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
 /**
- * A trip object containing the data stored in a trip document in Firestore.
- * @typedef {Object} TripData
- * @property {string} title The trips's title.
- * @property {string} description A description of the trip.
- * @property {string} destination The general destination of the trip.
- * @property {firebase.firestore.Timestamp} start_date Start date Firestore
- *     timestamp object.
- * @property {firebase.firestore.Timestamp} end_date End date Firestore
- *     timestamp object
- * @property {!string[]} collaborators An array of collaborator uids.
+ * {@link TripData} defined originally in `ViewTrips/trip.js`.
  */
 
 /**
@@ -78,8 +69,8 @@ class ViewTrips extends React.Component {
    * and overwrites and existing Trip document in the database.
    *
   * @param {string} tripId Document ID for the current Trip document.
-  * @param {!TripData} tripData Contains the data for the Trip document that
-  *     that will be editted.
+  * @param {!TripData} tripData Contains the data for the
+  *     Trip document that that will be editted.
    */
   showEditTripModal = (tripId, tripData) => {
     console.log(tripData);
