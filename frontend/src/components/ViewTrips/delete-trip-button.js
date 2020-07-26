@@ -6,7 +6,9 @@ import Button from 'react-bootstrap/Button';
 import * as DB from '../../constants/database.js';
 
 const db = app.firestore();
-const LIMIT_QUERY_DOCS_RETRIEVED = 5;
+// This constant determines the max number of docs deleted in a batch (max
+// number in each query). This is a magic number and can be tweaked as needed.
+const NUM_DOCS_IN_BATCH_DELETE = 5;
 
 /**
  * Deletes documents in query with a batch delete.
@@ -60,7 +62,7 @@ async function deleteTripActivities(tripId) {
       .doc(tripId)
       .collection(DB.COLLECTION_ACTIVITIES)
       .orderBy(DB.ACTIVITIES_TITLE)
-      .limit(LIMIT_QUERY_DOCS_RETRIEVED);
+      .limit(NUM_DOCS_IN_BATCH_DELETE);
 
   return new Promise((resolve, reject) => {
     deleteQueryBatch(db, query, resolve).catch(reject);
