@@ -46,8 +46,6 @@ export function getCollaboratorEmails(collaboratorUidArr) {
  * @property {string} props.tripId The document id associated with the trip.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
- * @property {*} props.key: Special React attribute needed to render the array
- *     of Trip components in the trips container.
  */
 const Trip = (props) => {
   // Unpack trip document data.
