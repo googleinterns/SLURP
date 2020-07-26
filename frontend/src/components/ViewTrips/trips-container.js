@@ -44,10 +44,7 @@ class TripsContainer extends React.Component {
   /** @override */
   constructor(props) {
     super(props);
-    this.state = {
-                    trips: [],
-                    firstTripId: null,
-                 };
+    this.state = { trips: [] };
   }
 
   /**
@@ -69,17 +66,17 @@ class TripsContainer extends React.Component {
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
         .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
-          const tripsContainer = querySnapshot.docs.map(doc =>
+          const tripsContainer = querySnapshot.docs.map((doc, idx) =>
               ( <Trip
                   tripData={doc.data()}
                   tripId={doc.id}
                   handleEditTrip={this.props.handleEditTrip}
+                  eventKey={String(idx)}
                   key={doc.id}
                 />
               )
           );
 
-          console.log(querySnapshot.docs[0].id);
           this.setState({
                           trips: tripsContainer,
                           firstTripId: querySnapshot.docs[0].id,
@@ -92,8 +89,13 @@ class TripsContainer extends React.Component {
 
   /** @override */
   render() {
+    if (this.state.trips === undefined || this.state.trips.length === 0) {
+      return (
+        <div></div>
+      );
+    }
     return (
-      <Accordion defaultActiveKey={this.state.firstTripId}>
+      <Accordion defaultActiveKey="0">
         {this.state.trips}
       </Accordion>
     );

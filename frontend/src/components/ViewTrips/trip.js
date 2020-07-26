@@ -73,10 +73,10 @@ const Trip = (props) => {
 
   return (
     <Card>
-      <Accordion.Toggle as={Card.Header} eventKey={props.tripId}>
+      <Accordion.Toggle as={Card.Header} eventKey={props.eventKey}>
         {title}
       </Accordion.Toggle>
-      <Accordion.Collapse eventKey={props.tripId}>
+      <Accordion.Collapse eventKey={props.eventKey}>
         <Card.Body>
           <p>{destination}</p>
           <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
