@@ -73,7 +73,6 @@ class ViewTrips extends React.Component {
   *     Trip document that that will be editted.
    */
   showEditTripModal = (tripId, tripData) => {
-    console.log(tripData);
     this.setState({
       tripId: tripId,
       defaultFormData: tripData,
