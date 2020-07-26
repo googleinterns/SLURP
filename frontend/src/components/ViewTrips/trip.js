@@ -26,7 +26,7 @@ import * as DB from '../../constants/database.js';
  *
  * @param {!string[]} collaboratorUidArr Array of collaborator uids
  *     stored in trip document.
- * @returns {string} Collaborator emails in comma separated string.
+ * @return {string} Collaborator emails in comma separated string.
  *     Ex: "person1@email.com, person2@email.com".
  */
 export function getCollaboratorEmails(collaboratorUidArr) {
