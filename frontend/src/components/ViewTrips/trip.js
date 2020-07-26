@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from 'react-bootstrap/Button';
+import { Accordion, Button, Card } from 'react-bootstrap';
 
 import { timestampToISOString } from '../Utils/time.js';
 import { getUserEmailArrFromUserUidArr } from '../Utils/temp-auth-utils.js';
@@ -46,8 +46,8 @@ export function getCollaboratorEmails(collaboratorUidArr) {
  * @property {string} props.tripId The document id associated with the trip.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
- * @property {*} props.key: Special React attribute needed to render the array
- *     of Trip components in the trips container.
+ * @property {*} props.key: Special React attribute needed to render the
+ *     array of Trip components in the trips container.
  */
 const Trip = (props) => {
   // Unpack trip document data.
@@ -72,23 +72,29 @@ const Trip = (props) => {
   formattedTripData[DB.TRIPS_COLLABORATORS] = collaboratorEmailsStr.split(', ');
 
   return (
-    <div>
-      <h2>{title}</h2>
-      <p>{destination}</p>
-      <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
-      <p>{description}</p>
-      <p>{collaboratorEmailsStr}</p>
+    <Card>
+      <Accordion.Toggle as={Card.Header} eventKey={props.tripId}>
+        {title}
+      </Accordion.Toggle>
+      <Accordion.Collapse eventKey={props.tripId}>
+        <Card.Body>
+          <p>{destination}</p>
+          <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
+          <p>{description}</p>
+          <p>{collaboratorEmailsStr}</p>
 
-      <DeleteTripButton tripId={props.tripId} />
-      <Button
-        type='button'
-        onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
-        variant='primary'
-      >
-        Edit
-      </Button>
-      <ViewActivitiesButton tripId={props.tripId} />
-    </div>
+          <DeleteTripButton tripId={props.tripId} />
+          <Button
+            type='button'
+            onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
+            variant='primary'
+          >
+            Edit
+          </Button>
+          <ViewActivitiesButton tripId={props.tripId} />
+        </Card.Body>
+      </Accordion.Collapse>
+    </Card>
   );
 };
 

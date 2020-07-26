@@ -1,6 +1,7 @@
 import React from 'react';
 
 import app from '../Firebase/';
+import Accordion from 'react-bootstrap/Accordion';
 
 import * as DB from '../../constants/database.js';
 import { getCurUserUid } from '../Utils/temp-auth-utils.js'
@@ -43,7 +44,10 @@ class TripsContainer extends React.Component {
   /** @override */
   constructor(props) {
     super(props);
-    this.state = {trips: []};
+    this.state = {
+                    trips: [],
+                    firstTripId: null,
+                 };
   }
 
   /**
@@ -75,7 +79,11 @@ class TripsContainer extends React.Component {
               )
           );
 
-          this.setState({ trips: tripsContainer });
+          console.log(querySnapshot.docs[0].id);
+          this.setState({
+                          trips: tripsContainer,
+                          firstTripId: querySnapshot.docs[0].id,
+                        });
         }, async (error) => {
           const errorElement = await getErrorElement(error);
           this.setState({ trips: errorElement });
@@ -85,7 +93,9 @@ class TripsContainer extends React.Component {
   /** @override */
   render() {
     return (
-      <div>{this.state.trips}</div>
+      <Accordion defaultActiveKey={this.state.firstTripId}>
+        {this.state.trips}
+      </Accordion>
     );
   }
 }
