@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Accordion, Button, Card } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { timestampToISOString } from '../Utils/time.js';
 import { getUserEmailArrFromUserUidArr } from '../Utils/temp-auth-utils.js';
 import { getDateRangeString } from '../Utils/time.js';
@@ -76,6 +77,7 @@ const Trip = (props) => {
       </Accordion.Toggle>
       <Accordion.Collapse eventKey={props.eventKey}>
         <Card.Body>
+          <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
           <p>{destination}</p>
           <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
           <p>{description}</p>
