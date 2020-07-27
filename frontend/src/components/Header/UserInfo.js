@@ -1,11 +1,11 @@
-import React  from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import authUtils from '../AuthUtils';
 
-import '../../styles/header.css';
 import Button from 'react-bootstrap/Button';
 
+import authUtils from '../AuthUtils';
 import { LANDING } from '../../constants/routes.js';
+import '../../styles/header.css';
 
 // To set spacing between each element of the component.
 const BOOTSTRAP_SPACING_CLASS =
