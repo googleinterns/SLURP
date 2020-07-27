@@ -1,8 +1,9 @@
 import React from 'react';
+
 import app from '../Firebase';
+
 import { getUserUid } from '../AuthUtils';
 import ActivityList from './activitylist.js';
-
 import * as DB from '../../constants/database.js';
 
 /**
