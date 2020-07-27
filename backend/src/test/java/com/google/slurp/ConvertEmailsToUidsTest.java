@@ -33,8 +33,10 @@ public class ConvertEmailsToUidsTest extends Mockito {
   // Lists of emails and expected lists of UIDs, constructed from the test users.
   private static final String TWO_EMAILS_LIST =
       String.format("[%s,%s]\n", USER_1_EMAIL, USER_2_EMAIL);
+  private static final String ONE_EMAIL_LIST = String.format("[%s]\n", USER_1_EMAIL);
   private static final String EMPTY_EMAIL_LIST = "[]\n";
   private static final String TWO_UIDS_LIST = String.format("[%s,%s]\n", USER_1_UID, USER_2_UID);
+  private static final String ONE_UID_LIST = String.format("[%s]\n", USER_1_UID);
   private static final String EMPTY_UID_LIST = "[]\n";
 
   private static ServerListener mockServer;
@@ -78,6 +80,24 @@ public class ConvertEmailsToUidsTest extends Mockito {
 
     writer.flush();
     Assert.assertEquals(TWO_UIDS_LIST, stringWriter.toString());
+  }
+
+  /**
+   * Given one legitimate user email, return the corresponding user UID.
+   */
+  @Test
+  public void retrieveOneUserUID() throws Exception {
+    BufferedReader readerFromString = new BufferedReader(new StringReader(ONE_EMAIL_LIST));
+    when(request.getReader()).thenReturn(readerFromString);
+
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter writer = new PrintWriter(stringWriter);
+    when(response.getWriter()).thenReturn(writer);
+
+    servlet.doPost(request, response);
+
+    writer.flush();
+    Assert.assertEquals(ONE_UID_LIST, stringWriter.toString());
   }
 
   /**
