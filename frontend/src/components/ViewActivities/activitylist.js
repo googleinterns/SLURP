@@ -17,7 +17,7 @@ class ActivityList extends React.Component {
   /** @inheritdoc */
   constructor(props) {
     super(props);
-    this.state = { days : [], databaseChanged: false };
+    this.state = { days : [] };
 
     this.getActivityList = this.getActivityList.bind(this);
   }
@@ -30,9 +30,10 @@ class ActivityList extends React.Component {
   async getActivityList(tripId) {
     let tripActivities = [];
     
-    await db.collection(DB.COLLECTION_TRIPS).doc(tripId)
+    db.collection(DB.COLLECTION_TRIPS).doc(tripId)
     .collection(DB.COLLECTION_ACTIVITIES)
     .onSnapshot(querySnapshot => {
+      this.setState({days: []});
       querySnapshot.forEach(doc => {
         let data = doc.data();
         data['id'] = doc.id;
@@ -47,11 +48,10 @@ class ActivityList extends React.Component {
           data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
 
         tripActivities.push(data);
-      })
+      });
+      this.setState({ days: activityFns.sortByDate(tripActivities) });
     });
-    this.setState({
-      databaseChanged : !this.state.databaseChanged,
-       tripActivities: tripActivities});
+    
   }
 
   /** 
@@ -65,12 +65,7 @@ class ActivityList extends React.Component {
    */
   async componentDidMount() {
     if (this.state === null || this.props.tripId === null) { return; }
-    let tripActivities = await this.getActivityList(this.props.tripId);
-    if (tripActivities === null) {
-      this.setState({days: null});  
-      return;
-    } 
-    this.setState({days: activityFns.sortByDate(tripActivities)});
+    await this.getActivityList(this.props.tripId);
   }
 
   /** @inheritdoc */
@@ -81,6 +76,7 @@ class ActivityList extends React.Component {
     } else if (this.state.days.length === 0) {
       return (<p className='activity-list'>Plan your trip here!</p>);
     }
+
     return (
       <div className='activity-list' key={this.state.databaseChanged}>
         {this.state.days.map((item, index) => (
