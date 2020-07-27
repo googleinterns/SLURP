@@ -61,13 +61,11 @@ class ViewActivities extends React.Component {
       // deployed build lol.
       return <div>Loading Part 2: Electric Boogaloo</div>;
     }
-    // Case where the trip could not be found.
-    else if (this.state.collaborators === undefined) {
+    // Case where the trip could not be found or the current user is not
+    // authorized to view the trip.
+    else if (this.state.collaborators === undefined ||
+             !this.state.collaborators.includes(getUserUid())) {
       return <div><ErrorComponents.ErrorTripNotFound /></div>;
-    }
-    // Case where the current user is not authorized to view the page
-    else if (!this.state.collaborators.includes(getUserUid())) {
-      return <div><ErrorComponents.ErrorNotCollaborator/></div>;
     }
     else {
       return (
