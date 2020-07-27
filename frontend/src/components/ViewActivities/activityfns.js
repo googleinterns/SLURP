@@ -17,7 +17,7 @@ const db = app.firestore();
 
 /**
  * A single activity day. A single instance looks like:
- * <pre><code> ['MM/DD/YYYY', [activities on that day]] </code></pre>
+ * <pre><code> ['MM/DD/YYYY', [activities on that day]]</code></pre>
  * @typedef {Array.<string, ActivityInfo[]>} DayOfActivities
  * 
  */
@@ -53,7 +53,7 @@ export function sortByDate(tripActivities) {
 }
 
 /**
- * Put <code>a</code> and <code>b</code> in display order. 
+ * Put<code>a</code> and<code>b</code> in display order. 
  * This function is a comparator.
  * @param {ActivityInfo} a Dictionary representing activity a and its fields. 
  * @param {ActivityInfo} b Dictionary representing activity b and its fields.
@@ -77,13 +77,14 @@ export function compareActivities(a, b) {
  * @param {ActivityInfo} activity The activity from which to get the field.
  * @param {string} fieldName Name of field to get.
  * @param {*} defaultValue Value if field is not found/is null.
+ * @param {string} prefix The prefix to put before a returned value if the field exists.
  * @return {*} <code>activity[fieldName]</code> if possible, else <code>defaultValue</code>.
  */
-export function getField(activity, fieldName, defaultValue) {
+export function getField(activity, fieldName, defaultValue, prefix=''){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
     return defaultValue;
   }
-  return activity[fieldName];
+  return prefix + activity[fieldName];
 }
 
 /**

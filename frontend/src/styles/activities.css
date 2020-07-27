@@ -22,11 +22,11 @@
 
 /* TODO: auto height, transition. (#49)*/
 .view-activity.edit {
-    height: 20em;
+    height: 35em;
 }
 .view-activity {
     overflow: scroll;
-    height: 7.5em;
+    height: 10em;
     transition: height 0.25s linear;
 }
 

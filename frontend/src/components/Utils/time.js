@@ -1,3 +1,5 @@
+import * as moment from 'moment-timezone';
+import { countryCodes } from '../../constants/countries.js';
 import * as firebase from 'firebase/app';
 
 /**
@@ -6,7 +8,7 @@ import * as firebase from 'firebase/app';
  *
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
- * @returns {string} Time formatted into desired pretty string.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
   const date = new Date(msTimestamp);
@@ -24,7 +26,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  *
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
- * @returns {string} Time formatted into desired pretty string.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
   const date = new Date(msTimestamp);
@@ -44,7 +46,7 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * 
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
  * @param {string} timezone Timezone in which to convert.
- * @returns {string} Time formatted into desired pretty string.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
   let date = new Date(msTimestamp);
@@ -84,4 +86,23 @@ export function getTimestampFromDateString(dateStr) {
  */
 export function timestampToISOString(timestamp) {
   return timestamp.toDate().toISOString().substring(0,10);
+}
+
+/**
+ * Returns all the time zones in a country (in displayable format).
+ * 
+ * @param {string} countryName The name of the country for which to get the time zones.
+ * @return {string[]} The list of time zones in the provided country.
+ */
+export function timezonesForCountry(countryName) {
+  let zones;
+  try {
+    const countryCode = countryCodes[countryName];
+    zones = moment.tz.zonesForCountry(countryCode);
+  } catch (e) {
+    zones = moment.tz.names(); // List of all timezones.
+  }
+  return zones.map(e => {
+    return e.replace(/[_]/g, ' ');
+  });
 }
