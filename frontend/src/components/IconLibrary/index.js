@@ -1,6 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 
-import { faMapMarkerAlt, faCalendarAlt, faBook, faUserFriends,
+import { faMapMarkerAlt, faCalendarAlt, faBook, faUserFriends, faHiking,
          faTrash, faEdit  } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -8,6 +8,7 @@ library.add(
   faCalendarAlt,
   faBook,
   faUserFriends,
+  faHiking,
   faTrash,
   faEdit,
 );
