@@ -150,7 +150,7 @@ class EditActivity extends React.Component {
         {formElements.textElementFormGroup( // TITLE
             'formActivityTitle',          // controlId
             'Title:',                     // formLabel
-            getField(activity, DB.ACTIVITIES_TITLE, 'What will you be doing?'), // placeHolder 
+            getField(activity, DB.ACTIVITIES_TITLE, msgs.ACTIVITY_TITLE_PLACEHOLDER), // placeHolder 
             this.editTitleRef             // ref
           )}
         {formElements.locationElementFormGroup( // START LOCATION
@@ -192,7 +192,7 @@ class EditActivity extends React.Component {
         {formElements.textElementFormGroup( // DESCRIPTION
             'formActivityDescription', // controlId
             'Description:', // formLabel
-            getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder 
+            getField(activity, DB.ACTIVITIES_DESCRIPTION, msgs.ACTIVITY_DESCRIPTION_PLACEHOLDER), // placeHolder 
             this.editDescriptionRef // ref
           )}
         <Button type='submit' className='float-right'>Done!</Button>
