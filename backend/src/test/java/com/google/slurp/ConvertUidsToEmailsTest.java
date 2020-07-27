@@ -1,17 +1,14 @@
 package com.google.slurp;
 
+import com.google.slurp.servlets.ConvertUidsToEmailsServlet;
+import com.google.slurp.servlets.ServerListener;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.slurp.servlets.ConvertUidsToEmailsServlet;
-import com.google.slurp.servlets.ServerListener;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
