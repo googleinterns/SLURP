@@ -30,6 +30,9 @@ const db = app.firestore();
  * in chronological order by date.
  */
 export function sortByDate(tripActivities) {
+  if (tripActivities === undefined) {
+    return null;
+  }
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
   for (let activity of tripActivities) {
     const activityDate = new Date(activity[DB.ACTIVITIES_START_TIME]);
