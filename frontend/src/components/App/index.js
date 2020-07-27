@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { AuthProvider, PrivateRoute } from '../Auth';
 import { AuthUtilsConsumer } from '../AuthUtils';
 
@@ -7,6 +7,7 @@ import LandingPage from '../Landing';
 import SignInPage from '../SignIn'
 import ViewActivitiesPage from '../ViewActivities';
 import ViewTripsPage from '../ViewTrips';
+import { ErrorPageNotFound } from '../Errors';
 import * as ROUTES from '../../constants/routes';
 
 /**
@@ -20,10 +21,14 @@ class App extends React.Component {
         <AuthUtilsConsumer>
           <Router>
             <div>
-              <Route exact path={ROUTES.LANDING} component={LandingPage} />
-              <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-              <PrivateRoute path={ROUTES.VIEW_TRIPS} component={ViewTripsPage} />
-              <PrivateRoute path={ROUTES.VIEW_ACTIVITIES + '/:tripId'} component={ViewActivitiesPage} />
+              <Switch>
+                <Route exact path={ROUTES.LANDING} component={LandingPage} />
+                <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+                <PrivateRoute path={ROUTES.VIEW_TRIPS} component={ViewTripsPage} />
+                <PrivateRoute path={ROUTES.VIEW_ACTIVITIES + '/:tripId'} component={ViewActivitiesPage} />
+                {/* The ErrorNotFound component MUST be at the bottom of the Router! */}
+                <Route component={ErrorPageNotFound} />
+              </Switch>
             </div>
           </Router>
         </AuthUtilsConsumer>
