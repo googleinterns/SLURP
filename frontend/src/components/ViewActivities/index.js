@@ -19,6 +19,7 @@ class ViewActivities extends React.Component {
     super(props);
     
     this.state = { addingActivity : false }
+    this.doneAddingActivity = this.doneAddingActivity.bind(this);
   }
 
   /**
@@ -54,8 +55,8 @@ class ViewActivities extends React.Component {
   /**
    * Runs when the user is done adding an activity.
    */
-  doneAddingActivity = () => { 
-    this.setState({ 
+  async doneAddingActivity() { 
+    await this.setState({ 
       addingActivity: false,
       newAct: null 
     }); 
@@ -73,10 +74,6 @@ class ViewActivities extends React.Component {
         </div>
       );
     } else {
-      if (this.state.newAct === null) {
-        this.doneAddingActivity();
-        return <div></div>
-      }
       return (
         <Modal.Dialog>
           <Modal.Header>Add New Activity</Modal.Header>

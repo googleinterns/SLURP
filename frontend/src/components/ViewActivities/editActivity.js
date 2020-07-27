@@ -5,6 +5,7 @@ import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
 import * as formElements from './editActivityFormElements.js';
+import * as msgs from '../../constants/messages.js';
 
 /**
  * The form that's used when the user is editing an activity.
