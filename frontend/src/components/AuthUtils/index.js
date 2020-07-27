@@ -76,9 +76,9 @@ export function signOut() {
  *
  * The returned array of user emails are sorted in alphabetical order.
  *
- * @param {Array<String>} uidArr Array of user UIDs for which we wish to
+ * @param {Array.<String>} uidArr Array of user UIDs for which we wish to
  * retrieve the corresponding user emails.
- * @return {Promise<Array<String>>} The array of user emails corresponding to
+ * @return {Promise<Array.<String>>} The array of user emails corresponding to
  * the given UIDs.
  */
 export async function getUserEmailArrFromUserUidArr(uidArr) {
@@ -106,9 +106,9 @@ export async function getUserEmailArrFromUserUidArr(uidArr) {
  *
  * The returned array of user UIDs are sorted in alphabetical order.
  *
- * @param {Array<String>} emailArr Array of user emails for which we wish to
+ * @param {Array.<String>} emailArr Array of user emails for which we wish to
  * retrieve the corresponding user UIDs.
- * @return {Promise<Array<String>>} The array of user UIDs corresponding to
+ * @return {Promise<Array.<String>>} The array of user UIDs corresponding to
  * the given emails.
  */
 export async function getUserUidArrFromUserEmailArr(emailArr) {
