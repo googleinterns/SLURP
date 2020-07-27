@@ -28,11 +28,11 @@ class ActivityList extends React.Component {
    * @param {string} tripId The trip ID.
    */
   async getActivityList(tripId) {
-    let tripActivities = [];
     
     db.collection(DB.COLLECTION_TRIPS).doc(tripId)
     .collection(DB.COLLECTION_ACTIVITIES)
     .onSnapshot(querySnapshot => {
+      let tripActivities = [];
       this.setState({days: []});
       querySnapshot.forEach(doc => {
         let data = doc.data();
