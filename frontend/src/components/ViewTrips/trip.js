@@ -38,6 +38,31 @@ export function getCollaboratorEmails(collaboratorUidArr) {
 }
 
 /**
+ * Returns a React Bootstrap `<Row>` element containing some text
+ * and its corresponding FontAwesome icon.
+ *
+ * @param {string} rowText Text for the `<Row>` element.
+ * @param {string} icon Text corresponding to the FontAwesome solid-svg icon.
+ * @return {JSX.Element} React Bootstrap `<Row>` element. containing some text
+ *     with its corresponding FontAwesome icon.
+ */
+function getTripInfoRow(rowText, icon) {
+  if(rowText === '') {
+    return (<></>);
+  }
+  return (
+    <Row className='trip-info-row'>
+      <Col xs={1}>
+        <FontAwesomeIcon icon={icon} className='fa-icon'/>
+      </Col>
+      <Col xs={11}>
+        {rowText}
+      </Col>
+    </Row>
+  )
+}
+
+/**
  * Component corresponding to the container containing an individual trip.
  *
  * Trip object fields are cleaned and vetted with firestore security rules
@@ -82,38 +107,11 @@ const Trip = (props) => {
           <Container fluid>
             <Row>
               <Col xs={11}>
-                <Row className='trip-info-row'>
-                  <Col xs={1}>
-                    <FontAwesomeIcon icon='map-marker-alt' className='fa-icon'/>
-                  </Col>
-                  <Col xs={11}>
-                    {destination}
-                  </Col>
-                </Row>
-                <Row className='trip-info-row'>
-                  <Col xs={1}>
-                    <FontAwesomeIcon icon='calendar-alt' className='fa-icon'/>
-                  </Col>
-                  <Col xs={11}>
-                    {getDateRangeString(startDateTimestamp, endDateTimestamp)}
-                  </Col>
-                </Row>
-                <Row className='trip-info-row'>
-                  <Col xs={1}>
-                    <FontAwesomeIcon icon='book' className='fa-icon'/>
-                  </Col>
-                  <Col xs={11}>
-                    {description}
-                  </Col>
-                </Row>
-                <Row className='trip-info-row'>
-                  <Col xs={1}>
-                    <FontAwesomeIcon icon='user-friends' className='fa-icon'/>
-                  </Col>
-                  <Col xs={11}>
-                    {collaboratorEmailsStr}
-                  </Col>
-                </Row>
+                {getTripInfoRow('map-marker-alt', destination)}
+                {getTripInfoRow('calendar-alt',
+                    getDateRangeString(startDateTimestamp, endDateTimestamp))}
+                {getTripInfoRow('book', description)}
+                {getTripInfoRow('user-friends', collaboratorEmailsStr)}
               </Col>
               <Col xs={1}>
                 <Row>
