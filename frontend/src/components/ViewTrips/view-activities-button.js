@@ -26,7 +26,7 @@ const ViewActivitiesButton = (props) => {
       variant='link'
       onClick={goToViewActivities}
     >
-      <FontAwesomeIcon icon='hiking' size="lg" className='fa-icon'/>
+      <FontAwesomeIcon icon='hiking' className='fa-icon' size="lg"/>
     </Button>
   );
 }
