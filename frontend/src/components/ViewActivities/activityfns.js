@@ -33,6 +33,7 @@ export function sortByDate(tripActivities) {
   if (tripActivities === undefined) {
     return null;
   }
+  console.log(tripActivities);
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
   for (let activity of tripActivities) {
     const activityDate = new Date(activity[DB.ACTIVITIES_START_TIME]);
@@ -45,6 +46,7 @@ export function sortByDate(tripActivities) {
   }
 
   // Sort activities by date.
+  console.log(activities);
   let activitiesSorted = Array.from(activities).sort(compareActivities);
   
   return activitiesSorted;

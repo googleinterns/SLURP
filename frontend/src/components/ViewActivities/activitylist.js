@@ -16,10 +16,11 @@ const db = app.firestore();
 export async function getActivityList(tripId) {
     let tripActivities = [];
     
-    db.collection(DB.COLLECTION_TRIPS).doc(tripId)
+    return db.collection(DB.COLLECTION_TRIPS).doc(tripId)
     .collection(DB.COLLECTION_ACTIVITIES).get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
+        console.log(doc.data());
         let data = doc.data();
         data['id'] = doc.id;
         data['tripId'] = tripId;
@@ -33,11 +34,9 @@ export async function getActivityList(tripId) {
         data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
 
       tripActivities.push(data);
-    })
-  }).catch(error => {
-    console.log("It seems that an error has occured.");
-    tripActivities = null;
-  }).then( () => {return tripActivities} );
+    });
+    return tripActivities;
+  });
 }
 
 /**
@@ -72,6 +71,7 @@ class ActivityList extends React.Component {
       return;
     } 
     this.setState({days: activityFns.sortByDate(tripActivities)});
+    console.log(this.state.days);
   }
 
   /** @override */
