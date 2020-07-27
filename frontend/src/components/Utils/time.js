@@ -1,5 +1,7 @@
 import * as moment from 'moment-timezone';
 import { countryCodes } from '../../constants/countries.js';
+import * as firebase from 'firebase/app';
+
 /**
  * Format a timestamp (in milliseconds) into a pretty string with just the time like
  * '10.19 AM'.
@@ -10,13 +12,12 @@ import { countryCodes } from '../../constants/countries.js';
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
   const date = new Date(msTimestamp);
-  const formatOptions = { 
-    hour: 'numeric', 
-    minute: '2-digit', 
+  const formatOptions = {
+    hour: 'numeric',
+    minute: '2-digit',
     timeZone: timezone
   };
-  const formatted = date.toLocaleTimeString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleTimeString('en-US', formatOptions);;
 }
 
 /**
@@ -29,15 +30,14 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
   const date = new Date(msTimestamp);
-  const formatOptions = { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric',  
+  const formatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
     timeZone: timezone
   };
-  const formatted = date.toLocaleDateString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleDateString('en-US', formatOptions);
 }
 
 /** 
@@ -50,17 +50,42 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  */
 export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
   let date = new Date(msTimestamp);
-  let formatOptions = { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric',  
-    hour: 'numeric', 
-    minute: '2-digit', 
+  let formatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
     timeZone: timezone
   };
-  let formatted = date.toLocaleString('en-US', formatOptions);
-  return formatted;
+  return date.toLocaleString('en-US', formatOptions);
+}
+
+/**
+ * Return a Firestore Timestamp corresponding to the date in `dateStr`.
+ *
+ * @param {string} dateStr String containing a date in the form 'YYYY-MM-DD'.
+ * @return {firebase.firestore.Timestamp} Firestore timestamp object created.
+ */
+export function getTimestampFromDateString(dateStr) {
+  const dateParts = dateStr.split('-').map(str => +str);
+  if (dateParts.length === 1 && dateParts[0] === 0) {
+    return firebase.firestore.Timestamp.now();
+  }
+
+  const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+  return firebase.firestore.Timestamp.fromDate(date);
+}
+
+/**
+ * Formats a Firestore timestamp into a date string in ISO format.
+ *
+ * @param {firebase.firestore.Timestamp} timestamp Firestore timestamp object.
+ * @return {string} ISO formatted date string: "YYYY-MM-DD or 2020-05-12".
+ */
+export function timestampToISOString(timestamp) {
+  return timestamp.toDate().toISOString().substring(0,10);
 }
 
 /**

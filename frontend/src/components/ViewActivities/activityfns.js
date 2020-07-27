@@ -30,6 +30,10 @@ const db = app.firestore();
  * in chronological order by date.
  */
 export function sortByDate(tripActivities) {
+  if (tripActivities === undefined) {
+    return null;
+  }
+  console.log(tripActivities);
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
   for (let activity of tripActivities) {
     const activityDate = new Date(activity[DB.ACTIVITIES_START_TIME]);
@@ -42,6 +46,7 @@ export function sortByDate(tripActivities) {
   }
 
   // Sort activities by date.
+  console.log(activities);
   let activitiesSorted = Array.from(activities).sort(compareActivities);
   
   return activitiesSorted;
@@ -67,7 +72,7 @@ export function compareActivities(a, b) {
 
 
 /**
- * Get the field of field name fieldName from activity  or the default value.
+ * Get the field of field name `fieldName` from `activity` or the default value.
  * 
  * @param {ActivityInfo} activity The activity from which to get the field.
  * @param {string} fieldName Name of field to get.
