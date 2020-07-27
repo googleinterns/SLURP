@@ -66,7 +66,7 @@ class TripsContainer extends React.Component {
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
         .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
-          const tripsContainer = querySnapshot.docs.map((doc, idx) =>
+          const trips = querySnapshot.docs.map((doc, idx) =>
               ( <Trip
                   tripData={doc.data()}
                   tripId={doc.id}
@@ -77,10 +77,7 @@ class TripsContainer extends React.Component {
               )
           );
 
-          this.setState({
-                          trips: tripsContainer,
-                          firstTripId: querySnapshot.docs[0].id,
-                        });
+          this.setState({ trips: trips });
         }, async (error) => {
           const errorElement = await getErrorElement(error);
           this.setState({ trips: errorElement });
