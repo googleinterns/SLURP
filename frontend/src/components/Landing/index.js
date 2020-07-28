@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SignInButton from './signin-button';
+import SignInButton from './signin-button.js';
 import Card from 'react-bootstrap/Card';
 
 /**
@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
  * application.
  */
 class Landing extends React.Component {
+  /** @inheritdoc */
   render() {
     return (
       <div>
