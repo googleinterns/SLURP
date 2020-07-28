@@ -15,7 +15,8 @@ const db = app.firestore();
  * @param {string} [prefix=''] The prefix to put before a returned value if the field exists.
  * @return {*} `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
  */
-export function getField(activity, fieldName, defaultValue=null, prefix=''){
+export function getField(
+    activity, fieldName, defaultValue = null, prefix = '') {
   if (activity[fieldName] === null || activity[fieldName] === undefined) {
     return defaultValue;
   }
