@@ -1,10 +1,10 @@
 import React from 'react';
-import ActivityList from './activitylist.js';
 
 import app from '../Firebase';
 
-import { getUserUid } from '../AuthUtils';
 import ActivityList from './activitylist.js';
+import { getCurUserUid } from '../AuthUtils';
+import * as ErrorComponents from '../Errors';
 import * as DB from '../../constants/database.js';
 
 /**
@@ -54,13 +54,7 @@ class ViewActivities extends React.Component {
   render() {
     // Case where there was a Firebase error.
     if (this.state.error !== undefined) {
-      // TODO (Issue #74): Redirect to an error page instead.
-      return (
-        <div>
-          Oops, looks like something went wrong. Please wait a few minutes and
-          try again.
-        </div>
-      );
+      return <div><ErrorComponents.ErrorGeneral /></div>;
     }
     // Case where the trip details are still being fetched.
     if (this.state.isLoading) {
@@ -68,17 +62,11 @@ class ViewActivities extends React.Component {
       // deployed build lol.
       return <div>Loading Part 2: Electric Boogaloo</div>;
     }
-    // Case where the trip could not be found. A field is returned undefined if
-    // the trip does not exist, so we check that the retrieved collaborators is
-    // undefined.
-    else if (this.state.collaborators === undefined) {
-      // TODO (Issue #74): Redirect to an error page instead.
-      return <div>Sorry, we couldn't find the trip you were looking for.</div>;
-    }
-    // Case where the current user is not authorized to view the page
-    else if (!this.state.collaborators.includes(getUserUid())) {
-      // TODO (Issue #74): Redirect to an error page instead.
-      return <div>Sorry, you're not authorized to view this trip.</div>;
+    // Case where the trip could not be found or the current user is not
+    // authorized to view the trip.
+    else if (this.state.collaborators === undefined ||
+             !this.state.collaborators.includes(getCurUserUid())) {
+      return <div><ErrorComponents.ErrorTripNotFound /></div>;
     }
     else {
       return (

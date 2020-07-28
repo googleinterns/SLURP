@@ -11,10 +11,10 @@ const RESULT_NOT_AUTHORIZED =
 const RESULT_TRIP_DOESNT_EXIST =
     'Sorry, we couldn\'t find the trip you were looking for.';
 
-// Mock the getUserUid auth utility function to return a fake UID as given by
+// Mock the getCurUserUid auth utility function to return a fake UID as given by
 // FAKE_USER.
 jest.mock('../AuthUtils');
-authUtils.getUserUid.mockReturnValue(FAKE_USER);
+authUtils.getCurUserUid.mockReturnValue(FAKE_USER);
 
 // Mock the ActivityList component to simply render the passed-in tripId.
 jest.mock('./activitylist.js', () => (props) => (
