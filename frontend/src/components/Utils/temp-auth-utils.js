@@ -38,7 +38,7 @@ export function getUserUidArrFromUserEmailArr(userEmailArr) {
  * @param {!Array<string>} userUidArr Array of fake user uids that are
  *     in the form '_userEmail_'.
  * @return {!Array<string>} Array of user emails corresponding to the user
- *     uids in `uuidArr`.
+ *     uids in `userUidArr`.
  */
 export function getUserEmailArrFromUserUidArr(userUidArr) {
   return userUidArr.map(userUid => userUid.substring(1, userUid.length - 1));
