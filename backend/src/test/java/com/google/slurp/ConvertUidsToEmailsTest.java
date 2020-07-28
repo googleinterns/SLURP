@@ -48,6 +48,28 @@ public class ConvertUidsToEmailsTest extends Mockito {
   private HttpServletRequest request;
   private HttpServletResponse response;
 
+  /**
+   * Given a JSON array of UIDs, check that the servlet's doPost function writes to the response a
+   * JSON array of the expected emails. Uses mocked request and response variables.
+   *
+   * @param uidList The JSON array of UIDs we wish to convert.
+   * @param emailList The expected JSON array of emails from the given uidList.
+   * @throws Exception When either the doPost or the asssertEquals fails.
+   */
+  private void assertUidsConvertedToEmails(String uidList, String emailList) throws Exception {
+    BufferedReader readerFromString = new BufferedReader(new StringReader(uidList));
+    when(request.getReader()).thenReturn(readerFromString);
+
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter writer = new PrintWriter(stringWriter);
+    when(response.getWriter()).thenReturn(writer);
+
+    servlet.doPost(request, response);
+
+    writer.flush();
+    Assert.assertEquals(emailList, stringWriter.toString());
+  }
+
   @BeforeClass
   public static void setUpFirebaseAdmin() {
     mockServer = new ServerListener();
@@ -72,17 +94,7 @@ public class ConvertUidsToEmailsTest extends Mockito {
    */
   @Test
   public void retrieveTwoUserEmails() throws Exception {
-    BufferedReader readerFromString = new BufferedReader(new StringReader(TWO_UIDS_LIST));
-    when(request.getReader()).thenReturn(readerFromString);
-
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(writer);
-
-    servlet.doPost(request, response);
-
-    writer.flush();
-    Assert.assertEquals(TWO_EMAILS_LIST, stringWriter.toString());
+    assertUidsConvertedToEmails(TWO_UIDS_LIST, TWO_EMAILS_LIST);
   }
 
   /**
@@ -90,17 +102,7 @@ public class ConvertUidsToEmailsTest extends Mockito {
    */
   @Test
   public void retrieveOneUserEmail() throws Exception {
-    BufferedReader readerFromString = new BufferedReader(new StringReader(ONE_UID_LIST));
-    when(request.getReader()).thenReturn(readerFromString);
-
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(writer);
-
-    servlet.doPost(request, response);
-
-    writer.flush();
-    Assert.assertEquals(ONE_EMAIL_LIST, stringWriter.toString());
+    assertUidsConvertedToEmails(ONE_UID_LIST, ONE_EMAIL_LIST);
   }
 
   /**
@@ -108,17 +110,7 @@ public class ConvertUidsToEmailsTest extends Mockito {
    */
   @Test
   public void emptyRequest() throws Exception {
-    BufferedReader readerFromString = new BufferedReader(new StringReader(EMPTY_UID_LIST));
-    when(request.getReader()).thenReturn(readerFromString);
-
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(writer);
-
-    servlet.doPost(request, response);
-
-    writer.flush();
-    Assert.assertEquals(EMPTY_EMAIL_LIST, stringWriter.toString());
+    assertUidsConvertedToEmails(EMPTY_UID_LIST, EMPTY_EMAIL_LIST);
   }
 
   /**
@@ -127,17 +119,7 @@ public class ConvertUidsToEmailsTest extends Mockito {
    */
   @Test
   public void requestWithFakeUser() throws Exception {
-    BufferedReader readerFromString = new BufferedReader(new StringReader(UID_LIST_WITH_FAKE));
-    when(request.getReader()).thenReturn(readerFromString);
-
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(writer);
-
-    servlet.doPost(request, response);
-
-    writer.flush();
-    Assert.assertEquals(ONE_EMAIL_LIST, stringWriter.toString());
+    assertUidsConvertedToEmails(UID_LIST_WITH_FAKE, ONE_EMAIL_LIST);
   }
 
   /**
@@ -145,16 +127,6 @@ public class ConvertUidsToEmailsTest extends Mockito {
    */
   @Test
   public void requestAllFakeUsers() throws Exception {
-    BufferedReader readerFromString = new BufferedReader(new StringReader(ALL_FAKE_USERS));
-    when(request.getReader()).thenReturn(readerFromString);
-
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(writer);
-
-    servlet.doPost(request, response);
-
-    writer.flush();
-    Assert.assertEquals(EMPTY_EMAIL_LIST, stringWriter.toString());
+    assertUidsConvertedToEmails(ALL_FAKE_USERS, EMPTY_EMAIL_LIST);
   }
 }

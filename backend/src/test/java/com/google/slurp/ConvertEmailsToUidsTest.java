@@ -42,6 +42,28 @@ public class ConvertEmailsToUidsTest extends Mockito {
   private HttpServletRequest request;
   private HttpServletResponse response;
 
+  /**
+   * Given a JSON array of emails, check that the servlet's doPost function writes to the response
+   * a JSON array of the expected UIDs. Uses mocked request and response variables.
+   *
+   * @param emailList The JSON array of emails we wish to convert.
+   * @param uidList The expected JSON array of UIDs from the given emailList.
+   * @throws Exception When either the doPost or the asssertEquals fails.
+   */
+  private void assertEmailsConvertedToUids(String emailList, String uidList) throws Exception {
+    BufferedReader readerFromString = new BufferedReader(new StringReader(emailList));
+    when(request.getReader()).thenReturn(readerFromString);
+
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter writer = new PrintWriter(stringWriter);
+    when(response.getWriter()).thenReturn(writer);
+
+    servlet.doPost(request, response);
+
+    writer.flush();
+    Assert.assertEquals(uidList, stringWriter.toString());
+  }
+
   @BeforeClass
   public static void setUpFirebaseAdmin() {
     mockServer = new ServerListener();
@@ -66,17 +88,7 @@ public class ConvertEmailsToUidsTest extends Mockito {
    */
   @Test
   public void retrieveTwoUserUIDs() throws Exception {
-    BufferedReader readerFromString = new BufferedReader(new StringReader(TWO_EMAILS_LIST));
-    when(request.getReader()).thenReturn(readerFromString);
-
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(writer);
-
-    servlet.doPost(request, response);
-
-    writer.flush();
-    Assert.assertEquals(TWO_UIDS_LIST, stringWriter.toString());
+    assertEmailsConvertedToUids(TWO_EMAILS_LIST, TWO_UIDS_LIST);
   }
 
   /**
@@ -84,17 +96,7 @@ public class ConvertEmailsToUidsTest extends Mockito {
    */
   @Test
   public void retrieveOneUserUID() throws Exception {
-    BufferedReader readerFromString = new BufferedReader(new StringReader(ONE_EMAIL_LIST));
-    when(request.getReader()).thenReturn(readerFromString);
-
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(writer);
-
-    servlet.doPost(request, response);
-
-    writer.flush();
-    Assert.assertEquals(ONE_UID_LIST, stringWriter.toString());
+    assertEmailsConvertedToUids(ONE_EMAIL_LIST, ONE_UID_LIST);
   }
 
   /**
@@ -102,16 +104,6 @@ public class ConvertEmailsToUidsTest extends Mockito {
    */
   @Test
   public void emptyRequest() throws Exception {
-    BufferedReader readerFromString = new BufferedReader(new StringReader(EMPTY_EMAIL_LIST));
-    when(request.getReader()).thenReturn(readerFromString);
-
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(writer);
-
-    servlet.doPost(request, response);
-
-    writer.flush();
-    Assert.assertEquals(EMPTY_UID_LIST, stringWriter.toString());
+    assertEmailsConvertedToUids(EMPTY_EMAIL_LIST, EMPTY_UID_LIST);
   }
 }
