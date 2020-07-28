@@ -1,0 +1,35 @@
+.activity-list {
+    width: 100%
+}
+
+.activity-page {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: 1.5em;
+    padding: 0 1em;
+    justify-content: center;
+}
+
+.accordion {
+    margin: 1em;
+}
+
+.activity-day {
+    margin: 0.5em auto;
+    max-width: 50pc;
+}
+
+/* TODO: auto height, transition. (#49)*/
+.view-activity.edit {
+    height: 35em;
+}
+.view-activity {
+    overflow: scroll;
+    height: 10em;
+    transition: height 0.25s linear;
+}
+
+.activity-editor {
+    padding: 1em 1em 3em 1em;
+}

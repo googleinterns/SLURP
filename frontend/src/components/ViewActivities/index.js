@@ -1,4 +1,5 @@
 import React from 'react';
+import ActivityList from './activitylist.js';
 
 import app from '../Firebase';
 

@@ -5,6 +5,7 @@
  * retrieved.
  */
 
+import app from '../Firebase';
 import { AuthUtilsConsumer, getCurrentUser } from './AuthUtilsConsumer.js';
 import { SIGN_IN } from '../../constants/routes.js';
 
@@ -37,7 +38,7 @@ function isUserLoggedIn() {
 /**
  * @returns {String} The user's display name.
  */
-export function getUserDisplayName() {
+export function getCurUserDisplayName() {
   if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().displayName;
 }
@@ -45,7 +46,7 @@ export function getUserDisplayName() {
 /**
  * @returns {String} The user's email.
  */
-export function getUserEmail() {
+export function getCurUserEmail() {
   if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().email;
 }
@@ -53,7 +54,7 @@ export function getUserEmail() {
 /**
  * @returns {String} The user's profile picture URL.
  */
-export function getUserPhotoUrl() {
+export function getCurUserPhotoUrl() {
   if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().photoURL;
 }
@@ -61,17 +62,22 @@ export function getUserPhotoUrl() {
 /**
  * @returns {String} The user's unique ID.
  */
-export function getUserUid() {
+export function getCurUserUid() {
   if (!isUserLoggedIn()) { return null; }
   return getCurrentUser().uid;
 }
 
+export function signOut() {
+  app.auth().signOut();
+}
+
 // Can also access the auth functions in the named authUtils variable.
 const authUtils = {
-  getUserDisplayName,
-  getUserEmail,
-  getUserPhotoUrl,
-  getUserUid
+  getCurUserDisplayName,
+  getCurUserEmail,
+  getCurUserPhotoUrl,
+  getCurUserUid,
+  signOut
 };
 export default authUtils;
 
