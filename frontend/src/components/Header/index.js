@@ -23,7 +23,7 @@ class Header extends React.Component {
   render() {
     return (
       <div>
-        <Navbar className='d-flex align-items-center' fixed='top' bg='info'>
+        <Navbar className='d-flex align-items-center' sticky='top' bg='info'>
           <Navbar.Brand href={VIEW_TRIPS}>
             {/* TODO (Issue #24): Put path to logo when we have one. */}
             <img alt="SLURP Logo" />

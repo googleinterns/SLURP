@@ -106,6 +106,14 @@ backend/
 ```
 This file structure is largely the same as that used during portfolio creation portion of Google's 2020 STEP internship. The appengine-web.xml file was modified to ensure compatibility with the frontend component when deployed.
 
+Servlets developed in the backend must be routed to the prefix `/api/v1` in the `@WebServlet` annotation, e.g.:
+```
+@WebServlet("/api/v1/test-servlet")
+public class TestServlet extends HttpServlet { ... }
+```
+
+The servlet can then be accessed from the frontend with a fetch request, e.g. `fetch('api/v1/test-servlet').then( ... )`.
+
 ## Styling
 The React Bootstrap tool was imported for use in the frontend. Available components can be found [here](https://react-bootstrap.github.io/components/alerts/).
 

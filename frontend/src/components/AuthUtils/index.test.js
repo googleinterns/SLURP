@@ -24,26 +24,27 @@ describe('auth utility functions when authenticated', () => {
     expect(getCurrentUser()).toBe(mockAuthenticatedUser);
   })
 
-  test('getUserDisplayName function', () => {
-    expect(authUtils.getUserDisplayName()).toBe(mockDisplayName);
+  test('getCurUserDisplayName function', () => {
+    expect(authUtils.getCurUserDisplayName()).toBe(mockDisplayName);
   });
 
-  test('getUserEmail function', () => {
-    expect(authUtils.getUserEmail()).toBe(mockEmail);
+  test('getCurUserEmail function', () => {
+    expect(authUtils.getCurUserEmail()).toBe(mockEmail);
   });
 
-  test('getUserPhotoUrl function', () => {
-    expect(authUtils.getUserPhotoUrl()).toBe(mockPhotoURL);
+  test('getCurUserPhotoUrl function', () => {
+    expect(authUtils.getCurUserPhotoUrl()).toBe(mockPhotoURL);
   });
 
-  test('getUserUid function', () => {
-    expect(authUtils.getUserUid()).toBe(mockUid);
+  test('getCurUserUid function', () => {
+    expect(authUtils.getCurUserUid()).toBe(mockUid);
   });
 });
 
 // All utility functions in this scenario should do the same thing: redirect to
 // the SIGN_IN page.
 describe('auth utility functions when not authenticated', () => {
+  // Delete the default window.location object set by Jest to use my own mock.
   beforeAll(() => {
     delete window.location;
   });
@@ -56,23 +57,23 @@ describe('auth utility functions when not authenticated', () => {
     expect(getCurrentUser()).toBe(mockUnauthenticatedUser);
   });
 
-  afterEach(() => {
+  test('getCurUserDisplayName function', () => {
+    authUtils.getCurUserDisplayName();
     expect(window.location.href).toBe(SIGN_IN);
-  })
-
-  test('getUserDisplayName function', () => {
-    authUtils.getUserDisplayName();
   });
 
-  test('getUserEmail function', () => {
-    authUtils.getUserEmail();
+  test('getCurUserEmail function', () => {
+    authUtils.getCurUserEmail();
+    expect(window.location.href).toBe(SIGN_IN);
   });
 
-  test('getUserPhotoUrl function', () => {
-    authUtils.getUserPhotoUrl();
+  test('getCurUserPhotoUrl function', () => {
+    authUtils.getCurUserPhotoUrl();
+    expect(window.location.href).toBe(SIGN_IN);
   });
 
-  test('getUserUid function', () => {
-    authUtils.getUserUid();
+  test('getCurUserUid function', () => {
+    authUtils.getCurUserUid();
+    expect(window.location.href).toBe(SIGN_IN);
   });
 });
