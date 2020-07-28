@@ -77,10 +77,7 @@ class TripsContainer extends React.Component {
               )
           );
 
-          this.setState({
-                          trips: tripsContainer,
-                          firstTripId: querySnapshot.docs[0].id,
-                        });
+          this.setState({ trips: tripsContainer });
         }, async (error) => {
           const errorElement = await getErrorElement(error);
           this.setState({ trips: errorElement });
