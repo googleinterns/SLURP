@@ -42,6 +42,7 @@ import org.apache.commons.lang3.StringUtils;
  * corresponding user UIDs, sending this back as the response.
  */
 @WebServlet("/api/v1/convert-emails-to-uids")
+@SuppressWarnings("serial")
 public class ConvertEmailsToUidsServlet extends HttpServlet {
   private FirebaseAuth auth = FirebaseAuth.getInstance();
 

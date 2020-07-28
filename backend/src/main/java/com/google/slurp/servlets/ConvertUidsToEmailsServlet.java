@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  * user emails, sending this back as the response.
  */
 @WebServlet("/api/v1/convert-uids-to-emails")
+@SuppressWarnings("serial")
 public class ConvertUidsToEmailsServlet extends HttpServlet {
   private FirebaseAuth auth = FirebaseAuth.getInstance();
 
