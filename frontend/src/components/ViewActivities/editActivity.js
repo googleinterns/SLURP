@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { getField, writeActivity } from './activityfns.js';
 import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
@@ -11,8 +11,8 @@ const db = app.firestore();
 
 /**
  * React component for the form that's used when the user is editing an activity.
- * 
- * @property {Object} props ReactJS props. 
+ *
+ * @property {Object} props ReactJS props.
  * @property {ActivityInfo} props.activity The activity to display.
  * @property {function} props.submitFunction The function to run upon submission.
  */
@@ -29,7 +29,7 @@ class EditActivity extends React.Component {
     this.deleteActivity = this.deleteActivity.bind(this);
     this.timezoneDropdown = this.timezoneDropdown.bind(this);
 
-    // References. 
+    // References.
     this.editTitleRef = React.createRef();
     this.editStartDateRef = React.createRef();
     this.editEndDateRef = React.createRef();
@@ -41,7 +41,7 @@ class EditActivity extends React.Component {
     this.startTz = React.createRef();
     this.endTz = React.createRef();
   }
-  
+
   /**
    * Edit an activity in the database upon form submission.
    * TODO: Update times as well! This only does the text field forms (#64).
@@ -72,8 +72,8 @@ class EditActivity extends React.Component {
     this.props.submitFunction();
   }
 
-  // "Flip switch" on timezone dropdown so the dropdown's contents update to the 
-  // selected country's timezones. 
+  // "Flip switch" on timezone dropdown so the dropdown's contents update to the
+  // selected country's timezones.
   startTimeTzUpdate = () => { this.setState({startTz : !this.state.startTz})};
   endTimeTzUpdate = () => { this.setState({endTz : !this.state.endTz})};
 
@@ -81,10 +81,10 @@ class EditActivity extends React.Component {
    * Returns a dropdown of all the timezones.
    * The dropdown's values change based on the corrresponding country dropdown to
    * reduce scrolling and ensure that the location corresponds to the time zone.
-   * 
+   *
    * Tests done manually using UI.
-   * 
-   * @param {string} st Either 'start' or 'end' depending on whether the 
+   *
+   * @param {string} st Either 'start' or 'end' depending on whether the
    * timezone is for the start or end timezone.
    * @return {HTML} HTML dropdown item.
    */
@@ -110,13 +110,13 @@ class EditActivity extends React.Component {
     )
   }
   /**
-   * Create a dropdown of all the countries. 
-   * This dropdown is linked to the corresponding timezone dropdown, 
-   * so when the country changes here, the values in the timezone dropdown 
-   * change as well. 
-   * 
+   * Create a dropdown of all the countries.
+   * This dropdown is linked to the corresponding timezone dropdown,
+   * so when the country changes here, the values in the timezone dropdown
+   * change as well.
+   *
    * @param {ref} ref The reference to attach to the dropdown.
-   * @param {ref} tzref The corresponding time zone reference field. 
+   * @param {ref} tzref The corresponding time zone reference field.
    * @return {HTML} HTML dropdown of all the countries with timezones.
    */
   countriesDropdown(ref, tzref) {
@@ -133,8 +133,8 @@ class EditActivity extends React.Component {
   }
 
   /**
-   * Delete this activity. 
-   * 
+   * Delete this activity.
+   *
    * @return {boolean} true if the activity was successfully deleted.
    */
   async deleteActivity() {
@@ -156,7 +156,7 @@ class EditActivity extends React.Component {
         {formElements.textElementFormGroup(
             'formActivityTitle',          // controlId
             'Title:',                     // formLabel
-            activity[DB.ACTIVITIES_TITLE],// placeHolder 
+            activity[DB.ACTIVITIES_TITLE],// placeHolder
             this.editTitleRef             // ref
           )}
         {formElements.locationElementFormGroup(
@@ -173,28 +173,28 @@ class EditActivity extends React.Component {
           'formActivityStartTime',       // controlId
           'From:',                       // formLabel
           this.editStartDateRef,         // dateRef
-          null,                          // dateDefault 
-          this.editStartTimeRef,         // timeRef, 
-          null,                          // timeDefault, 
-          this.timezoneDropdown('start') // tzpicker 
+          null,                          // dateDefault
+          this.editStartTimeRef,         // timeRef,
+          null,                          // timeDefault,
+          this.timezoneDropdown('start') // tzpicker
           )}
         {formElements.dateTimeTzFormGroup(
           'formActivityEndTime',       // controlId
           'To:',                       // formLabel
           this.editEndDateRef,         // dateRef
-          null,                        // dateDefault 
-          this.editEndTimeRef,         // timeRef, 
-          null,                        //timeDefault, 
-          this.timezoneDropdown('end') // tzpicker 
+          null,                        // dateDefault
+          this.editEndTimeRef,         // timeRef,
+          null,                        //timeDefault,
+          this.timezoneDropdown('end') // tzpicker
           )}
         {formElements.textElementFormGroup(
             'formActivityDescription',                                          // controlId
             'Description:',                                                     // formLabel
-            getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder 
+            getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder
             this.editDescriptionRef                                             // ref
           )}
         <Button type='submit' className='float-right'>Done!</Button>
-        <Button type='button' onClick={this.deleteActivity}> 
+        <Button type='button' onClick={this.deleteActivity}>
           Delete
         </Button>
       </Form>
