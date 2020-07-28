@@ -6,7 +6,7 @@ import Firebase from 'firebase';
 const db = app.firestore();
 
 /**
- * Get the field of field name `fieldName` from `activit`y  or the default value.
+ * Get the field of field name `fieldName` from `activity`  or the default value.
  * 
  * @param {Object} activity Activity to get field from.
  * @param {string} fieldName Name of the field in the activity to get. 
