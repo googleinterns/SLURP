@@ -103,7 +103,7 @@ export function getISODate(msTimestamp, timezone=null) {
  * @param {string} timezone The timezone which the string should be returned in.
  * @return {string} The time in 24-hour (HH:mm) format.   
  */
-export function get24hTime(msTimestamp, timezone=null) {
+export function get24hTime(msTimestamp, timezone = null) {
   if (timezone === null) {
     return moment.tz(parseFloat(msTimestamp), '').format('HH:mm'); // GMT
   }
