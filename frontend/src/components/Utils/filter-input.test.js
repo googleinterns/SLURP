@@ -26,9 +26,6 @@ describe('getCleanedTextInput tests', () => {
 const mockCurUserEmail = 'cur.user@email.com';
 jest.mock('../AuthUtils', () => ({
     getCurUserEmail: () => mockCurUserEmail,
-}));
-// TODO(Issue #55): Replace mock with real auth file once integrated.
-jest.mock('./temp-auth-utils.js', () => ({
     getUserUidArrFromUserEmailArr: (userEmailArr) => {
           return userEmailArr.map(userEmail => '_' + userEmail + '_');
         },
