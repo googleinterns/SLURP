@@ -1,9 +1,10 @@
 import React from 'react';
-import app from '../Firebase';
-import { getUserUid } from '../AuthUtils';
-import ActivityList from './activitylist.js';
-import * as ErrorComponents from '../Errors';
 
+import app from '../Firebase';
+
+import ActivityList from './activitylist.js';
+import { getCurUserUid } from '../AuthUtils';
+import * as ErrorComponents from '../Errors';
 import * as DB from '../../constants/database.js';
 
 /**
@@ -64,7 +65,7 @@ class ViewActivities extends React.Component {
     // Case where the trip could not be found or the current user is not
     // authorized to view the trip.
     else if (this.state.collaborators === undefined ||
-             !this.state.collaborators.includes(getUserUid())) {
+             !this.state.collaborators.includes(getCurUserUid())) {
       return <div><ErrorComponents.ErrorTripNotFound /></div>;
     }
     else {
