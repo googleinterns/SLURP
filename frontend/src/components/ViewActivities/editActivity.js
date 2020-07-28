@@ -87,7 +87,7 @@ class EditActivity extends React.Component {
   endTimeTzUpdate = () => { this.setState({endTzChanged : !this.state.endTzChanged})};
 
   /**
-   * Returns a dropdown of all the timezones.  
+   * Returns a dropdown of all the timezones.
    * The dropdown's values change based on the corrresponding country dropdown to
    * reduce scrolling and ensure that the location corresponds to the time zone.
    * 
@@ -142,7 +142,6 @@ class EditActivity extends React.Component {
       </Form.Control>
     );
   }
-
 
   render() {
     const activity = this.props.activity;
