@@ -6,14 +6,14 @@ import Firebase from 'firebase';
 const db = app.firestore();
 
 /**
- * Get the field of field name `fieldName` from `activity  or the default value.
+ * Get the field of field name `fieldName` from `activit`y  or the default value.
  * 
  * @param {Object} activity Activity to get field from.
  * @param {string} fieldName Name of the field in the activity to get. 
  * @param {?*} [defaultValue=null] Default value to return if activity[fieldName] can't be found. 
  * Can be any type.
  * @param {string} [prefix=''] The prefix to put before a returned value if the field exists.
- * @return `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
+ * @return {*} `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
  */
 export function getField(activity, fieldName, defaultValue=null, prefix=''){
   if (activity[fieldName] === null || activity[fieldName] === undefined) {

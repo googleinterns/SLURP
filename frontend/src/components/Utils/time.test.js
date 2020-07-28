@@ -94,7 +94,7 @@ test('other date ISODate format', () => {
   expect(actualSingapore).toEqual(expectedSingapore);
 });
 
-test('24h crazy queries', () => {  
+test('24h empty input tests', () => {  
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
   const expected = '02:03';
   expect(utils.get24hTime(testDate, '')).toBe(expected);
@@ -119,7 +119,7 @@ test('other time 24h format', () => {
   expect(actualSingapore).toEqual(expectedSingapore);
 })
 
-test('ISODate crazy queries', () => {  
+test('ISODate empty input tests', () => {  
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
   const expected = '2020-08-23';
   expect(utils.getISODate(testDate, '')).toBe(expected);

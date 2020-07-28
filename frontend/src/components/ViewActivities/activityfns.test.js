@@ -7,9 +7,9 @@ const eleven = Date.UTC(2020, 4, 2, 11, 0);        // May 2, 2020 11:00
 const elevenThirty = Date.UTC(2020, 4, 2, 11, 30); // May 2, 2020 11:30
 const twelve = Date.UTC(2020, 4, 2, 12, 0);        // May 2, 2020 12:00
 const one = Date.UTC(2020, 4, 2, 13, 0);           // May 2, 2020 13:00
-const may102pm = Date.UTC(2020, 4, 10, 14, 0); // May 10, 2020 14:00
-const may014pm = Date.UTC(2020, 4, 1, 16, 0);   // May 1, 2020 16:00
-const may153am = Date.UTC(2020, 4, 15, 3, 0);   // May 15, 2020 3:00
+const may102pm = Date.UTC(2020, 4, 10, 14, 0);     // May 10, 2020 14:00
+const may014pm = Date.UTC(2020, 4, 1, 16, 0);      // May 1, 2020 16:00
+const may153am = Date.UTC(2020, 4, 15, 3, 0);      // May 15, 2020 3:00
 
 function createActivity(startTime, endTime){
   return {'start_time': startTime, 'end_time': endTime};
