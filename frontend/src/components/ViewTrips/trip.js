@@ -107,11 +107,13 @@ const Trip = (props) => {
           <Container fluid>
             <Row>
               <Col xs={11}>
-                {getTripInfoRow('map-marker-alt', destination)}
-                {getTripInfoRow('calendar-alt',
-                    getDateRangeString(startDateTimestamp, endDateTimestamp))}
-                {getTripInfoRow('book', description)}
-                {getTripInfoRow('user-friends', collaboratorEmailsStr)}
+                {getTripInfoRow(destination, 'map-marker-alt')}
+                {getTripInfoRow(
+                    getDateRangeString(startDateTimestamp, endDateTimestamp),
+                    'calendar-alt'
+                )}
+                {getTripInfoRow(description, 'book')}
+                {getTripInfoRow(collaboratorEmailsStr, 'user-friends')}
               </Col>
               <Col xs={1}>
                 <Row>
