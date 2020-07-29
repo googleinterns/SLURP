@@ -11,7 +11,7 @@ const db = app.firestore();
 /**
  * Returns a `<div>` element with the specified error message.
  *
- * TODO(Issue #9.): Turn this func into component and add to Errors directory.
+ * TODO(Issue #98): Turn this func into component and add to Errors directory.
  *
  * @param {string} error Error message in `componentDidMount` catch statement.
  * @return {Promise<HTMLDivElement>} Promise object containing a `<div>` element
@@ -42,7 +42,7 @@ class TripsContainer extends React.Component {
   /** @inheritdoc */
   constructor(props) {
     super(props);
-    this.state = {trips: []};
+    this.state = {tripsContainer: []};
   }
 
   /**
@@ -64,7 +64,7 @@ class TripsContainer extends React.Component {
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
         .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
-          const tripsContainer = querySnapshot.docs.map(doc =>
+          const tripsArr = querySnapshot.docs.map(doc =>
               ( <Trip
                   tripData={doc.data()}
                   tripId={doc.id}
@@ -74,17 +74,17 @@ class TripsContainer extends React.Component {
               )
           );
 
-          this.setState({ trips: tripsContainer });
+          this.setState({ tripsContainer: tripsArr });
         }, async (error) => {
           const errorElement = await getErrorElement(error);
-          this.setState({ trips: errorElement });
+          this.setState({ tripsContainer: errorElement });
         });
   }
 
   /** @inheritdoc */
   render() {
     return (
-      <div>{this.state.trips}</div>
+      <div>{this.state.tripsContainer}</div>
     );
   }
 }

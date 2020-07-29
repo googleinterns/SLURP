@@ -32,11 +32,10 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
                           .concat(collaboratorEmailArr);
 
   // Removes empty fields (temporary until fix #67 & #72).
-  while (collaboratorEmailArr.includes('')) {
-    const emptyStrIdx = collaboratorEmailArr.indexOf('');
-    collaboratorEmailArr.splice(emptyStrIdx, 1);
-  }
-  return getUserUidArrFromUserEmailArr(collaboratorEmailArr);
+  const cleanedCollaboratorEmailArr = collaboratorEmailArr.filter(email => {
+    return email !== '';
+  })
+  return getUserUidArrFromUserEmailArr(cleanedCollaboratorEmailArr);
 }
 
 /**

@@ -10,6 +10,8 @@ import ViewActivitiesButton from './view-activities-button.js';
 import * as DB from '../../constants/database.js';
 
 /**
+ * Return collaborator emails corresponding to the collaborator uid's
+ * `collaboratorUidArr` in a comma separated string.
  *
  * @param {!Array<string>} collaboratorUidArr Array of collaborator uids
  *     stored in trip document.

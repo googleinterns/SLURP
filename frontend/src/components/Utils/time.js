@@ -1,11 +1,14 @@
+import * as moment from 'moment-timezone';
+import { countryCodes } from '../../constants/countries.js';
 import * as firebase from 'firebase/app';
 
 /**
- * Format a timestamp (in milliseconds) into a pretty string with just the time.
+ * Format a timestamp (in milliseconds) into a pretty string with just the time like
+ * '10.19 AM'.
  *
- * @param {int} msTimestamp
- * @param {string} timezone
- * @returns {string} Time formatted into a string like '10:19 AM'.
+ * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {string} timezone Timezone in which to convert.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
   const date = new Date(msTimestamp);
@@ -14,15 +17,16 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
     minute: '2-digit',
     timeZone: timezone
   };
-  return date.toLocaleTimeString('en-US', formatOptions);;
+  return date.toLocaleTimeString('en-US', formatOptions);
 }
 
 /**
- * Format a timestamp (in milliseconds) into a pretty string with just the date.
+ * Format a timestamp (in milliseconds) into a pretty string with just the date, like
+ *  'Monday, January 19, 1970'.
  *
- * @param {int} msTimestamp
- * @param {string} timezone
- * @returns {string} Time formatted into a string like 'Monday, January 19, 1970'.
+ * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {string} timezone Timezone in which to convert.
+ * @return {string} Time formatted into desired pretty string.
  */
 export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
   const date = new Date(msTimestamp);
@@ -37,14 +41,14 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
 }
 
 /**
- * Format a timestamp (in milliseconds) into a pretty string.
+ * Format a timestamp (in milliseconds) into a pretty string like
+ * 'Monday, January 19, 1970, 02:48 AM'.
  *
- * @param {int} msTimestamp
- * @param {string} timezone
- * @returns {string} Time formatted into a string like
- * "Monday, January 19, 1970, 02:48 AM"
+ * @param {int} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {string} timezone Timezone in which to convert.
+ * @return {string} Time formatted into desired pretty string.
  */
-export function timestampToFormatted(msTimestamp, timezone = "America/New_York") {
+export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
   let date = new Date(msTimestamp);
   let formatOptions = {
     weekday: 'long',
@@ -56,6 +60,53 @@ export function timestampToFormatted(msTimestamp, timezone = "America/New_York")
     timeZone: timezone
   };
   return date.toLocaleString('en-US', formatOptions);
+}
+
+/**
+ * Returns all the time zones in a country (in displayable format).
+ *
+ * @param {string} countryName The name of the country for which to get the time zones.
+ * @return {string[]} The list of time zones in the provided country.
+ */
+export function timezonesForCountry(countryName) {
+  let zones;
+  try {
+    const countryCode = countryCodes[countryName];
+    zones = moment.tz.zonesForCountry(countryCode);
+  } catch (e) {
+    zones = moment.tz.names(); // List of all timezones.
+  }
+  return zones.map(e => {
+    return e.replace(/[_]/g, ' ');
+  });
+}
+
+/**
+ * Get a date in 'YYYY-MM-DD' form.
+ *
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {string} timezone The timezone which the string should be returned in.
+ * @return {string} The date in 'YYYY-MM-DD' form.
+ */
+export function getISODate(msTimestamp, timezone=null) {
+  if (timezone === null) {
+    timezone = ''; // GMT
+  }
+  return moment.tz(parseFloat(msTimestamp), timezone).format('YYYY-MM-DD');
+}
+
+/**
+ * Get a time in 24-hour ('HH:mm') form.
+ *
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {string} timezone The timezone which the string should be returned in.
+ * @return {string} The time in 24-hour (HH:mm) form.
+ */
+export function get24hTime(msTimestamp, timezone=null) {
+  if (timezone === null) {
+    return moment.tz(parseFloat(msTimestamp), '').format('HH:mm'); // GMT
+  }
+  return moment.tz(parseFloat(msTimestamp), timezone).format('HH:mm');
 }
 
 /**
@@ -75,20 +126,6 @@ export function getTimestampFromDateString(dateStr) {
 }
 
 /**
- * Formats a Firestore timestamp into a date string in ISO format.
- *
- * TODO(Issue #89): Remove this function when integrating timezones for the
- * ViewTrips components.
- *
- * @param {firebase.firestore.Timestamp} timestamp Firestore timestamp object.
- * @return {string} ISO formatted date string: "YYYY-MM-DD or 2020-05-12".
- */
-export function timestampToISOString(timestamp) {
-  return timestamp.toDate().toISOString().substring(0,10);
-}
-
-
-/**
  * Returns the string date range of the trip associated with the Trip document
  * start and end date timestamps.
  *
@@ -102,7 +139,20 @@ export function timestampToISOString(timestamp) {
  * @return {string} Date range of the trip in the form 'MM/DD/YYYY - MM/DD/YYYY'.
  */
 export function getDateRangeString(startDateTimestamp, endDateTimestamp) {
-  const startDate = startDateTimestamp.toDate().toLocaleDateString('en-US');
-  const endDate = endDateTimestamp.toDate().toLocaleDateString('en-US');
+  const startDate = startDateTimestamp.toDate().toLocaleDateString();
+  const endDate = endDateTimestamp.toDate().toLocaleDateString();
   return startDate + ' - ' + endDate;
+}
+
+/**
+ * Formats a Firestore timestamp into a date string in ISO format.
+ *
+ * TODO(Issue #89): Remove this function when integrating timezones for the
+ * ViewTrips components.
+ *
+ * @param {firebase.firestore.Timestamp} timestamp Firestore timestamp object.
+ * @return {string} ISO formatted date string: "YYYY-MM-DD or 2020-05-12".
+ */
+export function timestampToISOString(timestamp) {
+  return timestamp.toDate().toISOString().substring(0,10);
 }
