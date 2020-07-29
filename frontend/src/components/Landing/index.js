@@ -15,7 +15,7 @@ class Landing extends React.Component {
   render() {
     return (
       <div className='hero-image'>
-        <Jumbotron>
+        <Jumbotron className='jumbotron-landing'>
           <h1 id='title'>SLURP</h1>
           <h2 id='subtitle'>(Shared Live Universal Recreation Planner)</h2>
           <p id='landing-description'>
