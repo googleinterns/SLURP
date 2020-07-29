@@ -58,7 +58,7 @@ export function formatTripData(rawTripObj) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
 
-  const tripObj = {
+  const formattedTripObj = {
     [DB.TRIPS_UPDATE_TIMESTAMP]: firebase.firestore.Timestamp.now(),
     [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripObj[DB.TRIPS_TITLE], defaultName),
     [DB.TRIPS_DESCRIPTION]: rawTripObj[DB.TRIPS_DESCRIPTION],
@@ -72,5 +72,5 @@ export function formatTripData(rawTripObj) {
         getCollaboratorUidArray(rawTripObj[DB.TRIPS_COLLABORATORS]),
   };
 
-  return tripObj;
+  return formattedTripObj;
 }
