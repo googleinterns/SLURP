@@ -49,15 +49,14 @@ const Trip = (props) => {
 
   // Re-package trip document data with correctly formatted data for the
   // SaveTripModal component to use when filling out form input default values.
-  const formattedTripData = {};
-  formattedTripData[DB.TRIPS_TITLE] = title;
-  formattedTripData[DB.TRIPS_DESCRIPTION] = description;
-  formattedTripData[DB.TRIPS_DESTINATION] = destination;
-  formattedTripData[DB.TRIPS_START_DATE] =
-      timestampToISOString(startDateTimestamp);
-  formattedTripData[DB.TRIPS_END_DATE] =
-      timestampToISOString(endDateTimestamp);
-  formattedTripData[DB.TRIPS_COLLABORATORS] = collaboratorEmailsStr.split(', ');
+  const formattedTripData = {
+    [DB.TRIPS_TITLE]: title,
+    [DB.TRIPS_DESCRIPTION]: description,
+    [DB.TRIPS_DESTINATION]: destination,
+    [DB.TRIPS_START_DATE]: timestampToISOString(startDateTimestamp),
+    [DB.TRIPS_END_DATE]: timestampToISOString(endDateTimestamp),
+    [DB.TRIPS_COLLABORATORS]: collaboratorEmailsStr.split(', '),
+  };
 
   return (
     <div>

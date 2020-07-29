@@ -58,19 +58,19 @@ export function formatTripData(rawTripObj) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
 
-  const tripObj = {};
-  tripObj[DB.TRIPS_UPDATE_TIMESTAMP] = firebase.firestore.Timestamp.now();
-  tripObj[DB.TRIPS_TITLE] =
-      getCleanedTextInput(rawTripObj[DB.TRIPS_TITLE], defaultName);
-  tripObj[DB.TRIPS_DESCRIPTION] = rawTripObj[DB.TRIPS_DESCRIPTION];
-  tripObj[DB.TRIPS_DESTINATION] =
-      getCleanedTextInput(rawTripObj[DB.TRIPS_DESTINATION], defaultDestination);
-  tripObj[DB.TRIPS_START_DATE] =
-      getTimestampFromDateString(rawTripObj[DB.TRIPS_START_DATE]);
-  tripObj[DB.TRIPS_END_DATE] =
-      getTimestampFromDateString(rawTripObj[DB.TRIPS_END_DATE]);
-  tripObj[DB.TRIPS_COLLABORATORS] =
-      getCollaboratorUidArray(rawTripObj[DB.TRIPS_COLLABORATORS]);
+  const tripObj = {
+    [DB.TRIPS_UPDATE_TIMESTAMP]: firebase.firestore.Timestamp.now(),
+    [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripObj[DB.TRIPS_TITLE], defaultName),
+    [DB.TRIPS_DESCRIPTION]: rawTripObj[DB.TRIPS_DESCRIPTION],
+    [DB.TRIPS_DESTINATION]:
+        getCleanedTextInput(rawTripObj[DB.TRIPS_DESTINATION], defaultDestination),
+    [DB.TRIPS_START_DATE]:
+        getTimestampFromDateString(rawTripObj[DB.TRIPS_START_DATE]),
+    [DB.TRIPS_END_DATE]:
+        getTimestampFromDateString(rawTripObj[DB.TRIPS_END_DATE]),
+    [DB.TRIPS_COLLABORATORS]:
+        getCollaboratorUidArray(rawTripObj[DB.TRIPS_COLLABORATORS]),
+  };
 
   return tripObj;
 }
