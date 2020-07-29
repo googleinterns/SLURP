@@ -75,7 +75,7 @@ class TripsContainer extends React.Component {
 
           this.setState({ tripsContainer: tripsArr });
         }, (error) => {
-          let errorElement = getErrorElement(error);
+          const errorElement = getErrorElement(error);
           this.setState({ tripsContainer: errorElement });
         });
   }
