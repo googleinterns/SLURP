@@ -1,22 +1,26 @@
 import React from 'react';
 
-import Trip from './trip.js';
-import * as DB from '../../constants/database.js';
+import app from '../Firebase/';
 
+import * as DB from '../../constants/database.js';
+import { getCurUserUid } from '../Utils/temp-auth-utils.js'
+import Trip from './trip.js';
+
+const db = app.firestore();
 
 /**
  * Returns a promise of a query object containg the array of Trip Documents
  * corresponding to the trips that the current user is a collaborator on.
  *
  * @param {firebase.firestore.Firestore} db The Firestore database instance.
- * @param {string} userEmail The email corresponding to the current user
- *    logged in.
  * @return {Promise<!firebase.firestore.QuerySnapshot>} Promise object
  *    containing the query results with zero or more Trip  documents.
  */
-function queryUserTrips(db, userEmail) {
+function queryUserTrips(db) {
+  const curUserUid = getCurUserUid();
   return db.collection(DB.COLLECTION_TRIPS)
-      .where(DB.TRIPS_COLLABORATORS, 'array-contains', userEmail)
+      .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
+      .orderBy(DB.TRIPS_CREATION_TIME, 'desc')
       .get();
 }
 
@@ -25,15 +29,26 @@ function queryUserTrips(db, userEmail) {
  * `<Trip>` elements as defined in `trip.js`.
  *
  * @param {Promise<!firebase.firestore.QuerySnapshot>} querySnapshot Promise
- *    object containing the query results with zero or more Trip documents.
+ *     object containing the query results with zero or more Trip documents.
+ * @param {EventHandler} handleEditTrip Displays the edit trip modal.
+ * @param {EventHandler} refreshTripsContainer Refreshed the TripsContainer
+ *     component (Remove when fix Issue #62).
  * @return {Promise<!Array<Trip>>} Promise object containing an array
- *    of Trip React/HTML elements corresponding to the Trip documents included
- *    in `querySnapshot`.
+ *     of Trip React/HTML elements corresponding to the Trip documents included
+ *     in `querySnapshot`.
  */
-function serveTrips(querySnapshot) {
+function serveTrips(querySnapshot, handleEditTrip, refreshTripsContainer) {
   return new Promise(function(resolve) {
     const tripsContainer = querySnapshot.docs.map(doc =>
-        ( <Trip key={doc.id} tripObj={doc.data()} tripId={doc.id} /> ));
+        ( <Trip
+            tripData={doc.data()}
+            tripId={doc.id}
+            handleEditTrip={handleEditTrip}
+            refreshTripsContainer={refreshTripsContainer}
+            key={doc.id}
+          />
+        )
+    );
     resolve(tripsContainer);
   });
 }
@@ -41,7 +56,7 @@ function serveTrips(querySnapshot) {
 /**
  * Returns a `<div>` element with the specified error message.
  *
- * @param {string} error Error message in `componentDidMount()` catch statement.
+ * @param {string} error Error message in `componentDidMount` catch statement.
  * @return {Promise<HTMLDivElement>} Promise object containing a `<div>` element
  *    with the error message `error` inside.
  */
@@ -57,8 +72,11 @@ function getErrorElement(error) {
  * props
  *
  * @param {Object} props These are the props for this component:
- * - db: Firestore database instance.
- * - userEmail: The current user's email.
+ * - handleEditTrip: Handler that displays the edit trip modal.
+ * - refreshTripsContainer: Handler that refreshes the TripsContainer
+ *        component upon trip creation (Remove when fix Issue #62).
+ * - key: Special React attribute that ensures a new TripsContainer instance is
+ *        created whenever this key is updated (Remove when fix Issue #62).
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
@@ -71,9 +89,10 @@ class TripsContainer extends React.Component {
   /** @inheritdoc */
   async componentDidMount() {
     try {
-      const querySnapshot = await queryUserTrips(
-          this.props.db, this.props.userEmail);
-      let tripsContainer = await serveTrips(querySnapshot);
+      const querySnapshot = await queryUserTrips(db);
+      let tripsContainer = await serveTrips(querySnapshot,
+                                            this.props.handleEditTrip,
+                                            this.props.refreshTripsContainer);
       this.setState({ trips: tripsContainer });
     }
     catch (error) {
