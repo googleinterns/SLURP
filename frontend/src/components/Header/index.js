@@ -28,7 +28,7 @@ class Header extends React.Component {
           <Navbar.Brand href={VIEW_TRIPS}>
             <img src={logo}
                  alt='SLURP Logo'
-                 id='logo64'
+                 id='logo-header'
             />
           </Navbar.Brand>
           <Container>

@@ -25,7 +25,7 @@ class Landing extends React.Component {
           <div id='logo-and-button'>
             <img src={logo}
                  alt='SLURP Logo'
-                 id='logo256'
+                 id='logo-landing'
             />
             <SignInButton />
           </div>

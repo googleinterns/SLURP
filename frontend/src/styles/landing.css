@@ -31,3 +31,7 @@
   display: flex;
   justify-content: space-around;
 }
+
+#logo-landing {
+  height: 33vh;
+}
