@@ -1,13 +1,3 @@
-/* Hero image spans the entire window with a slight dark tint. */
-.hero-image {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-                    url('../images/hero-image.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100%;
-}
-
 /* Place jumbotron in the center of the screen, with slight transparency. */
 .jumbotron {
   background-color: rgba(255, 255, 255, 0.8);

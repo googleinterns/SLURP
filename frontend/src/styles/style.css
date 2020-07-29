@@ -5,12 +5,22 @@
   --SLURP-YELLOW: #E9C46A;
   --SLURP-ORANGE: #F4A261;
   --SLURP-RED: #E76F51;
-  --SLURP-OFFWHITE: #FFFDFA;
+  --SLURP-OFFWHITE: #fffdfa;
   --SLURP-GRAY: #545352;
 }
 
 html, body, #root, #root>div, #root>div>* {
   height: 100%
+}
+
+/* Pages with the hero image spans the entire window with a slight dark tint. */
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+                    url('../images/hero-image.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
 }
 
 #logo64 {
