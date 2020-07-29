@@ -17,7 +17,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
     minute: '2-digit',
     timeZone: timezone
   };
-  return date.toLocaleTimeString('en-US', formatOptions);;
+  return date.toLocaleTimeString('en-US', formatOptions);
 }
 
 /**
@@ -105,4 +105,32 @@ export function timezonesForCountry(countryName) {
   return zones.map(e => {
     return e.replace(/[_]/g, ' ');
   });
+}
+
+/**
+ * Get a date in 'YYYY-MM-DD' form. 
+ * 
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {string} timezone The timezone which the string should be returned in.
+ * @return {string} The date in 'YYYY-MM-DD' form. 
+ */
+export function getISODate(msTimestamp, timezone=null) {
+  if (timezone === null) {
+    timezone = ''; // GMT
+  }
+  return moment.tz(parseFloat(msTimestamp), timezone).format('YYYY-MM-DD');
+}
+
+/**
+ * Get a time in 24-hour ('HH:mm') form. 
+ * 
+ * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
+ * @param {string} timezone The timezone which the string should be returned in.
+ * @return {string} The time in 24-hour (HH:mm) form.   
+ */
+export function get24hTime(msTimestamp, timezone=null) {
+  if (timezone === null) {
+    return moment.tz(parseFloat(msTimestamp), '').format('HH:mm'); // GMT
+  }
+  return moment.tz(parseFloat(msTimestamp), timezone).format('HH:mm');
 }
