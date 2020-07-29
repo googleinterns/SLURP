@@ -42,7 +42,7 @@ class TripsContainer extends React.Component {
   /** @inheritdoc */
   constructor(props) {
     super(props);
-    this.state = {trips: []};
+    this.state = {tripsContainer: []};
   }
 
   /**
@@ -63,7 +63,7 @@ class TripsContainer extends React.Component {
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
         .orderBy(DB.TRIPS_CREATION_TIME, 'desc')
         .onSnapshot(querySnapshot => {
-          const tripsContainer = querySnapshot.docs.map(doc =>
+          const tripsArr = querySnapshot.docs.map(doc =>
               ( <Trip
                   tripData={doc.data()}
                   tripId={doc.id}
@@ -73,17 +73,17 @@ class TripsContainer extends React.Component {
               )
           );
 
-          this.setState({ trips: tripsContainer });
+          this.setState({ tripsContainer: tripsArr });
         }, (error) => {
           let errorElement = getErrorElement(error);
-          this.setState({ trips: errorElement });
+          this.setState({ tripsContainer: errorElement });
         });
   }
 
   /** @inheritdoc */
   render() {
     return (
-      <div>{this.state.trips}</div>
+      <div>{this.state.tripsContainer}</div>
     );
   }
 }
