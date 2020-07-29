@@ -30,6 +30,8 @@ export function getDateRange(tripData) {
 }
 
 /**
+ * Return collaborator emails corresponding to the collaborator uid's
+ * `collaboratorUidArr` in a comma separated string.
  *
  * @param {!Array<string>} collaboratorUidArr Array of collaborator uids
  *     stored in trip document.
