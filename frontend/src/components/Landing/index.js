@@ -4,6 +4,7 @@ import SignInButton from './signin-button.js';
 import Card from 'react-bootstrap/Card';
 
 import logo from '../../images/logo.png';
+import '../../styles/landing.css';
 
 /**
  * Landing component that defines the first page the user encounters in the
@@ -19,7 +20,7 @@ class Landing extends React.Component {
             <Card.Title>Welcome to SLURP</Card.Title>
             <img src={logo}
                  alt='SLURP Logo'
-                 id='logo256'
+                 id='logo-landing'
             />
           </Card.Body>
           <SignInButton />
