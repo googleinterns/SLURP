@@ -29,6 +29,23 @@ export function getDateRange(tripData) {
       `${endDate.getDate()}/${endDate.getFullYear()}`;
 }
 
+/**
+ * Returns an array with the same contents as `collaboratorEmailArr` except that
+ * the current user email is moved to be the first element of the array (the
+ * other elements maintain their original order).
+ *
+ * @param {!string[]} collaboratorEmailArr Array of user emails sorted in
+ *     alphabetical order.
+ * @return {!string[]} Array of user emails where first element is the current
+ *     user email and the following elements maintain their previous order.
+ */
+export function moveCurUserEmailToFront(collaboratorEmailArr) {
+  collaboratorEmailArr = collaboratorEmailArr.filter(email => {
+    return email !== authUtils.getCurUserEmail();
+  });
+  return [authUtils.getCurUserEmail()].concat(collaboratorEmailArr);
+}
+
 
 /**
  * Component corresponding to the container containing an individual trip.
@@ -50,6 +67,7 @@ const Trip = (props) => {
   const name = props.tripData.name;
   const description = props.tripData.description;
   const destination = props.tripData.destination;
+  const collaboratorUidArr = props.tripData.collaborators;
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
@@ -59,19 +77,10 @@ const Trip = (props) => {
     // https://www.robinwieruch.de/react-warning-cant-call-setstate-on-an-unmounted-component.
     let componentStillMounted = true;
 
-    /**
-     * Return collaborator emails corresponding to the collaborator uid's
-     * `collaboratorUidArr` in a comma separated string.
-     *
-     * @param {!Array<string>} collaboratorUidArr Array of collaborator uids
-     *     stored in trip document.
-     * @returns {string} Collaborator emails in comma separated string.
-     *     Ex: "person1@email.com, person2@email.com".
-     */
-    async function fetchCollaboratorEmails(collaboratorUidArr) {
-      const collaboratorEmailArr =
+    async function fetchCollaboratorEmails() {
+      let collaboratorEmailArr =
           await authUtils.getUserEmailArrFromUserUidArr(collaboratorUidArr);
-      console.log(collaboratorEmailArr);
+      collaboratorEmailArr = moveCurUserEmailToFront(collaboratorEmailArr);
       if (componentStillMounted) {
         setCollaboratorEmailsStr(collaboratorEmailArr.join(', '));
       }
@@ -79,7 +88,7 @@ const Trip = (props) => {
 
     fetchCollaboratorEmails();
     return () => { componentStillMounted = false; };
-  }, [props.tripData.collaborators]);
+  }, [collaboratorUidArr]);
 
   const formattedTripData = {
     name:          name,
