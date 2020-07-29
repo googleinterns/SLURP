@@ -4,14 +4,14 @@ import * as activityFns from './activityfns.js';
 import * as time from '../Utils/time.js'
 
 /**
- * One single day of activities. 
+ * React component for a single day of activities. 
  * 
- * @param {Object} props This component expects the following props:
- * - `activities` The list of activities for 'today'.
- * - `date` The date, formatted as 'MM/DD/YYYY'.
+ * @property {Object} props ReactJS props. 
+ * @property {ActivityInfo[]} props.activities The list of activities for 'today'.
+ * @property {string} props.date The date, formatted as 'MM/DD/YYYY'.
  */
 class ActivityDay extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   render() {
     const sortedActivities = Array.from(this.props.activities)
           .sort(activityFns.compareActivities);
