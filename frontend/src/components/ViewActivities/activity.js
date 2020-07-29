@@ -6,15 +6,16 @@ import EditActivity from './editActivity.js';
 import { Accordion, Card } from 'react-bootstrap';
 import * as utils from './activityfns.js';
 
+
 /**
- * A single activity. 
+ * React component for a single activity. 
  * 
- * @param {Object} props This component expects the following props:
- * - `activity` The activity to display.
+ * @property {Object} props ReactJS props. 
+ * @property {ActivityInfo} props.activity The activity to display.
  *    (MUST contain 'id' field with database activity id and 'tripId' field.)
  */
 class Activity extends React.Component {
-  /** {@inheritdoc} */
+  /** @override */
   constructor(props) {
     super(props);
 
@@ -29,10 +30,14 @@ class Activity extends React.Component {
   /**
    * Set the activity into editing mode.
    */
-  setEditActivity = () => ( this.setState({editing: true}) );
+  setEditActivity() {
+    this.setState({editing: true});
+  }
 
   /**
    * Set the activity into viewing mode.
+   * 
+   * @param {event} event The form's event.
    */
   finishEditActivity(event) {
     this.setState({editing: false});
@@ -60,7 +65,7 @@ class Activity extends React.Component {
     }
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     const activity = this.props.activity;
     return (
