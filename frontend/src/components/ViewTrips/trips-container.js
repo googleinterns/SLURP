@@ -60,7 +60,7 @@ class TripsContainer extends React.Component {
 
     db.collection(DB.COLLECTION_TRIPS)
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
-        .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'asc')
+        .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
           const tripsArr = querySnapshot.docs.map(doc =>
               ( <Trip
