@@ -46,17 +46,17 @@ test('other time timestamp format', () => {
 });
 
 test('new york full timestamp format', () => {
- // Month parameter is zero indexed so it's actually the 10th month.
- const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
- const expected = 'Saturday, October 3, 2020, 10:19 AM';
- const actual = utils.timestampToFormatted(testDate);
- expect(actual).toEqual(expected);
+  // Month parameter is zero indexed so it's actually the 10th month.
+  const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
+  const expected = 'Saturday, October 3, 2020 10:19 AM EDT';
+  const actual = utils.timestampToFormatted(testDate);
+  expect(actual).toEqual(expected);
 });
 
 test('other full timestamp format', () => {
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
-  const expectedCentral = 'Saturday, August 22, 2020, 9:03 PM';
-  const expectedSingapore = 'Sunday, August 23, 2020, 10:03 AM';
+  const expectedCentral = 'Saturday, August 22, 2020 9:03 PM CDT';
+  const expectedSingapore = 'Sunday, August 23, 2020 10:03 AM +08';
   const actualCentral = utils.timestampToFormatted(testDate, TZ_CHICAGO);
   const actualSingapore = utils.timestampToFormatted(testDate, TZ_SINGAPORE);
   expect(actualCentral).toEqual(expectedCentral);
@@ -133,7 +133,7 @@ test('firestore Timestamp format', () => {
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3))
   // central = 'Saturday, August 22, 2020, 9:03 PM';
   // singapore = 'Sunday, August 23, 2020, 10:03 AM';
-  const actualCentral = utils.firebaseTsFromISO("21:03", "2020-08-22", TZ_CHICAGO)
+  const actualCentral = utils.firebaseTsFromISO("21:03", "2020-08-22", TZ_CHICAGO);
   const actualSingapore = utils.firebaseTsFromISO("10:03", "2020-08-23", TZ_SINGAPORE);
   expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
   expect(actualSingapore.toDate()).toEqual(testDate);
