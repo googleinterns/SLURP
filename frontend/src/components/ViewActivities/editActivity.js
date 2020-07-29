@@ -6,6 +6,7 @@ import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
 import app from '../Firebase';
 import * as formElements from './editActivityFormElements.js';
+import * as msgs from '../../constants/messages.js';
 
 const db = app.firestore();
 
@@ -50,7 +51,7 @@ class EditActivity extends React.Component {
 
     let newVals = {};
     // All the text fields. 
-    newVals[DB.ACTIVITIES_TITLE] = 
+    newVals[DB.ACTIVITIES_TITLE] =
       getRefValue(this.editTitleRef, '', activity[DB.ACTIVITIES_TITLE])
     newVals[DB.ACTIVITIES_DESCRIPTION] = 
       getRefValue(this.editDescriptionRef, '', activity[DB.ACTIVITIES_DESCRIPTION]);
@@ -167,12 +168,13 @@ class EditActivity extends React.Component {
 
   render() {
     const activity = this.props.activity;
+    const newAct = this.props.new;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         {formElements.textElementFormGroup( // TITLE
             'formActivityTitle',          // controlId
             'Title:',                     // formLabel
-            activity[DB.ACTIVITIES_TITLE],// placeHolder
+            getField(activity, DB.ACTIVITIES_TITLE, msgs.ACTIVITY_TITLE_PLACEHOLDER), // placeHolder 
             this.editTitleRef             // ref
           )}
         {formElements.locationElementFormGroup( // START LOCATION
@@ -213,9 +215,9 @@ class EditActivity extends React.Component {
           )}
         {formElements.textElementFormGroup( // DESCRIPTION
             'formActivityDescription', // controlId
-            'Description:',            // formLabel
-            getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder 
-            this.editDescriptionRef    // ref
+            'Description:', // formLabel
+            getField(activity, DB.ACTIVITIES_DESCRIPTION, msgs.ACTIVITY_DESCRIPTION_PLACEHOLDER), // placeHolder 
+            this.editDescriptionRef // ref
           )}
         <Button type='submit' className='float-right'>Done!</Button>
         <Button type='button' onClick={this.deleteActivity}>
