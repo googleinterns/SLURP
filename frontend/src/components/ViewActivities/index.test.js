@@ -6,9 +6,7 @@ import authUtils from '../AuthUtils';
 const FAKE_USER = 'totally-legit-user';
 const FAKE_TRIPID = '12345';
 const RESULT_AUTHORIZED = FAKE_TRIPID;
-const RESULT_NOT_AUTHORIZED =
-    'Sorry, you\'re not authorized to view this trip.';
-const RESULT_TRIP_DOESNT_EXIST =
+const RESULT_TRIP_DOESNT_EXIST_OR_NOT_AUTHORIZED =
     'Sorry, we couldn\'t find the trip you were looking for.';
 
 // Mock the getCurUserUid auth utility function to return a fake UID as given by
@@ -64,10 +62,12 @@ describe('ViewActivities page', () => {
   });
 
   it('Displays the relevant error when the user is not a collaborator', () => {
-    expect(screen.getByText(RESULT_NOT_AUTHORIZED)).toBeInTheDocument();
+    expect(screen.getByText(RESULT_TRIP_DOESNT_EXIST_OR_NOT_AUTHORIZED))
+        .toBeInTheDocument();
   });
 
   it('Displays the relevant error when the trip could not be found', () => {
-    expect(screen.getByText(RESULT_TRIP_DOESNT_EXIST)).toBeInTheDocument();
+    expect(screen.getByText(RESULT_TRIP_DOESNT_EXIST_OR_NOT_AUTHORIZED))
+        .toBeInTheDocument();
   })
 });

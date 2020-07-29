@@ -14,20 +14,6 @@
 
 package com.google.slurp.servlets;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.google.firebase.auth.EmailIdentifier;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -37,7 +23,18 @@ import com.google.firebase.auth.UserRecord;
 import com.google.firebase.auth.UserRecord.CreateRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -45,6 +42,7 @@ import org.apache.commons.lang3.StringUtils;
  * corresponding user UIDs, sending this back as the response.
  */
 @WebServlet("/api/v1/convert-emails-to-uids")
+@SuppressWarnings("serial")
 public class ConvertEmailsToUidsServlet extends HttpServlet {
   private FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -92,9 +90,9 @@ public class ConvertEmailsToUidsServlet extends HttpServlet {
    * {@inheritDoc}
    *
    * Given a JSON array of user emails, sends back to the response a JSON array of the corresponding
-   * user UIDs. For any given email that is not yet associated with a user, a new account is created
-   * with that email and the generated UID is returned with the rest of the UIDs. On error, sends an
-   * empty response.
+   * user UIDs in alphabetical order. For any given email that is not yet associated with a user, a
+   * new account is created with that email and the generated UID is returned with the rest of the
+   * UIDs. On error, sends an empty response.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

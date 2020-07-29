@@ -14,30 +14,29 @@
 
 package com.google.slurp.servlets;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetUsersResult;
 import com.google.firebase.auth.UidIdentifier;
 import com.google.firebase.auth.UserIdentifier;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet that converts a given POST request of user UIDs to the corresponding
  * user emails, sending this back as the response.
  */
 @WebServlet("/api/v1/convert-uids-to-emails")
+@SuppressWarnings("serial")
 public class ConvertUidsToEmailsServlet extends HttpServlet {
   private FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -62,7 +61,7 @@ public class ConvertUidsToEmailsServlet extends HttpServlet {
    * {@inheritDoc}
    *
    * Given a JSON array of user UIDs, sends back to the response a JSON array of the corresponding
-   * user emails. On error, sends an empty response.
+   * user emails in alphabetical order. On error, sends an empty response.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
