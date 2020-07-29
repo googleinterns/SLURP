@@ -8,10 +8,10 @@ import app from '../Firebase';
 const db = app.firestore();
 
 /**
- * The list of activities. 
+ * ReactJS class for the list of activities. 
  * 
- * @param {Object} props This component expects the following props:
- * - `tripId` {string} The trip's ID.  
+ * @property {Object} props ReactJS props.
+ * @property {string} tripId The tripID.
  */
 class ActivityList extends React.Component {
   /** @inheritdoc */
