@@ -9,25 +9,23 @@ import Trip from './trip.js';
 const db = app.firestore();
 
 /**
- * Returns a `<div>` element with the specified error message.
+ * Returns a `<div>` element with a predefined error message after logging the
+ * error message `error` obtained from `componentDidMount` catch statement.
  *
  * TODO(Issue #98): Turn this func into component and add to Errors directory.
  *
  * @param {string} error Error message in `componentDidMount` catch statement.
- * @return {Promise<HTMLDivElement>} Promise object containing a `<div>` element
- *    with the error message `error` inside.
+ * @return {HTMLDivElement}  `<div>` element with an error message for the user.
  */
 function getErrorElement(error) {
-  return new Promise(function(resolve) {
-    console.log(`Error in Trips Container: ${error}`);
-    resolve(
-      <div>
-        <p>Oops, it looks like we were unable to load your trips.
-                      Please wait a few minutes and try again.
-        </p>
-      </div>
+  console.log(`Error in Trips Container: ${error}`);
+  return(
+    <div>
+      <p>Oops, it looks like we were unable to load your trips.
+                    Please wait a few minutes and try again.
+      </p>
+    </div>
   );
-  });
 }
 
 /**
@@ -62,7 +60,7 @@ class TripsContainer extends React.Component {
 
     db.collection(DB.COLLECTION_TRIPS)
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
-        .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
+        .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'asc')
         .onSnapshot(querySnapshot => {
           const tripsArr = querySnapshot.docs.map(doc =>
               ( <Trip
@@ -75,8 +73,8 @@ class TripsContainer extends React.Component {
           );
 
           this.setState({ tripsContainer: tripsArr });
-        }, async (error) => {
-          const errorElement = await getErrorElement(error);
+        }, (error) => {
+          const errorElement = getErrorElement(error);
           this.setState({ tripsContainer: errorElement });
         });
   }
