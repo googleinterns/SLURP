@@ -18,7 +18,7 @@ const SignInButton = () => {
 
   return (
     <Button type='button' onClick={goToSignIn} variant='primary' size='lg'>
-      Sign In
+      Go to SLURP
     </Button>
   );
 }

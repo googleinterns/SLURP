@@ -1,0 +1,43 @@
+/* Hero image spans the entire window with a slight dark tint. */
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+                    url('../images/hero-image.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
+/* Place text in the middle of the image */
+.jumbotron {
+  background-color: rgba(255, 255, 255, 0.8);
+  left: 50%;
+  padding: 5%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Remove the margin on the title to bring it and the subtitle closer. */
+#title {
+  font-size: 10vh;
+  margin: 0;
+}
+
+#subtitle {
+  color: var(--SLURP-GRAY);
+  font-size: 3vh;
+}
+
+#landing-description {
+  color: var(--SLURP-BLUE);
+  font-size: 2vh;
+  margin: 2em 0;
+}
+
+#logo-and-button {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+}
