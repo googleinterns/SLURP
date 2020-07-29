@@ -8,7 +8,7 @@
   height: 100%;
 }
 
-/* Place text in the middle of the image */
+/* Place jumbotron in the center of the screen, with slight transparency. */
 .jumbotron {
   background-color: rgba(255, 255, 255, 0.8);
   left: 50%;
@@ -19,7 +19,6 @@
   transform: translate(-50%, -50%);
 }
 
-/* Remove the margin on the title to bring it and the subtitle closer. */
 #title {
   font-size: 10vh;
   margin: 0;

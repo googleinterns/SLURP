@@ -15,7 +15,7 @@ class Landing extends React.Component {
   render() {
     return (
       <div className='hero-image'>
-        <Jumbotron className='hero-text'>
+        <Jumbotron>
           <h1 id='title'>SLURP</h1>
           <h2 id='subtitle'>(Shared Live Universal Recreation Planner)</h2>
           <p id='landing-description'>
@@ -24,8 +24,8 @@ class Landing extends React.Component {
           </p>
           <div id='logo-and-button'>
             <img src={logo}
-                alt='SLURP Logo'
-                id='logo256'
+                 alt='SLURP Logo'
+                 id='logo256'
             />
             <SignInButton />
           </div>
@@ -36,12 +36,3 @@ class Landing extends React.Component {
 };
 
 export default Landing;
-
-{/* <div className='hero-text'>
-<h1>SLURP</h1>
-<img src={logo}
-     alt='SLURP Logo'
-     id='logo256'
-/>
-<SignInButton />
-</div> */}
