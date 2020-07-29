@@ -1,4 +1,3 @@
-import { getUserUidArrFromUserEmailArr } from './temp-auth-utils';
 import { getCleanedTextInput, getCollaboratorUidArray }  from './filter-input.js';
 
 describe('getCleanedTextInput tests', () => {
@@ -27,22 +26,24 @@ const mockCurUserEmail = 'cur.user@email.com';
 jest.mock('../AuthUtils', () => ({
     getCurUserEmail: () => mockCurUserEmail,
     getUserUidArrFromUserEmailArr: (userEmailArr) => {
-          return userEmailArr.map(userEmail => '_' + userEmail + '_');
+          return new Promise(resolve => {
+            resolve(userEmailArr.map(userEmail => '_' + userEmail + '_'));
+          });
         },
 }));
 describe('getCollaboratorUidArray tests', () => {
-  test('No collaborators entered', () => {
+  test('No collaborators entered', async () => {
     const expectedUidArr = [`_${mockCurUserEmail}_`];
     // This is the list that is created when there are no collaborators added
     // (automatically one empty string from the constructor created ref).
     const testEmailArr = [''];
 
-    const testUidArr = getCollaboratorUidArray(testEmailArr);
+    const testUidArr = await getCollaboratorUidArray(testEmailArr);
 
     expect(testUidArr).toEqual(expectedUidArr);
   });
 
-  test('Some added collaborators', () => {
+  test('Some added collaborators', async () => {
     const person1Email = 'p1@gmail.com';
     const person2Email = 'p2@outlook.com';
     const expectedUidArr = [`_${mockCurUserEmail}_`,
@@ -50,12 +51,12 @@ describe('getCollaboratorUidArray tests', () => {
                             `_${person2Email}_`];
     const testEmailArr = [person1Email, person2Email];
 
-    const testUidArr = getCollaboratorUidArray(testEmailArr);
+    const testUidArr = await getCollaboratorUidArray(testEmailArr);
 
     expect(testUidArr).toEqual(expectedUidArr);
   });
 
-  test('Some added collaborators and some blank entries', () => {
+  test('Some added collaborators and some blank entries', async () => {
     const person1Email = 'p1@gmail.com';
     const person2Email = 'p2@outlook.com';
     const expectedUidArr = [`_${mockCurUserEmail}_`,
@@ -63,7 +64,7 @@ describe('getCollaboratorUidArray tests', () => {
                             `_${person2Email}_`];
     const testEmailArr = ['', person1Email, '', person2Email, ''];
 
-    const testUidArr = getCollaboratorUidArray(testEmailArr);
+    const testUidArr = await getCollaboratorUidArray(testEmailArr);
 
     expect(testUidArr).toEqual(expectedUidArr);
   });

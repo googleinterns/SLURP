@@ -14,31 +14,32 @@ export function getCleanedTextInput(rawInput, defaultValue) {
 }
 
 /**
- * Return an array of collaborator uids given the emails provided in the
- * add trip form.
+ * Return a promise containing an array of collaborator uids given the emails
+ * provided in the add trip form.
  *
  * TODO(#72 & #67): Remove 'remove empty fields' once there is better way to
  * remove collaborators (#72) and there is email validation (#67).
  *
- * @param {!Array{string}} collaboratorEmailsArr Array of emails corresponding
+ * @param {!Array<string>} collaboratorEmailsArr Array of emails corresponding
  *     to the  collaborators of the trip (not including the trip creator email).
- * @return {!Array{string}} Array of all collaborator uids (including trip
+ * @return {Promise<!Array<string>>} Array of all collaborator uids (including trip
  *     creator uid).
  */
-export function getCollaboratorUidArray(collaboratorEmailArr) {
+export async function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [authUtils.getCurUserEmail()]
                              .concat(collaboratorEmailArr);
 
   // Removes empty fields (temporary until fix #67 & #72).
   const cleanedCollaboratorEmailArr = collaboratorEmailArr.filter(email => {
     return email !== '';
-  })
-  return authUtils.getUserUidArrFromUserEmailArr(cleanedCollaboratorEmailArr);
+  });
+
+  return await authUtils.getUserUidArrFromUserEmailArr(cleanedCollaboratorEmailArr);
 }
 
 /**
- * Returns a formatted and cleaned trip object that will be used as the data
- * for the created Trip document.
+ * Returns a promise containing the formatted and cleaned trip object that will
+ * be used as the data for the created Trip document.
  *
  * We know that rawTripObj will contain all of the necessary fields because each
  * key-value pair is explicitly included. This means, only the value
@@ -49,12 +50,13 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  *
  * @param {!Object} rawTripObj A JS Object containing the raw form data from the
  *     add trip form.
- * @return {!Object} Formatted/cleaned version of `rawTripObj` holding the data
+ * @return {Promise<!Object>} Formatted/cleaned version of `rawTripObj` holding the data
  *     for the new Trip document that is to be created.
  */
-export function formatTripData(rawTripObj) {
+export async function formatTripData(rawTripObj) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
+  const collaboratorUidArr = await getCollaboratorUidArray(rawTripObj.collaboratorEmails);
 
   const formattedTripObj = {
     trip_creation_time: firebase.firestore.Timestamp.now(),
@@ -64,7 +66,7 @@ export function formatTripData(rawTripObj) {
                                                  defaultDestination),
     start_date:         getTimestampFromDateString(rawTripObj.startDate),
     end_date:           getTimestampFromDateString(rawTripObj.endDate),
-    collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails),
+    collaborators:      collaboratorUidArr,
   };
 
   return formattedTripObj;
