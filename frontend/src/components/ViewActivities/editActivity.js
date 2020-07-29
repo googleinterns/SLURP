@@ -4,17 +4,21 @@ import { getField, writeActivity, getRefValue } from './activityfns.js';
 import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
+import app from '../Firebase';
 import * as formElements from './editActivityFormElements.js';
+import * as msgs from '../../constants/messages.js';
+
+const db = app.firestore();
 
 /**
- * The form that's used when the user is editing an activity.
- * 
- * @param {Object} props This component expects the following props:
- * - `activity` The activity to display.
- * - `submitFunction` The function to run upon submission to trigger card flip.
+ * React component for the form that's used when the user is editing an activity.
+ *
+ * @property {Object} props ReactJS props.
+ * @property {ActivityInfo} props.activity The activity to display.
+ * @property {function} props.submitFunction The function to run upon submission.
  */
 class EditActivity extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor(props){
     super(props);
 
@@ -23,9 +27,10 @@ class EditActivity extends React.Component {
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
     this.finishEditActivity = this.finishEditActivity.bind(this);
+    this.deleteActivity = this.deleteActivity.bind(this);
     this.timezoneDropdown = this.timezoneDropdown.bind(this);
 
-    // References. 
+    // References.
     this.editTitleRef = React.createRef();
     this.editStartDateRef = React.createRef();
     this.editEndDateRef = React.createRef();
@@ -46,7 +51,7 @@ class EditActivity extends React.Component {
 
     let newVals = {};
     // All the text fields. 
-    newVals[DB.ACTIVITIES_TITLE] = 
+    newVals[DB.ACTIVITIES_TITLE] =
       getRefValue(this.editTitleRef, '', activity[DB.ACTIVITIES_TITLE])
     newVals[DB.ACTIVITIES_DESCRIPTION] = 
       getRefValue(this.editDescriptionRef, '', activity[DB.ACTIVITIES_DESCRIPTION]);
@@ -87,15 +92,14 @@ class EditActivity extends React.Component {
   endTimeTzUpdate = () => { this.setState({endTzChanged : !this.state.endTzChanged})};
 
   /**
-   * Returns a dropdown of all the timezones.  
+   * Returns a dropdown of all the timezones.
    * The dropdown's values change based on the corrresponding country dropdown to
    * reduce scrolling and ensure that the location corresponds to the time zone.
-   * 
+   *
    * Tests done manually using UI.
-   * 
-   * @param {!string} st Either 'start' or 'end' depending on whether the 
+   *
+   * @param {string} st Either 'start' or 'end' depending on whether the
    * timezone is for the start or end timezone.
-   * @param {!string} defaultTz The default time zone.
    * @return {HTML} HTML dropdown item.
    */
   timezoneDropdown(st, defaultTz) {
@@ -123,11 +127,11 @@ class EditActivity extends React.Component {
   }
 
   /**
-   * Create a dropdown of all the countries. 
-   * This dropdown is linked to the corresponding timezone dropdown, 
-   * so when the country changes here, the values in the timezone dropdown 
-   * change as well. 
-   * 
+   * Create a dropdown of all the countries.
+   * This dropdown is linked to the corresponding timezone dropdown,
+   * so when the country changes here, the values in the timezone dropdown
+   * change as well.
+   *
    * @param {ref} ref The reference to attach to the dropdown.
    * @param {ref} tzref The corresponding time zone reference field. 
    * @param {string} defaultCountry The default country for the dropdown.
@@ -137,21 +141,40 @@ class EditActivity extends React.Component {
     return (
       <Form.Control as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>
         {countryList.map((item, index) => {
-          return (<option key={index}>{item}</option>);
+          return (
+            <option key={index}>{item}</option>
+          );
         })}
       </Form.Control>
     );
   }
 
+  /**
+   * Delete this activity.
+   *
+   * @return {boolean} true if the activity was successfully deleted.
+   */
+  async deleteActivity() {
+    if (window.confirm(`Are you sure you want to delete ${this.props.activity[DB.ACTIVITIES_TITLE]}?`
+        + 'This action cannot be undone!')) {
+      await db.collection(DB.COLLECTION_TRIPS).doc(this.props.activity.tripId)
+        .collection(DB.COLLECTION_ACTIVITIES).doc(this.props.activity.id)
+        .delete();
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   render() {
     const activity = this.props.activity;
+    const newAct = this.props.new;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         {formElements.textElementFormGroup( // TITLE
             'formActivityTitle',          // controlId
             'Title:',                     // formLabel
-            activity[DB.ACTIVITIES_TITLE],// placeHolder 
+            getField(activity, DB.ACTIVITIES_TITLE, msgs.ACTIVITY_TITLE_PLACEHOLDER), // placeHolder 
             this.editTitleRef             // ref
           )}
         {formElements.locationElementFormGroup( // START LOCATION
@@ -192,11 +215,14 @@ class EditActivity extends React.Component {
           )}
         {formElements.textElementFormGroup( // DESCRIPTION
             'formActivityDescription', // controlId
-            'Description:',            // formLabel
-            getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder 
-            this.editDescriptionRef    // ref
+            'Description:', // formLabel
+            getField(activity, DB.ACTIVITIES_DESCRIPTION, msgs.ACTIVITY_DESCRIPTION_PLACEHOLDER), // placeHolder 
+            this.editDescriptionRef // ref
           )}
         <Button type='submit' className='float-right'>Done!</Button>
+        <Button type='button' onClick={this.deleteActivity}>
+          Delete
+        </Button>
       </Form>
     );
   }

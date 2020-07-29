@@ -1,4 +1,7 @@
-import * as utils from './time';
+import * as firebase from 'firebase/app';
+import 'firebase/firebase-firestore';
+
+import * as utils from './time.js';
 
 const TZ_CHICAGO = 'America/Chicago';
 const TZ_SINGAPORE = 'Asia/Singapore';
@@ -54,8 +57,8 @@ test('other full timestamp format', () => {
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
   const expectedCentral = 'Saturday, August 22, 2020 9:03 PM CDT';
   const expectedSingapore = 'Sunday, August 23, 2020 10:03 AM +08';
-  const actualCentral = utils.timestampToFormatted(testDate, 'America/Chicago');
-  const actualSingapore = utils.timestampToFormatted(testDate, 'Asia/Singapore');
+  const actualCentral = utils.timestampToFormatted(testDate, TZ_CHICAGO);
+  const actualSingapore = utils.timestampToFormatted(testDate, TZ_SINGAPORE);
   expect(actualCentral).toEqual(expectedCentral);
   expect(actualSingapore).toEqual(expectedSingapore);
 })
@@ -94,7 +97,7 @@ test('other date ISODate format', () => {
   expect(actualSingapore).toEqual(expectedSingapore);
 });
 
-test('24h crazy queries', () => {  
+test('24h empty input tests', () => {  
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
   const expected = '02:03';
   expect(utils.get24hTime(testDate, '')).toBe(expected);
@@ -119,7 +122,7 @@ test('other time 24h format', () => {
   expect(actualSingapore).toEqual(expectedSingapore);
 })
 
-test('ISODate crazy queries', () => {  
+test('ISODate empty input tests', () => {  
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
   const expected = '2020-08-23';
   expect(utils.getISODate(testDate, '')).toBe(expected);
@@ -134,4 +137,37 @@ test('firestore Timestamp format', () => {
   const actualSingapore = utils.firebaseTsFromISO("10:03", "2020-08-23", TZ_SINGAPORE);
   expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
   expect(actualSingapore.toDate()).toEqual(testDate);
+ })
+})
+
+const mockTimeNow = 0;
+jest.mock('firebase/app', () => ({
+    firestore: {
+      Timestamp: {
+          now: () => mockTimeNow,
+          fromDate: (date) => date,
+      }
+    }
+}));
+describe('getTimeStampFromDateString tests', () => {
+  test('No date entered in form', () => {
+    const expectedTimestamp = mockTimeNow;
+    const testRawDate = '';
+
+    const testTimestamp = utils.getTimestampFromDateString(testRawDate);
+
+    expect(testTimestamp).toEqual(expectedTimestamp);
+  });
+
+  test('Date entered in form', () => {
+    const testDate = new Date(2020, 5, 4); // July 4, 2020
+    const expectedTimestamp = firebase.firestore.Timestamp.fromDate(testDate);
+
+    // This is the type of string (yyyy-mm-dd) that is returned from the form
+    // input type 'date'.
+    const testRawDate = testDate.toISOString().substring(0,10);
+    const testTimestamp = utils.getTimestampFromDateString(testRawDate);
+
+    expect(testTimestamp).toEqual(expectedTimestamp);
+  });
 });
