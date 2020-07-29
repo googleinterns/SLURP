@@ -112,6 +112,12 @@ export function get24hTime(msTimestamp, timezone=null) {
 /**
  * Return a Firestore Timestamp corresponding to the date in `dateStr`.
  *
+ * The date objects used to create the timezones will have the timezone of the
+ * current user's computer default timezone.
+ *
+ * TODO(Issue #89): Remove this function when integrating timezones for the
+ * ViewTrips components.
+ *
  * @param {string} dateStr String containing a date in the form 'YYYY-MM-DD'.
  * @return {firebase.firestore.Timestamp} Firestore timestamp object created.
  */
@@ -121,6 +127,7 @@ export function getTimestampFromDateString(dateStr) {
     return firebase.firestore.Timestamp.now();
   }
 
+  // Date constructor uses 0 indexed month so `dateParts[1]` is decremented by 1.
   const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
   return firebase.firestore.Timestamp.fromDate(date);
 }
@@ -128,6 +135,9 @@ export function getTimestampFromDateString(dateStr) {
 /**
  * Returns the string date range of the trip associated with the Trip document
  * start and end date timestamps.
+ *
+ * The date strings are created with locale and timezone of the current user's
+ * computer default timezone/locale .
  *
  * TODO(Issue #89): Remove this function when integrating timezones for the
  * ViewTrips components.
