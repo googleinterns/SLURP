@@ -41,12 +41,14 @@ class ActivityList extends React.Component {
         data['tripId'] = tripId;
         
         // TODO: if start date != end date, split into 2 days. (#37)
+      if (data[DB.ACTIVITIES_END_TIME] !== undefined) {
 
       // Eliminate nanoseconds, convert to milliseconds.
       data[DB.ACTIVITIES_START_TIME] =
         data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
       data[DB.ACTIVITIES_END_TIME] = 
         data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
+      }
 
         tripActivities.push(data);
       });
