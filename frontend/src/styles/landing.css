@@ -29,7 +29,7 @@
 #logo-and-button {
   align-items: center;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 #logo-landing {
