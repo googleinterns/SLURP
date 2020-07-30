@@ -99,7 +99,7 @@ class ViewActivities extends React.Component {
              !this.state.collaborators.includes(getCurUserUid())) {
       return (
         <div>
-          <Header/>
+          <Header />
           <ErrorComponents.ErrorTripNotFound />
         </div>
       );
