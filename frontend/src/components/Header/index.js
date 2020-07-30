@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 
 import { VIEW_TRIPS } from '../../constants/routes.js';
+import logo from '../../images/logo.png';
 
 /**
  * Header component to display at the top of pages. By default, it displays the
@@ -25,8 +26,10 @@ class Header extends React.Component {
       <div>
         <Navbar className='d-flex align-items-center' sticky='top' bg='info'>
           <Navbar.Brand href={VIEW_TRIPS}>
-            {/* TODO (Issue #24): Put path to logo when we have one. */}
-            <img alt="SLURP Logo" />
+            <img src={logo}
+                 alt='SLURP Logo'
+                 id='logo-header'
+            />
           </Navbar.Brand>
           <Container>
             {this.props.children}

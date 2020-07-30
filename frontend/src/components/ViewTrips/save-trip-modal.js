@@ -110,7 +110,7 @@ class SaveTripModal extends React.Component {
   /**
    * Formats/cleans the form data and saves the Trip document in firestore.
    */
-  saveTrip() {
+  saveTrip = async () => {
     const rawTripData = {
       [DB.TRIPS_TITLE]: this.titleRef.current.value,
       [DB.TRIPS_DESCRIPTION]: this.descriptionRef.current.value,
@@ -120,8 +120,7 @@ class SaveTripModal extends React.Component {
       [DB.TRIPS_COLLABORATORS]:
           this.state.collaboratorsRefArr.map(ref => ref.current.value),
     };
-
-    const tripData = formatTripData(rawTripData);
+    const tripData = await formatTripData(rawTripData);
 
     if (this.isAddTripForm) {
       this.addNewTrip(tripData);
@@ -135,8 +134,8 @@ class SaveTripModal extends React.Component {
    *  - Creation of the trip.
    *  - Closing the modal.
    */
-  handleSubmitForm = () => {
-    this.saveTrip();
+  handleSubmitForm = async () => {
+    await this.saveTrip();
     this.props.handleClose();
   }
 

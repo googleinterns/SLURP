@@ -34,6 +34,7 @@ const UserInfo = () => {
           className={BOOTSTRAP_SPACING_CLASS}
           src={authUtils.getCurUserPhotoUrl()}
           alt='Your Profile'
+          id='profile-picture'
       />
       <p className={BOOTSTRAP_SPACING_CLASS}>
         {authUtils.getCurUserDisplayName()}
