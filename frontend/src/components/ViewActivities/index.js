@@ -92,10 +92,10 @@ class ViewActivities extends React.Component {
       if (!this.state.addingActivity) {
         return (
           <div>
+            <Button type='button' onClick={this.addActivity}>+ Add</Button>
             <div className='activity-page'> 
               <ActivityList tripId={tripId}/>
             </div>
-            <Button type='button' onClick={this.addActivity}>+ Add</Button>
           </div>
         );
       } else {
