@@ -78,7 +78,7 @@ export function getTimestampFromISODateString(dateStr) {
  * - The date strings are created in the UTC timezone in order to avoid issues
  * where a user's timezone at last update of the trip is different than the
  * user's current timezone when viewing a trip.
- * - The months retreived from `getUTCMonth` are 0 indexed rather than 1 indexed
+ * - The months retrieved from `getUTCMonth` are 0 indexed rather than 1 indexed
  * so they must be incremented by 1 in order for the month to be correct.
  *
  * @param {!firestore.Timestamp} startDateTimestamp Firestore timestamp
