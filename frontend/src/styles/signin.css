@@ -4,6 +4,8 @@
   height: 33vh;
   left: 50%;
   margin: 0;
+  /* Ensure a fixed minimum size at small window heights. */
+  min-height: 256px;
   padding: 5%;
   position: absolute;
   top: 50%;
