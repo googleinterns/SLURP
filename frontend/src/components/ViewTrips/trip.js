@@ -72,7 +72,7 @@ const Trip = (props) => {
 
   useEffect(() => {
     // Only set state collaboratorEmailsStr if component is mounted. This is
-    // a precautionary to mittigate warnings that occur when setting state on
+    // a precautionary to mitigate warnings that occur when setting state on
     // a component that has already unmounted. See more here
     // https://www.robinwieruch.de/react-warning-cant-call-setstate-on-an-unmounted-component.
     let componentStillMounted = true;
