@@ -108,7 +108,7 @@ class ViewActivities extends React.Component {
       if (!this.state.addingActivity) {
         return (
           <div>
-            <Header/>
+            <Header />
             <div className='activity-page'> 
               <ActivityList tripId={tripId}/>
             </div>
