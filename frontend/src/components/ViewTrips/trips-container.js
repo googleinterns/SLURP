@@ -9,25 +9,25 @@ import Trip from './trip.js';
 const db = app.firestore();
 
 /**
- * Returns a `<div>` element with the specified error message.
+ * Returns a `<div>` element with an error message. The error message `error`
+ * will be logged but not seen by the user.
  *
  * TODO(Issue #98): Turn this func into component and add to Errors directory.
  *
  * @param {string} error Error message in `componentDidMount` catch statement.
- * @return {Promise<HTMLDivElement>} Promise object containing a `<div>` element
- *    with the error message `error` inside.
+ * @return {HTMLDivElement} `<div>` element containing the error message that
+ *     the user will see on the view trips page.
  */
 function getErrorElement(error) {
-  return new Promise(function(resolve) {
-    console.log(`Error in Trips Container: ${error}`);
-    resolve(
-      <div>
-        <p>Oops, it looks like we were unable to load your trips.
-                      Please wait a few minutes and try again.
-        </p>
-      </div>
-    );
-  });
+  console.log(`Error in Trips Container: ${error}`);
+
+  return (
+    <div>
+      <p>Oops, it looks like we were unable to load your trips.
+                    Please wait a few minutes and try again.
+      </p>
+    </div>
+  );
 }
 
 /**
