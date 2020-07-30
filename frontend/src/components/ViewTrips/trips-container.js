@@ -2,8 +2,8 @@ import React from 'react';
 
 import app from '../Firebase/';
 
+import authUtils from '../AuthUtils';
 import * as DB from '../../constants/database.js';
-import { getCurUserUid } from '../Utils/temp-auth-utils.js'
 import Trip from './trip.js';
 
 const db = app.firestore();
@@ -58,7 +58,7 @@ class TripsContainer extends React.Component {
    * @override
    */
   async componentDidMount() {
-    const curUserUid = getCurUserUid();
+    const curUserUid = authUtils.getCurUserUid();
     db.collection(DB.COLLECTION_TRIPS)
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
         .orderBy(DB.TRIPS_CREATION_TIME, 'desc')
