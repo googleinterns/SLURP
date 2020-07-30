@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react';
 
-import { Accordion, Button, Card } from 'react-bootstrap';
+import { Accordion, Card, Col, Container, Row } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DeleteTripButton from './delete-trip-button.js';
+import EditTripButton from './edit-trip-button.js';
 import { getDateRangeString, timestampToISOString } from "../Utils/time.js";
 import ViewActivitiesButton from './view-activities-button.js';
 import authUtils from '../AuthUtils';
-import DeleteTripButton from './delete-trip-button.js';
 import * as DB from '../../constants/database.js';
+import '../../styles/trips.css';
 
 /**
  * A trip object containing the data stored in a trip document in Firestore.
@@ -38,6 +40,31 @@ export function moveCurUserEmailToFront(collaboratorEmailArr) {
   return [authUtils.getCurUserEmail()].concat(collaboratorEmailArr);
 }
 
+
+/**
+ * Returns a React Bootstrap `<Row>` element containing some text
+ * and its corresponding FontAwesome icon.
+ *
+ * @param {string} rowText Text for the `<Row>` element.
+ * @param {string} icon Text corresponding to the FontAwesome solid-svg icon.
+ * @return {JSX.Element} React Bootstrap `<Row>` element. containing some text
+ *     with its corresponding FontAwesome icon.
+ */
+function getTripInfoRow(rowText, icon) {
+  if(rowText === '') {
+    return (<></>);
+  }
+  return (
+    <Row className='trip-info-row'>
+      <Col xs={1}>
+        <FontAwesomeIcon icon={icon} className='fa-icon'/>
+      </Col>
+      <Col xs={11}>
+        {rowText}
+      </Col>
+    </Row>
+  )
+}
 
 /**
  * Component corresponding to the container containing an individual trip.
@@ -100,21 +127,34 @@ const Trip = (props) => {
       </Accordion.Toggle>
       <Accordion.Collapse eventKey={props.eventKey}>
         <Card.Body>
-          <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
-          <p>{destination}</p>
-          <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
-          <p>{description}</p>
-          <p>{collaboratorEmailsStr}</p>
-
-          <DeleteTripButton tripId={props.tripId} />
-          <Button
-            type='button'
-            onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
-            variant='primary'
-          >
-            Edit
-          </Button>
-          <ViewActivitiesButton tripId={props.tripId} />
+          <Container fluid>
+            <Row>
+              <Col xs={11}>
+                {getTripInfoRow(destination, 'map-marker-alt')}
+                {getTripInfoRow(
+                    getDateRangeString(startDateTimestamp, endDateTimestamp),
+                    'calendar-alt'
+                )}
+                {getTripInfoRow(description, 'book')}
+                {getTripInfoRow(collaboratorEmailsStr, 'user-friends')}
+              </Col>
+              <Col xs={1}>
+                <Row>
+                  <DeleteTripButton tripId={props.tripId} />
+                </Row>
+                <Row>
+                  <EditTripButton
+                    tripId={props.tripId}
+                    formattedTripData={formattedTripData}
+                    handleEditTrip={props.handleEditTrip}
+                  />
+                </Row>
+                <Row>
+                  <ViewActivitiesButton tripId={props.tripId} />
+                </Row>
+              </Col>
+            </Row>
+          </Container>
         </Card.Body>
       </Accordion.Collapse>
     </Card>
