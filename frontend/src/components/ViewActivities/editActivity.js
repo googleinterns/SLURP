@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { getField, writeActivity } from './activityfns.js';
+import { getField, writeActivity, getRefValue } from './activityfns.js';
 import * as DB from '../../constants/database.js'
 import { countryList } from '../../constants/countries.js';
 import * as time from '../Utils/time.js';
 import app from '../Firebase';
 import * as formElements from './editActivityFormElements.js';
+import * as msgs from '../../constants/messages.js';
 
 const db = app.firestore();
 
@@ -21,7 +22,7 @@ class EditActivity extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = {startTz: false, endTz: false};
+    this.state = {startTzChanged: false, endTzChanged: false};
 
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
@@ -38,31 +39,44 @@ class EditActivity extends React.Component {
     this.editDescriptionRef = React.createRef();
     this.editStartLocRef = React.createRef();
     this.editEndLocRef = React.createRef();
-    this.startTz = React.createRef();
-    this.endTz = React.createRef();
+    this.editStartTzRef = React.createRef();
+    this.editEndTzRef = React.createRef();
   }
-
+  
   /**
    * Edit an activity in the database upon form submission.
-   * TODO: Update times as well! This only does the text field forms (#64).
    */
   editActivity() {
+    const activity = this.props.activity;
+
     let newVals = {};
-    if (this.editTitleRef.current.value !== '') {
-      newVals[DB.ACTIVITIES_TITLE] = this.editTitleRef.current.value;
-    }
-    if (this.editDescriptionRef.current.value !== '') {
-      newVals[DB.ACTIVITIES_DESCRIPTION] = this.editDescriptionRef.current.value;
-    }
-    if (this.editStartLocRef.current.value !== 'No Change'){
-      newVals[DB.ACTIVITIES_START_COUNTRY] = this.editStartLocRef.current.value;
-    }
-    if (this.editEndLocRef.current.value !== 'No Change'){
-      newVals[DB.ACTIVITIES_END_COUNTRY] = this.editEndLocRef.current.value;
-    }
-    if (Object.keys(newVals).length !== 0) {
-      writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
-    }
+    // All the text fields. 
+    newVals[DB.ACTIVITIES_TITLE] =
+      getRefValue(this.editTitleRef, '', activity[DB.ACTIVITIES_TITLE])
+    newVals[DB.ACTIVITIES_DESCRIPTION] = 
+      getRefValue(this.editDescriptionRef, '', activity[DB.ACTIVITIES_DESCRIPTION]);
+
+    newVals[DB.ACTIVITIES_START_COUNTRY] = 
+      getRefValue(this.editStartLocRef, 'No Change', activity[DB.ACTIVITIES_START_COUNTRY]);
+    newVals[DB.ACTIVITIES_END_COUNTRY] = 
+      getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
+    
+    newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef);
+    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef);
+
+    // Start time fields!
+    const startTime = getRefValue(this.editStartTimeRef);
+    const startDate = getRefValue(this.editStartDateRef);
+    const startTz = newVals[DB.ACTIVITIES_START_TZ];
+    newVals[DB.ACTIVITIES_START_TIME] = time.firebaseTsFromISO(startTime, startDate, startTz);
+
+    // End time fields!
+    const endTime = getRefValue(this.editEndTimeRef);
+    const endDate = getRefValue(this.editEndDateRef);
+    const endTz = newVals[DB.ACTIVITIES_END_TZ];
+    newVals[DB.ACTIVITIES_END_TIME] = time.firebaseTsFromISO(endTime, endDate, endTz);
+
+    writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }
 
   /** Runs when the `submit` button on the form is pressed.  */
@@ -72,10 +86,10 @@ class EditActivity extends React.Component {
     this.props.submitFunction();
   }
 
-  // "Flip switch" on timezone dropdown so the dropdown's contents update to the
-  // selected country's timezones.
-  startTimeTzUpdate = () => { this.setState({startTz : !this.state.startTz})};
-  endTimeTzUpdate = () => { this.setState({endTz : !this.state.endTz})};
+  // "Flip switch" on timezone dropdown so the dropdown's contents update to the 
+  // selected country's timezones. 
+  startTimeTzUpdate = () => { this.setState({startTzChanged : !this.state.startTzChanged})};
+  endTimeTzUpdate = () => { this.setState({endTzChanged : !this.state.endTzChanged})};
 
   /**
    * Returns a dropdown of all the timezones.
@@ -88,7 +102,7 @@ class EditActivity extends React.Component {
    * timezone is for the start or end timezone.
    * @return {HTML} HTML dropdown item.
    */
-  timezoneDropdown(st) {
+  timezoneDropdown(st, defaultTz) {
     const ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
     const dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
     let timezones;
@@ -98,10 +112,12 @@ class EditActivity extends React.Component {
     } else {
       timezones = time.timezonesForCountry(ref.current.value);
     }
+
     return (
       <Form.Control as='select'
-        ref={st === 'start' ? this.startTz : this.endTz}
-        key={st === 'start' ? this.state.startTz : this.state.endTz}
+        ref={st === 'start' ? this.editStartTzRef : this.editEndTzRef}
+        key={st === 'start' ? this.state.startTzChanged : this.state.endTzChanged}
+        defaultValue={defaultTz}
       >
         {timezones.map((item, index) => {
           return (<option key={index}>{item}</option>);
@@ -109,6 +125,7 @@ class EditActivity extends React.Component {
       </Form.Control>
     )
   }
+
   /**
    * Create a dropdown of all the countries.
    * This dropdown is linked to the corresponding timezone dropdown,
@@ -116,13 +133,13 @@ class EditActivity extends React.Component {
    * change as well.
    *
    * @param {ref} ref The reference to attach to the dropdown.
-   * @param {ref} tzref The corresponding time zone reference field.
+   * @param {ref} onChange The function to call onChange. 
+   * @param {string} defaultCountry The default country for the dropdown.
    * @return {HTML} HTML dropdown of all the countries with timezones.
    */
-  countriesDropdown(ref, tzref) {
+  countriesDropdown(ref, onChange, defaultCountry) {
     return (
-      <Form.Control as='select' ref={ref} onChange={tzref}>
-        <option key='-1'>No Change</option>
+      <Form.Control as='select' ref={ref} onChange={onChange} defaultValue={defaultCountry}>
         {countryList.map((item, index) => {
           return (
             <option key={index}>{item}</option>
@@ -153,45 +170,53 @@ class EditActivity extends React.Component {
     const activity = this.props.activity;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
-        {formElements.textElementFormGroup(
+        {formElements.textElementFormGroup( // TITLE
             'formActivityTitle',          // controlId
             'Title:',                     // formLabel
-            activity[DB.ACTIVITIES_TITLE],// placeHolder
+            getField(activity, DB.ACTIVITIES_TITLE, msgs.ACTIVITY_TITLE_PLACEHOLDER), // placeHolder 
             this.editTitleRef             // ref
           )}
-        {formElements.locationElementFormGroup(
-          'formActivityStartLocation',                                         // controlId
-          'Start Location:',                                                   // formLabel
-          this.countriesDropdown(this.editStartLocRef, this.startTimeTzUpdate) // dropdown
+        {formElements.locationElementFormGroup( // START LOCATION
+          'formActivityStartLocation',                 // controlId
+          'Start Location:',                           // formLabel
+          this.countriesDropdown(this.editStartLocRef, // defaultValue ref
+            this.startTimeTzUpdate,                          // countriesDropdown onChange
+            getField(activity, DB.ACTIVITIES_START_COUNTRY)) // countriesDropdown defaultCountry
           )}
-        {formElements.locationElementFormGroup(
-          'formActivityEndLocation',                                       // controlId
-          'End Location:',                                                 // formLabel
-          this.countriesDropdown(this.editEndLocRef, this.endTimeTzUpdate) // dropdown
+        {formElements.locationElementFormGroup( // END LOCATION
+          'formActivityEndLocation',                 // controlId
+          'End Location:',                           // formLabel
+          this.countriesDropdown(this.editEndLocRef, // defaultValue ref
+            this.endTimeTzUpdate, // countriesDropdown onChange
+            getField(activity, DB.ACTIVITIES_END_COUNTRY)) // countriesDropdown defaultCountry
           )}
-        {formElements.dateTimeTzFormGroup(
-          'formActivityStartTime',       // controlId
-          'From:',                       // formLabel
-          this.editStartDateRef,         // dateRef
-          null,                          // dateDefault
-          this.editStartTimeRef,         // timeRef,
-          null,                          // timeDefault,
-          this.timezoneDropdown('start') // tzpicker
+        {formElements.dateTimeTzFormGroup( // START TIME
+          'formActivityStartTime',                         // controlId
+          'From:',                                         // formLabel
+          this.editStartDateRef,                           // dateRef
+          time.getISODate(getField(activity, DB.ACTIVITIES_START_TIME), 
+              getField(activity, DB.ACTIVITIES_START_TZ)), // dateDefault 
+          this.editStartTimeRef,                           // timeRef, 
+          time.get24hTime(getField(activity, DB.ACTIVITIES_START_TIME), 
+              getField(activity, DB.ACTIVITIES_START_TZ)), //timeDefault, 
+          this.timezoneDropdown('start', getField(activity, DB.ACTIVITIES_START_TZ)) // tzpicker 
           )}
-        {formElements.dateTimeTzFormGroup(
-          'formActivityEndTime',       // controlId
-          'To:',                       // formLabel
-          this.editEndDateRef,         // dateRef
-          null,                        // dateDefault
-          this.editEndTimeRef,         // timeRef,
-          null,                        //timeDefault,
-          this.timezoneDropdown('end') // tzpicker
+        {formElements.dateTimeTzFormGroup( // END TIME
+          'formActivityEndTime',                         // controlId
+          'To:',                                         // formLabel
+          this.editEndDateRef,                           // dateRef
+          time.getISODate(getField(activity, DB.ACTIVITIES_END_TIME), 
+              getField(activity, DB.ACTIVITIES_END_TZ)), // dateDefault 
+          this.editEndTimeRef,                           // timeRef, 
+          time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
+              getField(activity, DB.ACTIVITIES_END_TZ)), //timeDefault, 
+          this.timezoneDropdown('end', getField(activity, DB.ACTIVITIES_END_TZ)) // tzpicker 
           )}
-        {formElements.textElementFormGroup(
-            'formActivityDescription',                                          // controlId
-            'Description:',                                                     // formLabel
-            getField(activity, DB.ACTIVITIES_DESCRIPTION, 'Add some details!'), // placeHolder
-            this.editDescriptionRef                                             // ref
+        {formElements.textElementFormGroup( // DESCRIPTION
+            'formActivityDescription', // controlId
+            'Description:', // formLabel
+            getField(activity, DB.ACTIVITIES_DESCRIPTION, msgs.ACTIVITY_DESCRIPTION_PLACEHOLDER), // placeHolder 
+            this.editDescriptionRef // ref
           )}
         <Button type='submit' className='float-right'>Done!</Button>
         <Button type='button' onClick={this.deleteActivity}>

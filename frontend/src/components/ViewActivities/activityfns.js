@@ -1,6 +1,8 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
 import { firestore } from 'firebase';
+import * as moment from 'moment-timezone';
+import * as time from '../Utils/time.js';
 
 const db = app.firestore();
 
@@ -22,6 +24,24 @@ const db = app.firestore();
  * 
  */
 
+/* 
+ * Get the field of field name `fieldName` from `activity`  or the default value.
+ * 
+ * @param {Object} activity Activity to get field from.
+ * @param {string} fieldName Name of the field in the activity to get. 
+ * @param {?*} [defaultValue=null] Default value to return if activity[fieldName] can't be found. 
+ * Can be any type.
+ * @param {string} [prefix=''] The prefix to put before a returned value if the field exists.
+ * @return {*} `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
+ */
+export function getField(
+    activity, fieldName, defaultValue = null, prefix = '') {
+  if (activity[fieldName] === null || activity[fieldName] === undefined) {
+    return defaultValue;
+  }
+  return prefix + activity[fieldName];
+}
+
 /**
  * Sort a list of trip activities by date. 
  * @param {ActivityInfo[]} tripActivities Array of activities.
@@ -33,11 +53,10 @@ export function sortByDate(tripActivities) {
   if (tripActivities === undefined) {
     return null;
   }
-  console.log(tripActivities);
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
   for (let activity of tripActivities) {
-    const activityDate = new Date(activity[DB.ACTIVITIES_START_TIME]);
-    const dateKey = activityDate.toLocaleDateString()
+    const dateKey = time.getISODate(activity[DB.ACTIVITIES_START_TIME], 
+      getField(activity, DB.ACTIVITIES_START_TZ));
     if (activities.has(dateKey)) {
       activities.get(dateKey).add(activity);
     } else {
@@ -46,8 +65,11 @@ export function sortByDate(tripActivities) {
   }
 
   // Sort activities by date.
-  console.log(activities);
-  let activitiesSorted = Array.from(activities).sort(compareActivities);
+  let activitiesSorted = Array.from(activities).sort((a, b) => {
+    const adate = moment.utc(a[0], "YYYY-MM-DD").valueOf();
+    const bdate = moment.utc(b[0], "YYYY-MM-DD").valueOf();
+    return adate < bdate ? -1 : 1;
+  });
   
   return activitiesSorted;
 }
@@ -68,23 +90,6 @@ export function compareActivities(a, b) {
     return 1;
   }
   return -1;
-}
-
-
-/**
- * Get the field of field name `fieldName` from `activity` or the default value.
- * 
- * @param {ActivityInfo} activity The activity from which to get the field.
- * @param {string} fieldName Name of field to get.
- * @param {*} defaultValue Value if field is not found/is null.
- * @param {string} prefix The prefix to put before a returned value if the field exists.
- * @return {*} <code>activity[fieldName]</code> if possible, else <code>defaultValue</code>.
- */
-export function getField(activity, fieldName, defaultValue, prefix=''){
-  if (activity[fieldName] === null || activity[fieldName] === undefined) {
-    return defaultValue;
-  }
-  return prefix + activity[fieldName];
 }
 
 /**
@@ -113,4 +118,19 @@ export async function writeActivity(tripId, activityId, newValues) {
     console.log(e);
     return false;
   }
+}
+
+/**
+ * Get the value of a reference. 
+ * 
+ * @param {Reference} ref Reference to get the value of.
+ * @param {string} ignoreValue The "null" or "none" value that ref could be.
+ * @param {string} defaultValue Value to return if ref.current.value === ignoreValue.
+ * @return defaultValue if ref.current.value === ignoreValue, else ref.current.value.
+ */
+export function getRefValue(ref, ignoreValue='', defaultValue=null) {
+  if (ref.current.value === ignoreValue) {
+    return defaultValue;
+  } 
+  return ref.current.value;
 }
