@@ -43,15 +43,11 @@ export function getCleanedTextInput(rawInput, defaultValue) {
 export async function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [authUtils.getCurUserEmail()]
                              .concat(collaboratorEmailArr);
-  console.log(collaboratorEmailArr);
 
   // Removes empty fields (temporary until fix #67 & #72).
   const cleanedCollaboratorEmailArr = collaboratorEmailArr.filter(email => {
-    // Comes in as undefined even though The passed in array has empty string.
-    // look into this... IN panic right now becasue presentation.
-    return email !== undefined;
+    return email !== '';
   });
-  console.log(cleanedCollaboratorEmailArr);
 
   return await authUtils.getUserUidArrFromUserEmailArr(cleanedCollaboratorEmailArr);
 }
@@ -73,7 +69,8 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
 export async function formatTripData(rawTripData) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
-  const collaboratorUidArr = await getCollaboratorUidArray(rawTripData.collaboratorEmails);
+  const collaboratorUidArr = await getCollaboratorUidArray(
+                                          rawTripData[DB.TRIPS_COLLABORATORS]);
 
   const formattedTripObj = {
     [DB.TRIPS_UPDATE_TIMESTAMP]: firebase.firestore.Timestamp.now(),
