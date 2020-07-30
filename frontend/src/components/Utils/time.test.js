@@ -143,7 +143,6 @@ jest.mock('firebase', () => ({
 // TODO(Issue #118): Fix this test by mocking the Timestamp constructor or find
 //                   a workaround to avoid ithaving to be mocked.
 test('firestore Timestamp format', () => {
-  const {Timezone} = jest.RequireActual('firebase/firestore');
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3))
   // central = 'Saturday, August 22, 2020, 9:03 PM';
   // singapore = 'Sunday, August 23, 2020, 10:03 AM';

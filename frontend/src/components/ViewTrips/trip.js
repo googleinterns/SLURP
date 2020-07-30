@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Button from 'react-bootstrap/Button';
 
+import authUtils from '../AuthUtils';
 import { timestampToISOString, getDateRangeString } from '../Utils/time.js';
-import { getUserEmailArrFromUserUidArr } from '../Utils/temp-auth-utils.js';
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 
@@ -11,15 +11,18 @@ import ViewActivitiesButton from './view-activities-button.js';
  * Return collaborator emails corresponding to the collaborator uid's
  * `collaboratorUidArr` in a comma separated string.
  *
- * @param {!Array<string>} collaboratorUidArr Array of collaborator uids
- *     stored in trip document.
- * @returns {string} Collaborator emails in comma separated string.
- *     Ex: "person1@email.com, person2@email.com".
+ * @param {!string[]} collaboratorEmailArr Array of user emails sorted in
+ *     alphabetical order.
+ * @return {!string[]} Array of user emails where first element is the current
+ *     user email and the following elements maintain their previous order.
  */
-export function getCollaboratorEmails(collaboratorUidArr) {
-  const collaboratorEmailArr = getUserEmailArrFromUserUidArr(collaboratorUidArr);
-  return collaboratorEmailArr.join(', ');
+export function moveCurUserEmailToFront(collaboratorEmailArr) {
+  collaboratorEmailArr = collaboratorEmailArr.filter(email => {
+    return email !== authUtils.getCurUserEmail();
+  });
+  return [authUtils.getCurUserEmail()].concat(collaboratorEmailArr);
 }
+
 
 /**
  * Component corresponding to the container containing an individual trip.
@@ -43,7 +46,28 @@ const Trip = (props) => {
   const destination = props.tripData.destination;
   const startDateTimestamp = props.tripData.start_date;
   const endDateTimestamp = props.tripData.end_date;
-  const collaboratorEmailsStr = getCollaboratorEmails(props.tripData.collaborators);
+  const collaboratorUidArr = props.tripData.collaborators;
+  const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
+
+  useEffect(() => {
+    // Only set state collaboratorEmailsStr if component is mounted. This is
+    // a precautionary to mitigate warnings that occur when setting state on
+    // a component that has already unmounted. See more here
+    // https://www.robinwieruch.de/react-warning-cant-call-setstate-on-an-unmounted-component.
+    let componentStillMounted = true;
+
+    async function fetchCollaboratorEmails() {
+      let collaboratorEmailArr =
+          await authUtils.getUserEmailArrFromUserUidArr(collaboratorUidArr);
+      collaboratorEmailArr = moveCurUserEmailToFront(collaboratorEmailArr);
+      if (componentStillMounted) {
+        setCollaboratorEmailsStr(collaboratorEmailArr.join(', '));
+      }
+    }
+
+    fetchCollaboratorEmails();
+    return () => { componentStillMounted = false; };
+  }, [collaboratorUidArr]);
 
   const formattedTripData = {
     name:          name,
