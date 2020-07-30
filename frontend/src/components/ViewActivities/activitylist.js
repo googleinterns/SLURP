@@ -20,7 +20,6 @@ export async function getActivityList(tripId) {
     .collection(DB.COLLECTION_ACTIVITIES).get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
-        console.log(doc.data());
         let data = doc.data();
         data['id'] = doc.id;
         data['tripId'] = tripId;
@@ -71,7 +70,6 @@ class ActivityList extends React.Component {
       return;
     } 
     this.setState({days: activityFns.sortByDate(tripActivities)});
-    console.log(this.state.days);
   }
 
   /** @override */
