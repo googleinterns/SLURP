@@ -63,7 +63,6 @@ export function sortByDate(tripActivities) {
       activities.set(dateKey, new Set([activity]));
     }
   }
-
   // Sort activities by date.
   let activitiesSorted = Array.from(activities).sort((a, b) => {
     const adate = moment.utc(a[0], "YYYY-MM-DD").valueOf();
