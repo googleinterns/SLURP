@@ -15,7 +15,7 @@ const db = app.firestore();
 
 /**
  * An object containing the default input data for a SaveTripModal form.
- * @typedef {Object} DefaultFormData
+ * @typedef {Object} RawTripData
  * @property {string} title The trips's title.
  * @property {string} description A description of the trip.
  * @property {string} destination The general destination of the trip.
@@ -43,7 +43,7 @@ const db = app.firestore();
  * @property {?string} props.tripId For editting an existing trip, this will
  *     contain the document id associated with the trip. For adding a new trip,
  *     this will be null.
- * @property {?DefaultFormData} props.defaultFormData: Object containing the
+ * @property {?RawTripData} props.defaultFormData: Object containing the
  *     default values for the form input text boxes. For adding a new trip, this
  *     will be null.
  * @extends React.Component
@@ -128,17 +128,17 @@ class SaveTripModal extends React.Component {
   /**
    * Formats/cleans the form data and saves the Trip document in firestore.
    */
-  saveTrip() {
-    const rawTripData = {};
-    rawTripData[DB.TRIPS_TITLE] = this.titleRef.current.value;
-    rawTripData[DB.TRIPS_DESCRIPTION] = this.descriptionRef.current.value;
-    rawTripData[DB.TRIPS_DESTINATION] = this.destinationRef.current.value;
-    rawTripData[DB.TRIPS_START_DATE] = this.startDateRef.current.value;
-    rawTripData[DB.TRIPS_END_DATE] = this.endDateRef.current.value;
-    rawTripData[DB.TRIPS_COLLABORATORS] =
-        this.state.collaboratorsRefArr.map(ref => ref.current.value);
-
-    const tripData = formatTripData(rawTripData);
+  saveTrip = async () => {
+    const rawTripData = {
+      [DB.TRIPS_TITLE]: this.titleRef.current.value,
+      [DB.TRIPS_DESCRIPTION]: this.descriptionRef.current.value,
+      [DB.TRIPS_DESTINATION]: this.destinationRef.current.value,
+      [DB.TRIPS_START_DATE]: this.startDateRef.current.value,
+      [DB.TRIPS_END_DATE]: this.endDateRef.current.value,
+      [DB.TRIPS_COLLABORATORS]:
+          this.state.collaboratorsRefArr.map(ref => ref.current.value),
+    };
+    const tripData = await formatTripData(rawTripData);
 
     if (this.isAddTripForm) {
       this.addNewTrip(tripData);
@@ -152,8 +152,8 @@ class SaveTripModal extends React.Component {
    *  - Creation of the trip.
    *  - Closing the modal.
    */
-  handleSubmitForm = () => {
-    this.saveTrip();
+  handleSubmitForm = async () => {
+    await this.saveTrip();
     this.props.handleClose();
   }
 

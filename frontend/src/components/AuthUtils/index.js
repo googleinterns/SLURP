@@ -71,12 +71,75 @@ export function signOut() {
   app.auth().signOut();
 }
 
+/**
+ * Retrieves the user emails corresponding to an array of user UIDs.
+ *
+ * The returned array of user emails are sorted in alphabetical order.
+ *
+ * @param {Array.<String>} uidArr Array of user UIDs for which we wish to
+ * retrieve the corresponding user emails.
+ * @return {Promise<Array.<String>>} The array of user emails corresponding to
+ * the given UIDs.
+ */
+export async function getUserEmailArrFromUserUidArr(uidArr) {
+  const fetchUrl = '/api/v1/convert-uids-to-emails';
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(uidArr)
+  };
+
+  try {
+    const response = await fetch(fetchUrl, fetchOptions);
+    const text = await response.text();
+    return JSON.parse(text);
+  } catch(err) { // The response is empty, return an empty array.
+    console.error('Error retrieving user emails.');
+    return [];
+  }
+}
+
+/**
+ * Retrieves the user UIDs corresponding to an array of user emails.
+ *
+ * The returned array of user UIDs are sorted in alphabetical order.
+ *
+ * @param {Array.<String>} emailArr Array of user emails for which we wish to
+ * retrieve the corresponding user UIDs.
+ * @return {Promise<Array.<String>>} The array of user UIDs corresponding to
+ * the given emails.
+ */
+export async function getUserUidArrFromUserEmailArr(emailArr) {
+  const fetchUrl = '/api/v1/convert-emails-to-uids';
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(emailArr)
+  };
+
+  try {
+    const response = await fetch(fetchUrl, fetchOptions);
+    const text = await response.text();
+    return JSON.parse(text);
+  } catch(err) { // The response is empty, return an empty array.
+    console.log(err);
+    console.error('Error retrieving user UIDs.');
+    return [];
+  }
+}
+
 // Can also access the auth functions in the named authUtils variable.
 const authUtils = {
   getCurUserDisplayName,
   getCurUserEmail,
   getCurUserPhotoUrl,
   getCurUserUid,
+  getUserEmailArrFromUserUidArr,
+  getUserUidArrFromUserEmailArr,
   signOut
 };
 export default authUtils;
