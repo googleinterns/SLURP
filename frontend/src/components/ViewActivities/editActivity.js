@@ -168,7 +168,6 @@ class EditActivity extends React.Component {
 
   render() {
     const activity = this.props.activity;
-    const newAct = this.props.new;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         {formElements.textElementFormGroup( // TITLE
@@ -181,14 +180,14 @@ class EditActivity extends React.Component {
           'formActivityStartLocation',                 // controlId
           'Start Location:',                           // formLabel
           this.countriesDropdown(this.editStartLocRef, // defaultValue ref
-            this.startTimeTzUpdate,                          // countriesDropdown tzref
+            this.startTimeTzUpdate,                          // countriesDropdown onChange
             getField(activity, DB.ACTIVITIES_START_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.locationElementFormGroup( // END LOCATION
           'formActivityEndLocation',                 // controlId
           'End Location:',                           // formLabel
           this.countriesDropdown(this.editEndLocRef, // defaultValue ref
-            this.endTimeTzUpdate, // countriesDropdown tzref
+            this.endTimeTzUpdate, // countriesDropdown onChange
             getField(activity, DB.ACTIVITIES_END_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.dateTimeTzFormGroup( // START TIME
