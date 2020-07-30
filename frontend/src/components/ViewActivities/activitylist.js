@@ -8,13 +8,13 @@ import app from '../Firebase';
 const db = app.firestore();
 
 /**
- * ReactJS class for the list of activities. 
+ * ReactJS class component for the list of activities. 
  * 
  * @property {Object} props ReactJS props.
  * @property {string} tripId The tripID.
  */
 class ActivityList extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor(props) {
     super(props);
     this.state = { days : [] };
@@ -25,10 +25,11 @@ class ActivityList extends React.Component {
   /**
    * Gets the list of activities from the server. 
    * 
+   * This function sets `this.state.days` to the sorted days.
+   * 
    * @param {string} tripId The trip ID.
    */
   async getActivityList(tripId) {
-    
     db.collection(DB.COLLECTION_TRIPS).doc(tripId)
     .collection(DB.COLLECTION_ACTIVITIES)
     .onSnapshot(querySnapshot => {
@@ -55,7 +56,7 @@ class ActivityList extends React.Component {
   }
 
   /** 
-   * @inheritdoc
+   * @override
    * 
    * Get sorted list of activities from the database. 
    * 
@@ -68,7 +69,7 @@ class ActivityList extends React.Component {
     await this.getActivityList(this.props.tripId);
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     if (this.state === null) { return (<div></div>); }
     if (this.state.days === null) {
