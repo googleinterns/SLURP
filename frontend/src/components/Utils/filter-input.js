@@ -1,7 +1,6 @@
 import * as firebase from 'firebase/app';
 
 import authUtils from '../AuthUtils';
-import { getUserUidArrFromUserEmailArr } from './temp-auth-utils.js'
 import { getTimestampFromISODateString } from './time.js'
 import * as DB from '../../constants/database.js';
 
@@ -30,8 +29,8 @@ export function getCleanedTextInput(rawInput, defaultValue) {
 }
 
 /**
- * Return an array of collaborator uids given the emails provided in the
- * add trip form.
+ * Return a promise containing an array of collaborator uids given the emails
+ * provided in the add trip form.
  *
  * TODO(#72 & #67): Remove 'remove empty fields' once there is better way to
  * remove collaborators (#72) and there is email validation (#67).
@@ -41,15 +40,20 @@ export function getCleanedTextInput(rawInput, defaultValue) {
  * @return {!string[]} Array of all collaborator uids (including trip
  *     creator uid).
  */
-export function getCollaboratorUidArray(collaboratorEmailArr) {
+export async function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [authUtils.getCurUserEmail()]
-                          .concat(collaboratorEmailArr);
+                             .concat(collaboratorEmailArr);
+  console.log(collaboratorEmailArr);
 
   // Removes empty fields (temporary until fix #67 & #72).
   const cleanedCollaboratorEmailArr = collaboratorEmailArr.filter(email => {
-    return email !== '';
-  })
-  return getUserUidArrFromUserEmailArr(cleanedCollaboratorEmailArr);
+    // Comes in as undefined even though The passed in array has empty string.
+    // look into this... IN panic right now becasue presentation.
+    return email !== undefined;
+  });
+  console.log(cleanedCollaboratorEmailArr);
+
+  return await authUtils.getUserUidArrFromUserEmailArr(cleanedCollaboratorEmailArr);
 }
 
 /**
@@ -66,9 +70,10 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
  * @return {!TripData} Formatted/cleaned version of {@link RawTripData}
  *     holding the data for the new Trip document that is to be created.
  */
-export function formatTripData(rawTripData) {
+export async function formatTripData(rawTripData) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
+  const collaboratorUidArr = await getCollaboratorUidArray(rawTripData.collaboratorEmails);
 
   const formattedTripObj = {
     [DB.TRIPS_UPDATE_TIMESTAMP]: firebase.firestore.Timestamp.now(),
@@ -80,8 +85,7 @@ export function formatTripData(rawTripData) {
         getTimestampFromISODateString(rawTripData[DB.TRIPS_START_DATE]),
     [DB.TRIPS_END_DATE]:
         getTimestampFromISODateString(rawTripData[DB.TRIPS_END_DATE]),
-    [DB.TRIPS_COLLABORATORS]:
-        getCollaboratorUidArray(rawTripData[DB.TRIPS_COLLABORATORS]),
+    [DB.TRIPS_COLLABORATORS]: collaboratorUidArr,
   };
 
   return formattedTripObj;
