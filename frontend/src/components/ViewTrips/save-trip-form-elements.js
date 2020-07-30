@@ -113,8 +113,8 @@ function createMultiFormControl(refArr, placeholder, defaultEmailArr) {
  * @param {string} formLabel Label/title for the form input.
  * @param {string} inputType Input type of the form.
  * @param {!React.RefObject|!Array<React.RefObject>} ref Ref attached to the
- *     values inputted in the form. This is an array of refs when `inputType`
- *     is 'emails'.
+ *     values inputted in the form. This is an array of `React.RefObject`s when
+ *     `inputType` is 'emails'.
  * @param {string} placeholder Placeholder text value in the form input.
  * @param {?string|?string[]} defaultVal Default value in the form input.
  *     This is an array when `inputType` is 'emails'.
