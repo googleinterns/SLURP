@@ -1,0 +1,9 @@
+#logo-header {
+  height: 3em;
+}
+
+#profile-picture {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
