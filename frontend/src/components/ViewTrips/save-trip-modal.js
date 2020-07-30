@@ -129,14 +129,15 @@ class SaveTripModal extends React.Component {
    * Formats/cleans the form data and saves the Trip document in firestore.
    */
   saveTrip() {
-    const rawTripData = {};
-    rawTripData[DB.TRIPS_TITLE] = this.titleRef.current.value;
-    rawTripData[DB.TRIPS_DESCRIPTION] = this.descriptionRef.current.value;
-    rawTripData[DB.TRIPS_DESTINATION] = this.destinationRef.current.value;
-    rawTripData[DB.TRIPS_START_DATE] = this.startDateRef.current.value;
-    rawTripData[DB.TRIPS_END_DATE] = this.endDateRef.current.value;
-    rawTripData[DB.TRIPS_COLLABORATORS] =
-        this.state.collaboratorsRefArr.map(ref => ref.current.value);
+    const rawTripData = {
+      [DB.TRIPS_TITLE]: this.titleRef.current.value,
+      [DB.TRIPS_DESCRIPTION]: this.descriptionRef.current.value,
+      [DB.TRIPS_DESTINATION]: this.destinationRef.current.value,
+      [DB.TRIPS_START_DATE]: this.startDateRef.current.value,
+      [DB.TRIPS_END_DATE]: this.endDateRef.current.value,
+      [DB.TRIPS_COLLABORATORS]:
+          this.state.collaboratorsRefArr.map(ref => ref.current.value),
+    };
 
     const tripData = formatTripData(rawTripData);
 
