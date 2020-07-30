@@ -10,9 +10,7 @@ import * as DB from '../../constants/database.js';
  */
 
 /**
- * @typedef { DefaultFormData } RawTripData
- * {@link RawTripData} is an alias for the `typedef` {@link DefaultFormData}
- * defined in `ViewTrips/save-trip-modal.js`.
+ * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
  */
 
 /**

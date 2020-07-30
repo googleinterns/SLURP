@@ -15,7 +15,7 @@ const db = app.firestore();
 
 /**
  * An object containing the default input data for a SaveTripModal form.
- * @typedef {Object} DefaultFormData
+ * @typedef {Object} RawTripData
  * @property {string} title The trips's title.
  * @property {string} description A description of the trip.
  * @property {string} destination The general destination of the trip.
@@ -43,7 +43,7 @@ const db = app.firestore();
  * @property {?string} props.tripId For editting an existing trip, this will
  *     contain the document id associated with the trip. For adding a new trip,
  *     this will be null.
- * @property {?DefaultFormData} props.defaultFormData: Object containing the
+ * @property {?RawTripData} props.defaultFormData: Object containing the
  *     default values for the form input text boxes. For adding a new trip, this
  *     will be null.
  * @extends React.Component
