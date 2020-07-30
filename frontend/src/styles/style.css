@@ -14,8 +14,9 @@ html, body, #root, #root>div, #root>div>* {
   height: 100%
 }
 
-/* Pages with the hero image spans the entire window with a slight dark tint. */
+/* Pages with the hero-image class spans the entire window. */
 .hero-image {
+  /* Linear gradient adds a slight dark tint to the image. */
   background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
                     url('../images/hero-image.jpg');
   background-position: center;
