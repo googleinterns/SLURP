@@ -54,7 +54,8 @@ export function sortByDate(tripActivities) {
   }
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
   for (let activity of tripActivities) {
-    const dateKey = time.getISODate(activity[DB.ACTIVITIES_START_TIME]);
+    const dateKey = time.getISODate(activity[DB.ACTIVITIES_START_TIME], 
+      getField(activity, DB.ACTIVITIES_START_TZ));
     if (activities.has(dateKey)) {
       activities.get(dateKey).add(activity);
     } else {
@@ -112,4 +113,19 @@ export async function writeActivity(tripId, activityId, newValues) {
     console.log(e);
     return false;
   }
+}
+
+/**
+ * Get the value of a reference. 
+ * 
+ * @param {Reference} ref Reference to get the value of.
+ * @param {string} ignoreValue The "null" or "none" value that ref could be.
+ * @param {string} defaultValue Value to return if ref.current.value === ignoreValue.
+ * @return defaultValue if ref.current.value === ignoreValue, else ref.current.value.
+ */
+export function getRefValue(ref, ignoreValue='', defaultValue=null) {
+  if (ref.current.value === ignoreValue) {
+    return defaultValue;
+  } 
+  return ref.current.value;
 }
