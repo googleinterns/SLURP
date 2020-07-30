@@ -1,4 +1,3 @@
-import { getUserUidArrFromUserEmailArr } from './temp-auth-utils';
 import { getCleanedTextInput, getCollaboratorUidArray }  from './filter-input.js';
 
 describe('getCleanedTextInput tests', () => {

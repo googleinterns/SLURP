@@ -2,7 +2,7 @@ import * as firebase from 'firebase/app';
 
 import authUtils from '../AuthUtils';
 import { getUserUidArrFromUserEmailArr } from './temp-auth-utils.js'
-import { getTimestampFromDateString } from './time.js'
+import { getTimestampFromISODateString } from './time.js'
 import * as DB from '../../constants/database.js';
 
 /**
@@ -32,11 +32,10 @@ export function getCollaboratorUidArray(collaboratorEmailArr) {
                           .concat(collaboratorEmailArr);
 
   // Removes empty fields (temporary until fix #67 & #72).
-  while (collaboratorEmailArr.includes('')) {
-    const emptyStrIdx = collaboratorEmailArr.indexOf('');
-    collaboratorEmailArr.splice(emptyStrIdx, 1);
-  }
-  return getUserUidArrFromUserEmailArr(collaboratorEmailArr);
+  const cleanedCollaboratorEmailArr = collaboratorEmailArr.filter(email => {
+    return email !== '';
+  })
+  return getUserUidArrFromUserEmailArr(cleanedCollaboratorEmailArr);
 }
 
 /**
@@ -59,19 +58,19 @@ export function formatTripData(rawTripObj) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
 
-  const tripObj = {};
-  tripObj[DB.TRIPS_UPDATE_TIMESTAMP] = firebase.firestore.Timestamp.now();
-  tripObj[DB.TRIPS_TITLE] =
-      getCleanedTextInput(rawTripObj[DB.TRIPS_TITLE], defaultName);
-  tripObj[DB.TRIPS_DESCRIPTION] = rawTripObj[DB.TRIPS_DESCRIPTION];
-  tripObj[DB.TRIPS_DESTINATION] =
-      getCleanedTextInput(rawTripObj[DB.TRIPS_DESTINATION], defaultDestination);
-  tripObj[DB.TRIPS_START_DATE] =
-      getTimestampFromDateString(rawTripObj[DB.TRIPS_START_DATE]);
-  tripObj[DB.TRIPS_END_DATE] =
-      getTimestampFromDateString(rawTripObj[DB.TRIPS_END_DATE]);
-  tripObj[DB.TRIPS_COLLABORATORS] =
-      getCollaboratorUidArray(rawTripObj[DB.TRIPS_COLLABORATORS]);
+  const formattedTripObj = {
+    [DB.TRIPS_UPDATE_TIMESTAMP]: firebase.firestore.Timestamp.now(),
+    [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripObj[DB.TRIPS_TITLE], defaultName),
+    [DB.TRIPS_DESCRIPTION]: rawTripObj[DB.TRIPS_DESCRIPTION],
+    [DB.TRIPS_DESTINATION]:
+        getCleanedTextInput(rawTripObj[DB.TRIPS_DESTINATION], defaultDestination),
+    [DB.TRIPS_START_DATE]:
+        getTimestampFromISODateString(rawTripObj[DB.TRIPS_START_DATE]),
+    [DB.TRIPS_END_DATE]:
+        getTimestampFromISODateString(rawTripObj[DB.TRIPS_END_DATE]),
+    [DB.TRIPS_COLLABORATORS]:
+        getCollaboratorUidArray(rawTripObj[DB.TRIPS_COLLABORATORS]),
+  };
 
-  return tripObj;
+  return formattedTripObj;
 }
