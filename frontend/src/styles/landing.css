@@ -2,7 +2,7 @@
 .jumbotron {
   background-color: rgba(255, 255, 255, 0.8);
   left: 50%;
-  padding: 5%;
+  padding: 3%;
   position: absolute;
   text-align: center;
   top: 50%;
@@ -33,5 +33,5 @@
 }
 
 #logo-landing {
-  height: 33vh;
+  width: 55%;
 }
