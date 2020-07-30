@@ -77,7 +77,7 @@ class ViewActivities extends React.Component {
     if (this.state.error !== undefined) {
       return (
         <div>
-          <Header/>
+          <Header />
           <ErrorComponents.ErrorGeneral />
         </div>
       );
