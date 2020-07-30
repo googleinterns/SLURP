@@ -3,8 +3,8 @@ import React from 'react';
 import { Form }  from 'react-bootstrap';
 
 /**
- * Returns a Form.Control element with input type 'text' and other props
- * specified by the function parameters.
+ * Returns a `Form.Control` element with input type `text` and specified values
+ * for the input placeholder and default value.
  *
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
  * @param {string} placeholder Placeholder text value in the form input.
@@ -24,8 +24,8 @@ function createTextFormControl(ref, placeholder, defaultText) {
 }
 
 /**
- * Returns a Form.Control element with input type 'date' and other props
- * specified by the function parameters.
+ * Returns a `Form.Control` element with input type `date` and a specified value
+ * for the input placeholder.
  *
  * @param {React.RefObject} ref Ref attached to the date inputted in the form.
  * @param {?string} defaultDate Optional default ISO date string placed in the
@@ -43,13 +43,13 @@ function createDateFormControl(ref, defaultDate) {
 }
 
 /**
- * Returns a Form.Control element with input type 'email' and other props
- * specified by the function parameters.
+ * Returns a Form.Control element with input type `email` and specified values
+ * for the input placeholder and default value.
  *
  * @param {React.RefObject} ref Ref attached to the value inputted in the form.
  * @param {number} idx Index of the email Form.Control used for key prop.
  * @param {string} placeholder Placeholder text value in the form input.
- * @param {?Array<string>} defaultEmailArr Array of the emails to be displayed
+ * @param {?string[]} defaultEmailArr Array of the emails to be displayed
  *     in the default form fields. Null if no default emails.
  * @return {JSX.Element} The Form.Control element.
  */
@@ -76,8 +76,8 @@ function createEmailFormControl(ref, idx, placeholder, defaultEmailArr) {
 }
 
 /**
- * Returns multiple Form.Control elements with input type 'email' and other
- * props specified by the function parameters.
+ * Returns multiple Form.Control elements with input type `email` and specified
+ * values for the input placeholder and default value.
  *
  * One is added to the index of the emails show in order to display all
  * collaborators except the current user.
@@ -91,9 +91,9 @@ function createEmailFormControl(ref, idx, placeholder, defaultEmailArr) {
  * @param {boolean} isAddTripForm True if form is adding new trip, false if
  *     form is editting existing trip.
  * @param {string} placeholder Placeholder text value in the form input.
- * @param {?Array<string>} defaultEmailArr Array of the emails to be displayed
+ * @param {?string[]} defaultEmailArr Array of the emails to be displayed
  *     in the default form fields.
- * @return {JSX.Element} The Form.Control elements.
+ * @return {Array<JSX.Element>} The array of Form.Control elements.
  */
 function createMultiFormControl(refArr, placeholder, defaultEmailArr) {
   return (
@@ -112,9 +112,12 @@ function createMultiFormControl(refArr, placeholder, defaultEmailArr) {
  *                           input prop.
  * @param {string} formLabel Label/title for the form input.
  * @param {string} inputType Input type of the form.
- * @param {!React.RefObject} ref Ref attached to the values inputted in the form.
+ * @param {!React.RefObject|!Array<React.RefObject>} ref Ref attached to the
+ *     values inputted in the form. This is an array of `React.RefObject`s when
+ *     `inputType` is 'emails'.
  * @param {string} placeholder Placeholder text value in the form input.
- * @param {?string|?Array<string>} defaultVal Default value in the form input.
+ * @param {?string|?string[]} defaultVal Default value in the form input.
+ *     This is an array when `inputType` is 'emails'.
  * @return {JSX.Element} The Form.Group element.
  */
 export function createFormGroup(controlId, formLabel, inputType,

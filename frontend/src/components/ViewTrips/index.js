@@ -6,35 +6,23 @@ import Header from '../Header/';
 import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
+/**
+ * {@link TripData} defined originally in `ViewTrips/trip.js`.
+ */
 
 /**
  * ViewTrips component that defines the page where a user can view and manage
  * their current trips.
  */
 class ViewTrips extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor() {
     super();
     this.state = { showModal: false,
-                   refreshTripsContainer: false,
                    refreshSaveTripModal: false,
                    tripId: null,
-                   defaultFormObj: null,
+                   defaultFormData: null,
                  };
-  }
-
-  /**
-   * Handler that flips `refreshTripsContainer` property which causes that
-   * TripsContainer component to be reloaded.
-   *
-   * This allows a trip creator's view trips page to be updated in real time.
-   *
-   * In the future, the use of refreshTripContainer and the key prop on Trips
-   * container should be removed with the addition of real time listening with
-   * onShapshot (Issue #62).
-   */
-  refreshTripsContainer = () => {
-    this.setState({ refreshTripsContainer: !this.state.refreshTripsContainer });
   }
 
   /**
@@ -68,7 +56,7 @@ class ViewTrips extends React.Component {
   showAddTripModal = () => {
     this.setState({
       tripId: null,
-      defaultFormObj: null,
+      defaultFormData: null,
     });
     this.showSaveTripModal();
   }
@@ -80,16 +68,19 @@ class ViewTrips extends React.Component {
    * to ensure the modal has the visual characteristics of an "edit trip" modal
    * and overwrites and existing Trip document in the database.
    *
+  * @param {string} tripId Document ID for the current Trip document.
+  * @param {!TripData} tripData Contains the data for the
+  *     Trip document that that will be editted.
    */
   showEditTripModal = (tripId, tripData) => {
     this.setState({
       tripId: tripId,
-      defaultFormObj: tripData
+      defaultFormData: tripData,
     });
     this.showSaveTripModal();
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     return (
       <div className="view-trips-page">
@@ -97,9 +88,8 @@ class ViewTrips extends React.Component {
         <SaveTripModal
           show={this.state.showModal}
           handleClose={this.hideSaveTripModal}
-          refreshTripsContainer={this.refreshTripsContainer}
           tripId={this.state.tripId}
-          defaultFormObj={this.state.defaultFormObj}
+          defaultFormData={this.state.defaultFormData}
           key={this.state.refreshSaveTripModal}
         />
         <div className="manage-trips-bar">
@@ -109,8 +99,6 @@ class ViewTrips extends React.Component {
         </div>
         <TripsContainer
           handleEditTrip={this.showEditTripModal}
-          refreshTripsContainer={this.refreshTripsContainer}
-          key={this.state.refreshTripsContainer}
         />
       </div>
     );

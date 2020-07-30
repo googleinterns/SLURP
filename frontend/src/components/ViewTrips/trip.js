@@ -1,47 +1,43 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
-import Button from 'react-bootstrap/Button';
+import { Accordion, Button, Card } from 'react-bootstrap';
 
-import { timestampToISOString } from '../Utils/time.js';
-import { getUserEmailArrFromUserUidArr } from '../Utils/temp-auth-utils.js';
-import DeleteTripButton from './delete-trip-button.js';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getDateRangeString, timestampToISOString } from "../Utils/time.js";
 import ViewActivitiesButton from './view-activities-button.js';
+import authUtils from '../AuthUtils';
+import DeleteTripButton from './delete-trip-button.js';
+import * as DB from '../../constants/database.js';
 
 /**
- * Returns the string date range of the trip associated with the Trip document
- * data `tripObj`.
- *
- * Notes:
- *  - tripObj will always contain valid start_date and end_date fields.
- *  - When the Firestore Timestamps contained in `tripObj` converted to js
- *    dates, the months are 0 indexed rather than 1 indexed so they must be
- *    incremented by 1 in order for the month to be correct.
- *
- * @param {!firebase.firestore.DocumentData} tripData Object containing the
- *     fields and values for a Trip document.
- * @return {string} Date range of the trip.
+ * A trip object containing the data stored in a trip document in Firestore.
+ * @typedef {Object} TripData
+ * @property {string} title The trips's title.
+ * @property {string} description A description of the trip.
+ * @property {string} destination The general destination of the trip.
+ * @property {firebase.firestore.Timestamp} start_date Start date Firestore
+ *     timestamp object.
+ * @property {firebase.firestore.Timestamp} end_date End date Firestore
+ *     timestamp object
+ * @property {!string[]} collaborators An array of collaborator uids.
  */
-export function getDateRange(tripData) {
-  const startDate = tripData.start_date.toDate();
-  const endDate = tripData.end_date.toDate();
-  return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
-      `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
-      `${endDate.getDate()}/${endDate.getFullYear()}`;
-}
 
 /**
  * Return collaborator emails corresponding to the collaborator uid's
  * `collaboratorUidArr` in a comma separated string.
  *
- * @param {!Array<string>} collaboratorUidArr Array of collaborator uids
- *     stored in trip document.
- * @returns {string} Collaborator emails in comma separated string.
- *     Ex: "person1@email.com, person2@email.com".
+ * @param {!string[]} collaboratorEmailArr Array of user emails sorted in
+ *     alphabetical order.
+ * @return {!string[]} Array of user emails where first element is the current
+ *     user email and the following elements maintain their previous order.
  */
-export function getCollaboratorEmails(collaboratorUidArr) {
-  const collaboratorEmailArr = getUserEmailArrFromUserUidArr(collaboratorUidArr);
-  return collaboratorEmailArr.join(', ');
+export function moveCurUserEmailToFront(collaboratorEmailArr) {
+  collaboratorEmailArr = collaboratorEmailArr.filter(email => {
+    return email !== authUtils.getCurUserEmail();
+  });
+  return [authUtils.getCurUserEmail()].concat(collaboratorEmailArr);
 }
+
 
 /**
  * Component corresponding to the container containing an individual trip.
@@ -50,52 +46,78 @@ export function getCollaboratorEmails(collaboratorUidArr) {
  * when trips are added and/or editted. Thus, no error checking is done here
  * on the 'display' side.
  *
- * @param {Object} props These are the props for this component:
- * - tripData: Object holding a Trip document fields and corresponding values.
- * - tripId: Document ID for the current Trip document.
- * - handleEditTrip: Handler that displays the edit trip modal.
- * - refreshTripsContainer: Handler that refreshes the TripsContainer
- *        component upon trip creation (Remove when fix Issue #62).
- * - key: Special React attribute that ensures a new Trip instance is
- *        created whenever this key is updated
+ * @property {Object} props These are the props for this component:
+ * @property {TripData} props.tripData Object holding a Trip document data.
+ * @property {string} props.tripId The document id associated with the trip.
+ * @property {Function} props.handleEditTrip Event handler responsible for
+ *     displaying the edit trip modal.
  */
 const Trip = (props) => {
-  const name = props.tripData.name;
-  const description = props.tripData.description;
-  const destination = props.tripData.destination;
-  const collaboratorEmailsStr =
-      getCollaboratorEmails(props.tripData.collaborators);
+  // Unpack trip document data.
+  const title = props.tripData[DB.TRIPS_TITLE];
+  const description = props.tripData[DB.TRIPS_DESCRIPTION];
+  const destination = props.tripData[DB.TRIPS_DESTINATION];
+  const startDateTimestamp = props.tripData[DB.TRIPS_START_DATE];
+  const endDateTimestamp = props.tripData[DB.TRIPS_END_DATE];
+  const collaboratorUidArr = props.tripData[DB.TRIPS_COLLABORATORS];
+  const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
+  useEffect(() => {
+    // Only set state collaboratorEmailsStr if component is mounted. This is
+    // a precautionary to mitigate warnings that occur when setting state on
+    // a component that has already unmounted. See more here
+    // https://www.robinwieruch.de/react-warning-cant-call-setstate-on-an-unmounted-component.
+    let componentStillMounted = true;
+
+    async function fetchCollaboratorEmails() {
+      let collaboratorEmailArr =
+          await authUtils.getUserEmailArrFromUserUidArr(collaboratorUidArr);
+      collaboratorEmailArr = moveCurUserEmailToFront(collaboratorEmailArr);
+      if (componentStillMounted) {
+        setCollaboratorEmailsStr(collaboratorEmailArr.join(', '));
+      }
+    }
+
+    fetchCollaboratorEmails();
+    return () => { componentStillMounted = false; };
+  }, [collaboratorUidArr]);
+
+  // Re-package trip document data with correctly formatted data for the
+  // SaveTripModal component to use when filling out form input default values.
   const formattedTripData = {
-    name:          name,
-    description:   description,
-    destination:   destination,
-    start_date:    timestampToISOString(props.tripData.start_date),
-    end_date:      timestampToISOString(props.tripData.end_date),
-    collaborators: collaboratorEmailsStr.split(', ')
+    [DB.TRIPS_TITLE]: title,
+    [DB.TRIPS_DESCRIPTION]: description,
+    [DB.TRIPS_DESTINATION]: destination,
+    [DB.TRIPS_START_DATE]: timestampToISOString(startDateTimestamp),
+    [DB.TRIPS_END_DATE]: timestampToISOString(endDateTimestamp),
+    [DB.TRIPS_COLLABORATORS]: collaboratorEmailsStr.split(', '),
   };
 
   return (
-    <div>
-      <h2>{name}</h2>
-      <p>{destination}</p>
-      <p>{getDateRange(props.tripData)}</p>
-      <p>{description}</p>
-      <p>{collaboratorEmailsStr}</p>
+    <Card>
+      <Accordion.Toggle as={Card.Header} eventKey={props.eventKey}>
+        <h4>{title}</h4>
+      </Accordion.Toggle>
+      <Accordion.Collapse eventKey={props.eventKey}>
+        <Card.Body>
+          <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
+          <p>{destination}</p>
+          <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
+          <p>{description}</p>
+          <p>{collaboratorEmailsStr}</p>
 
-      <DeleteTripButton
-        tripId={props.tripId}
-        refreshTripsContainer={props.refreshTripsContainer}
-      />
-      <Button
-        type='button'
-        onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
-        variant='primary'
-      >
-        Edit
-      </Button>
-      <ViewActivitiesButton tripId={props.tripId} />
-    </div>
+          <DeleteTripButton tripId={props.tripId} />
+          <Button
+            type='button'
+            onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
+            variant='primary'
+          >
+            Edit
+          </Button>
+          <ViewActivitiesButton tripId={props.tripId} />
+        </Card.Body>
+      </Accordion.Collapse>
+    </Card>
   );
 };
 

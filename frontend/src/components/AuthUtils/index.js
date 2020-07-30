@@ -126,6 +126,7 @@ export async function getUserUidArrFromUserEmailArr(emailArr) {
     const text = await response.text();
     return JSON.parse(text);
   } catch(err) { // The response is empty, return an empty array.
+    console.log(err);
     console.error('Error retrieving user UIDs.');
     return [];
   }
