@@ -1,5 +1,6 @@
-/* Place jumbotron in the center of the screen, with slight transparency. */
+/* Place jumbotron in the center of the screen. */
 .jumbotron-signin {
+  /* Jumbotron is white with slight transparency. */
   background-color: rgba(255, 255, 255, 0.8);
   height: 33vh;
   left: 50%;
