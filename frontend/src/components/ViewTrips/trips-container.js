@@ -3,32 +3,32 @@ import React from 'react';
 import app from '../Firebase/';
 import Accordion from 'react-bootstrap/Accordion';
 
+import authUtils from '../AuthUtils';
 import * as DB from '../../constants/database.js';
-import { getCurUserUid } from '../Utils/temp-auth-utils.js'
 import Trip from './trip.js';
 
 const db = app.firestore();
 
 /**
- * Returns a `<div>` element with the specified error message.
+ * Returns a `<div>` element with a predefined error message after logging the
+ * error message `error` obtained from `componentDidMount` catch statement.
  *
- * TODO(Issue #9.): Turn this func into component and add to Errors directory.
+ * TODO(Issue #98): Turn this func into component and add to Errors directory.
  *
  * @param {string} error Error message in `componentDidMount` catch statement.
- * @return {Promise<HTMLDivElement>} Promise object containing a `<div>` element
- *    with the error message `error` inside.
+ * @return {HTMLDivElement} `<div>` element containing the error message that
+ *     the user will see on the view trips page.
  */
 function getErrorElement(error) {
-  return new Promise(function(resolve) {
-    console.log(`Error in Trips Container: ${error}`);
-    resolve(
-      <div>
-        <p>Oops, it looks like we were unable to load your trips.
-                      Please wait a few minutes and try again.
-        </p>
-      </div>
+  console.log(`Error in Trips Container: ${error}`);
+
+  return (
+    <div>
+      <p>Oops, it looks like we were unable to load your trips.
+                    Please wait a few minutes and try again.
+      </p>
+    </div>
   );
-  });
 }
 
 /**
@@ -44,7 +44,7 @@ class TripsContainer extends React.Component {
   /** @override */
   constructor(props) {
     super(props);
-    this.state = { trips: [] };
+    this.state = {tripsContainer: []};
   }
 
   /**
@@ -60,13 +60,12 @@ class TripsContainer extends React.Component {
    * @override
    */
   async componentDidMount() {
-    const curUserUid = getCurUserUid();
-
+    const curUserUid = authUtils.getCurUserUid();
     db.collection(DB.COLLECTION_TRIPS)
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
         .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
-          const trips = querySnapshot.docs.map((doc, idx) =>
+          const tripsArr = querySnapshot.docs.map((doc, idx) =>
               ( <Trip
                   tripData={doc.data()}
                   tripId={doc.id}
@@ -77,23 +76,23 @@ class TripsContainer extends React.Component {
               )
           );
 
-          this.setState({ trips: trips });
-        }, async (error) => {
-          const errorElement = await getErrorElement(error);
-          this.setState({ trips: errorElement });
+          this.setState({ tripsContainer: tripsArr });
+        }, (error) => {
+          const errorElement = getErrorElement(error);
+          this.setState({ tripsContainer: errorElement });
         });
   }
 
   /** @override */
   render() {
-    if (this.state.trips === undefined || this.state.trips.length === 0) {
+    if (this.state.tripsContainer === undefined || this.state.tripsContainer.length === 0) {
       return (
         <div></div>
       );
     }
     return (
       <Accordion defaultActiveKey="0">
-        {this.state.trips}
+        {this.state.tripsContainer}
       </Accordion>
     );
   }
