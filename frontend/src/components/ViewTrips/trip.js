@@ -2,9 +2,8 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 
-import { timestampToISOString } from '../Utils/time.js';
+import { timestampToISOString, getDateRangeString } from '../Utils/time.js';
 import { getUserEmailArrFromUserUidArr } from '../Utils/temp-auth-utils.js';
-import { getDateRangeString } from '../Utils/time.js'
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 import * as DB from '../../constants/database.js';

@@ -2,7 +2,7 @@ import * as firebase from 'firebase/app';
 
 import authUtils from '../AuthUtils';
 import { getUserUidArrFromUserEmailArr } from './temp-auth-utils.js'
-import { getTimestampFromDateString } from './time.js'
+import { getTimestampFromISODateString } from './time.js'
 import * as DB from '../../constants/database.js';
 
 /**
@@ -65,9 +65,9 @@ export function formatTripData(rawTripObj) {
     [DB.TRIPS_DESTINATION]:
         getCleanedTextInput(rawTripObj[DB.TRIPS_DESTINATION], defaultDestination),
     [DB.TRIPS_START_DATE]:
-        getTimestampFromDateString(rawTripObj[DB.TRIPS_START_DATE]),
+        getTimestampFromISODateString(rawTripObj[DB.TRIPS_START_DATE]),
     [DB.TRIPS_END_DATE]:
-        getTimestampFromDateString(rawTripObj[DB.TRIPS_END_DATE]),
+        getTimestampFromISODateString(rawTripObj[DB.TRIPS_END_DATE]),
     [DB.TRIPS_COLLABORATORS]:
         getCollaboratorUidArray(rawTripObj[DB.TRIPS_COLLABORATORS]),
   };

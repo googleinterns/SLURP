@@ -1,5 +1,4 @@
 import * as activityFns from './activityfns.js';
-import { getActivityList } from './activitylist.js';
 import * as time from '../Utils/time.js';
 
 const ten = Date.UTC(2020, 4, 2, 10,  0);          // May 2, 2020 10:00
@@ -101,3 +100,11 @@ test('getField', () => {
   expect(activityFns.getField(activity, 'field2', 4, ' and')).toBe(4);
   expect(activityFns.getField(activity, 'field2')).toBeNull();
 })
+
+test('getRefValue', () => {
+  const fakeRef = {current: {value: 'parasailing!'}};
+  expect(activityFns.getRefValue(fakeRef, 'parasailing!')).toBeNull();
+  expect(activityFns.getRefValue(fakeRef, 'parasailing!', 'swimming.')).toBe('swimming.');
+  expect(activityFns.getRefValue(fakeRef, 'swimming')).toBe('parasailing!');
+  expect(activityFns.getRefValue(fakeRef, 'swimming', 'jumping')).toBe('parasailing!');
+});

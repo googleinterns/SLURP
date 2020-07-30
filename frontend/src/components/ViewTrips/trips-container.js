@@ -15,11 +15,13 @@ const db = app.firestore();
  * TODO(Issue #98): Turn this func into component and add to Errors directory.
  *
  * @param {string} error Error message in `componentDidMount` catch statement.
- * @return {HTMLDivElement}  `<div>` element with an error message for the user.
+ * @return {HTMLDivElement} `<div>` element containing the error message that
+ *     the user will see on the view trips page.
  */
 function getErrorElement(error) {
   console.log(`Error in Trips Container: ${error}`);
-  return(
+
+  return (
     <div>
       <p>Oops, it looks like we were unable to load your trips.
                     Please wait a few minutes and try again.
