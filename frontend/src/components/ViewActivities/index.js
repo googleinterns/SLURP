@@ -88,7 +88,7 @@ class ViewActivities extends React.Component {
       // deployed build lol.
       return (
         <div>
-          <Header/>
+          <Header />
           Loading Part 2: Electric Boogaloo
         </div>
       );
