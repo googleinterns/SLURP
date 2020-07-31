@@ -70,7 +70,7 @@ class TripsContainer extends React.Component {
                   tripData={doc.data()}
                   tripId={doc.id}
                   handleEditTrip={this.props.handleEditTrip}
-                  eventKey={String(idx)}
+                  eventKey={String(idx)} // Event key must be string
                   key={doc.id}
                 />
               )
@@ -85,12 +85,6 @@ class TripsContainer extends React.Component {
 
   /** @override */
   render() {
-    if (this.state.tripsContainer === undefined ||
-                                    this.state.tripsContainer.length === 0) {
-      return (
-        <div></div>
-      );
-    }
     return (
       <Accordion defaultActiveKey="0">
         {this.state.tripsContainer}
