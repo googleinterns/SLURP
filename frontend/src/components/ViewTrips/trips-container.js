@@ -85,11 +85,6 @@ class TripsContainer extends React.Component {
 
   /** @override */
   render() {
-    if (this.state.tripsContainer === undefined || this.state.tripsContainer.length === 0) {
-      return (
-        <div></div>
-      );
-    }
     return (
       <Accordion defaultActiveKey="0">
         {this.state.tripsContainer}
