@@ -21,9 +21,9 @@ export function getCleanedTextInput(rawInput, defaultValue) {
  * TODO(#72 & #67): Remove 'remove empty fields' once there is better way to
  * remove collaborators (#72) and there is email validation (#67).
  *
- * @param {!Array{string}} collaboratorEmailsArr Array of emails corresponding
+ * @param {!Array.<string>} collaboratorEmailsArr Array of emails corresponding
  *     to the  collaborators of the trip (not including the trip creator email).
- * @return {!Array{string}} Array of all collaborator uids (including trip
+ * @return {!Array.<string>} Array of all collaborator uids (including trip
  *     creator uid).
  */
 export function getCollaboratorUidArray(collaboratorEmailArr) {
