@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 
-// This file waas written after #87 was created. 
+// This file was written after #87 was created. 
 // As a result, some fields and functions may not be used yet. 
 const TITLEWIDTH = 3;
 const COUNTRYWIDTH = 6;
@@ -24,7 +24,7 @@ export function textElementFormGroup(controlId, formLabel, placeHolder, ref) {
       <Col sm={TITLEWIDTH}><Form.Label>{formLabel}</Form.Label></Col>
       <Col>
         <Form.Control type='text'
-        placeholder={placeHolder} 
+        placeholder={placeHolder}
         ref={ref}/>
       </Col>
     </Form.Group>
@@ -49,7 +49,7 @@ export function locationElementFormGroup(controlId, formLabel, dropdown) {
 }
 
 /**
- * Create a Form Group for inserting date, time, and timezone for 
+ * Create a Form Group for inserting date, time, and timezone for
  * the editActivity form..
  * 
  * @param {!string} controlId FormGroup's control ID. 
@@ -61,7 +61,7 @@ export function locationElementFormGroup(controlId, formLabel, dropdown) {
  * @param {!HTML} tzpicker Timezone picker dropdown. 
  * @return {HTML} A FormGroup for date, time, and timezone.  
  */
-export function dateTimeTzFormGroup(controlId, formLabel, dateRef, 
+export function dateTimeTzFormGroup(controlId, formLabel, dateRef,
   dateDefault, timeRef, timeDefault, tzpicker) {
   return (
     <Form.Group as={Row} controlId={controlId}>

@@ -1,6 +1,7 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
 import { firestore } from 'firebase';
+import * as time from '../Utils/time.js';
 
 const db = app.firestore();
 
@@ -22,6 +23,24 @@ const db = app.firestore();
  * 
  */
 
+/* 
+ * Get the field of field name `fieldName` from `activity`  or the default value.
+ * 
+ * @param {Object} activity Activity to get field from.
+ * @param {string} fieldName Name of the field in the activity to get. 
+ * @param {?*} [defaultValue=null] Default value to return if activity[fieldName] can't be found. 
+ * Can be any type.
+ * @param {string} [prefix=''] The prefix to put before a returned value if the field exists.
+ * @return {*} `activity[fieldName]` if possible, else `defaultValue`. Can be any type.
+ */
+export function getField(
+    activity, fieldName, defaultValue = null, prefix = '') {
+  if (activity[fieldName] === null || activity[fieldName] === undefined) {
+    return defaultValue;
+  }
+  return prefix + activity[fieldName];
+}
+
 /**
  * Sort a list of trip activities by date. 
  * @param {!ActivityInfo[]} tripActivities Array of activities.
@@ -29,20 +48,21 @@ const db = app.firestore();
  * in chronological order by date.
  */
 export function sortByDate(tripActivities) {
+  if (tripActivities === undefined) {
+    return null;
+  }
   let activities = new Map(); // { MM/DD/YYYY: [activities] }.
   for (let activity of tripActivities) {
-    const activityDate = new Date(activity[DB.ACTIVITIES_START_TIME]);
-    const dateKey = activityDate.toLocaleDateString()
+    const dateKey = time.getISODate(activity[DB.ACTIVITIES_START_TIME], 
+      getField(activity, DB.ACTIVITIES_START_TZ));
     if (activities.has(dateKey)) {
       activities.get(dateKey).add(activity);
     } else {
       activities.set(dateKey, new Set([activity]));
     }
   }
-
   // Sort activities by date.
   let activitiesSorted = Array.from(activities).sort(compareActivities);
-  
   return activitiesSorted;
 }
 
@@ -119,7 +139,7 @@ export async function writeActivity(tripId, activityId, newValues) {
  * @param {?string} [defaultValue=null] Value to return if ref.current.value === ignoreValue.
  * @return defaultValue if ref.current.value === ignoreValue, else ref.current.value.
  */
-export function getRefValue(ref, ignoreValue, defaultValue=null) {
+export function getRefValue(ref, ignoreValue='', defaultValue=null) {
   if (ref.current.value === ignoreValue) {
     return defaultValue;
   } 

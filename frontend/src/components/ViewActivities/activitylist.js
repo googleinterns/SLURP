@@ -8,51 +8,53 @@ import app from '../Firebase';
 const db = app.firestore();
 
 /**
- * Gets the list of activities from the server. 
+ * ReactJS class component for the list of activities. 
  * 
- * @param {!string} tripId The trip ID.
- * @return {ActivityInfo[]} The list of trip activities.
- */
-export async function getActivityList(tripId) {
-  return new Promise(function(resolve, reject) {
-    let tripActivities = [];
-    
-    db.collection(DB.COLLECTION_TRIPS).doc(tripId)
-    .collection(DB.COLLECTION_ACTIVITIES).get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        let data = doc.data();
-        data['id'] = doc.id;
-        data['tripId'] = tripId;
-        
-        // TODO: if start date != end date, split into 2 days. (#37)
-
-        // Eliminate nanoseconds, convert to milliseconds.
-        data[DB.ACTIVITIES_START_TIME] =
-          data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
-        data[DB.ACTIVITIES_END_TIME] = 
-          data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
-
-        tripActivities.push(data);
-      })
-    }).catch(error => {
-      console.log('It seems that an error has occured.');
-      tripActivities = null;
-    }).then( () => resolve(tripActivities) );
-  })
-}
-
-/**
- * React component for the list of activities. 
- * 
- * @param {Object} props ReactJS props. 
- * @param {string} props.tripId The trip's ID.  
+ * @property {Object} props ReactJS props.
+ * @property {string} tripId The tripID.
  */
 class ActivityList extends React.Component {
   /** @override */
   constructor(props) {
     super(props);
     this.state = { days : [] };
+
+    this.getActivityList = this.getActivityList.bind(this);
+  }
+
+  /**
+   * Gets the list of activities from the server. 
+   * 
+   * This function sets `this.state.days` to the sorted days.
+   * 
+   * @param {string} tripId The trip ID.
+   */
+  async getActivityList(tripId) {
+    db.collection(DB.COLLECTION_TRIPS).doc(tripId)
+    .collection(DB.COLLECTION_ACTIVITIES)
+    .onSnapshot(querySnapshot => {
+      let tripActivities = [];
+      this.setState({days: []});
+      querySnapshot.forEach(doc => {
+        console.log(doc.data());
+        let data = doc.data();
+        data['id'] = doc.id;
+        data['tripId'] = tripId;
+        
+        // TODO: if start date != end date, split into 2 days. (#37)
+
+        if (data[DB.ACTIVITIES_START_TIME] !== undefined) {// not in new mode
+          // Eliminate nanoseconds, convert to milliseconds.
+          data[DB.ACTIVITIES_START_TIME] =
+            data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
+          data[DB.ACTIVITIES_END_TIME] = 
+            data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
+        }
+        tripActivities.push(data);
+      });
+      this.setState({ days: activityFns.sortByDate(tripActivities) });
+    });
+    
   }
 
   /** 
@@ -63,17 +65,10 @@ class ActivityList extends React.Component {
    * This function only queries the database if `this.state` is defined.
    * `this.state` gains an entry with key `days` with the list of activities 
    * sorted by date. 
-   * 
-   * This function also expects `this.props.tripId` to exist.
    */
   async componentDidMount() {
     if (this.state === null || this.props.tripId === null) { return; }
-    let tripActivities = await getActivityList(this.props.tripId);
-    if (tripActivities === null) {
-      this.setState({days: null});  
-      return;
-    } 
-    this.setState({days: activityFns.sortByDate(tripActivities)});
+    await this.getActivityList(this.props.tripId);
   }
 
   /** @override */
@@ -84,6 +79,7 @@ class ActivityList extends React.Component {
     } else if (this.state.days.length === 0) {
       return (<p className='activity-list'>Plan your trip here!</p>);
     }
+
     return (
       <div className='activity-list'>
         {this.state.days.map((item, index) => (
