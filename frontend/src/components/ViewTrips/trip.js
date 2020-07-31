@@ -3,10 +3,10 @@ import React, {useState, useEffect} from 'react';
 import { Accordion, Button, Card } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getDateRangeString, timestampToISOString } from "../Utils/time.js";
-import ViewActivitiesButton from './view-activities-button.js';
 import authUtils from '../AuthUtils';
+import { getDateRangeString, timestampToISOString } from "../Utils/time.js";
 import DeleteTripButton from './delete-trip-button.js';
+import ViewActivitiesButton from './view-activities-button.js';
 import * as DB from '../../constants/database.js';
 
 /**
