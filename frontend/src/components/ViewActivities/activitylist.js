@@ -43,12 +43,13 @@ class ActivityList extends React.Component {
         
         // TODO: if start date != end date, split into 2 days. (#37)
 
-      // Eliminate nanoseconds, convert to milliseconds.
-      data[DB.ACTIVITIES_START_TIME] =
-        data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
-      data[DB.ACTIVITIES_END_TIME] = 
-        data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
-
+        if (data[DB.ACTIVITIES_START_TIME] !== undefined) {// not in new mode
+          // Eliminate nanoseconds, convert to milliseconds.
+          data[DB.ACTIVITIES_START_TIME] =
+            data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
+          data[DB.ACTIVITIES_END_TIME] = 
+            data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
+        }
         tripActivities.push(data);
       });
       this.setState({ days: activityFns.sortByDate(tripActivities) });
