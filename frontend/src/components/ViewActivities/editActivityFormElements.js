@@ -3,10 +3,8 @@ import { Col, Form, Row } from 'react-bootstrap';
 
 // This file was written after #87 was created. 
 // As a result, some fields and functions may not be used yet. 
-const TITLEWIDTH = 3;
+const TITLEWIDTH = 2;
 const COUNTRYWIDTH = 6;
-const DATEWIDTH = 4;
-const TIMEWIDTH = 2;
 const TZPICKERWIDTH = 3;
 
 /**
@@ -66,10 +64,10 @@ export function dateTimeTzFormGroup(controlId, formLabel, dateRef,
   return (
     <Form.Group as={Row} controlId={controlId}>
       <Col sm={TITLEWIDTH}><Form.Label>{formLabel}</Form.Label></Col>
-      <Col sm={DATEWIDTH}>
+      <Col md="auto">
         <Form.Control type='date' label='date' ref={dateRef} defaultValue={dateDefault}/>
       </Col>
-      <Col sm={TIMEWIDTH}>
+      <Col md="auto">
         <Form.Control type='time' label='time' ref={timeRef}
           defaultValue={timeDefault}/>
       </Col>

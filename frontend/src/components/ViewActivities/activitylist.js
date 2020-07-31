@@ -20,18 +20,17 @@ export async function getActivityList(tripId) {
     .collection(DB.COLLECTION_ACTIVITIES).get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
-        console.log(doc.data());
         let data = doc.data();
         data['id'] = doc.id;
         data['tripId'] = tripId;
         
         // TODO: if start date != end date, split into 2 days. (#37)
-
+        if (data[DB.ACTIVITIES_END_TIME] !== undefined) {
       // Eliminate nanoseconds, convert to milliseconds.
       data[DB.ACTIVITIES_START_TIME] =
         data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
       data[DB.ACTIVITIES_END_TIME] = 
-        data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
+        data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000; }
 
       tripActivities.push(data);
     });
@@ -71,7 +70,6 @@ class ActivityList extends React.Component {
       return;
     } 
     this.setState({days: activityFns.sortByDate(tripActivities)});
-    console.log(this.state.days);
   }
 
   /** @override */
