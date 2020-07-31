@@ -77,7 +77,6 @@ class ViewActivities extends React.Component {
     if (this.state.error !== undefined) {
       return (
         <div>
-          <Header />
           <ErrorComponents.ErrorGeneral />
         </div>
       );
@@ -88,7 +87,6 @@ class ViewActivities extends React.Component {
       // deployed build lol.
       return (
         <div>
-          <Header />
           Loading Part 2: Electric Boogaloo
         </div>
       );
@@ -99,7 +97,6 @@ class ViewActivities extends React.Component {
              !this.state.collaborators.includes(getCurUserUid())) {
       return (
         <div>
-          <Header />
           <ErrorComponents.ErrorTripNotFound />
         </div>
       );
