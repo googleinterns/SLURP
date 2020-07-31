@@ -37,8 +37,9 @@ export function getCleanedTextInput(rawInput, defaultValue) {
  *
  * @param {!string[]} collaboratorEmailsArr Array of emails corresponding
  *     to the  collaborators of the trip (not including the trip creator email).
- * @return {!string[]} Array of all collaborator uids (including trip
- *     creator uid).
+ * @return {Promise<!string[]>} Promise that resolves to an array of the
+ *     collaborator uids of the current user and the uids corresponding to the
+ *     emails in `collaboratorEmailsArr.
  */
 export async function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [authUtils.getCurUserEmail()]
@@ -53,18 +54,22 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
 }
 
 /**
- * Returns a formatted and cleaned {@link RawTripData} object that will be used
- * to instantiate the the created trip document.
+ * Returns a promise containing the formatted and cleaned {@link RawTripData}
+ * that will be used to instantiate the the created trip document.
  *
  * We know that {@link RawTripData} will contain all of the necessary fields for
- * a trip document (except timestamp) because each key-value pair is explicitly
- * included. This means, only the value corresponding to each key needs to be
- * checked.
+ * a trip document (except updated timestamp) because each key-value pair is
+ * explicitly included. This means, only the value corresponding to each key
+ * needs to be checked.
+ * For text element inputs, React has built in protections against injection/XSS
+ * attacks. Thus, no sanitization is needed for text inputs besides providing a
+ * default value in a Trip field where applicable.
  *
  * @param {!RawTripData} rawTripData A JS Object containing the raw form data
  *     from the add trip form.
- * @return {!TripData} Formatted/cleaned version of {@link RawTripData}
- *     holding the data for the new Trip document that is to be created.
+ * @return {Promise<!TripData>} Promise that resoleves to the formatted/cleaned
+ *     version of {@link RawTripData} holding the data for the new Trip document
+ *     that is to be created.
  */
 export async function formatTripData(rawTripData) {
   const defaultName = "Untitled Trip";
