@@ -16,13 +16,18 @@ const db = app.firestore();
  * @property {Object} props ReactJS props.
  * @property {ActivityInfo} props.activity The activity to display.
  * @property {function} props.submitFunction The function to run upon submission.
+ * @property {boolean} props.new Whether or not the activity being edited is new.
  */
 class EditActivity extends React.Component {
   /** @override */
   constructor(props){
     super(props);
 
-    this.state = {startTzChanged: false, endTzChanged: false};
+    this.state = {
+      startTzChanged: false, 
+      endTzChanged: false, 
+      flightCheck: !this.props.new // new activities have "flight" not checked
+    };
 
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
@@ -41,6 +46,7 @@ class EditActivity extends React.Component {
     this.editEndLocRef = React.createRef();
     this.editStartTzRef = React.createRef();
     this.editEndTzRef = React.createRef();
+    this.isFlightRef = React.createRef();
   }
   
   /**
@@ -91,6 +97,7 @@ class EditActivity extends React.Component {
   startTimeTzUpdate = () => { this.setState({startTzChanged : !this.state.startTzChanged})};
   endTimeTzUpdate = () => { this.setState({endTzChanged : !this.state.endTzChanged})};
 
+  onFlightCheckChange = () => { this.setState({flightCheck: !this.state.flightCheck})}
   /**
    * Returns a dropdown of all the timezones.
    * The dropdown's values change based on the corrresponding country dropdown to
@@ -166,9 +173,9 @@ class EditActivity extends React.Component {
     }
   }
 
+
   render() {
     const activity = this.props.activity;
-    const newAct = this.props.new;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         {formElements.textElementFormGroup( // TITLE
@@ -177,19 +184,27 @@ class EditActivity extends React.Component {
             getField(activity, DB.ACTIVITIES_TITLE, msgs.ACTIVITY_TITLE_PLACEHOLDER), // placeHolder 
             this.editTitleRef             // ref
           )}
+        {formElements.flightCheck( // "THIS IS A FLIGHT" checkbox
+          'formActivityFlightCheck', // controlId
+          'This is a flight.',       // formLabel
+          this.isFlightRef,          // ref
+          this.onFlightCheckChange,  // onChange
+          !this.props.new            // defaultValue
+        )}
         {formElements.locationElementFormGroup( // START LOCATION
           'formActivityStartLocation',                 // controlId
           'Start Location:',                           // formLabel
           this.countriesDropdown(this.editStartLocRef, // defaultValue ref
             this.editStartTzRef,                          // countriesDropdown tzref
-            getField(activity, DB.ACTIVITIES_START_COUNTRY)) // countriesDropdown defaultCountry
+            getField(activity, DB.ACTIVITIES_START_COUNTRY)), // countriesDropdown defaultCountry
           )}
         {formElements.locationElementFormGroup( // END LOCATION
           'formActivityEndLocation',                 // controlId
           'End Location:',                           // formLabel
           this.countriesDropdown(this.editEndLocRef, // defaultValue ref
             this.editEndTzRef, // countriesDropdown tzref
-            getField(activity, DB.ACTIVITIES_END_COUNTRY)) // countriesDropdown defaultCountry
+            getField(activity, DB.ACTIVITIES_END_COUNTRY)), // countriesDropdown defaultCountry
+          this.state.flightCheck, // show 
           )}
         {formElements.dateTimeTzFormGroup( // START TIME
           'formActivityStartTime',                         // controlId
@@ -211,7 +226,8 @@ class EditActivity extends React.Component {
           this.editEndTimeRef,                           // timeRef, 
           time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
               getField(activity, DB.ACTIVITIES_END_TZ)), //timeDefault, 
-          this.timezoneDropdown('end', getField(activity, DB.ACTIVITIES_END_TZ)) // tzpicker 
+          this.timezoneDropdown('end', getField(activity, DB.ACTIVITIES_END_TZ)), // tzpicker 
+          this.state.flightCheck //show
           )}
         {formElements.textElementFormGroup( // DESCRIPTION
             'formActivityDescription', // controlId

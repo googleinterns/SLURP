@@ -4,7 +4,7 @@ import { Col, Form, Row } from 'react-bootstrap';
 // This file was written after #87 was created. 
 // As a result, some fields and functions may not be used yet. 
 const TITLEWIDTH = 2;
-const COUNTRYWIDTH = 6;
+const COUNTRYWIDTH = 8;
 const TZPICKERWIDTH = 3;
 
 /**
@@ -37,7 +37,8 @@ export function textElementFormGroup(controlId, formLabel, placeHolder, ref) {
  * @param {string} dropdown The dropdown.
  * @returns {HTML} a location dropdown form group.
  */
-export function locationElementFormGroup(controlId, formLabel, dropdown) {
+export function locationElementFormGroup(controlId, formLabel, dropdown, show=true) {
+  if (!show) { return (<div></div>); }
   return (
     <Form.Group as={Row} controlId={controlId}>
       <Col xs={TITLEWIDTH}><Form.Label>{formLabel}</Form.Label></Col>
@@ -60,7 +61,8 @@ export function locationElementFormGroup(controlId, formLabel, dropdown) {
  * @returns {HTML} A FormGroup for date, time, and timezone.
  */
 export function dateTimeTzFormGroup(controlId, formLabel, dateRef,
-  dateDefault, timeRef, timeDefault, tzpicker) {
+  dateDefault, timeRef, timeDefault, tzpicker, show=true) {
+  const tzpickerElement = show ? tzpicker : (<div></div>);
   return (
     <Form.Group as={Row} controlId={controlId}>
       <Col sm={TITLEWIDTH}><Form.Label>{formLabel}</Form.Label></Col>
@@ -71,7 +73,21 @@ export function dateTimeTzFormGroup(controlId, formLabel, dateRef,
         <Form.Control type='time' label='time' ref={timeRef}
           defaultValue={timeDefault}/>
       </Col>
-      <Col sm={TZPICKERWIDTH}>{tzpicker}</Col>
+      <Col sm={TZPICKERWIDTH}>{tzpickerElement}</Col>
     </Form.Group>
   );
+}
+
+export function flightCheck(controlId, formLabel, ref, onChange, defaultValue) {
+  return (
+    <Form.Group as={Row} controlId={controlId}>
+      <Col sm={TITLEWIDTH+1}><Form.Label>{formLabel}</Form.Label></Col>
+      <Col sm={TITLEWIDTH}> 
+      <Form.Check 
+        ref={ref} 
+        onChange={onChange}
+         />
+      </Col>
+    </Form.Group>
+  )
 }
