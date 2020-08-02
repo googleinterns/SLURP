@@ -5,13 +5,13 @@ export const COLLECTION_TRIPS = 'trips';
 export const TRIPS_TITLE = 'title';
 export const TRIPS_DESCRIPTION = 'description';
 export const TRIPS_DESTINATION = 'destination';
-export const ACCEPTED_COLLAB_UID_SET = 'accepted_collaborator_uid_set';
-export const PENDING_COLLAB_UID_SET = 'pending_collaborator_uid_set';
-export const REJECTED_COLLAB_UID_SET = 'rejected_collaborator_uid_set';
+export const TRIPS_ACCEPTED_COLLAB = 'accepted_collaborator_uid_set';
+export const TRIPS_PENDING_COLLAB = 'pending_collaborator_uid_set';
+export const TRIPS_REJECTED_COLLAB = 'rejected_collaborator_uid_set';
 export const TRIPS_COLLABORATORS = 'collaborators';
 export const TRIPS_START_DATE = 'start_date';
 export const TRIPS_END_DATE = 'end_date';
-export const TRIPS_UPDATE_TIMESTAMP = 'trip_update_timestamp';
+export const TRIPS_UPDATE_TIMESTAMP = 'update_timestamp';
 
 export const COLLECTION_ACTIVITIES = 'activities';
 export const ACTIVITIES_START_TIME = 'start_time';
