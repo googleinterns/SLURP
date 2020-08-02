@@ -21,12 +21,12 @@ import '../../styles/trips.css';
  *     timestamp object.
  * @property {firebase.firestore.Timestamp} end_date End date Firestore
  *     timestamp object
- * @property {!Set<string>} accepted_collaborator_uid_set Set of user uids
+ * @property {!string[]} accepted_collaborator_uid_arr Array of user uids
  *     corresponding to collaborators that have accepted the trip.
- * @property {!Set<string>} pending_collaborator_uid_set Set of user uids
+ * @property {!string[]} pending_collaborator_uid_arr Array of user uids
  *     corresponding to collaborators that have neither accepted nor rejected
  *     the trip.
- * @property {!Set<string>} rejected_collaborator_uid_set Set of user uids
+ * @property {!string[]} rejected_collaborator_uid_arr Array of user uids
  *     corresponding to collaborators that have rejected the trip.
  */
 
@@ -92,7 +92,7 @@ const Trip = (props) => {
   const destination = props.tripData[DB.TRIPS_DESTINATION];
   const startDateTimestamp = props.tripData[DB.TRIPS_START_DATE];
   const endDateTimestamp = props.tripData[DB.TRIPS_END_DATE];
-  const collaboratorUidArr = props.tripData[DB.TRIPS_AC];
+  const collaboratorUidArr = props.tripData[DB.TRIPS_ACCEPTED_COLLAB];
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
@@ -123,7 +123,7 @@ const Trip = (props) => {
     [DB.TRIPS_DESTINATION]: destination,
     [DB.TRIPS_START_DATE]: timestampToISOString(startDateTimestamp),
     [DB.TRIPS_END_DATE]: timestampToISOString(endDateTimestamp),
-    [DB.TRIPS_COLLABORATORS]: collaboratorEmailsStr.split(', '),
+    [DB.TRIPS_ACCEPTED_COLLAB]: collaboratorEmailsStr.split(', '),
   };
 
   return (
