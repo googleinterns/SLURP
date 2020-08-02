@@ -15,7 +15,7 @@ export const TRIPS_UPDATE_TIMESTAMP = 'update_timestamp';
  * NOTE: The following constant corresponds to the collaborator field in
  * {@link_RawTripData} and is not a field in a trip document.
  */
-export const RAW_TRIP_COLLABS
+export const RAW_TRIP_COLLABS = 'collaborator_email_arr';
 
 export const COLLECTION_ACTIVITIES = 'activities';
 export const ACTIVITIES_START_TIME = 'start_time';
