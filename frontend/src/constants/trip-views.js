@@ -4,11 +4,11 @@
  */
 const TripViews = {
   /** Displays trips that current user has created or accepted. */
-  ACTIVE = 0,
+  ACTIVE: 0,
   /** Displays trips that current user has not yet accepted or rejected. */
-  PENDING = 1,
+  PENDING: 1,
   /** Displays trips that current user has rejected. */
-  REJECTED = 2,
+  REJECTED: 2,
 };
 
 export default TripViews;
