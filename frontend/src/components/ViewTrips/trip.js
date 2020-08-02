@@ -81,9 +81,11 @@ const Trip = (props) => {
     return () => { componentStillMounted = false; };
   }, [collaboratorUidArr]);
 
-  // Re-package trip document data with correctly formatted data for the
-  // SaveTripModal component to use when filling out form input default values.
-  const formattedTripData = {
+  /**
+   * Re-package trip document data in the format of {@link_RawTripData}
+   * to pass to SaveTripModal when filling out form input default values.
+   */
+  const tripFormData = {
     [DB.TRIPS_TITLE]: title,
     [DB.TRIPS_DESCRIPTION]: description,
     [DB.TRIPS_DESTINATION]: destination,
@@ -103,7 +105,7 @@ const Trip = (props) => {
       <DeleteTripButton tripId={props.tripId} />
       <Button
         type='button'
-        onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
+        onClick={() => props.handleEditTrip(props.tripId, tripFormData)}
         variant='primary'
       >
         Edit
