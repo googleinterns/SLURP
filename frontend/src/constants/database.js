@@ -7,10 +7,15 @@ export const TRIPS_DESCRIPTION = 'description';
 export const TRIPS_DESTINATION = 'destination';
 export const TRIPS_START_DATE = 'start_date';
 export const TRIPS_END_DATE = 'end_date';
-export const TRIPS_ACCEPTED_COLLAB = 'accepted_collaborator_uid_arr';
-export const TRIPS_PENDING_COLLAB = 'pending_collaborator_uid_arr';
-export const TRIPS_REJECTED_COLLAB = 'rejected_collaborator_uid_arr';
+export const TRIPS_ACCEPTED_COLLABS = 'accepted_collaborator_uid_arr';
+export const TRIPS_PENDING_COLLABS = 'pending_collaborator_uid_arr';
+export const TRIPS_REJECTED_COLLABS = 'rejected_collaborator_uid_arr';
 export const TRIPS_UPDATE_TIMESTAMP = 'update_timestamp';
+/**
+ * NOTE: The following constant corresponds to the collaborator field in
+ * {@link_RawTripData} and is not a field in a trip document.
+ */
+export const RAW_TRIP_COLLABS
 
 export const COLLECTION_ACTIVITIES = 'activities';
 export const ACTIVITIES_START_TIME = 'start_time';
