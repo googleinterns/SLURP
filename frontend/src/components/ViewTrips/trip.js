@@ -50,6 +50,8 @@ export function moveCurUserEmailToFront(collaboratorEmailArr) {
  * @property {string} props.tripId The document id associated with the trip.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
+ * @property {string} props.eventKey The React Bootstrap event key associated
+ *     with the trip Card component.
  */
 const Trip = (props) => {
   // Unpack trip document data.
