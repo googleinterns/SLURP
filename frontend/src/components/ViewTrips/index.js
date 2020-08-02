@@ -8,7 +8,7 @@ import TripsContainer from './trips-container.js';
 import TripViews from '../../constants/trip-views.js';
 
 /**
- * {@link RawTripData} defined originally in `ViewTrips/trip.js`.
+ * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
  */
 
 /**
@@ -25,6 +25,15 @@ class ViewTrips extends React.Component {
                    defaultFormData: null,
                    tripView: TripViews.ACTIVE,
                  };
+  }
+
+  /**
+   * Handler that updates the `tripView` state.
+   *
+   * @param {TripViews} tripView The new trip view state.
+   */
+  changeTripView = (tripView) => {
+    this.setState({ tripView: tripView });
   }
 
   /**
