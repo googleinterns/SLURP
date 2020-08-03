@@ -64,11 +64,20 @@ class EditActivity extends React.Component {
 
     newVals[DB.ACTIVITIES_START_COUNTRY] = 
       getRefValue(this.editStartLocRef, 'No Change', activity[DB.ACTIVITIES_START_COUNTRY]);
-    newVals[DB.ACTIVITIES_END_COUNTRY] = 
-      getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
     
+    newVals[DB.ACTIVITIES_FLIGHT] =
+      getRefValue(this.flightCheck, '', false);
+
     newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef);
-    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef);
+
+    if (newVals[DB.ACTIVITIES_FLIGHT]) { // This is a flight.
+      newVals[DB.ACTIVITIES_END_COUNTRY] = 
+        getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
+      newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef);
+    } else { // This is not a flight.
+      newVals[DB.ACTIVITIES_END_COUNTRY] = newVals[DB.ACTIVITIES_START_COUNTRY];
+      newVals[DB.ACTIVITIES_END_TZ] = newVals[DB.ACTIVITIES_START_TZ];
+    }
 
     // Start time fields!
     const startTime = getRefValue(this.editStartTimeRef);

@@ -83,9 +83,11 @@ export function flightCheck(controlId, formLabel, ref, onChange, defaultValue) {
     <Form.Group as={Row} controlId={controlId}>
       <Col sm={TITLEWIDTH+1}><Form.Label>{formLabel}</Form.Label></Col>
       <Col sm={TITLEWIDTH}> 
-      <Form.Check 
+      <Form.Control
+        type={"checkbox"}
         ref={ref} 
         onChange={onChange}
+        defaultChecked={defaultValue}
          />
       </Col>
     </Form.Group>
