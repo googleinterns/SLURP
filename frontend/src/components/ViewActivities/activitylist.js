@@ -43,7 +43,7 @@ class ActivityList extends React.Component {
         
         // TODO: if start date != end date, split into 2 days. (#37)
 
-        if (data[DB.ACTIVITIES_START_TIME] !== undefined) {// not in new mode
+        if (data[DB.ACTIVITIES_START_TIME] !== undefined) { // Not in new mode.
           // Eliminate nanoseconds, convert to milliseconds.
           data[DB.ACTIVITIES_START_TIME] =
             data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
