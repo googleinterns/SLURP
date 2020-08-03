@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SignInButton from './signin-button.js';
-import Card from 'react-bootstrap/Card';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 
 import logo from '../../images/logo.png';
 import '../../styles/landing.css';
@@ -14,17 +14,22 @@ class Landing extends React.Component {
   /** @inheritdoc */
   render() {
     return (
-      <div>
-        <Card className='text-center'>
-          <Card.Body>
-            <Card.Title>Welcome to SLURP</Card.Title>
+      <div className='hero-image'>
+        <Jumbotron>
+          <h1 id='title'>SLURP</h1>
+          <h2 id='subtitle'>(Shared Live Universal Recreation Planner)</h2>
+          <p id='landing-description'>
+            With SLURP, you can collaborate with others on your upcoming trips
+            using our intuitive, real-time itinerary planner.
+          </p>
+          <div id='logo-and-button'>
             <img src={logo}
                  alt='SLURP Logo'
                  id='logo-landing'
             />
-          </Card.Body>
-          <SignInButton />
-        </Card>
+            <SignInButton />
+          </div>
+        </Jumbotron>
       </div>
     );
   }
