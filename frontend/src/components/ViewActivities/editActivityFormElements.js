@@ -38,6 +38,7 @@ export function textElementFormGroup(controlId, formLabel, placeHolder, ref) {
  * @returns {HTML} a location dropdown form group.
  */
 export function locationElementFormGroup(controlId, formLabel, dropdown, show=true) {
+  console.log(show);
   if (!show) { return (<div></div>); }
   return (
     <Form.Group as={Row} controlId={controlId}>
