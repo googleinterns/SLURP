@@ -28,7 +28,7 @@ class EditActivity extends React.Component {
       endTzChanged: false, 
       flightCheck: getField(this.props.activity,
            DB.ACTIVITIES_FLIGHT, // Check for database value of "flight"
-           !this.props.new) // new activities have "flight" not checked
+           !this.props.new) === 'true' // new activities have "flight" not checked
     };
 
     // Bind state users/modifiers to `this`.
@@ -67,9 +67,8 @@ class EditActivity extends React.Component {
     newVals[DB.ACTIVITIES_START_COUNTRY] = 
       getRefValue(this.editStartLocRef, 'No Change', activity[DB.ACTIVITIES_START_COUNTRY]);
     
-    newVals[DB.ACTIVITIES_FLIGHT] =
-      getRefValue(this.isFlightRef, '', false);
-    console.log(this.isFlightRef);
+    // Ref doesn't keep track of checked value?
+    newVals[DB.ACTIVITIES_FLIGHT] = this.state.flightCheck;
     
     newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef);
 
@@ -94,6 +93,7 @@ class EditActivity extends React.Component {
     const endTz = newVals[DB.ACTIVITIES_END_TZ];
     newVals[DB.ACTIVITIES_END_TIME] = time.firebaseTsFromISO(endTime, endDate, endTz);
 
+    console.log(newVals);
     writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }
 
@@ -109,7 +109,7 @@ class EditActivity extends React.Component {
   startTimeTzUpdate = () => { this.setState({startTzChanged : !this.state.startTzChanged})};
   endTimeTzUpdate = () => { this.setState({endTzChanged : !this.state.endTzChanged})};
 
-  onFlightCheckChange = () => { this.setState({flightCheck: !this.state.flightCheck})}
+  onFlightCheckChange = () => { this.setState({flightCheck: !this.state.flightCheck}) }
   /**
    * Returns a dropdown of all the timezones.
    * The dropdown's values change based on the corrresponding country dropdown to
@@ -201,7 +201,7 @@ class EditActivity extends React.Component {
           'This is a flight.',       // formLabel
           this.isFlightRef,          // ref
           this.onFlightCheckChange,  // onChange
-          !this.props.new            // defaultValue
+          this.state.flightCheck      // defaultValue
         )}
         {formElements.locationElementFormGroup( // START LOCATION
           'formActivityStartLocation',                 // controlId
