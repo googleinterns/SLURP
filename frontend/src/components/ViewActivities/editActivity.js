@@ -26,7 +26,9 @@ class EditActivity extends React.Component {
     this.state = {
       startTzChanged: false, 
       endTzChanged: false, 
-      flightCheck: !this.props.new // new activities have "flight" not checked
+      flightCheck: getField(this.props.activity,
+           DB.ACTIVITIES_FLIGHT, // Check for database value of "flight"
+           !this.props.new) // new activities have "flight" not checked
     };
 
     // Bind state users/modifiers to `this`.
@@ -66,8 +68,9 @@ class EditActivity extends React.Component {
       getRefValue(this.editStartLocRef, 'No Change', activity[DB.ACTIVITIES_START_COUNTRY]);
     
     newVals[DB.ACTIVITIES_FLIGHT] =
-      getRefValue(this.flightCheck, '', false);
-
+      getRefValue(this.isFlightRef, '', false);
+    console.log(this.isFlightRef);
+    
     newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef);
 
     if (newVals[DB.ACTIVITIES_FLIGHT]) { // This is a flight.
