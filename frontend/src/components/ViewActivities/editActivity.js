@@ -27,8 +27,8 @@ class EditActivity extends React.Component {
       startTzChanged: false, 
       endTzChanged: false, 
       flightCheck: getField(this.props.activity,
-           DB.ACTIVITIES_FLIGHT, // Check for database value of "flight"
-           !this.props.new) === 'true' // new activities have "flight" not checked
+           DB.ACTIVITIES_FLIGHT, // Check for database value of "flight".
+           !this.props.new) === 'true' // New activities have "flight" not checked.
     };
 
     // Bind state users/modifiers to `this`.
@@ -184,7 +184,6 @@ class EditActivity extends React.Component {
       return false;
     }
   }
-
 
   render() {
     const activity = this.props.activity;

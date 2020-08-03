@@ -78,6 +78,16 @@ export function dateTimeTzFormGroup(controlId, formLabel, dateRef,
   );
 }
 
+/**
+ * Create a From Group with a checkbox.
+ * 
+ * @param {string} controlId FormGroup's control ID. 
+ * @param {string} formLabel Label of the field for this FormGroup. 
+ * @param {ref} ref The input's reference.
+ * @param {function} onChange The function to call onChange.
+ * @param {boolean} defaultValue The default value of the checkbox (true for checked).
+ * @return {HTML} A FormGroup with the checkbox.
+ */
 export function flightCheck(controlId, formLabel, ref, onChange, defaultValue) {
   return (
     <Form.Group as={Row} controlId={controlId}>
