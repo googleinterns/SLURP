@@ -152,13 +152,13 @@ class EditActivity extends React.Component {
    * change as well.
    *
    * @param {ref} ref The reference to attach to the dropdown.
-   * @param {ref} tzref The corresponding time zone reference field. 
+   * @param {ref} onChange The function to call onChange. 
    * @param {string} defaultCountry The default country for the dropdown.
    * @return {HTML} HTML dropdown of all the countries with timezones.
    */
-  countriesDropdown(ref, tzref, defaultCountry) {
+  countriesDropdown(ref, onChange, defaultCountry) {
     return (
-      <Form.Control as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>
+      <Form.Control as='select' ref={ref} onChange={onChange} defaultValue={defaultCountry}>
         {countryList.map((item, index) => {
           return (
             <option key={index}>{item}</option>
@@ -207,16 +207,15 @@ class EditActivity extends React.Component {
           'formActivityStartLocation',                 // controlId
           'Start Location:',                           // formLabel
           this.countriesDropdown(this.editStartLocRef, // defaultValue ref
-            this.editStartTzRef,                          // countriesDropdown tzref
-            getField(activity, DB.ACTIVITIES_START_COUNTRY)), // countriesDropdown defaultCountry
+            this.startTimeTzUpdate,                          // countriesDropdown onChange
+            getField(activity, DB.ACTIVITIES_START_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.locationElementFormGroup( // END LOCATION
           'formActivityEndLocation',                 // controlId
           'End Location:',                           // formLabel
           this.countriesDropdown(this.editEndLocRef, // defaultValue ref
-            this.editEndTzRef, // countriesDropdown tzref
-            getField(activity, DB.ACTIVITIES_END_COUNTRY)), // countriesDropdown defaultCountry
-          this.state.flightCheck, // show 
+            this.endTimeTzUpdate, // countriesDropdown onChange
+            getField(activity, DB.ACTIVITIES_END_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.dateTimeTzFormGroup( // START TIME
           'formActivityStartTime',                         // controlId
