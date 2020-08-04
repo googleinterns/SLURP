@@ -65,9 +65,9 @@ export function sortByDate(tripActivities) {
   }
   // Sort activities by date.  
   let activitiesSorted = Array.from(activities).sort((a, b) => {
-    const adate = moment.utc(a[0], "YYYY-MM-DD").valueOf();
-    const bdate = moment.utc(b[0], "YYYY-MM-DD").valueOf();
-    return adate < bdate ? -1 : 1;
+    const aDate = moment.utc(a[0], "YYYY-MM-DD").valueOf();
+    const bDate = moment.utc(b[0], "YYYY-MM-DD").valueOf();
+    return aDate < bDate ? -1 : 1;
   });
   return activitiesSorted;
 }
