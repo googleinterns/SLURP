@@ -54,7 +54,7 @@ class TripsContainer extends React.Component {
   }
 
   /**
-   * When the TripsContainer mounts, a listener is attached to the QuerySnapshot
+   * When the TripsContainer is updated, a listener is attached to the QuerySnapshot
    * event that grabs all trip documents where the current user uid is contained
    * in the collaborator uid array corresponding to `this.props.tripView`.
    * This allows real-time updates for all collaborators on a trip whenever a
@@ -65,7 +65,7 @@ class TripsContainer extends React.Component {
    *
    * @override
    */
-  async componentDidMount() {
+  async componentDidUpdate() {
     const curUserUid = authUtils.getCurUserUid();
     const collaboratorField = getCollaboratorField(this.props.tripView);
     db.collection(DB.COLLECTION_TRIPS)
