@@ -181,7 +181,7 @@ class EditActivity extends React.Component {
           'formActivityStartLocation',                 // controlId
           'Start Location:',                           // formLabel
           this.countriesDropdown(this.editStartLocRef, // defaultValue ref
-            this.editStartTzRef,                          // countriesDropdown tzref
+            this.startTimeTzUpdate,                          // countriesDropdown onChange
             getField(activity, DB.ACTIVITIES_START_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.locationElementFormGroup( // END LOCATION
