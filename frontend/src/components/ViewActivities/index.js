@@ -72,7 +72,7 @@ class ViewActivities extends React.Component {
   };
 
   cancelAdd = () => {
-    // TODO: delete new event
+    // TODO: delete new event (#132)
     this.doneAddingActivity()
   }
 
