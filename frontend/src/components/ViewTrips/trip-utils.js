@@ -92,3 +92,19 @@ export async function formatTripData(rawTripData) {
 
   return formattedTripObj;
 }
+
+/**
+ * Return collaborator emails corresponding to the collaborator uid's
+ * `collaboratorUidArr` in a comma separated string.
+ *
+ * @param {!string[]} collaboratorEmailArr Array of user emails sorted in
+ *     alphabetical order.
+ * @return {!string[]} Array of user emails where first element is the current
+ *     user email and the following elements maintain their previous order.
+ */
+export function moveCurUserEmailToFront(collaboratorEmailArr) {
+  collaboratorEmailArr = collaboratorEmailArr.filter(email => {
+    return email !== authUtils.getCurUserEmail();
+  });
+  return [authUtils.getCurUserEmail()].concat(collaboratorEmailArr);
+}

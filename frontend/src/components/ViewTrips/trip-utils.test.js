@@ -1,4 +1,17 @@
-import { getCleanedTextInput, getCollaboratorUidArray }  from './trip-utils.js';
+import * as TripUtils  from './trip-utils.js';
+
+const mockCurUserEmail = 'cur.user@email.com';
+const USER_A_EMAIL = 'apple@email.com';
+const USER_A_EMAIL = 'banana@email.com';
+const USER_Z_EMAIL = 'zamboni@email.com';
+jest.mock('../AuthUtils', () => ({
+    getCurUserEmail: () => mockCurUserEmail,
+    getUserUidArrFromUserEmailArr: (userEmailArr) => {
+          return new Promise(resolve => {
+            resolve(userEmailArr.map(userEmail => '_' + userEmail + '_'));
+          });
+        },
+}));
 
 describe('getCleanedTextInput tests', () => {
   test('No input entered in form (empty string)', () => {
@@ -6,7 +19,8 @@ describe('getCleanedTextInput tests', () => {
     const testRawName = '';
     const expectedTripName = testDefaultValue;
 
-    const testTripName = getCleanedTextInput(testRawName, testDefaultValue);
+    const testTripName = TripUtils.getCleanedTextInput(testRawName,
+                                                       testDefaultValue);
 
     expect(testTripName).toEqual(expectedTripName);
   });
@@ -16,21 +30,13 @@ describe('getCleanedTextInput tests', () => {
     const testRawName = 'Trip to No Man\'s Land';
     const expectedTripName = testRawName;
 
-    const testTripName = getCleanedTextInput(testRawName, testDefaultValue);
+    const testTripName = TripUtils.getCleanedTextInput(testRawName,
+                                                       testDefaultValue);
 
     expect(testTripName).toEqual(expectedTripName);
   });
 });
 
-const mockCurUserEmail = 'cur.user@email.com';
-jest.mock('../AuthUtils', () => ({
-    getCurUserEmail: () => mockCurUserEmail,
-    getUserUidArrFromUserEmailArr: (userEmailArr) => {
-          return new Promise(resolve => {
-            resolve(userEmailArr.map(userEmail => '_' + userEmail + '_'));
-          });
-        },
-}));
 describe('getCollaboratorUidArray tests', () => {
   test('No collaborators entered', async () => {
     const expectedUidArr = [`_${mockCurUserEmail}_`];
@@ -38,34 +44,59 @@ describe('getCollaboratorUidArray tests', () => {
     // (automatically one empty string from the constructor created ref).
     const testEmailArr = [''];
 
-    const testUidArr = await getCollaboratorUidArray(testEmailArr);
+    const testUidArr = await TripUtils.getCollaboratorUidArray(testEmailArr);
 
     expect(testUidArr).toEqual(expectedUidArr);
   });
 
   test('Some added collaborators', async () => {
-    const person1Email = 'p1@gmail.com';
-    const person2Email = 'p2@outlook.com';
     const expectedUidArr = [`_${mockCurUserEmail}_`,
-                            `_${person1Email}_`,
-                            `_${person2Email}_`];
-    const testEmailArr = [person1Email, person2Email];
+                            `_${USER_A_EMAIL}_`,
+                            `_${USER_Z_EMAIL}_`];
+    const testEmailArr = [USER_A_EMAIL, USER_Z_EMAIL];
 
-    const testUidArr = await getCollaboratorUidArray(testEmailArr);
+    const testUidArr = await TripUtils.getCollaboratorUidArray(testEmailArr);
 
     expect(testUidArr).toEqual(expectedUidArr);
   });
 
   test('Some added collaborators and some blank entries', async () => {
-    const person1Email = 'p1@gmail.com';
-    const person2Email = 'p2@outlook.com';
     const expectedUidArr = [`_${mockCurUserEmail}_`,
-                            `_${person1Email}_`,
-                            `_${person2Email}_`];
-    const testEmailArr = ['', person1Email, '', person2Email, ''];
+                            `_${USER_A_EMAIL}_`,
+                            `_${USER_Z_EMAIL}_`];
+    const testEmailArr = ['', USER_A_EMAIL, '', USER_Z_EMAIL, ''];
 
-    const testUidArr = await getCollaboratorUidArray(testEmailArr);
+    const testUidArr = await TripUtils.getCollaboratorUidArray(testEmailArr);
 
     expect(testUidArr).toEqual(expectedUidArr);
+  });
+});
+
+describe('moveCurUserEmailToFront tests', () => {
+  test('No users (error is caught in getUserEmailArrFromUserUidArr)', () => {
+    const expectedEmailArr = [mockCurUserEmail];
+    const testEmailInputArr = [];
+
+    const testEmailOutputArr = TripUtils.moveCurUserEmailToFront(testEmailInputArr);
+
+    expect(testEmailOutputArr).toEqual(expectedEmailArr);
+  });
+
+  test('Only the current user', () => {
+    const expectedEmailArr = [mockCurUserEmail];
+    const testEmailInputArr = [mockCurUserEmail];
+
+    const testEmailOutputArr = TripUtils.moveCurUserEmailToFront(testEmailInputArr);
+
+    expect(testEmailOutputArr).toEqual(expectedEmailArr);
+  });
+
+  test('Current user between two others (alphabetical order)', () => {
+    const expectedEmailArr = [mockCurUserEmail, USER_A_EMAIL, USER_Z_EMAIL];
+    const testEmailInputArr = [USER_A_EMAIL, mockCurUserEmail, USER_Z_EMAIL];
+
+    const testEmailOutputArr = TripUtils.moveCurUserEmailToFront(testEmailInputArr);
+
+    expect(testEmailOutputArr).toEqual(expectedEmailArr);
   });
 });
