@@ -1,5 +1,18 @@
 import * as TripUtils  from './trip-utils.js';
 
+const mockCurUserEmail = 'cur.user@email.com';
+const USER_A_EMAIL = 'apple@email.com';
+const USER_B_EMAIL = 'banana@email.com';
+const USER_Z_EMAIL = 'zamboni@email.com';
+jest.mock('../AuthUtils', () => ({
+    getCurUserEmail: () => mockCurUserEmail,
+    getUserUidArrFromUserEmailArr: (userEmailArr) => {
+          return new Promise(resolve => {
+            resolve(userEmailArr.map(userEmail => '_' + userEmail + '_'));
+          });
+        },
+}));
+
 describe('getCleanedTextInput tests', () => {
   test('No input entered in form (empty string)', () => {
     const testDefaultValue = 'Untitled Trip';
@@ -24,17 +37,6 @@ describe('getCleanedTextInput tests', () => {
   });
 });
 
-const mockCurUserEmail = 'cur.user@email.com';
-const USER_A_EMAIL = 'apple@email.com';
-const USER_Z_EMAIL = 'zamboni@email.com';
-jest.mock('../AuthUtils', () => ({
-    getCurUserEmail: () => mockCurUserEmail,
-    getUserUidArrFromUserEmailArr: (userEmailArr) => {
-          return new Promise(resolve => {
-            resolve(userEmailArr.map(userEmail => '_' + userEmail + '_'));
-          });
-        },
-}));
 describe('getCollaboratorUidArray tests', () => {
   test('No collaborators entered', async () => {
     const expectedUidArr = [];
@@ -59,7 +61,7 @@ describe('getCollaboratorUidArray tests', () => {
 });
 
 describe('moveCurUserEmailToFront tests', () => {
-  test('No users (error is caught in getUserEmailArrFromUserUidArr)', async () => {
+  test('No users (error is caught in getUserEmailArrFromUserUidArr)', () => {
     const expectedEmailArr = [mockCurUserEmail];
     const testEmailInputArr = [];
 
@@ -68,7 +70,7 @@ describe('moveCurUserEmailToFront tests', () => {
     expect(testEmailOutputArr).toEqual(expectedEmailArr);
   });
 
-  test('Only the current user', async () => {
+  test('Only the current user', () => {
     const expectedEmailArr = [mockCurUserEmail];
     const testEmailInputArr = [mockCurUserEmail];
 
@@ -77,12 +79,88 @@ describe('moveCurUserEmailToFront tests', () => {
     expect(testEmailOutputArr).toEqual(expectedEmailArr);
   });
 
-  test('Current user between two others (alphabetical order)', async () => {
+  test('Current user between two others (alphabetical order)', () => {
     const expectedEmailArr = [mockCurUserEmail, USER_A_EMAIL, USER_Z_EMAIL];
     const testEmailInputArr = [USER_A_EMAIL, mockCurUserEmail, USER_Z_EMAIL];
 
     const testEmailOutputArr = TripUtils.moveCurUserEmailToFront(testEmailInputArr);
 
     expect(testEmailOutputArr).toEqual(expectedEmailArr);
+  });
+});
+
+// Note: Although getCurAcceptedCollabArr handles array's of uids, the strings
+//       in each array do not have to have a specific form. Thus, the
+//       user emails can be used as test string array` elements.
+describe('getCurAcceptedCollabArr tests', () => {
+  test('No previous accepted collabs', () => {
+    const expectedNewAccepCollabUidArr = [];
+    const testCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
+    const testPrevAccepCollabUidArr = [];
+
+    const testNewAccepCollabUidArr = TripUtils.getCurAcceptedCollabUidArr(
+                                  testCollabUidArr, testPrevAccepCollabUidArr);
+
+    expect(testNewAccepCollabUidArr).toEqual(expectedNewAccepCollabUidArr);
+  });
+
+  test('One previous accepted collab', () => {
+    const expectedNewAccepCollabUidArr = [USER_A_EMAIL];
+    const testCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
+    const testPrevAccepCollabUidArr = [USER_A_EMAIL];
+
+    const testNewAccepCollabUidArr = TripUtils.getCurAcceptedCollabUidArr(
+                                  testCollabUidArr, testPrevAccepCollabUidArr);
+
+    expect(testNewAccepCollabUidArr).toEqual(expectedNewAccepCollabUidArr);
+  });
+
+  test('Two previous accepted collab and one deleted in current collabs', () => {
+    const expectedNewAccepCollabUidArr = [USER_B_EMAIL];
+    const testCollabUidArr = [USER_B_EMAIL, USER_Z_EMAIL];
+    const testPrevAccepCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL];
+
+    const testNewAccepCollabUidArr = TripUtils.getCurAcceptedCollabUidArr(
+                                  testCollabUidArr, testPrevAccepCollabUidArr);
+
+    expect(testNewAccepCollabUidArr).toEqual(expectedNewAccepCollabUidArr);
+  });
+});
+
+// Note: Although getCurPendingCollabArr handles array's of uids, the strings
+//       in each array do not have to have a specific form. Thus, the
+//       user emails can be used as test string array` elements.
+describe('getCurPending CollabArr tests', () => {
+  test('No previous accepted collabs', () => {
+    const expectedNewAccepCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
+    const testCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
+    const testPrevAccepCollabUidArr = [];
+
+    const testNewAccepCollabUidArr = TripUtils.getCurPendingCollabUidArr(
+                                  testCollabUidArr, testPrevAccepCollabUidArr);
+
+    expect(testNewAccepCollabUidArr).toEqual(expectedNewAccepCollabUidArr);
+  });
+
+  test('One previous accepted collab', () => {
+    const expectedNewAccepCollabUidArr = [USER_B_EMAIL, USER_Z_EMAIL];
+    const testCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
+    const testPrevAccepCollabUidArr = [USER_A_EMAIL];
+
+    const testNewAccepCollabUidArr = TripUtils.getCurPendingCollabUidArr(
+                                  testCollabUidArr, testPrevAccepCollabUidArr);
+
+    expect(testNewAccepCollabUidArr).toEqual(expectedNewAccepCollabUidArr);
+  });
+
+  test('Two previous accepted collab and one deleted in current collabs', () => {
+    const expectedNewAccepCollabUidArr = [USER_Z_EMAIL];
+    const testCollabUidArr = [USER_B_EMAIL, USER_Z_EMAIL];
+    const testPrevAccepCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL];
+
+    const testNewAccepCollabUidArr = TripUtils.getCurPendingCollabUidArr(
+                                  testCollabUidArr, testPrevAccepCollabUidArr);
+
+    expect(testNewAccepCollabUidArr).toEqual(expectedNewAccepCollabUidArr);
   });
 });

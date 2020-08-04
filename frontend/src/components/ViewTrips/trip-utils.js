@@ -67,7 +67,7 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
  * @return {!string[]} Array containing the set intersection of two params
  *     `curCollabUidArr` and `prevAccepCollabUidArr` converted to sets.
  */
-export function getNewAcceptedCollabArr(curCollabUidArr, prevAccepCollabUidArr) {
+export function getCurAcceptedCollabUidArr(curCollabUidArr, prevAccepCollabUidArr) {
   const curCollabUidSet = new Set(curCollabUidArr);
   const prevAccepCollabUidSet = new Set(prevAccepCollabUidArr);
   return [...curCollabUidSet].filter(el => prevAccepCollabUidSet.has(el));
@@ -86,7 +86,7 @@ export function getNewAcceptedCollabArr(curCollabUidArr, prevAccepCollabUidArr) 
  * @return {!string[]} Array containing the set difference of two params
  *     `curCollabUidArr` and `prevAccepCollabUidArr` converted to sets.
  */
-export function getNewPendingCollabArr(curCollabUidArr, prevAccepCollabUidArr) {
+export function getCurPendingCollabUidArr(curCollabUidArr, prevAccepCollabUidArr) {
   const curCollabUidSet = new Set(curCollabUidArr);
   const prevAccepCollabUidSet = new Set(prevAccepCollabUidArr);
   return [...curCollabUidSet].filter(el => !prevAccepCollabUidSet.has(el));
@@ -123,10 +123,10 @@ export async function formatTripData(rawTripData, prevTripData) {
     pendingCollabUidArr = curCollabUidArr;
     rejectedCollabUidArr = [];
   } else {
-    acceptedCollabUidArr = curUserUidArr.concat(getNewAcceptedCollabArr(
+    acceptedCollabUidArr = curUserUidArr.concat(getCurAcceptedCollabUidArr(
                                 curCollabUidArr,
                                 prevTripData[DB.TRIPS_ACCEPTED_COLLABS]));
-    pendingCollabUidArr = getNewPendingCollabArr(curCollabUidArr,
+    pendingCollabUidArr = getCurPendingCollabUidArr(curCollabUidArr,
                                 prevTripData[DB.TRIPS_ACCEPTED_COLLABS]);
     rejectedCollabUidArr = prevTripData[DB.TRIPS_REJECTED_COLLABS];
   }
