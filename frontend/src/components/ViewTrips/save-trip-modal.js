@@ -65,7 +65,7 @@ class SaveTripModal extends React.Component {
     // Determine whether or note SaveTripModal is an add or edit trip modal.
     this.isAddTripForm = this.props.tripId === null;
     // Grab the accepted and pending collaborator uid arr contents if edit.
-    this.curCollabUidArr = this.isAddTripForm ? null :
+    this.collaboratorUidArr = this.isAddTripForm ? null :
         this.props.tripData[DB.TRIPS_ACCEPTED_COLLABS].concat(
         this.props.tripData[DB.TRIPS_PENDING_COLLABS]);
 
@@ -89,7 +89,7 @@ class SaveTripModal extends React.Component {
     if (this.isAddTripForm) {
       collaboratorsRefArr.push(React.createRef());
     } else {
-      for (let i = 1; i < this.curCollabUidArr.length; i++) {
+      for (let i = 1; i < this.collaboratorUidArr.length; i++) {
         collaboratorsRefArr.push(React.createRef())
       }
     }
@@ -210,7 +210,7 @@ class SaveTripModal extends React.Component {
   async componentDidMount() {
     if (!this.isAddTripForm) {
       let collaboratorEmailArr =
-          await authUtils.getUserEmailArrFromUserUidArr(this.curCollabUidArr);
+          await authUtils.getUserEmailArrFromUserUidArr(this.collaboratorUidArr);
       this.setState({ collaboratorEmailArr : collaboratorEmailArr });
     }
   }
