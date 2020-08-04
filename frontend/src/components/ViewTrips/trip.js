@@ -4,7 +4,8 @@ import { Accordion, Card, Col, Container, Row } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import authUtils from '../AuthUtils';
-import { getDateRangeString, timestampToISOString } from "../Utils/time.js";
+import { getDateRangeString } from "../Utils/time.js";
+import { moveCurUserEmailToFront } from "./trip-utils.js";
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 import EditTripButton from './edit-trip-button.js';
@@ -29,23 +30,6 @@ import '../../styles/trips.css';
  * @property {!string[]} rejected_collaborator_uid_arr Array of user uids
  *     corresponding to collaborators that have rejected the trip.
  */
-
-/**
- * Return collaborator emails corresponding to the collaborator uid's
- * `collaboratorUidArr` in a comma separated string.
- *
- * @param {!string[]} collaboratorEmailArr Array of user emails sorted in
- *     alphabetical order.
- * @return {!string[]} Array of user emails where first element is the current
- *     user email and the following elements maintain their previous order.
- */
-export function moveCurUserEmailToFront(collaboratorEmailArr) {
-  collaboratorEmailArr = collaboratorEmailArr.filter(email => {
-    return email !== authUtils.getCurUserEmail();
-  });
-  return [authUtils.getCurUserEmail()].concat(collaboratorEmailArr);
-}
-
 
 /**
  * Returns a React Bootstrap `<Row>` element containing some text
@@ -87,12 +71,14 @@ function getTripInfoRow(rowText, icon) {
  */
 const Trip = (props) => {
   // Unpack trip document data.
+  console.log(props.tripData);
   const title = props.tripData[DB.TRIPS_TITLE];
   const description = props.tripData[DB.TRIPS_DESCRIPTION];
   const destination = props.tripData[DB.TRIPS_DESTINATION];
   const startDateTimestamp = props.tripData[DB.TRIPS_START_DATE];
   const endDateTimestamp = props.tripData[DB.TRIPS_END_DATE];
-  const collaboratorUidArr = props.tripData[DB.TRIPS_ACCEPTED_COLLAB];
+  const curCollabUidArr = props.tripData[DB.TRIPS_ACCEPTED_COLLABS].concat(
+                              props.tripData[DB.TRIPS_PENDING_COLLABS]);
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
@@ -104,7 +90,7 @@ const Trip = (props) => {
 
     async function fetchCollaboratorEmails() {
       let collaboratorEmailArr =
-          await authUtils.getUserEmailArrFromUserUidArr(collaboratorUidArr);
+          await authUtils.getUserEmailArrFromUserUidArr(curCollabUidArr);
       collaboratorEmailArr = moveCurUserEmailToFront(collaboratorEmailArr);
       if (componentStillMounted) {
         setCollaboratorEmailsStr(collaboratorEmailArr.join(', '));
@@ -113,20 +99,7 @@ const Trip = (props) => {
 
     fetchCollaboratorEmails();
     return () => { componentStillMounted = false; };
-  }, [collaboratorUidArr]);
-
-  /**
-   * Re-package trip document data in the format of {@link_RawTripData}
-   * to pass to SaveTripModal when filling out form input default values.
-   */
-  const tripFormData = {
-    [DB.TRIPS_TITLE]: title,
-    [DB.TRIPS_DESCRIPTION]: description,
-    [DB.TRIPS_DESTINATION]: destination,
-    [DB.TRIPS_START_DATE]: timestampToISOString(startDateTimestamp),
-    [DB.TRIPS_END_DATE]: timestampToISOString(endDateTimestamp),
-    [DB.TRIPS_ACCEPTED_COLLAB]: collaboratorEmailsStr.split(', '),
-  };
+  }, [curCollabUidArr]);
 
   return (
     <Card>
@@ -153,7 +126,7 @@ const Trip = (props) => {
                 <Row>
                   <EditTripButton
                     tripId={props.tripId}
-                    tripFormData={tripFormData}
+                    tripData={props.tripData}
                     handleEditTrip={props.handleEditTrip}
                   />
                 </Row>
