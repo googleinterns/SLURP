@@ -133,13 +133,13 @@ class EditActivity extends React.Component {
    * change as well.
    *
    * @param {ref} ref The reference to attach to the dropdown.
-   * @param {ref} tzref The corresponding time zone reference field. 
+   * @param {ref} onChange The function to call onChange. 
    * @param {string} defaultCountry The default country for the dropdown.
    * @return {HTML} HTML dropdown of all the countries with timezones.
    */
-  countriesDropdown(ref, tzref, defaultCountry) {
+  countriesDropdown(ref, onChange, defaultCountry) {
     return (
-      <Form.Control as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>
+      <Form.Control as='select' ref={ref} onChange={onChange} defaultValue={defaultCountry}>
         {countryList.map((item, index) => {
           return (
             <option key={index}>{item}</option>
