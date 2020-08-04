@@ -1,7 +1,6 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
 import { firestore } from 'firebase';
-import * as moment from 'moment-timezone';
 import * as time from '../Utils/time.js';
 
 const db = app.firestore();
@@ -65,11 +64,8 @@ export function sortByDate(tripActivities) {
   }
 
   // Sort activities by date.
-  let activitiesSorted = Array.from(activities).sort((a, b) => {
-    const adate = moment.utc(a[0], "YYYY-MM-DD").valueOf();
-    const bdate = moment.utc(b[0], "YYYY-MM-DD").valueOf();
-    return adate < bdate ? -1 : 1;
-  });
+  let activitiesSorted = Array.from(activities).sort(compareActivities);
+
   
   return activitiesSorted;
 }
