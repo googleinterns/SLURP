@@ -49,22 +49,6 @@ export function timestampToFormatted(msTimestamp, timezone = 'America/New_York')
 }
 
 /**
- * Return a Firestore Timestamp corresponding to the date in `dateStr`.
- *
- * @param {string} dateStr String containing a date in the form 'YYYY-MM-DD'.
- * @return {firestore.Timestamp} Firestore timestamp object created.
- */
-export function getTimestampFromDateString(dateStr) {
-  const dateParts = dateStr.split('-').map(str => +str);
-  if (dateParts.length === 1 && dateParts[0] === 0) {
-    return firestore.Timestamp.now();
-  }
-
-  const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-  return firestore.Timestamp.fromDate(date);
-}
-
-/**
  * Formats a Firestore timestamp into a date string in ISO format.
  *
  * @param {firestore.Timestamp} timestamp Firestore timestamp object.
@@ -122,14 +106,21 @@ export function get24hTime(msTimestamp, timezone = null) {
 }
 
 /**
- * Get a Firebase Timestamp object for time.
- *
- * @param {string} time The time in 'HH:mm' format.
- * @param {string} date The date in 'YYYY-MM-DD' format.
- * @param {string} tz The timezone in which the date takes place.
- * @return {firestore.Timestamp} Firestore timestamp object at the same time. 
+ * Get the firebase timestamp of a date.
+ * 
+ * @param {!string} date The date of the event.
+ * @param {?string} [time=null] The time of the event.
+ * @param {?string} [tz=null] The timezone of the event.
+ * @return The Firebase timestamp.
  */
-export function firebaseTsFromISO(time, date, tz) {
-  const mtzDate = moment.tz(time + " " + date, "HH:mm YYYY-MM-DD", tz);
+export function firebaseTsFromISO(date, time=null, tz=null) {
+  const calcTime = time === null ? '00:00' : time;
+  const calcTz = tz === null ? '' : tz;
+
+  if (date === '') {    
+    return firestore.Timestamp.now();
+  }
+
+  const mtzDate = moment.tz(calcTime + " " + date, "HH:mm YYYY-MM-DD", calcTz);
   return new firestore.Timestamp(mtzDate.valueOf() / 1000, 0);
 }

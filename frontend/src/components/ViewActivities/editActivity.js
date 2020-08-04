@@ -68,13 +68,15 @@ class EditActivity extends React.Component {
     const startTime = getRefValue(this.editStartTimeRef);
     const startDate = getRefValue(this.editStartDateRef);
     const startTz = newVals[DB.ACTIVITIES_START_TZ];
-    newVals[DB.ACTIVITIES_START_TIME] = time.firebaseTsFromISO(startTime, startDate, startTz);
+    newVals[DB.ACTIVITIES_START_TIME] = 
+      time.firebaseTsFromISO(startDate, startTime, startTz);
 
     // End time fields!
     const endTime = getRefValue(this.editEndTimeRef);
     const endDate = getRefValue(this.editEndDateRef);
     const endTz = newVals[DB.ACTIVITIES_END_TZ];
-    newVals[DB.ACTIVITIES_END_TIME] = time.firebaseTsFromISO(endTime, endDate, endTz);
+    newVals[DB.ACTIVITIES_END_TIME] = 
+      time.firebaseTsFromISO(endDate, endTime, endTz);
 
     writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }

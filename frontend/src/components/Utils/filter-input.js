@@ -2,7 +2,7 @@ import * as firebase from 'firebase/app';
 
 import authUtils from '../AuthUtils';
 import { getUserUidArrFromUserEmailArr } from './temp-auth-utils.js'
-import { getTimestampFromDateString } from './time.js'
+import { firebaseTsFromISO } from './time.js'
 
 /**
  * Return a string containing the cleaned text input.
@@ -63,8 +63,8 @@ export function formatTripData(rawTripObj) {
     description:        rawTripObj.description,
     destination:        getCleanedTextInput(rawTripObj.destination,
                                                  defaultDestination),
-    start_date:         getTimestampFromDateString(rawTripObj.startDate),
-    end_date:           getTimestampFromDateString(rawTripObj.endDate),
+    start_date:         firebaseTsFromISO(rawTripObj.startDate),
+    end_date:           firebaseTsFromISO(rawTripObj.endDate),
     collaborators:      getCollaboratorUidArray(rawTripObj.collaboratorEmails),
   };
 

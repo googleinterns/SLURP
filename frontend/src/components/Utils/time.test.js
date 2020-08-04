@@ -1,5 +1,5 @@
 import * as firebase from 'firebase/app';
-import 'firebase/firebase-firestore';
+import { firestore } from 'firebase';
 
 import * as utils from './time.js';
 
@@ -129,35 +129,21 @@ test('ISODate empty input tests', () => {
   expect(utils.getISODate(testDate, null)).toBe(expected);
 });
 
-
-const mockTimeNow = 0;
-jest.mock('firebase', () => ({
-    firestore: {
-      Timestamp: {
-          now: () => mockTimeNow,
-          fromDate: (date) => date,
-      }
+describe('firebaseTsFromISO tests', () => {
+  const mockTimeNow = 0;
+  jest.mock('firestore', () => ({
+    Timestamp: {
+      now: () => mockTimeNow,
+      fromDate: (date) => date,
     }
-}));
-// TODO(Issue #118): Fix this test by mocking the Timestamp constructor or find
-//                   a workaround to avoid ithaving to be mocked.
-test('firestore Timestamp format', () => {
-  const {Timezone} = jest.RequireActual('firebase/firestore');
-  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3))
-  // central = 'Saturday, August 22, 2020, 9:03 PM';
-  // singapore = 'Sunday, August 23, 2020, 10:03 AM';
-  const actualCentral = utils.firebaseTsFromISO("21:03", "2020-08-22", TZ_CHICAGO);
-  const actualSingapore = utils.firebaseTsFromISO("10:03", "2020-08-23", TZ_SINGAPORE);
-  expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
-  expect(actualSingapore.toDate()).toEqual(testDate);
-});
+  }));
 
-describe('getTimeStampFromDateString tests', () => {
+
   test('No date entered in SaveTripModal form', () => {
     const expectedTimestamp = mockTimeNow;
     const testRawDate = '';
 
-    const testTimestamp = utils.getTimestampFromDateString(testRawDate);
+    const testTimestamp = utils.firebaseTsFromISO(testRawDate);
 
     expect(testTimestamp).toEqual(expectedTimestamp);
   });
@@ -171,8 +157,20 @@ describe('getTimeStampFromDateString tests', () => {
     // input type 'date'.
     const testISODateStr = '2020-06-04'; // July 4, 2020
 
-    const testTimestamp = utils.getTimestampFromDateString(testISODateStr);
+    const testTimestamp = utils.firebaseTsFromISO(testISODateStr);
 
     expect(testTimestamp).toEqual(expectedTimestamp);
+  });
+
+  // TODO(Issue #118): Fix this test by mocking the Timestamp constructor or find
+  //                   a workaround to avoid ithaving to be mocked.
+  test('firestore Timestamp format', () => {
+    const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3))
+    // central = 'Saturday, August 22, 2020, 9:03 PM';
+    // singapore = 'Sunday, August 23, 2020, 10:03 AM';
+    const actualCentral = utils.firebaseTsFromISO("21:03", "2020-08-22", TZ_CHICAGO);
+    const actualSingapore = utils.firebaseTsFromISO("10:03", "2020-08-23", TZ_SINGAPORE);
+    expect(actualCentral.toDate().getTime()).toEqual(testDate.getTime());
+    expect(actualSingapore.toDate()).toEqual(testDate);
   });
 });
