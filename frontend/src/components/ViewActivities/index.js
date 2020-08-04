@@ -32,7 +32,7 @@ class ViewActivities extends React.Component {
    * Create an empty activity (with filler information) to edit and then display.
    * Allows us to use editActivity instead of creating a whole new form for it. 
    * 
-   * @param {string} tripId The tripId to attach to this new activity.
+   * @param {!string} tripId The tripId to attach to this new activity.
    * @return {Object} Data filled into new Activity.
    */
   createEmptyActivity = (tripId) => {
@@ -48,7 +48,8 @@ class ViewActivities extends React.Component {
   }
 
   /**
-   * Complete "Add Activity" operation
+   * Complete "Add Activity" operation.
+   * @param e Form event.
    */
   addActivity = (e) => {
     e.preventDefault();
@@ -67,6 +68,28 @@ class ViewActivities extends React.Component {
       newAct: null 
     }); 
   };
+      
+  /** @inheritdoc */
+  componentDidMount() {
+    app.firestore()
+        .collection(DB.COLLECTION_TRIPS)
+        .doc(this.tripId)
+        .get()
+        .then(doc => {
+          this.setState({
+            collaborators: doc.get(DB.TRIPS_COLLABORATORS),
+            isLoading: false,
+            error: undefined
+          });
+        })
+        .catch(e => {
+          this.setState({
+            collaborators: undefined,
+            isLoading: true,
+            error: e
+          })
+        });
+  }
 
   render() {
     const tripId = this.props.match.params.tripId;    
@@ -107,28 +130,6 @@ class ViewActivities extends React.Component {
         );
       }
     }
-  }
-      
-  /** @inheritdoc */
-  componentDidMount() {
-    app.firestore()
-        .collection(DB.COLLECTION_TRIPS)
-        .doc(this.tripId)
-        .get()
-        .then(doc => {
-          this.setState({
-            collaborators: doc.get(DB.TRIPS_COLLABORATORS),
-            isLoading: false,
-            error: undefined
-          });
-        })
-        .catch(e => {
-          this.setState({
-            collaborators: undefined,
-            isLoading: true,
-            error: e
-          })
-        });
   }
 }
 

@@ -79,7 +79,11 @@ class EditActivity extends React.Component {
     writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }
 
-  /** Runs when the `submit` button on the form is pressed.  */
+  /** 
+   * Runs when the `submit` button on the form is pressed. 
+   * 
+   * @param event The form event.
+   */
   finishEditActivity(event) {
     event.preventDefault();
     this.editActivity();
@@ -96,9 +100,9 @@ class EditActivity extends React.Component {
    * The dropdown's values change based on the corrresponding country dropdown to
    * reduce scrolling and ensure that the location corresponds to the time zone.
    * 
-   * @param st Either 'start' or 'end' depending on whether the 
+   * @param {!string} st Either 'start' or 'end' depending on whether the 
    * timezone is for the start or end timezone.
-   * @param defaultTz The default time zone.
+   * @param {!string} defaultTz The default time zone.
    * @returns HTML dropdown item.
    */
   timezoneDropdown(st, defaultTz) {
@@ -131,9 +135,9 @@ class EditActivity extends React.Component {
    * so when the country changes here, the values in the timezone dropdown
    * change as well.
    *
-   * @param {ref} ref The reference to attach to the dropdown.
-   * @param {ref} tzref The corresponding time zone reference field. 
-   * @param {string} defaultCountry The default country for the dropdown.
+   * @param {!ref} ref The reference to attach to the dropdown.
+   * @param {!ref} tzref The corresponding time zone reference field. 
+   * @param {!string} defaultCountry The default country for the dropdown.
    * @return {HTML} HTML dropdown of all the countries with timezones.
    */
   countriesDropdown(ref, tzref, defaultCountry) {

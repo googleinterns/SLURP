@@ -27,7 +27,7 @@ class ActivityList extends React.Component {
    * 
    * This function sets `this.state.days` to the sorted days.
    * 
-   * @param {string} tripId The trip ID.
+   * @param {!string} tripId The trip ID.
    */
   async getActivityList(tripId) {
     db.collection(DB.COLLECTION_TRIPS).doc(tripId)
