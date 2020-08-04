@@ -2,7 +2,6 @@ import * as TripUtils  from './trip-utils.js';
 
 const mockCurUserEmail = 'cur.user@email.com';
 const USER_A_EMAIL = 'apple@email.com';
-const USER_A_EMAIL = 'banana@email.com';
 const USER_Z_EMAIL = 'zamboni@email.com';
 jest.mock('../AuthUtils', () => ({
     getCurUserEmail: () => mockCurUserEmail,
