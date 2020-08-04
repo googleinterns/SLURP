@@ -14,10 +14,10 @@ import * as DB from '../../constants/database.js';
  * @property {string} title The trips's title.
  * @property {string} description A description of the trip.
  * @property {string} destination The general destination of the trip.
- * @property {firebase.firestore.Timestamp} start_date Start date Firestore
- *     timestamp object.
- * @property {firebase.firestore.Timestamp} end_date End date Firestore
- *     timestamp object
+ * @property {firebase.firestore.Timestamp} start_date Start date
+ *     `Firestore.Timestamp` object.
+ * @property {firebase.firestore.Timestamp} end_date End date
+ *     `Firestore.Timestamp` object.
  * @property {!string[]} collaborators An array of collaborator uids.
  */
 
@@ -46,7 +46,7 @@ export function moveCurUserEmailToFront(collaboratorEmailArr) {
  * on the 'display' side.
  *
  * @property {Object} props These are the props for this component:
- * @property {TripData} props.tripData Object holding a Trip document data.
+ * @property {TripData} props.tripData Object holding the trip document data.
  * @property {string} props.tripId The document id associated with the trip.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.

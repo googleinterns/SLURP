@@ -118,7 +118,7 @@ function createMultiFormControl(refArr, placeholder, defaultEmailArr) {
  * @param {string} placeholder Placeholder text value in the form input.
  * @param {?string|?string[]} defaultVal Default value in the form input.
  *     This is an array when `inputType` is 'emails'.
- * @return {JSX.Element} The Form.Group element.
+ * @return {JSX.Element} The `Form.Group` element.
  */
 export function createFormGroup(controlId, formLabel, inputType,
                           ref, placeholder, defaultVal) {
