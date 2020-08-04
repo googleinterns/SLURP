@@ -58,38 +58,38 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
  * Returns the new `accepted_collaborator_uid_arr` field value for the updated
  * trip document.
  *
- * @param {!string[]} curCollabUidArr Array of the collaborator uids corresponding
- *     to the emails in the `collaborator_email_arr` field of the
+ * @param {!string[]} formCollabUidArr Array of the collaborator uids
+ *     corresponding to the emails in the `collaborator_email_arr` field of the
  *     {@link RawTripData} instance coming from the `SaveTripModal` component.
- * @param {!string[]} prevAccepCollabUidArr Array stored in the field
+ * @param {!string[]} curAccepCollabUidArr Array stored in the field
  *     `accepted_collaborator_uid_arr` of the {@link TripData} obj
- *     `prevTripData`.
+ *     `curTripData`.
  * @return {!string[]} Array containing the set intersection of two params
- *     `curCollabUidArr` and `prevAccepCollabUidArr` converted to sets.
+ *     `formCollabUidArr` and `curAccepCollabUidArr` converted to sets.
  */
-export function getCurAcceptedCollabUidArr(curCollabUidArr, prevAccepCollabUidArr) {
-  const curCollabUidSet = new Set(curCollabUidArr);
-  const prevAccepCollabUidSet = new Set(prevAccepCollabUidArr);
-  return [...curCollabUidSet].filter(el => prevAccepCollabUidSet.has(el));
+export function getCurAcceptedCollabUidArr(formCollabUidArr, curAccepCollabUidArr) {
+  const formCollabUidSet = new Set(formCollabUidArr);
+  const curAccepCollabUidSet = new Set(curAccepCollabUidArr);
+  return [...formCollabUidSet].filter(el => curAccepCollabUidSet.has(el));
 }
 
 /**
  * Returns the new `pending_collaborator_uid_arr` field value for the updated
  * trip document.
  *
- * @param {!string[]} curCollabUidArr Array of the collaborator uids corresponding
- *     to the emails in the `collaborator_email_arr` field of the
+ * @param {!string[]} formCollabUidArr Array of the collaborator uids
+ *     corresponding to the emails in the `collaborator_email_arr` field of the
  *     {@link RawTripData} instance coming from the `SaveTripModal` component.
- * @param {!string[]} prevAccepCollabUidArr Array stored in the field
+ * @param {!string[]} curAccepCollabUidArr Array stored in the field
  *     `accepted_collaborator_uid_arr` of the {@link TripData} obj
- *     `prevTripData`.
+ *     `curTripData`.
  * @return {!string[]} Array containing the set difference of two params
- *     `curCollabUidArr` and `prevAccepCollabUidArr` converted to sets.
+ *     `formCollabUidArr` and `curAccepCollabUidArr` converted to sets.
  */
-export function getCurPendingCollabUidArr(curCollabUidArr, prevAccepCollabUidArr) {
-  const curCollabUidSet = new Set(curCollabUidArr);
-  const prevAccepCollabUidSet = new Set(prevAccepCollabUidArr);
-  return [...curCollabUidSet].filter(el => !prevAccepCollabUidSet.has(el));
+export function getCurPendingCollabUidArr(formCollabUidArr, curAccepCollabUidArr) {
+  const formCollabUidSet = new Set(formCollabUidArr);
+  const curAccepCollabUidSet = new Set(curAccepCollabUidArr);
+  return [...formCollabUidSet].filter(el => !curAccepCollabUidSet.has(el));
 }
 
 /**
@@ -100,7 +100,7 @@ export function getCurPendingCollabUidArr(curCollabUidArr, prevAccepCollabUidArr
  * - update timestamp: get current time with `Firestore.Timestamp.now()`.
  * - plain text fields: basic input cleaning by providing default values.
  * - date fields: ISO strings are converted to `Firestore.Timestamp` objs.
- * - collaborator fields: Determine collab uid arrays based on `prevTripData`.
+ * - collaborator fields: Determine collab uid arrays based on `curTripData`.
  *   New trips will add the current user to the accepted list and all others
  *   to pending. Existing trips use `getCurAcceptedCollabUidArr` and
  *   `getCurPendingCollabUidArr` to determine accepted and pending collabs
@@ -111,31 +111,31 @@ export function getCurPendingCollabUidArr(curCollabUidArr, prevAccepCollabUidArr
  * default value in a Trip field where applicable.
  *
  * @param {!RawTripData} rawTripData Raw form data from the save trip form.
- * @param {?TripData} prevTripData If edit trip modal, contains data stored in
- *     the existing trip document prior to this edit. Null for add trip modals.
+ * @param {?TripData} curTripData If edit trip modal, contains data stored in
+ *     the current trip document. Null for add trip modals.
  * @return {Promise<!TripData>} Promise that resoleves to the formatted/cleaned
  *     version of {@link RawTripData} holding the data for the new Trip document
  *     that is to be created.
  */
-export async function formatTripData(rawTripData, prevTripData) {
+export async function formatTripData(rawTripData, curTripData) {
   let curUserUidArr = [getCurUserUid()];
-  const curCollabUidArr = await getCollaboratorUidArray(
+  const formCollabUidArr = await getCollaboratorUidArray(
                                     rawTripData[DB.RAW_COLLAB_EMAILS]);
 
   let acceptedCollabUidArr;
   let pendingCollabUidArr;
   let rejectedCollabUidArr;
-  if (prevTripData === null) {
+  if (curTripData === null) {
     acceptedCollabUidArr = curUserUidArr;
-    pendingCollabUidArr = curCollabUidArr;
+    pendingCollabUidArr = formCollabUidArr;
     rejectedCollabUidArr = [];
   } else {
     acceptedCollabUidArr = curUserUidArr.concat(getCurAcceptedCollabUidArr(
-                                curCollabUidArr,
-                                prevTripData[DB.TRIPS_ACCEPTED_COLLABS]));
-    pendingCollabUidArr = getCurPendingCollabUidArr(curCollabUidArr,
-                                prevTripData[DB.TRIPS_ACCEPTED_COLLABS]);
-    rejectedCollabUidArr = prevTripData[DB.TRIPS_REJECTED_COLLABS];
+                                formCollabUidArr,
+                                curTripData[DB.TRIPS_ACCEPTED_COLLABS]));
+    pendingCollabUidArr = getCurPendingCollabUidArr(formCollabUidArr,
+                                curTripData[DB.TRIPS_ACCEPTED_COLLABS]);
+    rejectedCollabUidArr = curTripData[DB.TRIPS_REJECTED_COLLABS];
   }
 
   const tripData = {
