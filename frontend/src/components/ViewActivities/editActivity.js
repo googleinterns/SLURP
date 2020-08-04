@@ -189,8 +189,7 @@ class EditActivity extends React.Component {
           'End Location:',                           // formLabel
           this.countriesDropdown(this.editEndLocRef, // defaultValue ref
             this.endTimeTzUpdate, // countriesDropdown onChange
-            getField(activity, DB.ACTIVITIES_END_COUNTRY)), // countriesDropdown defaultCountry
-            this.state.flightCheck //show
+            getField(activity, DB.ACTIVITIES_END_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.dateTimeTzFormGroup( // START TIME
           'formActivityStartTime',                         // controlId
