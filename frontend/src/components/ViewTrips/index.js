@@ -34,7 +34,7 @@ class ViewTrips extends React.Component {
   /**
    * Handler that updates the `tripView` state.
    *
-   * @param {TripView} tripView The new trip view state.
+   * @param {TripView} tripView The page's new trip view state.
    */
   changeTripView = (tripView) => {
     this.setState({ tripView: tripView });
@@ -64,7 +64,7 @@ class ViewTrips extends React.Component {
   /**
    * Handler that displays the add trip page.
    *
-   * Sets state for the states `tripId` and `placeholderObj` in order
+   * Sets state for the states `tripId` and `tripData` in order
    * to ensure the modal has the visual characteristics of an "add trip" modal
    * and creates a new Trip document in the database.
    */
@@ -79,9 +79,9 @@ class ViewTrips extends React.Component {
   /**
    * Handler that displays the edit trip page.
    *
-   * Sets state for the states `tripId` and `placeholderObj` in order
+   * Sets state for the states `tripId` and `tripData` in order
    * to ensure the modal has the visual characteristics of an "edit trip" modal
-   * and overwrites and existing Trip document in the database.
+   * and updates existing Trip document in the database.
    *
   * @param {string} tripId Document ID for the current Trip document.
   * @param {!TripData} tripData Trip document data for trip to be modified.
