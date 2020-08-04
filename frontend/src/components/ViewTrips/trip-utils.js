@@ -62,8 +62,8 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
  *     to the emails in the `collaborator_email_arr` field of the
  *     {@link RawTripData} instance coming from the `SaveTripModal` component.
  * @param {!string[]} prevAccepCollabUidArr Array stored in the field
- *     `accepted_collaborator_uid_arr` of {@link TripData} corresponding to the
- *     current trip document.
+ *     `accepted_collaborator_uid_arr` of the {@link TripData} obj
+ *     `prevTripData`.
  * @return {!string[]} Array containing the set intersection of two params
  *     `curCollabUidArr` and `prevAccepCollabUidArr` converted to sets.
  */
@@ -81,8 +81,8 @@ export function getCurAcceptedCollabUidArr(curCollabUidArr, prevAccepCollabUidAr
  *     to the emails in the `collaborator_email_arr` field of the
  *     {@link RawTripData} instance coming from the `SaveTripModal` component.
  * @param {!string[]} prevAccepCollabUidArr Array stored in the field
- *     `accepted_collaborator_uid_arr` of {@link TripData} corresponding to the
- *     current trip document.
+ *     `accepted_collaborator_uid_arr` of the {@link TripData} obj
+ *     `prevTripData`.
  * @return {!string[]} Array containing the set difference of two params
  *     `curCollabUidArr` and `prevAccepCollabUidArr` converted to sets.
  */
@@ -110,8 +110,9 @@ export function getCurPendingCollabUidArr(curCollabUidArr, prevAccepCollabUidArr
  * attacks. Thus, no sanitization is needed for text inputs besides providing a
  * default value in a Trip field where applicable.
  *
- * @param {!RawTripData} rawTripData A JS Object containing the raw form data
- *     from the add trip form.
+ * @param {!RawTripData} rawTripData Raw form data from the save trip form.
+ * @param {?TripData} prevTripData If edit trip modal, contains data stored in
+ *     the existing trip document prior to this edit. Null for add trip modals.
  * @return {Promise<!TripData>} Promise that resoleves to the formatted/cleaned
  *     version of {@link RawTripData} holding the data for the new Trip document
  *     that is to be created.
