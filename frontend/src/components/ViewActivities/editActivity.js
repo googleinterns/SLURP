@@ -93,7 +93,6 @@ class EditActivity extends React.Component {
     const endTz = newVals[DB.ACTIVITIES_END_TZ];
     newVals[DB.ACTIVITIES_END_TIME] = time.firebaseTsFromISO(endTime, endDate, endTz);
 
-    console.log(newVals);
     writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }
 
