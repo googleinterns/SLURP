@@ -76,8 +76,8 @@ const Trip = (props) => {
   const destination = props.tripData[DB.TRIPS_DESTINATION];
   const startDateTimestamp = props.tripData[DB.TRIPS_START_DATE];
   const endDateTimestamp = props.tripData[DB.TRIPS_END_DATE];
-  const curCollabUidArr = props.tripData[DB.TRIPS_ACCEPTED_COLLABS].concat(
-                              props.tripData[DB.TRIPS_PENDING_COLLABS]);
+  const collaboratorUidArr = props.tripData[DB.TRIPS_ACCEPTED_COLLABS].concat(
+                                 props.tripData[DB.TRIPS_PENDING_COLLABS]);
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const Trip = (props) => {
 
     async function fetchCollaboratorEmails() {
       let collaboratorEmailArr =
-          await authUtils.getUserEmailArrFromUserUidArr(curCollabUidArr);
+          await authUtils.getUserEmailArrFromUserUidArr(collaboratorUidArr);
       collaboratorEmailArr = moveCurUserEmailToFront(collaboratorEmailArr);
       if (componentStillMounted) {
         setCollaboratorEmailsStr(collaboratorEmailArr.join(', '));
@@ -98,7 +98,7 @@ const Trip = (props) => {
 
     fetchCollaboratorEmails();
     return () => { componentStillMounted = false; };
-  }, [curCollabUidArr]);
+  }, [collaboratorUidArr]);
 
   return (
     <Card>
