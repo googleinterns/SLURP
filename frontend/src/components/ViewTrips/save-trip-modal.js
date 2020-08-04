@@ -4,7 +4,7 @@ import app from '../Firebase';
 import { Button, Modal, Form }  from 'react-bootstrap';
 
 import * as DB from '../../constants/database.js';
-import { formatTripData } from '../Utils/filter-input.js';
+import { formatTripData } from './filter-input.js';
 import { createFormGroup } from './save-trip-form-elements.js';
 
 const db = app.firestore();
