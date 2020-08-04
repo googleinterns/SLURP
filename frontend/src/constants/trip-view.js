@@ -2,7 +2,7 @@
  * Types of trip 'views' on the view trips page. Added for the trip invites feature.
  * @enum {number}
  */
-const TripViews = {
+const TripView = {
   /** Displays trips that current user has created or accepted. */
   ACTIVE: 0,
   /** Displays trips that current user has not yet accepted or rejected. */
@@ -11,4 +11,4 @@ const TripViews = {
   REJECTED: 2,
 };
 
-export default TripViews;
+export default TripView;
