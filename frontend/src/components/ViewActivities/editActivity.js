@@ -157,7 +157,8 @@ class EditActivity extends React.Component {
    */
   countriesDropdown(ref, tzref, defaultCountry) {
     return (
-      <Form.Control as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>        {countryList.map((item, index) => {
+      <Form.Control as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>        
+        {countryList.map((item, index) => {
           return (
             <option key={index}>{item}</option>
           );
