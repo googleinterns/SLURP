@@ -96,10 +96,16 @@ export function getCurPendingCollabUidArr(curCollabUidArr, prevAccepCollabUidArr
  * Returns a promise containing the formatted and cleaned {@link RawTripData}
  * that will be used to instantiate the the created trip document.
  *
- * We know that {@link RawTripData} will contain all of the necessary fields for
- * a trip document (except updated timestamp) because each key-value pair is
- * explicitly included. This means, only the value corresponding to each key
- * needs to be checked.
+ * Formatting done to convert {@link RawTripData} to {@link TripData}:
+ * - update timestamp: get current time with `Firestore.Timestamp.now()`.
+ * - plain text fields: basic input cleaning by providing default values.
+ * - date fields: ISO strings are converted to `Firestore.Timestamp` objs.
+ * - collaborator fields: Determine collab uid arrays based on `prevTripData`.
+ *   New trips will add the current user to the accepted list and all others
+ *   to pending. Existing trips use `getCurAcceptedCollabUidArr` and
+ *   `getCurPendingCollabUidArr` to determine accepted and pending collabs
+ *   while maintaining the same reject list as previous.
+ *
  * For text element inputs, React has built in protections against injection/XSS
  * attacks. Thus, no sanitization is needed for text inputs besides providing a
  * default value in a Trip field where applicable.
@@ -151,9 +157,10 @@ export async function formatTripData(rawTripData, prevTripData) {
 }
 
 /**
- * Return the collaborator uid array corresponding to `this.props.tripView`
+ * Return the trip document collaborator field name corresponding to `tripView`.
  *
- * @return {*} The collaborator uid array.
+ * @param {TripView} tripView The current user's trips page view.
+ * @return {string} The trip document field name (defined in `constants.js`).
  */
 export function getCollaboratorField(tripView) {
   switch(tripView) {
