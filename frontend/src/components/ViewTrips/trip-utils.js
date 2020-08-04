@@ -81,13 +81,12 @@ export async function formatTripData(rawTripData) {
     [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripData[DB.TRIPS_TITLE],
                                           msgs.TRIPS_TITLE_DEFAULT),
     [DB.TRIPS_DESCRIPTION]: rawTripData[DB.TRIPS_DESCRIPTION],
-    [DB.TRIPS_DESTINATION]:
-        getCleanedTextInput(rawTripData[DB.TRIPS_DESTINATION],
-                            msgs.TRIPS_DESTINATION_DEFAULT),
-    [DB.TRIPS_START_DATE]:
-        getTimestampFromISODateString(rawTripData[DB.TRIPS_START_DATE]),
-    [DB.TRIPS_END_DATE]:
-        getTimestampFromISODateString(rawTripData[DB.TRIPS_END_DATE]),
+    [DB.TRIPS_DESTINATION]: getCleanedTextInput(rawTripData[DB.TRIPS_DESTINATION],
+                                                msgs.TRIPS_DESTINATION_DEFAULT),
+    [DB.TRIPS_START_DATE]: getTimestampFromISODateString(
+                                rawTripData[DB.TRIPS_START_DATE]),
+    [DB.TRIPS_END_DATE]: getTimestampFromISODateString(
+                                rawTripData[DB.TRIPS_END_DATE]),
     [DB.TRIPS_COLLABORATORS]: collaboratorUidArr,
   };
 
