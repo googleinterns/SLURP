@@ -12,10 +12,10 @@ export const TRIPS_PENDING_COLLABS = 'pending_collaborator_uid_arr';
 export const TRIPS_REJECTED_COLLABS = 'rejected_collaborator_uid_arr';
 export const TRIPS_UPDATE_TIMESTAMP = 'update_timestamp';
 /**
- * NOTE: The following constant corresponds to the collaborator field in
- * {@link_RawTripData} and is not a field in a trip document.
+ * NOTE: The following constant corresponds to the general collaborator field in
+ * {@link_RawTripData} and is not an actual field in a trip document.
  */
-export const RAW_TRIP_COLLABS = 'collaborator_email_arr';
+export const RAW_COLLAB_EMAILS = 'collaboratorEmails';
 
 export const COLLECTION_ACTIVITIES = 'activities';
 export const ACTIVITIES_START_TIME = 'start_time';
