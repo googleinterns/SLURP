@@ -23,7 +23,7 @@ describe('SignInButton component', () => {
 
   it('redirects to signin page on click', () => {
     const { getByText } = render(<SignInButton />);
-    fireEvent.click(getByText('Sign In'));
+    fireEvent.click(getByText(/Go/));
     expect(mockHistoryPush).toBeCalledWith(SIGN_IN);
   })
 });

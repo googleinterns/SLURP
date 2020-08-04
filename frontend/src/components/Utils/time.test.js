@@ -133,7 +133,7 @@ const mockTimeNow = 0;
 jest.mock('firebase', () => ({
   firestore: {
     Timestamp: {
-      default: (e) => 2,
+      default: (e) => 2, // this doesn't work
       now: () => mockTimeNow,
     }
   }
