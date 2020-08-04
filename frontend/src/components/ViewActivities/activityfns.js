@@ -65,7 +65,6 @@ export function sortByDate(tripActivities) {
 
   // Sort activities by date.
   let activitiesSorted = Array.from(activities).sort(compareActivities);
-
   
   return activitiesSorted;
 }
