@@ -71,7 +71,6 @@ function getTripInfoRow(rowText, icon) {
  */
 const Trip = (props) => {
   // Unpack trip document data.
-  console.log(props.tripData);
   const title = props.tripData[DB.TRIPS_TITLE];
   const description = props.tripData[DB.TRIPS_DESCRIPTION];
   const destination = props.tripData[DB.TRIPS_DESTINATION];
