@@ -24,8 +24,6 @@ const db = app.firestore();
  * @param {Object} props These are the props for this component:
  * - show: Boolean that determines if the add trips modal should be displayed.
  * - handleClose: Event handler responsible for closing the add trips modal.
- * - refreshTripsContainer: Handler that refreshes the TripsContainer
- *        component upon trip creation (Remove when fix Issue #62).
  * - tripId: For adding a new trip, this will be null. For editting an existing
  *        trip, this will the document id associated with the trip.
  * - defaultFormObj: Object containing the placeholder/default values for the
@@ -132,18 +130,15 @@ class SaveTripModal extends React.Component {
     } else {
       this.updateExistingTrip(this.props.tripId, tripData);
     }
-
   }
 
   /**
    * Handles submission of the form which includes:
    *  - Creation of the trip.
-   *  - Refreshing the trips container.
    *  - Closing the modal.
    */
   handleSubmitForm = async () => {
     await this.saveTrip();
-    this.props.refreshTripsContainer();
     this.props.handleClose();
   }
 
