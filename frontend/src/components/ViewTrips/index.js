@@ -6,19 +6,22 @@ import Header from '../Header/';
 import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
+/**
+ * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
+ */
 
 /**
  * ViewTrips component that defines the page where a user can view and manage
  * their current trips.
  */
 class ViewTrips extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor() {
     super();
     this.state = { showModal: false,
                    refreshSaveTripModal: false,
                    tripId: null,
-                   defaultFormObj: null,
+                   defaultFormData: null,
                  };
   }
 
@@ -53,7 +56,7 @@ class ViewTrips extends React.Component {
   showAddTripModal = () => {
     this.setState({
       tripId: null,
-      defaultFormObj: null,
+      defaultFormData: null,
     });
     this.showSaveTripModal();
   }
@@ -65,16 +68,19 @@ class ViewTrips extends React.Component {
    * to ensure the modal has the visual characteristics of an "edit trip" modal
    * and overwrites and existing Trip document in the database.
    *
+  * @param {string} tripId Document ID for the current Trip document.
+  * @param {!RawTripData} tripFormData Contains the default form data for the
+  *     Trip document that that will be editted.
    */
-  showEditTripModal = (tripId, tripData) => {
+  showEditTripModal = (tripId, tripFormData) => {
     this.setState({
       tripId: tripId,
-      defaultFormObj: tripData
+      defaultFormData: tripFormData,
     });
     this.showSaveTripModal();
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     return (
       <div className="view-trips-page">
@@ -83,7 +89,7 @@ class ViewTrips extends React.Component {
           show={this.state.showModal}
           handleClose={this.hideSaveTripModal}
           tripId={this.state.tripId}
-          defaultFormObj={this.state.defaultFormObj}
+          defaultFormData={this.state.defaultFormData}
           key={this.state.refreshSaveTripModal}
         />
         <div className="manage-trips-bar">

@@ -34,12 +34,13 @@ function getErrorElement(error) {
  * Component corresponding to the container containing a user's trips.
  * props
  *
- * @param {Object} props These are the props for this component:
- * - handleEditTrip: Handler that displays the edit trip modal.
+ * @property {Object} props These are the props for this component:
+ * @property {Function} props.handleEditTrip Event handler responsible for
+ *     displaying the edit trip modal.
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor(props) {
     super(props);
     this.state = {tripsContainer: []};
@@ -80,7 +81,7 @@ class TripsContainer extends React.Component {
         });
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     return (
       <div>{this.state.tripsContainer}</div>

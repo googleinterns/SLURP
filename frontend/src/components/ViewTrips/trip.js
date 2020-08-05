@@ -9,6 +9,19 @@ import ViewActivitiesButton from './view-activities-button.js';
 import * as DB from '../../constants/database.js';
 
 /**
+ * A trip object containing the data stored in a trip document in Firestore.
+ * @typedef {Object} TripData
+ * @property {string} title The trips's title.
+ * @property {string} description A description of the trip.
+ * @property {string} destination The general destination of the trip.
+ * @property {firebase.firestore.Timestamp} start_date Start date
+ *     `Firestore.Timestamp` object.
+ * @property {firebase.firestore.Timestamp} end_date End date
+ *     `Firestore.Timestamp` object.
+ * @property {!string[]} collaborators An array of collaborator uids.
+ */
+
+/**
  * Return collaborator emails corresponding to the collaborator uid's
  * `collaboratorUidArr` in a comma separated string.
  *
@@ -32,12 +45,11 @@ export function moveCurUserEmailToFront(collaboratorEmailArr) {
  * when trips are added and/or editted. Thus, no error checking is done here
  * on the 'display' side.
  *
- * @param {Object} props These are the props for this component:
- * - tripData: Object holding a Trip document fields and corresponding values.
- * - tripId: Document ID for the current Trip document.
- * - handleEditTrip: Handler that displays the edit trip modal.
- * - key: Special React attribute that ensures a new Trip instance is
- *        created whenever this key is updated
+ * @property {Object} props These are the props for this component:
+ * @property {TripData} props.tripData Object holding the trip document data.
+ * @property {string} props.tripId The document id associated with the trip.
+ * @property {Function} props.handleEditTrip Event handler responsible for
+ *     displaying the edit trip modal.
  */
 const Trip = (props) => {
   // Unpack trip document data.
@@ -70,9 +82,11 @@ const Trip = (props) => {
     return () => { componentStillMounted = false; };
   }, [collaboratorUidArr]);
 
-  // Re-package trip document data with correctly formatted data for the
-  // SaveTripModal component to use when filling out form input default values.
-  const formattedTripData = {
+  /**
+   * Re-package trip document data in the format of {@link_RawTripData}
+   * to pass to SaveTripModal when filling out form input default values.
+   */
+  const tripFormData = {
     [DB.TRIPS_TITLE]: title,
     [DB.TRIPS_DESCRIPTION]: description,
     [DB.TRIPS_DESTINATION]: destination,
@@ -92,7 +106,7 @@ const Trip = (props) => {
       <DeleteTripButton tripId={props.tripId} />
       <Button
         type='button'
-        onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
+        onClick={() => props.handleEditTrip(props.tripId, tripFormData)}
         variant='primary'
       >
         Edit

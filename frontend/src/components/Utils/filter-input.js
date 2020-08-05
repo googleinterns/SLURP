@@ -5,9 +5,23 @@ import { getTimestampFromISODateString } from './time.js'
 import * as DB from '../../constants/database.js';
 
 /**
+ * {@link TripData} defined originally in `ViewTrips/trip.js`.
+ */
+
+/**
+ * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
+ */
+
+/**
  * Return a string containing the cleaned text input.
  *
+ * For text element inputs, React has built in protections against injection/XSS
+ * attacks. Thus, no sanitization is needed for text inputs besides providing a
+ * default value in a trip field where applicable.
+ *
  * @param {string} rawInput String containing raw form input.
+ * @param {string} defaultValue The default value of the text input in case the
+ *     rawInput is empty.
  * @return {string} Cleaned string.
  */
 export function getCleanedTextInput(rawInput, defaultValue) {
@@ -21,10 +35,11 @@ export function getCleanedTextInput(rawInput, defaultValue) {
  * TODO(#72 & #67): Remove 'remove empty fields' once there is better way to
  * remove collaborators (#72) and there is email validation (#67).
  *
- * @param {!Array<string>} collaboratorEmailsArr Array of emails corresponding
+ * @param {!string[]} collaboratorEmailsArr Array of emails corresponding
  *     to the  collaborators of the trip (not including the trip creator email).
- * @return {Promise<!Array<string>>} Array of all collaborator uids (including trip
- *     creator uid).
+ * @return {Promise<!string[]>} Promise that resolves to an array of the
+ *     collaborator uids of the current user and the uids corresponding to the
+ *     emails in `collaboratorEmailsArr.
  */
 export async function getCollaboratorUidArray(collaboratorEmailArr) {
   collaboratorEmailArr = [authUtils.getCurUserEmail()]
@@ -39,37 +54,39 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
 }
 
 /**
- * Returns a promise containing the formatted and cleaned trip object that will
- * be used as the data for the created Trip document.
+ * Returns a promise containing the formatted and cleaned {@link RawTripData}
+ * that will be used to instantiate the the created trip document.
  *
- * We know that rawTripObj will contain all of the necessary fields because each
- * key-value pair is explicitly included. This means, only the value
- * corresponding to each key needs to be checked.
+ * We know that {@link RawTripData} will contain all of the necessary fields for
+ * a trip document (except updated timestamp) because each key-value pair is
+ * explicitly included. This means, only the value corresponding to each key
+ * needs to be checked.
  * For text element inputs, React has built in protections against injection/XSS
  * attacks. Thus, no sanitization is needed for text inputs besides providing a
  * default value in a Trip field where applicable.
  *
- * @param {!Object} rawTripObj A JS Object containing the raw form data from the
- *     add trip form.
- * @return {Promise<!Object>} Formatted/cleaned version of `rawTripObj` holding the data
- *     for the new Trip document that is to be created.
+ * @param {!RawTripData} rawTripData A JS Object containing the raw form data
+ *     from the add trip form.
+ * @return {Promise<!TripData>} Promise that resoleves to the formatted/cleaned
+ *     version of {@link RawTripData} holding the data for the new Trip document
+ *     that is to be created.
  */
-export async function formatTripData(rawTripObj) {
+export async function formatTripData(rawTripData) {
   const defaultName = "Untitled Trip";
   const defaultDestination = "No Destination"
   const collaboratorUidArr = await getCollaboratorUidArray(
-                                          rawTripObj[DB.TRIPS_COLLABORATORS]);
+                                          rawTripData[DB.TRIPS_COLLABORATORS]);
 
   const formattedTripObj = {
     [DB.TRIPS_UPDATE_TIMESTAMP]: firebase.firestore.Timestamp.now(),
-    [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripObj[DB.TRIPS_TITLE], defaultName),
-    [DB.TRIPS_DESCRIPTION]: rawTripObj[DB.TRIPS_DESCRIPTION],
+    [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripData[DB.TRIPS_TITLE], defaultName),
+    [DB.TRIPS_DESCRIPTION]: rawTripData[DB.TRIPS_DESCRIPTION],
     [DB.TRIPS_DESTINATION]:
-        getCleanedTextInput(rawTripObj[DB.TRIPS_DESTINATION], defaultDestination),
+        getCleanedTextInput(rawTripData[DB.TRIPS_DESTINATION], defaultDestination),
     [DB.TRIPS_START_DATE]:
-        getTimestampFromISODateString(rawTripObj[DB.TRIPS_START_DATE]),
+        getTimestampFromISODateString(rawTripData[DB.TRIPS_START_DATE]),
     [DB.TRIPS_END_DATE]:
-        getTimestampFromISODateString(rawTripObj[DB.TRIPS_END_DATE]),
+        getTimestampFromISODateString(rawTripData[DB.TRIPS_END_DATE]),
     [DB.TRIPS_COLLABORATORS]: collaboratorUidArr,
   };
 

@@ -9,6 +9,20 @@ import { createFormGroup } from './save-trip-form-elements.js';
 
 const db = app.firestore();
 
+/**
+ * {@link TripData} defined originally in `ViewTrips/trip.js`.
+ */
+
+/**
+ * An object containing the default input data for a SaveTripModal form.
+ * @typedef {Object} RawTripData
+ * @property {string} title The trips's title.
+ * @property {string} description A description of the trip.
+ * @property {string} destination The general destination of the trip.
+ * @property {string} start_date Start date string in the form 'YYYY-MM-DD'.
+ * @property {string} end_date End date string in the form 'YYYY-MM-DD'.
+ * @property {!string[]} collaborators An array of collaborator emails.
+ */
 
 /**
  * Component corresponding to the save trips modal.
@@ -16,25 +30,26 @@ const db = app.firestore();
  * This component acts as a 'pseudo-parent' of the AddTripModal and
  * EditTripModal components. The only differences in the implementation between
  * the two fake components are dervied from the props  `tripid` and
- * `defaultFormObj` (see below). The primary difference between the add and
+ * `defaultFormData` (see below). The primary difference between the add and
  * edit trip modals is the former displays placeholder values in the empty form
  * fields whereas the latter displays the current values of the trip in the
  * respective form fields.
  *
- * @param {Object} props These are the props for this component:
- * - show: Boolean that determines if the add trips modal should be displayed.
- * - handleClose: Event handler responsible for closing the add trips modal.
- * - tripId: For adding a new trip, this will be null. For editting an existing
- *        trip, this will the document id associated with the trip.
- * - defaultFormObj: Object containing the placeholder/default values for the
- *        form input text boxes.
- * - key: Special React attribute that ensures a new AddTripModal instance is
- *        created whenever this key is updated
- *
+ * @property {Object} props These are the props for this component:
+ * @property {boolean} props.show Determines if the save trip modal should
+ *     be displayed.
+ * @property {Function} props.handleClose Event handler responsible for closing
+ *     the save trips modal.
+ * @property {?string} props.tripId For editting an existing trip, this will
+ *     contain the document id associated with the trip. For adding a new trip,
+ *     this will be null.
+ * @property {?RawTripData} props.defaultFormData: Object containing the
+ *     default values for the form input text boxes. For adding a new trip, this
+ *     will be null.
  * @extends React.Component
  */
 class SaveTripModal extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor(props) {
     super(props);
 
@@ -47,18 +62,20 @@ class SaveTripModal extends React.Component {
 
     this.isAddTripForm = this.props.tripId === null;
 
-    // For edit trips, create the number of collaborator input box refs as one
-    // less than the number of collaborators specified in prop `defaultFormObj`
-    // (do not include current user in list).
-    //
-    // TODO(Issue #71): Give user option to remove themself as a collaborator
-    //                  from current trip.
+    /**
+     * For edit trips, create the number of collaborator input box refs as one
+     * less than the number of collaborators specified in prop `defaultFormData`
+     * (do not include current user in list).
+     *
+     * TODO(Issue #71): Give user option to remove themself as a collaborator
+     *                  from current trip.
+     */
     const collaboratorsRefArr = [];
     if (this.isAddTripForm) {
       collaboratorsRefArr.push(React.createRef());
     } else {
       const numCollaborators =
-          this.props.defaultFormObj[DB.TRIPS_COLLABORATORS].length;
+          this.props.defaultFormData[DB.TRIPS_COLLABORATORS].length;
       for (let i = 1; i < numCollaborators; i++) {
         collaboratorsRefArr.push(React.createRef())
       }
@@ -74,9 +91,9 @@ class SaveTripModal extends React.Component {
   }
 
   /**
-   * Creates a new Trip document in firestore with data in `tripData`.
+   * Creates a new Trip document in firestore with the data in `tripData`.
    *
-   * @param {!Object} tripData Data the new trip document will contain.
+   * @param {!TripData} tripData Data object the new trip document will contain.
    */
   addNewTrip(tripData) {
     db.collection(DB.COLLECTION_TRIPS)
@@ -90,14 +107,15 @@ class SaveTripModal extends React.Component {
   }
 
   /**
-   * Updates an existing Trip document in firestore with data in `tripData`.
+   * Updates an existing Trip document with id `tripId` in firestore with the
+   * data in `tripData`.
    *
    * Note: The `merge` field of the `SetOptions` parameter to `set()` is set to
    * true in order to prevent overwriting any other fields in a trip document
    * such as the activities sub-collection, creation time, etc.
    *
    * @param {!string} tripId The document ID of the trip that is updated.
-   * @param {!Object} tripData Data the new trip document will contain.
+   * @param {!TripData} tripData Data object the new trip document will contain.
    */
   updateExistingTrip(tripId, tripData) {
     db.collection(DB.COLLECTION_TRIPS)
@@ -153,8 +171,7 @@ class SaveTripModal extends React.Component {
 
   /** Returns the default form value for the trip field specified by `field`.
    *
-   * @param {!string} field A trip document field
-   *     (the constants in `database.js`).
+   * @param {string} field A trip document field (the constants in `database.js`).
    * @return {?string} Default form value for edit trip modal or null for
    *     add trip modals.
    */
@@ -162,7 +179,7 @@ class SaveTripModal extends React.Component {
     if (this.isAddTripForm) {
       return null;
     }
-    return this.props.defaultFormObj[field];
+    return this.props.defaultFormData[field];
   }
 
   /** @inheritdoc */
