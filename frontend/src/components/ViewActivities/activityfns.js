@@ -127,39 +127,3 @@ export function getRefValue(ref, ignoreValue='', defaultValue=null) {
   } 
   return ref.current.value;
 }
-  
-/**
- * Pretty format start and end times/days.
- * 
- * @param {!ActivityInfo} activity The activity to display.
- * @return {string} The text to display.
- */
-export function displayTimes(activity) { 
-  const startDay = time.timestampToLongDate(
-    getField(activity, DB.ACTIVITIES_START_TIME)
-    );
-  const endDay = time.timestampToLongDate(
-    getField(activity, DB.ACTIVITIES_END_TIME)
-    );    
-  const startTime = time.timestampToTimeFormatted(
-    getField(activity, DB.ACTIVITIES_START_TIME)
-    );
-  const endTime = time.timestampToTimeFormatted(
-    getField(activity, DB.ACTIVITIES_END_TIME)
-    );
-  const startTz = getField(activity, DB.ACTIVITIES_START_TZ);
-  const endTz = getField(activity, DB.ACTIVITIES_END_TZ);
-  // Start and end time are on the same day.
-  if (startDay === endDay) {
-    // They're in the same timezone.
-    if (startTz === endTz) { return `${startTime} - ${endTime}`; }
-    // They're in different timezones.
-    return `${startTime} ${startTz} - ${endTime} ${endTz}`;
-  }
-
-  // Start and end time aren't on the same day.
-  // They're in the same timezone.
-  if (startTz === endTz) { return `${startTime} - ${endDay}, ${endTime}`; }
-  // They're in different timezones. 
-  return `${startTime} ${startTz} - ${endDay}, ${endTime} ${endTz}`;
-}
