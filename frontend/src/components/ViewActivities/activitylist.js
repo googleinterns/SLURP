@@ -36,7 +36,6 @@ class ActivityList extends React.Component {
       let tripActivities = [];
       this.setState({days: []});
       querySnapshot.forEach(doc => {
-        console.log(doc.data());
         let data = doc.data();
         data['id'] = doc.id;
         data['tripId'] = tripId;
