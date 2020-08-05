@@ -108,3 +108,7 @@ test('getRefValue', () => {
   expect(activityFns.getRefValue(fakeRef, 'swimming')).toBe('parasailing!');
   expect(activityFns.getRefValue(fakeRef, 'swimming', 'jumping')).toBe('parasailing!');
 });
+
+test('displayTimes', () => {
+  // AAAAAAAAA TODO TESTS
+})
