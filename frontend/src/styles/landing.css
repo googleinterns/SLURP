@@ -1,3 +1,38 @@
+/* Place jumbotron in the center of the screen. */
+.jumbotron-landing {
+  /* Jumbotron is white with slight transparency. */
+  background-color: rgba(255, 255, 255, 0.8);
+  left: 50%;
+  padding: 3%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#title {
+  font-size: 10vh;
+  margin: 0;
+}
+
+#subtitle {
+  color: var(--SLURP-GRAY);
+  font-size: 3vh;
+  opacity: 50%;
+}
+
+#landing-description {
+  color: var(--SLURP-BLUE);
+  font-size: 2vh;
+  margin: 2em 0;
+}
+
+#logo-and-button {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
 #logo-landing {
-  height: 33vh;
+  width: 55%;
 }

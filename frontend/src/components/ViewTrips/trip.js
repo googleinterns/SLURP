@@ -62,7 +62,7 @@ const Trip = (props) => {
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
-    // Only set state collaboratorEmailsStr if component is mounted. This is
+    // Only set state `collaboratorEmailsStr` if component is mounted. This is
     // a precautionary to mitigate warnings that occur when setting state on
     // a component that has already unmounted. See more here
     // https://www.robinwieruch.de/react-warning-cant-call-setstate-on-an-unmounted-component.
@@ -78,6 +78,7 @@ const Trip = (props) => {
     }
 
     fetchCollaboratorEmails();
+    // cleanup function that prevents `collaboratorEmailsStr` from being set.
     return () => { componentStillMounted = false; };
   }, [collaboratorUidArr]);
 
