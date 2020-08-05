@@ -3,36 +3,13 @@ import React, {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 
 import authUtils from '../AuthUtils';
-import { timestampToISOString } from '../Utils/time.js';
+import { timestampToISOString, getDateRangeString } from '../Utils/time.js';
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 
 /**
- * Returns the string date range of the trip associated with the Trip document
- * data `tripObj`.
- *
- * Notes:
- *  - tripObj will always contain valid start_date and end_date fields.
- *  - When the Firestore Timestamps contained in `tripObj` converted to js
- *    dates, the months are 0 indexed rather than 1 indexed so they must be
- *    incremented by 1 in order for the month to be correct.
- *
- * @param {!firebase.firestore.DocumentData} tripData Object containing the
- *     fields and values for a Trip document.
- * @return {string} Date range of the trip.
- */
-export function getDateRange(tripData) {
-  const startDate = tripData.start_date.toDate();
-  const endDate = tripData.end_date.toDate();
-  return `${startDate.getMonth() + 1}/${startDate.getDate()}/`  +
-      `${startDate.getFullYear()} - ${endDate.getMonth() + 1}/` +
-      `${endDate.getDate()}/${endDate.getFullYear()}`;
-}
-
-/**
- * Returns an array with the same contents as `collaboratorEmailArr` except that
- * the current user email is moved to be the first element of the array (the
- * other elements maintain their original order).
+ * Return collaborator emails corresponding to the collaborator uid's
+ * `collaboratorUidArr` in a comma separated string.
  *
  * @param {!string[]} collaboratorEmailArr Array of user emails sorted in
  *     alphabetical order.
@@ -67,6 +44,8 @@ const Trip = (props) => {
   const name = props.tripData.name;
   const description = props.tripData.description;
   const destination = props.tripData.destination;
+  const startDateTimestamp = props.tripData.start_date;
+  const endDateTimestamp = props.tripData.end_date;
   const collaboratorUidArr = props.tripData.collaborators;
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
@@ -95,8 +74,8 @@ const Trip = (props) => {
     name:          name,
     description:   description,
     destination:   destination,
-    start_date:    timestampToISOString(props.tripData.start_date),
-    end_date:      timestampToISOString(props.tripData.end_date),
+    start_date:    timestampToISOString(startDateTimestamp),
+    end_date:      timestampToISOString(endDateTimestamp),
     collaborators: collaboratorEmailsStr.split(', ')
   };
 
@@ -104,7 +83,7 @@ const Trip = (props) => {
     <div>
       <h2>{name}</h2>
       <p>{destination}</p>
-      <p>{getDateRange(props.tripData)}</p>
+      <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
       <p>{description}</p>
       <p>{collaboratorEmailsStr}</p>
 
