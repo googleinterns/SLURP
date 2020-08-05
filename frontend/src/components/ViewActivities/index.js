@@ -8,7 +8,6 @@ import { firestore } from 'firebase';
 import { getCurUserUid } from '../AuthUtils';
 import * as ErrorComponents from '../Errors';
 import Header from '../Header';
-import * as cal from '../Calendar';
 
 const db = app.firestore();
 /**
