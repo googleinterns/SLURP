@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import { Accordion, Button, Card } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import authUtils from '../AuthUtils';
 import { timestampToISOString, getDateRangeString } from '../Utils/time.js';
 import DeleteTripButton from './delete-trip-button.js';
@@ -104,6 +105,7 @@ const Trip = (props) => {
       </Accordion.Toggle>
       <Accordion.Collapse eventKey={props.eventKey}>
         <Card.Body>
+          <FontAwesomeIcon icon={['fas', 'map-marker-alt']} />
           <p>{destination}</p>
           <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
           <p>{description}</p>

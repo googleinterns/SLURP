@@ -2,6 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { AuthProvider, PrivateRoute } from '../Auth';
 import { AuthUtilsConsumer } from '../AuthUtils';
+import '../IconLibrary';
 
 import LandingPage from '../Landing';
 import SignInPage from '../SignIn'
