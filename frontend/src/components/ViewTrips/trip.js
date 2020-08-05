@@ -6,6 +6,7 @@ import authUtils from '../AuthUtils';
 import { timestampToISOString, getDateRangeString } from '../Utils/time.js';
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
+import * as DB from '../../constants/database.js';
 
 /**
  * Return collaborator emails corresponding to the collaborator uid's
@@ -39,12 +40,13 @@ export function moveCurUserEmailToFront(collaboratorEmailArr) {
  *        created whenever this key is updated
  */
 const Trip = (props) => {
-  const name = props.tripData.name;
-  const description = props.tripData.description;
-  const destination = props.tripData.destination;
-  const startDateTimestamp = props.tripData.start_date;
-  const endDateTimestamp = props.tripData.end_date;
-  const collaboratorUidArr = props.tripData.collaborators;
+  // Unpack trip document data.
+  const title = props.tripData[DB.TRIPS_TITLE];
+  const description = props.tripData[DB.TRIPS_DESCRIPTION];
+  const destination = props.tripData[DB.TRIPS_DESTINATION];
+  const startDateTimestamp = props.tripData[DB.TRIPS_START_DATE];
+  const endDateTimestamp = props.tripData[DB.TRIPS_END_DATE];
+  const collaboratorUidArr = props.tripData[DB.TRIPS_COLLABORATORS];
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
@@ -68,18 +70,20 @@ const Trip = (props) => {
     return () => { componentStillMounted = false; };
   }, [collaboratorUidArr]);
 
+  // Re-package trip document data with correctly formatted data for the
+  // SaveTripModal component to use when filling out form input default values.
   const formattedTripData = {
-    name:          name,
-    description:   description,
-    destination:   destination,
-    start_date:    timestampToISOString(startDateTimestamp),
-    end_date:      timestampToISOString(endDateTimestamp),
-    collaborators: collaboratorEmailsStr.split(', ')
+    [DB.TRIPS_TITLE]: title,
+    [DB.TRIPS_DESCRIPTION]: description,
+    [DB.TRIPS_DESTINATION]: destination,
+    [DB.TRIPS_START_DATE]: timestampToISOString(startDateTimestamp),
+    [DB.TRIPS_END_DATE]: timestampToISOString(endDateTimestamp),
+    [DB.TRIPS_COLLABORATORS]: collaboratorEmailsStr.split(', '),
   };
 
   return (
     <div>
-      <h2>{name}</h2>
+      <h2>{title}</h2>
       <p>{destination}</p>
       <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
       <p>{description}</p>

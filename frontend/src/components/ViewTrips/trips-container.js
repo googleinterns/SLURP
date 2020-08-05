@@ -9,8 +9,8 @@ import Trip from './trip.js';
 const db = app.firestore();
 
 /**
- * Returns a `<div>` element with an error message. The error message `error`
- * will be logged but not seen by the user.
+ * Returns a `<div>` element with a predefined error message after logging the
+ * error message `error` obtained from `componentDidMount` catch statement.
  *
  * TODO(Issue #98): Turn this func into component and add to Errors directory.
  *
@@ -61,7 +61,7 @@ class TripsContainer extends React.Component {
     const curUserUid = authUtils.getCurUserUid();
     db.collection(DB.COLLECTION_TRIPS)
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
-        .orderBy(DB.TRIPS_CREATION_TIME, 'desc')
+        .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
           const tripsArr = querySnapshot.docs.map(doc =>
               ( <Trip
