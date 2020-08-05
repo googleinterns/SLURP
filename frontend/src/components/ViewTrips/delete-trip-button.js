@@ -2,6 +2,7 @@ import React from 'react';
 
 import app from '../Firebase/';
 import Button from 'react-bootstrap/Button';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import * as DB from '../../constants/database.js';
 
@@ -110,9 +111,10 @@ const DeleteTripsButton = (props) => {
   return (
     <Button
       type='button'
-      variant='primary'
-      onClick={() => deleteTrip(props.tripId)} >
-      Delete Trip
+      variant='link'
+      onClick={() => deleteTrip(props.tripId)}
+    >
+      <FontAwesomeIcon icon='trash' className='fa-icon'/>
     </Button>
   );
 }

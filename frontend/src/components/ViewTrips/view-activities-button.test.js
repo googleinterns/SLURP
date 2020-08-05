@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, getByRole } from '@testing-library/react';
 
 import ViewActivitiesButton from './view-activities-button.js';
 import { VIEW_ACTIVITIES } from '../../constants/routes.js';
@@ -15,8 +15,9 @@ jest.mock('react-router-dom', () => ({
 describe('SignInButton component', () => {
   test('Redirects to ViewActivities page on click', () => {
     const testTripId = 'abc123';
-    const { getByText } = render(<ViewActivitiesButton tripId={testTripId}/>);
-    fireEvent.click(getByText('View Activities!'));
+    const { getByRole } = render(<ViewActivitiesButton tripId={testTripId}/>);
+    fireEvent.click(getByRole('button'));
+
     expect(mockHistoryPush).toBeCalledWith(`${VIEW_ACTIVITIES}/${testTripId}`);
   })
 });
