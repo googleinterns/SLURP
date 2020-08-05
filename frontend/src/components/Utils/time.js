@@ -32,6 +32,21 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
   return moment.tz(parseFloat(msTimestamp), timezone).format('dddd, LL');
 }
 
+/**
+ * Format a timestamp (in milliseconds) into a pretty string with just the date, 
+ * not including the day of the week..
+ * Example: 'January 19, 1970'.
+ *
+ * @param {!number} msTimestamp Timestamp in milliseconds of desired date.
+ * @param {string} [timezone='America/New_York'] Timezone in which to convert.
+ * @return {string} Formatted time.
+ */
+export function timestampToLongDate(msTimestamp, timezone='America/New_York') {
+  // Formats from https://momentjs.com/docs/#/displaying/format/.
+  // LL = "January 19, 1970"
+  return moment.tz(parseFloat(msTimestamp), timezone).format('LL');
+}
+
 /** 
  * Format a timestamp (in milliseconds) into a pretty string.
  * Example: 'Monday, January 19, 1970 02:48 AM PST'.
