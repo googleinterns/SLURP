@@ -134,21 +134,21 @@ export function getRefValue(ref, ignoreValue='', defaultValue=null) {
  * @param {!ActivityInfo} activity The activity to display.
  * @return {string} The text to display.
  */
-function displayTimes(activity) { 
+export function displayTimes(activity) { 
   const startDay = time.timestampToLongDate(
-    utils.getField(activity, DB.ACTIVITIES_START_TIME)
+    getField(activity, DB.ACTIVITIES_START_TIME)
     );
   const endDay = time.timestampToLongDate(
-    utils.getField(activity, DB.ACTIVITIES_END_TIME)
+    getField(activity, DB.ACTIVITIES_END_TIME)
     );    
   const startTime = time.timestampToTimeFormatted(
-    utils.getField(activity, DB.ACTIVITIES_START_TIME)
+    getField(activity, DB.ACTIVITIES_START_TIME)
     );
   const endTime = time.timestampToTimeFormatted(
-    utils.getField(activity, DB.ACTIVITIES_END_TIME)
+    getField(activity, DB.ACTIVITIES_END_TIME)
     );
-  const startTz = utils.getField(activity, DB.ACTIVITIES_START_TZ);
-  const endTz = utils.getField(activity, DB.ACTIVITIES_END_TZ);
+  const startTz = getField(activity, DB.ACTIVITIES_START_TZ);
+  const endTz = getField(activity, DB.ACTIVITIES_END_TZ);
   // Start and end time are on the same day.
   if (startDay === endDay) {
     // They're in the same timezone.
