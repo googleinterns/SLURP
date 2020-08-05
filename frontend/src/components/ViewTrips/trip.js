@@ -35,8 +35,6 @@ export function moveCurUserEmailToFront(collaboratorEmailArr) {
  * - tripData: Object holding a Trip document fields and corresponding values.
  * - tripId: Document ID for the current Trip document.
  * - handleEditTrip: Handler that displays the edit trip modal.
- * - refreshTripsContainer: Handler that refreshes the TripsContainer
- *        component upon trip creation (Remove when fix Issue #62).
  * - key: Special React attribute that ensures a new Trip instance is
  *        created whenever this key is updated
  */
@@ -87,10 +85,7 @@ const Trip = (props) => {
       <p>{description}</p>
       <p>{collaboratorEmailsStr}</p>
 
-      <DeleteTripButton
-        tripId={props.tripId}
-        refreshTripsContainer={props.refreshTripsContainer}
-      />
+      <DeleteTripButton tripId={props.tripId} />
       <Button
         type='button'
         onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
