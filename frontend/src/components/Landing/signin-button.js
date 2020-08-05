@@ -17,8 +17,13 @@ const SignInButton = () => {
   }
 
   return (
-    <Button type='button' onClick={goToSignIn} variant='primary' size='lg'>
-      Sign In
+    <Button type='button'
+            onClick={goToSignIn}
+            variant='primary'
+            size='lg'
+            block
+    >
+      Go to SLURP
     </Button>
   );
 }

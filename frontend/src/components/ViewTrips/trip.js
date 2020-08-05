@@ -15,10 +15,10 @@ import * as DB from '../../constants/database.js';
  * @property {string} title The trips's title.
  * @property {string} description A description of the trip.
  * @property {string} destination The general destination of the trip.
- * @property {firebase.firestore.Timestamp} start_date Start date Firestore
- *     timestamp object.
- * @property {firebase.firestore.Timestamp} end_date End date Firestore
- *     timestamp object
+ * @property {firebase.firestore.Timestamp} start_date Start date
+ *     `Firestore.Timestamp` object.
+ * @property {firebase.firestore.Timestamp} end_date End date
+ *     `Firestore.Timestamp` object.
  * @property {!string[]} collaborators An array of collaborator uids.
  */
 
@@ -47,10 +47,12 @@ export function moveCurUserEmailToFront(collaboratorEmailArr) {
  * on the 'display' side.
  *
  * @property {Object} props These are the props for this component:
- * @property {TripData} props.tripData Object holding a Trip document data.
+ * @property {TripData} props.tripData Object holding the trip document data.
  * @property {string} props.tripId The document id associated with the trip.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
+ * @property {string} props.eventKey The React Bootstrap event key associated
+ *     with the trip Card component.
  */
 const Trip = (props) => {
   // Unpack trip document data.
@@ -63,7 +65,7 @@ const Trip = (props) => {
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
-    // Only set state collaboratorEmailsStr if component is mounted. This is
+    // Only set state `collaboratorEmailsStr` if component is mounted. This is
     // a precautionary to mitigate warnings that occur when setting state on
     // a component that has already unmounted. See more here
     // https://www.robinwieruch.de/react-warning-cant-call-setstate-on-an-unmounted-component.
@@ -79,12 +81,15 @@ const Trip = (props) => {
     }
 
     fetchCollaboratorEmails();
+    // cleanup function that prevents `collaboratorEmailsStr` from being set.
     return () => { componentStillMounted = false; };
   }, [collaboratorUidArr]);
 
-  // Re-package trip document data with correctly formatted data for the
-  // SaveTripModal component to use when filling out form input default values.
-  const formattedTripData = {
+  /**
+   * Re-package trip document data in the format of {@link_RawTripData}
+   * to pass to SaveTripModal when filling out form input default values.
+   */
+  const tripFormData = {
     [DB.TRIPS_TITLE]: title,
     [DB.TRIPS_DESCRIPTION]: description,
     [DB.TRIPS_DESTINATION]: destination,
@@ -109,7 +114,7 @@ const Trip = (props) => {
           <DeleteTripButton tripId={props.tripId} />
           <Button
             type='button'
-            onClick={() => props.handleEditTrip(props.tripId, formattedTripData)}
+            onClick={() => props.handleEditTrip(props.tripId, tripFormData)}
             variant='primary'
           >
             Edit
