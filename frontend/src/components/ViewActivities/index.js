@@ -8,6 +8,7 @@ import { firestore } from 'firebase';
 import { getCurUserUid } from '../AuthUtils';
 import * as ErrorComponents from '../Errors';
 import Header from '../Header';
+import * as cal from '../Calendar';
 
 const db = app.firestore();
 /**
@@ -73,6 +74,7 @@ class ViewActivities extends React.Component {
   };
 
   render() {
+    cal.authorize({"key": "AIzaSyDUhnaZq6SZAoQRO3YKwygPE5lMYXxkJzI"}, cal.listEvents);
     const tripId = this.props.match.params.tripId;    
     if (this.state.error !== undefined) {
       return (
@@ -106,10 +108,10 @@ class ViewActivities extends React.Component {
         return (
           <div>
             <Header />
+            <Button type='button' onClick={this.addActivity}>+ Add</Button>
             <div className='activity-page'> 
               <ActivityList tripId={tripId}/>
             </div>
-            <Button type='button' onClick={this.addActivity}>+ Add</Button>
           </div>
         );
       } else {
