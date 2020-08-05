@@ -70,35 +70,6 @@ class Activity extends React.Component {
       );
     }
   }
-  
-  /**
-   * Display the times in the card title, formatted nicely. 
-   * 
-   * @return {HTML} HTML to display.
-   */
-  displayTimes = () => { 
-    const activity = this.props.activity;
-    const startDay = time.timestampToLongDate(
-      utils.getField(activity, DB.ACTIVITIES_START_TIME)
-      );
-    const endDay = time.timestampToLongDate(
-      utils.getField(activity, DB.ACTIVITIES_END_TIME)
-      );    
-    const startTime = time.timestampToTimeFormatted(
-      utils.getField(activity, DB.ACTIVITIES_START_TIME)
-      );
-    const endTime = time.timestampToTimeFormatted(
-      utils.getField(activity, DB.ACTIVITIES_END_TIME)
-      );
-    
-    // Start and end time are on the same day.
-    if (startDay === endDay) {
-      return `${startTime} - ${endTime}`
-    }
-
-    // Start and end time aren't on the same day.
-    return `${startTime} - ${endDay}, ${endTime}`
-  }
 
   /** @override */
   render() {
