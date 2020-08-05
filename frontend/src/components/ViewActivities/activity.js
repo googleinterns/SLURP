@@ -79,7 +79,7 @@ class Activity extends React.Component {
         <Card>
           <Accordion.Toggle as={Card.Header} eventKey='0'>
             <h5>{activity[DB.ACTIVITIES_TITLE]}</h5>
-            <p>{this.displayTimes(activity)}</p>
+            <p>{utils.displayTimes(activity)}</p>
           </Accordion.Toggle>
           <Accordion.Collapse eventKey='0' className={'view-activity' + (this.state.editing? ' edit': '')}>
             { this.displayCard() }

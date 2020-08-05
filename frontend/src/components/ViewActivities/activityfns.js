@@ -129,12 +129,12 @@ export function getRefValue(ref, ignoreValue='', defaultValue=null) {
 }
   
 /**
- * Pretty format start and end times/days 
+ * Pretty format start and end times/days.
  * 
- * @return {HTML} HTML to display.
+ * @param {!ActivityInfo} activity The activity to display.
+ * @return {string} The text to display.
  */
-displayTimes = () => { 
-  const activity = this.props.activity;
+function displayTimes(activity) { 
   const startDay = time.timestampToLongDate(
     utils.getField(activity, DB.ACTIVITIES_START_TIME)
     );
