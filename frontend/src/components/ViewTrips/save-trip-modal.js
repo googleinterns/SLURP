@@ -110,13 +110,17 @@ class SaveTripModal extends React.Component {
    * Updates an existing Trip document with id `tripId` in firestore with the
    * data in `tripData`.
    *
+   * Note: The `merge` field of the `SetOptions` parameter to `set()` is set to
+   * true in order to prevent overwriting any other fields in a trip document
+   * such as the activities sub-collection, creation time, etc.
+   *
    * @param {!string} tripId The document ID of the trip that is updated.
    * @param {!TripData} tripData Data object the new trip document will contain.
    */
   updateExistingTrip(tripId, tripData) {
     db.collection(DB.COLLECTION_TRIPS)
         .doc(tripId)
-        .set(tripData)
+        .set(tripData, { merge: true })
         .then(() => {
           console.log('Document written with ID: ', tripId);
         })

@@ -4,9 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from 'react-bootstrap/Button';
 
 /**
- * @typedef { DefaultFormData } FormattedTripData
- * {@link FormattedTripData} is an alias for the `typedef`
- * {@link DefaultFormData} defined in `ViewTrips/save-trip-modal.js`.
+ * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
  */
 
 /**
@@ -14,9 +12,8 @@ import Button from 'react-bootstrap/Button';
  *
  * @property {Object} props These are the props for this component:
  * @property {string} props.tripId The document id associated with the trip.
- * @property {FormattedTripData} props.formattedTripData Re-packaged trip
- *     document data that holds the formatted data for the `SaveTripModal` form
- *     input default values.
+ * @property {RawTripData} props.tripFormData Re-package trip document
+ *     data to pass to SaveTripModal when for filling form input default values.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
  */
@@ -25,7 +22,7 @@ const EditTripButton = (props) => {
     <Button
       type='button'
       variant='link'
-      onClick={() => props.handleEditTrip(props.tripId, props.formattedTripData)}
+      onClick={() => props.handleEditTrip(props.tripId, props.tripFormData)}
     >
       <FontAwesomeIcon icon='edit' className='fa-icon'/>
     </Button>
