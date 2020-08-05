@@ -7,6 +7,7 @@ import authUtils from '../AuthUtils';
 import * as DB from '../../constants/database.js';
 import Trip from './trip.js';
 import { getCollaboratorField } from './trip-utils.js';
+import TripView from '../../constants/trip-view';
 
 /**
  * {@link TripView} defined originally in `constants/trip-view.js`.
@@ -50,11 +51,16 @@ class TripsContainer extends React.Component {
   /** @override */
   constructor(props) {
     super(props);
-    this.state = {tripsContainer: []};
+    this.state = { tripsContainer: [],
+                   acceptedTrips: [],
+                   pendingTrips: [],
+                   rejectedTrips: [],
+                   finishedListenerCreation: false };
   }
 
+
   /**
-   * When the TripsContainer is updated, a listener is attached to the QuerySnapshot
+   * When the TripsContainer mounts, a listener is attached to the QuerySnapshot
    * event that grabs all trip documents where the current user uid is contained
    * in the collaborator uid array corresponding to `this.props.tripView`.
    * This allows real-time updates for all collaborators on a trip whenever a
@@ -65,29 +71,66 @@ class TripsContainer extends React.Component {
    *
    * @override
    */
-  async componentDidUpdate() {
+  componentDidMount() {
     const curUserUid = authUtils.getCurUserUid();
-    const collaboratorField = getCollaboratorField(this.props.tripView);
-    db.collection(DB.COLLECTION_TRIPS)
-        .where(collaboratorField, 'array-contains', curUserUid)
-        .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
-        .onSnapshot(querySnapshot => {
-          const tripsArr = querySnapshot.docs.map((doc, idx) =>
-              ( <Trip
-                  tripData={doc.data()}
-                  tripId={doc.id}
-                  handleEditTrip={this.props.handleEditTrip}
-                  eventKey={String(idx)}
-                  key={doc.id}
-                />
-              )
-          );
+    const tripViewArr = [TripView.ACTIVE, TripView.PENDING, TripView.REJECTED];
 
-          this.setState({ tripsContainer: tripsArr });
-        }, (error) => {
-          const errorElement = getErrorElement(error);
-          this.setState({ tripsContainer: errorElement });
-        });
+    for (let tripView of tripViewArr) {
+      const collaboratorField = getCollaboratorField(tripView);
+      const tripViewTripsState = tripView === TripView.ACTIVE ? 'acceptedTrips' :
+                                 tripView === TripView.PENDING ? 'pendingTrips' :
+                                                                 'rejectedTrips';
+
+      db.collection(DB.COLLECTION_TRIPS)
+          .where(collaboratorField, 'array-contains', curUserUid)
+          .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
+          .onSnapshot(querySnapshot => {
+            const tripsArr = querySnapshot.docs.map((doc, idx) =>
+                ( <Trip
+                    tripData={doc.data()}
+                    tripId={doc.id}
+                    handleEditTrip={this.props.handleEditTrip}
+                    eventKey={String(idx)}
+                    key={doc.id}
+                  />
+                )
+            );
+
+            this.setState({ [tripViewTripsState]: tripsArr });
+          }, (error) => {
+            const errorElement = getErrorElement(error);
+            this.setState({ tripsContainer: errorElement });
+          });
+    }
+  }
+
+  // Checks to make sure tripsContainer does not contain error element and
+  // that the tripView state has changed since last update.
+  componentDidUpdate(prevProps) {
+    const tripsQuerySuccessful = Array.isArray(this.state.tripsContainer);
+    const tripViewChanged = prevProps.tripView !== this.props.tripView
+    if (tripsQuerySuccessful && (tripViewChanged ||
+                                 !this.state.finishedListenerCreation)) {
+      if (!this.setState.finishedListenerCreation) {
+        this.setState({ finishedListenerCreation: true });
+      }
+
+      switch(this.props.tripView) {
+        case TripView.ACTIVE:
+          this.setState({ tripsContainer: this.state.acceptedTrips });
+          break;
+        case TripView.PENDING:
+          this.setState({ tripsContainer: this.state.pendingTrips });
+          break;
+        case TripView.REJECTED:
+          this.setState({ tripsContainer: this.state.rejectedTrips });
+          break;
+        default:
+          console.error(`Trip view of ${this.props.tripView} was unexpected.
+                          Setting trips container to include accepted trips.`);
+          this.setState({ tripsContainer: this.state.acceptedTrips });
+      }
+    }
   }
 
   /** @override */
