@@ -62,15 +62,21 @@ export function locationElementFormGroup(controlId, formLabel, dropdown) {
  * @returns {HTML} A FormGroup for date, time, and timezone.
  */
 export function dateTimeTzFormGroup(controlId, formLabel, dateRef,
-  dateDefault, timeRef, timeDefault, tzpicker) {
+  dateDefault, timeRef, timeDefault, tzpicker, onChangeDate=null, key=null ) {
   return (
-    <Form.Group as={Row} controlId={controlId}>
+  <Form.Group as={Row} controlId={controlId} key={key}>
       <Col sm={TITLEWIDTH}><Form.Label>{formLabel}</Form.Label></Col>
       <Col sm={DATEWIDTH}>
-        <Form.Control type='date' label='date' ref={dateRef} defaultValue={dateDefault}/>
+        <Form.Control 
+          type='date' 
+          label='date' 
+          ref={dateRef} 
+          onChange={onChangeDate} 
+          defaultValue={dateDefault}
+          />
       </Col>
       <Col sm={TIMEWIDTH}>
-        <Form.Control type='time' label='time' ref={timeRef}
+        <Form.Control type='time' label='time' ref={timeRef} 
           defaultValue={timeDefault}/>
       </Col>
       <Col sm={TZPICKERWIDTH}>{tzpicker}</Col>
