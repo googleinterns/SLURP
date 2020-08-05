@@ -114,8 +114,8 @@ class SaveTripModal extends React.Component {
   /**
    * Formats/cleans the form data and saves the Trip document in firestore.
    */
-  saveTrip() {
-    const tripData = formatTripData(
+  saveTrip = async () => {
+    const tripData = await formatTripData(
         {
           name: this.nameRef.current.value,
           description: this.descriptionRef.current.value,
@@ -141,8 +141,8 @@ class SaveTripModal extends React.Component {
    *  - Refreshing the trips container.
    *  - Closing the modal.
    */
-  handleSubmitForm = () => {
-    this.saveTrip();
+  handleSubmitForm = async () => {
+    await this.saveTrip();
     this.props.refreshTripsContainer();
     this.props.handleClose();
   }
