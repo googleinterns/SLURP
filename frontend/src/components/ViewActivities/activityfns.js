@@ -62,10 +62,8 @@ export function sortByDate(tripActivities) {
       activities.set(dateKey, new Set([activity]));
     }
   }
-
   // Sort activities by date.
   let activitiesSorted = Array.from(activities).sort(compareActivities);
-  
   return activitiesSorted;
 }
 

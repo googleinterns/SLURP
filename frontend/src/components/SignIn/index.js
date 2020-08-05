@@ -1,12 +1,14 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { AuthContext } from '../Auth';
 
 import * as firebase from 'firebase/app';
 import app from '../Firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 
+import { AuthContext } from '../Auth';
 import { VIEW_TRIPS } from '../../constants/routes.js';
+import '../../styles/signin.css';
 
 // Configure FirebaseUI.
 const uiConfig = {
@@ -52,9 +54,11 @@ class SignIn extends React.Component {
     }
 
     return (
-      <div>
-        <h1>Please sign in:</h1>
-          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={app.auth()}/>
+      <div className='hero-image'>
+        <Jumbotron className='jumbotron-signin'>
+          <h1 id='signin-text'>Please sign in:</h1>
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={app.auth()}/>
+        </Jumbotron>
       </div>
     );
   }
