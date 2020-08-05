@@ -1,6 +1,7 @@
 import React from 'react';
 
 import app from '../Firebase/';
+import Accordion from 'react-bootstrap/Accordion';
 
 import authUtils from '../AuthUtils';
 import * as DB from '../../constants/database.js';
@@ -64,11 +65,12 @@ class TripsContainer extends React.Component {
         .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
         .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
-          const tripsArr = querySnapshot.docs.map(doc =>
+          const tripsArr = querySnapshot.docs.map((doc, idx) =>
               ( <Trip
                   tripData={doc.data()}
                   tripId={doc.id}
                   handleEditTrip={this.props.handleEditTrip}
+                  eventKey={String(idx)} // Event key must be string
                   key={doc.id}
                 />
               )
@@ -84,7 +86,9 @@ class TripsContainer extends React.Component {
   /** @override */
   render() {
     return (
-      <div>{this.state.tripsContainer}</div>
+      <Accordion defaultActiveKey="0">
+        {this.state.tripsContainer}
+      </Accordion>
     );
   }
 }

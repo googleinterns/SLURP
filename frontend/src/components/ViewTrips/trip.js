@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import Button from 'react-bootstrap/Button';
+import { Accordion, Button, Card } from 'react-bootstrap';
 
 import authUtils from '../AuthUtils';
 import { timestampToISOString, getDateRangeString } from '../Utils/time.js';
@@ -50,6 +50,8 @@ export function moveCurUserEmailToFront(collaboratorEmailArr) {
  * @property {string} props.tripId The document id associated with the trip.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
+ * @property {string} props.eventKey The React Bootstrap event key associated
+ *     with the trip Card component.
  */
 const Trip = (props) => {
   // Unpack trip document data.
@@ -96,23 +98,29 @@ const Trip = (props) => {
   };
 
   return (
-    <div>
-      <h2>{title}</h2>
-      <p>{destination}</p>
-      <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
-      <p>{description}</p>
-      <p>{collaboratorEmailsStr}</p>
+    <Card>
+      <Accordion.Toggle as={Card.Header} eventKey={props.eventKey}>
+        <h4>{title}</h4>
+      </Accordion.Toggle>
+      <Accordion.Collapse eventKey={props.eventKey}>
+        <Card.Body>
+          <p>{destination}</p>
+          <p>{getDateRangeString(startDateTimestamp, endDateTimestamp)}</p>
+          <p>{description}</p>
+          <p>{collaboratorEmailsStr}</p>
 
-      <DeleteTripButton tripId={props.tripId} />
-      <Button
-        type='button'
-        onClick={() => props.handleEditTrip(props.tripId, tripFormData)}
-        variant='primary'
-      >
-        Edit
-      </Button>
-      <ViewActivitiesButton tripId={props.tripId} />
-    </div>
+          <DeleteTripButton tripId={props.tripId} />
+          <Button
+            type='button'
+            onClick={() => props.handleEditTrip(props.tripId, tripFormData)}
+            variant='primary'
+          >
+            Edit
+          </Button>
+          <ViewActivitiesButton tripId={props.tripId} />
+        </Card.Body>
+      </Accordion.Collapse>
+    </Card>
   );
 };
 
