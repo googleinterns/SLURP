@@ -73,7 +73,6 @@ class ViewActivities extends React.Component {
   };
 
   render() {
-    cal.authorize({"key": "AIzaSyDUhnaZq6SZAoQRO3YKwygPE5lMYXxkJzI"}, cal.listEvents);
     const tripId = this.props.match.params.tripId;    
     if (this.state.error !== undefined) {
       return (
