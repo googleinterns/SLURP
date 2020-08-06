@@ -28,9 +28,11 @@ const db = app.firestore();
  */
 const ChangeCollabTypeButton = (props) => {
   /**
-   *
+   * Updates the collaborator fields by moving the current user uid from
+   * the uid arr corresponding to `props.curCollabField` to uid arr
+   * corresponding to `props.newCollabField`.
    */
-  function getNewCollabUidArrObj() {
+  function getUpdatedCollabUidArrObj() {
     const curUserUid = authUtils.getCurUserUid();
     let curCollabUidSet = new Set(props.tripData[props.curCollabField]);
     curCollabUidSet.delete(curUserUid);
@@ -46,10 +48,11 @@ const ChangeCollabTypeButton = (props) => {
   }
 
   /**
-   *
+   * Gets the updated collaborator fields and then updates those fields in
+   * the trip document.
    */
   function changeUserCollabType() {
-    const collabData = getNewCollabUidArrObj();
+    const collabData = getUpdatedCollabUidArrObj();
 
     db.collection(DB.COLLECTION_TRIPS)
         .doc(props.tripId)
