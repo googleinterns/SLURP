@@ -158,8 +158,8 @@ const Trip = (props) => {
                 ? <ChangeCollabTypeButton
                     tripId={props.tripId}
                     tripData={props.tripData}
-                    curCollabType={getCollaboratorField(props.tripView)}
-                    newCollabType={getCollaboratorField(TripView.ACTIVE)}
+                    curCollabField={getCollaboratorField(props.tripView)}
+                    newCollabField={getCollaboratorField(TripView.ACTIVE)}
                     text={'Accept'}
                   />
                 : null
@@ -168,8 +168,8 @@ const Trip = (props) => {
                 ? <ChangeCollabTypeButton
                     tripId={props.tripId}
                     tripData={props.tripData}
-                    curCollabType={getCollaboratorField(props.tripView)}
-                    newCollabType={getCollaboratorField(TripView.REJECTED)}
+                    curCollabField={getCollaboratorField(props.tripView)}
+                    newCollabField={getCollaboratorField(TripView.REJECTED)}
                     text={'Reject'}
                   />
                 : null

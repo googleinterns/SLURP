@@ -18,10 +18,12 @@ const db = app.firestore();
  * @property {Object} props These are the props for this component:
  * @property {string} props.tripId The document id associated with the trip.
  * @property {TripData} props.tripData The current trip document data.
- * @property {string} props.curCollabType The current collaborator type of the
- *     user for the trip specified by `props.tripId`.
- * @property {string} props.newCollabType The collaborator type that the user
- *     is changed to (for the trip) once the button is pressed.
+ * @property {string} props.curCollabField The collab uid arr field that the
+ *     current collaborator uid is an element of in the trip with id
+ *     `props.tripId`.
+ * @property {string} props.newCollabField The collab uid arr field that the
+ *     current collaborator uid is added to (in trip with id `props.tripId`)
+ *     once the button is presssed.
  * @property {string} props.text The inner text of the button.
  */
 const ChangeCollabTypeButton = (props) => {
@@ -30,14 +32,16 @@ const ChangeCollabTypeButton = (props) => {
    */
   function getNewCollabUidArrObj() {
     const curUserUid = authUtils.getCurUserUid();
-    let curCollabUidSet = new Set(props.tripData[props.curCollabType]);
+    let curCollabUidSet = new Set(props.tripData[props.curCollabField]);
     curCollabUidSet.delete(curUserUid);
     let curCollabUidArr = Array.from(curCollabUidSet);
 
-    let newCollabUidArr = props.tripData[props.newCollabType].push(curUserUid);
+    let newCollabUidSet = new Set(props.tripData[props.newCollabField]);
+    newCollabUidSet.add(curUserUid);
+    let newCollabUidArr = Array.from(newCollabUidSet);
 
-    return { [props.curCollabType]: curCollabUidArr,
-             [props.newCollabType]: newCollabUidArr
+    return { [props.curCollabField]: curCollabUidArr,
+             [props.newCollabField]: newCollabUidArr
            };
   }
 
