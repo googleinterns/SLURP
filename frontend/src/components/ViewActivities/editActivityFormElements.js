@@ -83,7 +83,7 @@ export function dateTimeTzFormGroup(controlId, formLabel, dateRef,
  * 
  * @param {string} controlId FormGroup's control ID. 
  * @param {string} formLabel Label of the field for this FormGroup. 
- * @param {ref} ref The input's reference.
+ * @param {React.RefObject} ref The input's reference.
  * @param {function} onChange The function to call onChange.
  * @param {boolean} defaultValue The default value of the checkbox (true for checked).
  * @return {HTML} A FormGroup with the checkbox.
