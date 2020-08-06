@@ -94,7 +94,7 @@ class ViewActivities extends React.Component {
       return <div><ErrorComponents.ErrorTripNotFound /></div>;
     }
     else {
-      if (!this.state.addingActivity) {S
+      if (!this.state.addingActivity) {
         return (
           <div>
             <Button type='button' onClick={this.addActivity}>Add Activity</Button>
