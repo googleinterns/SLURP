@@ -7,6 +7,7 @@ import * as DB from '../../constants/database.js';
 import { firestore } from 'firebase';
 import { getCurUserUid } from '../AuthUtils';
 import * as ErrorComponents from '../Errors';
+import Header from '../Header';
 
 const db = app.firestore();
 /**
@@ -74,24 +75,37 @@ class ViewActivities extends React.Component {
   render() {
     const tripId = this.props.match.params.tripId;
     if (this.state.error !== undefined) {
-      return <div><ErrorComponents.ErrorGeneral /></div>;
+      return (
+        <div>
+          <ErrorComponents.ErrorGeneral />
+        </div>
+      );
     }
     // Case where the trip details are still being fetched.
     if (this.state.isLoading) {
       // TODO (Issue #25): Please remember to make this a blank div in the
       // deployed build lol.
-      return <div>Loading Part 2: Electric Boogaloo</div>;
+      return (
+        <div>
+          Loading Part 2: Electric Boogaloo
+        </div>
+      );
     }
     // Case where the trip could not be found or the current user is not
     // authorized to view the trip.
     else if (this.state.collaborators === undefined ||
              !this.state.collaborators.includes(getCurUserUid())) {
-      return <div><ErrorComponents.ErrorTripNotFound /></div>;
+      return (
+        <div>
+          <ErrorComponents.ErrorTripNotFound />
+        </div>
+      );
     }
     else {
       if (!this.state.addingActivity) {
         return (
           <div>
+            <Header />
             <div className='activity-page'>
               <ActivityList tripId={tripId}/>
             </div>

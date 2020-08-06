@@ -79,6 +79,14 @@ describe('moveCurUserEmailToFront tests', () => {
     expect(testEmailOutputArr).toEqual(expectedEmailArr);
   });
 
+  /**
+   * The collaborator emails are returned in alphabetical order from
+   * `getUserEmailArrFromUserUidArr` in `AuthUtils` so this test sets up a
+   * similar situation to a common case for function in "production". In terms
+   * of alphabetization in this test, all that this function needs to ensure is
+   * that the current user is moved to the front and the other elements in the
+   * array maintain their original order.
+   */
   test('Current user between two others (alphabetical order)', () => {
     const expectedEmailArr = [mockCurUserEmail, USER_A_EMAIL, USER_Z_EMAIL];
     const testEmailInputArr = [USER_A_EMAIL, mockCurUserEmail, USER_Z_EMAIL];

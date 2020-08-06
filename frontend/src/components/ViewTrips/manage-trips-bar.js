@@ -20,6 +20,27 @@ const ManageTripsBar = (props) => {
   const pending = TripView.PENDING;
   const rejected = TripView.REJECTED;
 
+  /**
+   * Returns a React Bootstrap `Nav.Item` to be placed in the `Nav` element
+   * of the ManageTripsBar component.
+   *
+   * @param {string} innerText Inner text of the `Nav.Link` element.
+   * @param {TripView} tripView The trip view associated with the `Nav.Item`.
+   * @return {JSX.Element} `Nav.Item` element for trip view `Nav` bar.
+   */
+  function createTripViewNavItem(innerText, tripView) {
+    return (
+      <Nav.Item>
+        <Nav.Link
+          eventKey={tripView}
+          onSelect={() => props.handleChangeView(tripView)}
+        >
+          {innerText}
+        </Nav.Link>
+      </Nav.Item>
+    )
+  }
+
   return (
     <Row>
       <Col md={10} sm={9} xs={8}>
@@ -28,30 +49,9 @@ const ManageTripsBar = (props) => {
           activeKey={props.tripView}
           defaultActiveKey={active}
         >
-          <Nav.Item>
-            <Nav.Link
-              eventKey={active}
-              onSelect={() => props.handleChangeView(active)}
-            >
-              Active
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              eventKey={pending}
-              onSelect={() => props.handleChangeView(pending)}
-            >
-              Pending
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              eventKey={rejected}
-              onSelect={() => props.handleChangeView(rejected)}
-            >
-              Rejected
-            </Nav.Link>
-          </Nav.Item>
+          {createTripViewNavItem('Active', active)}
+          {createTripViewNavItem('Pending', pending)}
+          {createTripViewNavItem('Rejected', rejected)}
         </Nav>
       </Col>
       <Col md={2} sm={3} xs={4}>
