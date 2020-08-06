@@ -1,7 +1,7 @@
 import * as firebase from 'firebase/app';
 
 import authUtils from '../AuthUtils';
-import { getTimestampFromISODateString } from './time.js'
+import { getTimestampFromISODateString } from '../Utils/time.js'
 import * as DB from '../../constants/database.js';
 
 /**

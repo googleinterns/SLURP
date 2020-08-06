@@ -1,4 +1,4 @@
-import { getCleanedTextInput, getCollaboratorUidArray }  from './filter-input.js';
+import { getCleanedTextInput, getCollaboratorUidArray }  from './trip-utils.js';
 
 describe('getCleanedTextInput tests', () => {
   test('No input entered in form (empty string)', () => {
