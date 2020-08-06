@@ -44,7 +44,7 @@ function getErrorElement(error) {
  * @property {Object} props These are the props for this component:
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
- * @property {TripView} props.tripView ...
+ * @property {TripView} props.tripView The current user's trips page view.
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
@@ -85,23 +85,31 @@ class TripsContainer extends React.Component {
           .where(collaboratorField, 'array-contains', curUserUid)
           .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
           .onSnapshot(querySnapshot => {
-            const tripsArr = querySnapshot.docs.map((doc, idx) =>
-                ( <Trip
-                    tripData={doc.data()}
-                    tripId={doc.id}
-                    handleEditTrip={this.props.handleEditTrip}
-                    eventKey={String(idx)}
-                    key={doc.id}
-                  />
-                )
-            );
+            const tripDocsArr = querySnapshot.docs;
 
-            this.setState({ [tripViewTripsState]: tripsArr });
+            this.setState({ [tripViewTripsState]: tripDocsArr });
           }, (error) => {
             const errorElement = getErrorElement(error);
             this.setState({ tripsContainer: errorElement });
           });
     }
+  }
+
+  /**
+   *
+   */
+  getTripArr = (tripDocs) => {
+    return tripDocs.map((doc, idx) =>
+          ( <Trip
+              tripData={doc.data()}
+              tripId={doc.id}
+              handleEditTrip={this.props.handleEditTrip}
+              tripView={this.props.tripView}
+              eventKey={String(idx)}
+              key={doc.id}
+            />
+          )
+        );
   }
 
   // Checks to make sure tripsContainer does not contain error element and
@@ -117,13 +125,16 @@ class TripsContainer extends React.Component {
 
       switch(this.props.tripView) {
         case TripView.ACTIVE:
-          this.setState({ tripsContainer: this.state.acceptedTrips });
+          this.setState({ tripsContainer:
+                              this.getTripArr(this.state.acceptedTrips) });
           break;
         case TripView.PENDING:
-          this.setState({ tripsContainer: this.state.pendingTrips });
+          this.setState({ tripsContainer:
+                              this.getTripArr(this.state.pendingTrips) });
           break;
         case TripView.REJECTED:
-          this.setState({ tripsContainer: this.state.rejectedTrips });
+          this.setState({ tripsContainer:
+                              this.getTripArr(this.state.rejectedTrips) });
           break;
         default:
           console.error(`Trip view of ${this.props.tripView} was unexpected.
