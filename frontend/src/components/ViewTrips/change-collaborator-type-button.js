@@ -42,9 +42,10 @@ const ChangeCollabTypeButton = (props) => {
     newCollabUidSet.add(curUserUid);
     let newCollabUidArr = Array.from(newCollabUidSet);
 
-    return { [props.curCollabField]: curCollabUidArr,
-             [props.newCollabField]: newCollabUidArr
-           };
+    return {
+      [props.curCollabField]: curCollabUidArr,
+      [props.newCollabField]: newCollabUidArr
+    };
   }
 
   /**
