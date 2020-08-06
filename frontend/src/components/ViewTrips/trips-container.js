@@ -48,7 +48,18 @@ function getErrorElement(error) {
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
-  /** @override */
+  /**
+   * - `tripsContainer` holds the current trips to be displayed on the
+   * view trips page.
+   * - `...Trips` holds the trips where the user is a collaborator of that
+   * type (e.g. accepted trips holds all trips where user uid is contained
+   * within the field `accepted_collaborator_uid_arr`)
+   * - `tripsArrsUpdated` determines whether or not `tripsContainer` should
+   * be updated in `componentDidUpdate` based on new trip data pulled from the
+   * listeners created in `componentDidMount`
+   *
+   * @override
+   */
   constructor(props) {
     super(props);
     this.state = { tripsContainer: [],
@@ -98,7 +109,7 @@ class TripsContainer extends React.Component {
 
             this.setState({ [tripViewTripsState]: tripsArr,
                             tripArrsUpdated: true
-                          }, this.componentDidUpdate);
+                          });
           }, (error) => {
             const errorElement = getErrorElement(error);
             this.setState({ tripsContainer: errorElement });
@@ -108,6 +119,16 @@ class TripsContainer extends React.Component {
 
   // Checks to make sure tripsContainer does not contain error element and
   // that the tripView state has changed since last update.
+  /**
+   * Updates `tripContainer` state if the following conditions are met:
+   * - The trips query did not produce an error
+   * - The trip view (tab) changed  OR  one of the trip array states
+   * (e.g. acceptedTrips state) was updated from the listeners created in
+   * `componentDidMount`.
+   *
+   * @param {Object} prevProps The components props prior to the current update.
+   * @override
+   */
   componentDidUpdate(prevProps) {
     const tripsQuerySuccessful = Array.isArray(this.state.tripsContainer);
     let tripViewChanged = true;
