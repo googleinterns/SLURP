@@ -69,8 +69,10 @@ class SaveTripModal extends React.Component {
         this.props.tripData[DB.TRIPS_ACCEPTED_COLLABS].concat(
         this.props.tripData[DB.TRIPS_PENDING_COLLABS]);
 
-    this.state = { collaboratorsRefArr: this.getInitialCollaboratorsRefArr(),
-                   collaboratorEmailArr: [] }
+    this.state = {
+      collaboratorsRefArr: this.getInitialCollaboratorsRefArr(),
+      collaboratorEmailArr: []
+    }
   }
 
   /**
