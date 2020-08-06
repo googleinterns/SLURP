@@ -5,12 +5,18 @@ import { Accordion, Card, Col, Container, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import authUtils from '../AuthUtils';
 import { getDateRangeString } from "../Utils/time.js";
-import { moveCurUserEmailToFront } from "./trip-utils.js";
+import { moveCurUserEmailToFront, getCollaboratorField } from "./trip-utils.js";
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 import EditTripButton from './edit-trip-button.js';
+import ChangeCollabTypeButton from './change-collaborator-type-button.js';
 import * as DB from '../../constants/database.js';
 import '../../styles/trips.css';
+import TripView from '../../constants/trip-view';
+
+/**
+ * {@link TripView} defined originally in `constants/trip-view.js`.
+ */
 
 /**
  * A trip object containing the data stored in a trip document in Firestore.
@@ -68,6 +74,8 @@ function getTripInfoRow(rowText, icon) {
  * @property {string} props.tripId The document id associated with the trip.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
+ * @property {TripView} props.tripView The current user's trips page view.
+ * @property {string} props.eventKey ...
  */
 const Trip = (props) => {
   // Unpack trip document data.
@@ -79,6 +87,10 @@ const Trip = (props) => {
   const collaboratorUidArr = props.tripData[DB.TRIPS_ACCEPTED_COLLABS].concat(
                                  props.tripData[DB.TRIPS_PENDING_COLLABS]);
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
+
+  // Determine whether or not the current trips view is the active collaborator
+  // on the current trip.
+  const isActiveCollab = props.tripView === TripView.ACTIVE;
 
   useEffect(() => {
     // Only set state collaboratorEmailsStr if component is mounted. This is
@@ -120,19 +132,48 @@ const Trip = (props) => {
               </Col>
               <Col xs={1}>
                 <Row>
-                  <DeleteTripButton tripId={props.tripId} />
+                  <DeleteTripButton
+                    tripId={props.tripId}
+                    canModifyTrip ={isActiveCollab}
+                  />
                 </Row>
                 <Row>
                   <EditTripButton
                     tripId={props.tripId}
                     tripData={props.tripData}
                     handleEditTrip={props.handleEditTrip}
+                    canModifyTrip ={isActiveCollab}
                   />
                 </Row>
                 <Row>
-                  <ViewActivitiesButton tripId={props.tripId} />
+                  <ViewActivitiesButton
+                    tripId={props.tripId}
+                    canModifyTrip ={isActiveCollab}
+                  />
                 </Row>
               </Col>
+            </Row>
+            <Row>
+              {!isActiveCollab
+                ? <ChangeCollabTypeButton
+                    tripId={props.tripId}
+                    tripData={props.tripData}
+                    curCollabType={getCollaboratorField(props.tripView)}
+                    newCollabType={getCollaboratorField(TripView.ACTIVE)}
+                    text={'Accept'}
+                  />
+                : null
+              }
+              {props.tripView === TripView.PENDING
+                ? <ChangeCollabTypeButton
+                    tripId={props.tripId}
+                    tripData={props.tripData}
+                    curCollabType={getCollaboratorField(props.tripView)}
+                    newCollabType={getCollaboratorField(TripView.REJECTED)}
+                    text={'Reject'}
+                  />
+                : null
+              }
             </Row>
           </Container>
         </Card.Body>
