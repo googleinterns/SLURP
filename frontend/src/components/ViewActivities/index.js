@@ -94,10 +94,10 @@ class ViewActivities extends React.Component {
       return <div><ErrorComponents.ErrorTripNotFound /></div>;
     }
     else {
-      if (!this.state.addingActivity) {
+      if (!this.state.addingActivity) {S
         return (
           <div>
-            <Button type='button' onClick={this.addActivity}>+ Add</Button>
+            <Button type='button' onClick={this.addActivity}>Add Activity</Button>
             <div className='activity-page'> 
               <ActivityList tripId={tripId}/>
             </div>
@@ -106,9 +106,10 @@ class ViewActivities extends React.Component {
       } else {
         return (
           <Modal 
-          show={this.state.addingActivity}
-          onHide={this.cancelAdd}
-          dialogClassName="add-activity-modal" >
+            show={this.state.addingActivity}
+            onHide={this.cancelAdd}
+            dialogClassName="add-activity-modal" 
+          >
             <Modal.Header closeButton>
               <Modal.Title>Add New Activity</Modal.Title>
             </Modal.Header>
