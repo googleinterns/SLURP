@@ -43,7 +43,7 @@ function getErrorElement(error) {
  * @property {Object} props These are the props for this component:
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
- * @property {TripView} props.tripView ...
+ * @property {TripView} props.tripView The current user's trips page view.
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
@@ -77,7 +77,7 @@ class TripsContainer extends React.Component {
                   tripData={doc.data()}
                   tripId={doc.id}
                   handleEditTrip={this.props.handleEditTrip}
-                  eventKey={String(idx)}
+                  eventKey={String(idx)} // Event key must be string
                   key={doc.id}
                 />
               )

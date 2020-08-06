@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react';
 
 import { Accordion, Card, Col, Container, Row } from 'react-bootstrap';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import authUtils from '../AuthUtils';
-import { getDateRangeString } from "../Utils/time.js";
-import { moveCurUserEmailToFront } from "./trip-utils.js";
+import { moveCurUserEmailToFront } from './trip-utils.js';
+import { getDateRangeString } from '../Utils/time.js';
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 import EditTripButton from './edit-trip-button.js';
@@ -18,10 +18,10 @@ import '../../styles/trips.css';
  * @property {string} title The trips's title.
  * @property {string} description A description of the trip.
  * @property {string} destination The general destination of the trip.
- * @property {firebase.firestore.Timestamp} start_date Start date Firestore
- *     timestamp object.
- * @property {firebase.firestore.Timestamp} end_date End date Firestore
- *     timestamp object
+ * @property {firebase.firestore.Timestamp} start_date Start date
+ *     `Firestore.Timestamp` object.
+ * @property {firebase.firestore.Timestamp} end_date End date
+ *     `Firestore.Timestamp` object
  * @property {!string[]} accepted_collaborator_uid_arr Array of user uids
  *     corresponding to collaborators that have accepted the trip.
  * @property {!string[]} pending_collaborator_uid_arr Array of user uids
@@ -64,10 +64,12 @@ function getTripInfoRow(rowText, icon) {
  * on the 'display' side.
  *
  * @property {Object} props These are the props for this component:
- * @property {TripData} props.tripData Object holding a Trip document data.
+ * @property {TripData} props.tripData Object holding the trip document data.
  * @property {string} props.tripId The document id associated with the trip.
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
+ * @property {string} props.eventKey The React Bootstrap event key associated
+ *     with the trip Card component.
  */
 const Trip = (props) => {
   // Unpack trip document data.
@@ -81,7 +83,7 @@ const Trip = (props) => {
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
-    // Only set state collaboratorEmailsStr if component is mounted. This is
+    // Only set state `collaboratorEmailsStr` if component is mounted. This is
     // a precautionary to mitigate warnings that occur when setting state on
     // a component that has already unmounted. See more here
     // https://www.robinwieruch.de/react-warning-cant-call-setstate-on-an-unmounted-component.
@@ -97,6 +99,7 @@ const Trip = (props) => {
     }
 
     fetchCollaboratorEmails();
+    // cleanup function that prevents `collaboratorEmailsStr` from being set.
     return () => { componentStillMounted = false; };
   }, [collaboratorUidArr]);
 
@@ -113,8 +116,8 @@ const Trip = (props) => {
                 {getTripInfoRow(destination, 'map-marker-alt')}
                 {getTripInfoRow(
                     getDateRangeString(startDateTimestamp, endDateTimestamp),
-                    'calendar-alt'
-                )}
+                    'calendar-alt')
+                }
                 {getTripInfoRow(description, 'book')}
                 {getTripInfoRow(collaboratorEmailsStr, 'user-friends')}
               </Col>
