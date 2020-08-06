@@ -7,7 +7,7 @@ import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
 
 /**
- * {@link TripData} defined originally in `ViewTrips/trip.js`.
+ * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
  */
 
 /**
@@ -69,13 +69,13 @@ class ViewTrips extends React.Component {
    * and overwrites and existing Trip document in the database.
    *
   * @param {string} tripId Document ID for the current Trip document.
-  * @param {!TripData} tripData Contains the data for the
+  * @param {!RawTripData} tripFormData Contains the default form data for the
   *     Trip document that that will be editted.
    */
-  showEditTripModal = (tripId, tripData) => {
+  showEditTripModal = (tripId, tripFormData) => {
     this.setState({
       tripId: tripId,
-      defaultFormData: tripData,
+      defaultFormData: tripFormData,
     });
     this.showSaveTripModal();
   }

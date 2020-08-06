@@ -70,7 +70,7 @@ class TripsContainer extends React.Component {
                   tripData={doc.data()}
                   tripId={doc.id}
                   handleEditTrip={this.props.handleEditTrip}
-                  eventKey={String(idx)}
+                  eventKey={String(idx)} // Event key must be string
                   key={doc.id}
                 />
               )
