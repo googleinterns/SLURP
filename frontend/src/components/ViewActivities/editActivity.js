@@ -67,7 +67,7 @@ class EditActivity extends React.Component {
     newVals[DB.ACTIVITIES_START_COUNTRY] = 
       getRefValue(this.editStartLocRef, 'No Change', activity[DB.ACTIVITIES_START_COUNTRY]);
     
-    // Ref doesn't keep track of checked value?
+    // Ref doesn't keep track of checked value
     newVals[DB.ACTIVITIES_FLIGHT] = this.state.flightCheck;
     
     newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef);
