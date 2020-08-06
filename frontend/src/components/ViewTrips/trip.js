@@ -4,6 +4,7 @@ import { Accordion, Card, Col, Container, Row } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import authUtils from '../AuthUtils';
+import { moveCurUserEmailToFront } from './trip-utils.js';
 import { timestampToISOString, getDateRangeString } from '../Utils/time.js';
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
@@ -23,23 +24,6 @@ import '../../styles/trips.css';
  *     `Firestore.Timestamp` object.
  * @property {!string[]} collaborators An array of collaborator uids.
  */
-
-/**
- * Return collaborator emails corresponding to the collaborator uid's
- * `collaboratorUidArr` in a comma separated string.
- *
- * @param {!string[]} collaboratorEmailArr Array of user emails sorted in
- *     alphabetical order.
- * @return {!string[]} Array of user emails where first element is the current
- *     user email and the following elements maintain their previous order.
- */
-export function moveCurUserEmailToFront(collaboratorEmailArr) {
-  collaboratorEmailArr = collaboratorEmailArr.filter(email => {
-    return email !== authUtils.getCurUserEmail();
-  });
-  return [authUtils.getCurUserEmail()].concat(collaboratorEmailArr);
-}
-
 
 /**
  * Returns a React Bootstrap `<Row>` element containing some text
