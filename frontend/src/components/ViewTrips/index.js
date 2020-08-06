@@ -11,7 +11,7 @@ import TripView from '../../constants/trip-view.js';
  */
 
 /**
- * {@link TripData} defined originally in `ViewTrips/trip.js`.
+ * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
  */
 
 /**

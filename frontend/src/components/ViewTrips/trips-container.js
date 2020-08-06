@@ -124,7 +124,7 @@ class TripsContainer extends React.Component {
               tripId={doc.id}
               handleEditTrip={this.props.handleEditTrip}
               tripView={this.props.tripView}
-              eventKey={String(idx)}
+              eventKey={String(idx)} // Event key must be string
               key={doc.id}
             />
           )

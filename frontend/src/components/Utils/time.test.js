@@ -129,7 +129,6 @@ test('ISODate empty input tests', () => {
   expect(utils.getISODate(testDate, null)).toBe(expected);
 });
 
-
 const mockTimeNow = 0;
 jest.mock('firebase', () => ({
     firestore: {
