@@ -49,7 +49,7 @@ class ViewActivities extends React.Component {
 
   /**
    * Complete "Add Activity" operation.
-   * @param e Form event.
+   * @param e {React.FormEvent} Form event.
    */
   addActivity = (e) => {
     e.preventDefault();

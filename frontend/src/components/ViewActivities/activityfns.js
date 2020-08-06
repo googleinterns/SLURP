@@ -29,8 +29,8 @@ const db = app.firestore();
 /**
  * Get the field of field name `fieldName` from `activity`  or the default value.
  * 
- * @param {!ActivityInfo} activity Activity to get field from.
- * @param {!string} fieldName Name of the field in the activity to get. 
+ * @param {ActivityInfo} activity Activity to get field from.
+ * @param {string} fieldName Name of the field in the activity to get. 
  * @param {?*} [defaultValue=null] Default value to return if activity[fieldName] 
  *  can't be found. Can be any type.
  * @param {string} [prefix=''] The prefix to put before a returned value if the 
@@ -46,7 +46,7 @@ export function getField (activity, fieldName, defaultValue = null, prefix = '')
 
 /**
  * Sort a list of trip activities by date. 
- * @param {!ActivityInfo[]} tripActivities Array of activities.
+ * @param {ActivityInfo[]} tripActivities Array of activities.
  * @return {DayOfActivities[]} List of {@link DayOfActivities}
  * in chronological order by date.
  */
@@ -72,8 +72,8 @@ export function sortByDate(tripActivities) {
 /**
  * Put`a and `b` in display order. 
  * This function is a comparator.
- * @param {!ActivityInfo} a Dictionary representing activity `a` and its fields. 
- * @param {!ActivityInfo} b Dictionary representing activity `b` and its fields.
+ * @param {ActivityInfo} a Dictionary representing activity `a` and its fields. 
+ * @param {ActivityInfo} b Dictionary representing activity `b` and its fields.
  * @return {int} `-1` if `a` comes before `b`, else `1`. 
  */
 export function compareActivities(a, b) {
@@ -90,9 +90,9 @@ export function compareActivities(a, b) {
 /**
  * Write contents into an activity already existing in the database.
  * 
- * @param {!string} tripId Database ID of the trip whose actiivty should be modified.
- * @param {!string} activityId Database ID of the activity to be modified.
- * @param {!Objects} newValues Dictionary of the new values in `{fieldName: newValue}`
+ * @param {string} tripId Database ID of the trip whose actiivty should be modified.
+ * @param {string} activityId Database ID of the activity to be modified.
+ * @param {Object} newValues Dictionary of the new values in `{fieldName: newValue}`
  *  form. None of the entries can be lists. 
  * @return {boolean} `true` if the write was successful, `false` otherwise. 
  */
@@ -121,7 +121,7 @@ export async function writeActivity(tripId, activityId, newValues) {
  * 
  * Note: This function breaks if `ref.current` is null. This is intentional.
  * 
- * @param {!Reference} ref Reference to get the value of.
+ * @param {!React.RefObject} ref Reference to get the value of.
  * @param {?string} ignoreValue The "null" or "none" value that ref could be.
  * @param {?string} [defaultValue=null] Value to return if ref.current.value === ignoreValue.
  * @return defaultValue if ref.current.value === ignoreValue, else ref.current.value.

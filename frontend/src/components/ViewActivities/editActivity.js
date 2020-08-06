@@ -135,10 +135,10 @@ class EditActivity extends React.Component {
    * so when the country changes here, the values in the timezone dropdown
    * change as well.
    *
-   * @param {!ref} ref The reference to attach to the dropdown.
-   * @param {!ref} tzref The corresponding time zone reference field. 
+   * @param {!React.RefObject} ref The reference to attach to the dropdown.
+   * @param {!React.RefObject} tzref The corresponding time zone reference field. 
    * @param {!string} defaultCountry The default country for the dropdown.
-   * @return {HTML} HTML dropdown of all the countries with timezones.
+   * @return {JSX.Element} HTML dropdown of all the countries with timezones.
    */
   countriesDropdown(ref, tzref, defaultCountry) {
     return (

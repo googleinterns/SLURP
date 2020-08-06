@@ -11,7 +11,7 @@ const db = app.firestore();
  * ReactJS class component for the list of activities. 
  * 
  * @property {Object} props ReactJS props.
- * @property {string} tripId The tripID.
+ * @property {string} props.tripId The tripID.
  */
 class ActivityList extends React.Component {
   /** @override */

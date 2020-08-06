@@ -37,7 +37,7 @@ class Activity extends React.Component {
   /**
    * Display the current activity, either in view or edit mode.
    * 
-   * @return {HTML} The current activity in correct mode.
+   * @return {JSX.Element} The current activity in correct mode.
    */
   displayCard = () => {
     let activity = this.props.activity;
@@ -73,7 +73,8 @@ class Activity extends React.Component {
           <Accordion.Toggle as={Card.Header} eventKey='0' align='center'>
             {activity[DB.ACTIVITIES_TITLE]}
           </Accordion.Toggle>
-          <Accordion.Collapse eventKey='0' 
+          <Accordion.Collapse 
+            eventKey='0' 
             className={'view-activity' + (this.state.editing? ' edit': '')}
             >
             { this.displayCard() }
