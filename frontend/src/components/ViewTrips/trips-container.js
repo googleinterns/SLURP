@@ -55,7 +55,7 @@ class TripsContainer extends React.Component {
                    acceptedTrips: [],
                    pendingTrips: [],
                    rejectedTrips: [],
-                   finishedListenerCreation: false };
+                   tripArrsUpdated: false };
   }
 
 
@@ -96,7 +96,9 @@ class TripsContainer extends React.Component {
                 )
             );
 
-            this.setState({ [tripViewTripsState]: tripsArr });
+            this.setState({ [tripViewTripsState]: tripsArr,
+                            tripArrsUpdated: true
+                          }, this.componentDidUpdate);
           }, (error) => {
             const errorElement = getErrorElement(error);
             this.setState({ tripsContainer: errorElement });
@@ -108,13 +110,12 @@ class TripsContainer extends React.Component {
   // that the tripView state has changed since last update.
   componentDidUpdate(prevProps) {
     const tripsQuerySuccessful = Array.isArray(this.state.tripsContainer);
-    const tripViewChanged = prevProps.tripView !== this.props.tripView
-    if (tripsQuerySuccessful && (tripViewChanged ||
-                                 !this.state.finishedListenerCreation)) {
-      if (!this.setState.finishedListenerCreation) {
-        this.setState({ finishedListenerCreation: true });
-      }
+    let tripViewChanged = true;
+    if (prevProps !== undefined) {
+      tripViewChanged = prevProps.tripView !== this.props.tripView;
+    }
 
+    if (tripsQuerySuccessful && (tripViewChanged || this.state.tripArrsUpdated)) {
       switch(this.props.tripView) {
         case TripView.ACTIVE:
           this.setState({ tripsContainer: this.state.acceptedTrips });
@@ -130,6 +131,8 @@ class TripsContainer extends React.Component {
                           Setting trips container to include accepted trips.`);
           this.setState({ tripsContainer: this.state.acceptedTrips });
       }
+
+      this.setState({ tripArrsUpdated: false });
     }
   }
 
