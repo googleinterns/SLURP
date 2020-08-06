@@ -106,6 +106,8 @@ async function deleteTrip(tripId) {
  *
  * @property {Object} props These are the props for this component:
  * @property {string} props.tripId Document ID for the current Trip document.
+ * @property {boolean} props.canModifyTrip Determines whether or not the button
+ *     is disabled.
  */
 const DeleteTripsButton = (props) => {
   return (
@@ -113,6 +115,7 @@ const DeleteTripsButton = (props) => {
       type='button'
       variant='link'
       onClick={() => deleteTrip(props.tripId)}
+      disabled={!props.canModifyTrip}
     >
       <FontAwesomeIcon icon='trash' className='fa-icon'/>
     </Button>

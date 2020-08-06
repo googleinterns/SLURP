@@ -12,6 +12,8 @@ import { VIEW_ACTIVITIES } from '../../constants/routes.js';
  *
  * @property {Object} props These are the props for this component:
  * @property {string} props.tripId The document id associated with the trip.
+ * @property {boolean} props.canModifyTrip Determines whether or not the button
+ *     is disabled.
  */
 const ViewActivitiesButton = (props) => {
   const history = useHistory();
@@ -25,6 +27,7 @@ const ViewActivitiesButton = (props) => {
       type='button'
       variant='link'
       onClick={goToViewActivities}
+      disabled={!props.canModifyTrip}
     >
       <FontAwesomeIcon icon='hiking' className='fa-icon' size="lg"/>
     </Button>
