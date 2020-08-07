@@ -10,9 +10,11 @@ import { firestore } from 'firebase';
  * @param {string} timezone Timezone in which to convert.
  * @return {string} Formatted time.
  */
-export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
+export function timestampToTimeFormatted(msTimestamp, timezone = '') {
   // Formats from https://momentjs.com/docs/#/displaying/format/
-  // LT = Localized time
+  // LT = Localized time  
+  timezone = timezone != null ? timezone.replace(' ', '_') // Reformat date.
+                              : ''; // Use GMT.
   return moment.tz(parseFloat(msTimestamp), timezone).format('LT');
 
 }
@@ -25,10 +27,12 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  * @param {string} timezone Timezone in which to convert.
  * @return {string} Formatted time.
  */
-export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
+export function timestampToDateFormatted(msTimestamp, timezone='') {
   // Formats from https://momentjs.com/docs/#/displaying/format/.
   // dddd = Day of the week (i.e. Monday)
-  // LL = "January 19, 1970"
+  // LL = "January 19, 1970"  
+  timezone = timezone != null ? timezone.replace(' ', '_') // Reformat date.
+                              : ''; // Use GMT.
   return moment.tz(parseFloat(msTimestamp), timezone).format('dddd, LL');
 }
 
@@ -40,10 +44,12 @@ export function timestampToDateFormatted(msTimestamp, timezone='America/New_York
  * @param {string} timezone Timezone in which to convert.
  * @returns {string} Formatted time.
  */
-export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
+export function timestampToFormatted(msTimestamp, timezone = '') {
   // Formats from https://momentjs.com/docs/#/displaying/format/.
   // LLLL = "Monday, January 19, 1970 2:48 AM"
   // z = "PST"
+  timezone = timezone != null ? timezone.replace(' ', '_') // Reformat date.
+                              : ''; // Use GMT.
   return moment.tz(parseFloat(msTimestamp), timezone).format('LLLL z');
 
 }
@@ -101,9 +107,8 @@ export function timezonesForCountry(countryName) {
  * @return {string} The date in 'YYYY-MM-DD' format. 
  */
 export function getISODate(msTimestamp, timezone=null) {
-  if (timezone === null) {
-    timezone = ''; // Use GMT. 
-  }
+  timezone = timezone != null ? timezone.replace(' ', '_') // Reformat date.
+                              : ''; // Use GMT.
   return moment.tz(parseFloat(msTimestamp), timezone).format(moment.HTML5_FMT.DATE);
 }
 
@@ -118,6 +123,7 @@ export function get24hTime(msTimestamp, timezone = null) {
   if (timezone === null) {
     timezone = ''; // Use GMT. 
   }
+  timezone = timezone.replace(' ', '_');
   return moment.tz(parseFloat(msTimestamp), timezone).format(moment.HTML5_FMT.TIME);
 }
 
@@ -130,6 +136,7 @@ export function get24hTime(msTimestamp, timezone = null) {
  * @return {firestore.Timestamp} Firestore timestamp object at the same time. 
  */
 export function firebaseTsFromISO(time, date, tz) {
+  tz = tz.replace(' ', '_');
   const mtzDate = moment.tz(time + " " + date, "HH:mm YYYY-MM-DD", tz);
   return new firestore.Timestamp(mtzDate.valueOf() / 1000, 0);
 }
