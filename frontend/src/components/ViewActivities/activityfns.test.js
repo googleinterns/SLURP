@@ -1,5 +1,7 @@
 import * as activityFns from './activityfns.js';
 import * as time from '../Utils/time.js';
+import * as DB from '../../constants/database.js';
+import * as moment from 'moment-timezone';
 
 const ten = Date.UTC(2020, 4, 2, 10,  0);          // May 2, 2020 10:00
 const eleven = Date.UTC(2020, 4, 2, 11, 0);        // May 2, 2020 11:00
@@ -40,15 +42,16 @@ describe('Same day activity compareActivities', () => {
   test('Activities with same end time', () => {
     expect(activityFns.compareActivities(elevenToTwelve, tenToTwelve)).toBe(1);
   })  
+  
+  test('compareActivities on different days', () => {
+    const may10 = createActivity(may102pm, may102pm);
+    const may15 = createActivity(may153am, may153am);
+    const may01 = createActivity(may014pm, may014pm);
+    expect(activityFns.compareActivities(may10, may01)).toBe(1);
+    expect(activityFns.compareActivities(may15, may01)).toBe(1);
+  })
 })
 
-test('compareActivities on different days', () => {
-  const may10 = createActivity(may102pm, may102pm);
-  const may15 = createActivity(may153am, may153am);
-  const may01 = createActivity(may014pm, may014pm);
-  expect(activityFns.compareActivities(may10, may01)).toBe(1);
-  expect(activityFns.compareActivities(may15, may01)).toBe(1);
-})
 
 describe('sortByDate tests', () => {
   const act1 = createActivity(ten, eleven);
@@ -109,6 +112,30 @@ test('getRefValue', () => {
   expect(activityFns.getRefValue(fakeRef, 'swimming', 'jumping')).toBe('parasailing!');
 });
 
-test('displayTimes', () => {
-  // AAAAAAAAA TODO TESTS
-})
+describe('displayTimes', () => {
+  function createInfoActivity(startDate, startTime, startTz, endDate, endTime, endTz) {
+    return {
+      [DB.ACTIVITIES_START_TIME] : moment.tz(startDate + " " + startTime, startTz).valueOf(),
+      [DB.ACTIVITIES_START_TZ] : startTz,
+      [DB.ACTIVITIES_END_TIME] : moment.tz(endDate + " " + endTime, endTz).valueOf(), 
+      [DB.ACTIVITIES_END_TZ] : endTz,
+    }
+  }
+  
+  test('displayTimes', () => {
+    const aug5 = "2020-08-05";
+    const aug6 = "2020-08-06";
+    const nineThirty = "09:30";
+    const tenThirty = "10:30";
+    const chicago = "America/Chicago";
+    const singapore = "Asia/Singapore";
+    
+    console.log(createInfoActivity(aug5, nineThirty, chicago, aug5, tenThirty, chicago));
+
+    expect(activityFns.displayTimes(createInfoActivity(aug5, nineThirty, chicago, aug5, tenThirty, chicago))).toEqual(`9:30 AM - 10:30 AM`);
+    expect(activityFns.displayTimes(createInfoActivity(aug5, nineThirty, chicago, aug5, tenThirty, singapore))).toEqual(`9:30 AM America/Chicago - 10:30 AM Asia/Singapore`);
+    expect(activityFns.displayTimes(createInfoActivity(aug5, nineThirty, chicago, aug6, tenThirty, chicago))).toEqual(`9:30 AM - August 6, 2020 10:30 AM`);
+    expect(activityFns.displayTimes(createInfoActivity(aug5, nineThirty, chicago, aug6, tenThirty, singapore))).toEqual(`9:30 AM America/Chicago - August 6, 2020 10:30 AM Asia/Singapore`);
+  })
+});
+
