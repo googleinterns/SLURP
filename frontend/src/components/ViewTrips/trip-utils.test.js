@@ -136,9 +136,15 @@ describe('getCurAcceptedCollabArr tests', () => {
   });
 });
 
-// Note: Although getCurPendingCollabArr handles array's of uids, the strings
+// Note:
+//     - Although getCurPendingCollabArr handles array's of uids, the strings
 //       in each array do not have to have a specific form. Thus, the
 //       user emails can be used as test string array` elements.
+//     - Each of the test names and inputs are the same as the group of tests
+//       above ('getCurAcceptedCollabArr' tests). There is no mention of whether
+//       or not there were previous pending collaborators because
+//       'getCurPendingCollabUidArr' uses only the previous accepted collabs to
+//       determine the new/current pending collabs.
 describe('getCurPendingCollabArr tests', () => {
   test('No previous accepted collabs', () => {
     const expectedNewPendingCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
