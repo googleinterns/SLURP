@@ -61,16 +61,16 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
  * @param {!string[]} formCollabUidArr Array of the collaborator uids
  *     corresponding to the emails in the `collaborator_email_arr` field of the
  *     {@link RawTripData} instance coming from the `SaveTripModal` component.
- * @param {!string[]} curAccepCollabUidArr Array stored in the field
+ * @param {!string[]} curAcceptedCollabUidArr Array stored in the field
  *     `accepted_collaborator_uid_arr` of the {@link TripData} obj
  *     `curTripData`.
  * @return {!string[]} Array containing the set intersection of two params
- *     `formCollabUidArr` and `curAccepCollabUidArr` converted to sets.
+ *     `formCollabUidArr` and `curAcceptedCollabUidArr` converted to sets.
  */
-export function getCurAcceptedCollabUidArr(formCollabUidArr, curAccepCollabUidArr) {
+export function getCurAcceptedCollabUidArr(formCollabUidArr, curAcceptedCollabUidArr) {
   const formCollabUidSet = new Set(formCollabUidArr);
-  const curAccepCollabUidSet = new Set(curAccepCollabUidArr);
-  return [...formCollabUidSet].filter(el => curAccepCollabUidSet.has(el));
+  const curAcceptedCollabUidSet = new Set(curAcceptedCollabUidArr);
+  return [...formCollabUidSet].filter(el => curAcceptedCollabUidSet.has(el));
 }
 
 /**
@@ -80,16 +80,16 @@ export function getCurAcceptedCollabUidArr(formCollabUidArr, curAccepCollabUidAr
  * @param {!string[]} formCollabUidArr Array of the collaborator uids
  *     corresponding to the emails in the `collaborator_email_arr` field of the
  *     {@link RawTripData} instance coming from the `SaveTripModal` component.
- * @param {!string[]} curAccepCollabUidArr Array stored in the field
+ * @param {!string[]} curAcceptedCollabUidArr Array stored in the field
  *     `accepted_collaborator_uid_arr` of the {@link TripData} obj
  *     `curTripData`.
  * @return {!string[]} Array containing the set difference of two params
- *     `formCollabUidArr` and `curAccepCollabUidArr` converted to sets.
+ *     `formCollabUidArr` and `curAcceptedCollabUidArr` converted to sets.
  */
-export function getCurPendingCollabUidArr(formCollabUidArr, curAccepCollabUidArr) {
+export function getCurPendingCollabUidArr(formCollabUidArr, curAcceptedCollabUidArr) {
   const formCollabUidSet = new Set(formCollabUidArr);
-  const curAccepCollabUidSet = new Set(curAccepCollabUidArr);
-  return [...formCollabUidSet].filter(el => !curAccepCollabUidSet.has(el));
+  const curAcceptedCollabUidSet = new Set(curAcceptedCollabUidArr);
+  return [...formCollabUidSet].filter(el => !curAcceptedCollabUidSet.has(el));
 }
 
 /**
