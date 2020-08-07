@@ -144,16 +144,20 @@ export function getRefValue(ref, ignoreValue='', defaultValue=null) {
  */
 export function displayTimes(activity) { 
   const startDay = time.timestampToLongDate(
-    getField(activity, DB.ACTIVITIES_START_TIME)
+    getField(activity, DB.ACTIVITIES_START_TIME), 
+    getField(activity, DB.ACTIVITIES_START_TZ)
     );
   const endDay = time.timestampToLongDate(
-    getField(activity, DB.ACTIVITIES_END_TIME)
+    getField(activity, DB.ACTIVITIES_END_TIME), 
+    getField(activity, DB.ACTIVITIES_END_TZ)
     );    
   const startTime = time.timestampToTimeFormatted(
-    getField(activity, DB.ACTIVITIES_START_TIME)
+    getField(activity, DB.ACTIVITIES_START_TIME), 
+    getField(activity, DB.ACTIVITIES_START_TZ)
     );
   const endTime = time.timestampToTimeFormatted(
-    getField(activity, DB.ACTIVITIES_END_TIME)
+    getField(activity, DB.ACTIVITIES_END_TIME), 
+    getField(activity, DB.ACTIVITIES_END_TZ)
     );
   const startTz = getField(activity, DB.ACTIVITIES_START_TZ);
   const endTz = getField(activity, DB.ACTIVITIES_END_TZ);
