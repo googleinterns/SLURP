@@ -129,7 +129,15 @@ export function getRefValue(ref, ignoreValue='', defaultValue=null) {
 }
   
 /**
- * Pretty format start and end times/days.
+ * Pretty format start and end times/days to be displayed. 
+ * 
+ * Examples:
+ * 9:30 AM - 10:30 AM
+ * 9:30 AM America/Chicago - 10:30 AM America/New York
+ * 9:30 AM - August 9, 2020 10:30 AM
+ * 9:30 AM America/Chicago - August 9, 2020 10:30 AM America/New York
+ * 
+ * Exact output depends on input's date and timezone. 
  * 
  * @param {!ActivityInfo} activity The activity to display.
  * @return {string} The text to display.
