@@ -97,16 +97,16 @@ describe('moveCurUserEmailToFront tests', () => {
   });
 });
 
-// Note: Although getCurAcceptedCollabArr handles array's of uids, the strings
+// Note: Although getNewAcceptedCollabArr handles array's of uids, the strings
 //       in each array do not have to have a specific form. Thus, the
 //       user emails can be used as test string array` elements.
-describe('getCurAcceptedCollabArr tests', () => {
+describe('getNewAcceptedCollabArr tests', () => {
   test('No previous accepted collabs', () => {
     const expectedNewAcceptedCollabUidArr = [];
     const testFormCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
     const testCurAcceptedCollabUidArr = [];
 
-    const testNewAcceptedCollabUidArr = TripUtils.getCurAcceptedCollabUidArr(
+    const testNewAcceptedCollabUidArr = TripUtils.getNewAcceptedCollabUidArr(
                             testFormCollabUidArr, testCurAcceptedCollabUidArr);
 
     expect(testNewAcceptedCollabUidArr).toEqual(expectedNewAcceptedCollabUidArr);
@@ -117,19 +117,19 @@ describe('getCurAcceptedCollabArr tests', () => {
     const testFormCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
     const testCurAcceptedCollabUidArr = [USER_A_EMAIL];
 
-    const testNewAcceptedCollabUidArr = TripUtils.getCurAcceptedCollabUidArr(
+    const testNewAcceptedCollabUidArr = TripUtils.getNewAcceptedCollabUidArr(
                             testFormCollabUidArr, testCurAcceptedCollabUidArr);
 
     expect(testNewAcceptedCollabUidArr).toEqual(expectedNewAcceptedCollabUidArr);
   });
 
-  test('Two previous accepted collab and one accepted collab deleted in ' +
-       'current collabs', () => {
+  test('Two current accepted collab and one accepted collab deleted in ' +
+       'the collabs listed in the form.', () => {
     const expectedNewAcceptedCollabUidArr = [USER_B_EMAIL];
     const testFormCollabUidArr = [USER_B_EMAIL, USER_Z_EMAIL];
     const testCurAcceptedCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL];
 
-    const testNewAcceptedCollabUidArr = TripUtils.getCurAcceptedCollabUidArr(
+    const testNewAcceptedCollabUidArr = TripUtils.getNewAcceptedCollabUidArr(
                             testFormCollabUidArr, testCurAcceptedCollabUidArr);
 
     expect(testNewAcceptedCollabUidArr).toEqual(expectedNewAcceptedCollabUidArr);
@@ -137,44 +137,44 @@ describe('getCurAcceptedCollabArr tests', () => {
 });
 
 // Note:
-//     - Although getCurPendingCollabArr handles array's of uids, the strings
+//     - Although getNewPendingCollabArr handles array's of uids, the strings
 //       in each array do not have to have a specific form. Thus, the
 //       user emails can be used as test string array` elements.
 //     - Each of the test names and inputs are the same as the group of tests
-//       above ('getCurAcceptedCollabArr' tests). There is no mention of whether
-//       or not there were previous pending collaborators because
-//       'getCurPendingCollabUidArr' uses only the previous accepted collabs to
+//       above ('getNewAcceptedCollabArr' tests). There is no mention of whether
+//       or not there are current pending collaborators because
+//       'getNewPendingCollabUidArr' uses only the current accepted collabs to
 //       determine the new/current pending collabs.
-describe('getCurPendingCollabArr tests', () => {
-  test('No previous accepted collabs', () => {
+describe('getNewPendingCollabArr tests', () => {
+  test('No current accepted collabs', () => {
     const expectedNewPendingCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
     const testFormCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
     const testCurAcceptedCollabUidArr = [];
 
-    const testNewPendingCollabUidArr = TripUtils.getCurPendingCollabUidArr(
+    const testNewPendingCollabUidArr = TripUtils.getNewPendingCollabUidArr(
                             testFormCollabUidArr, testCurAcceptedCollabUidArr);
 
     expect(testNewPendingCollabUidArr).toEqual(expectedNewPendingCollabUidArr);
   });
 
-  test('One previous accepted collab', () => {
+  test('One current accepted collab', () => {
     const expectedNewPendingCollabUidArr = [USER_B_EMAIL, USER_Z_EMAIL];
     const testFormCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL, USER_Z_EMAIL];
     const testCurAcceptedCollabUidArr = [USER_A_EMAIL];
 
-    const testNewPendingCollabUidArr = TripUtils.getCurPendingCollabUidArr(
+    const testNewPendingCollabUidArr = TripUtils.getNewPendingCollabUidArr(
                             testFormCollabUidArr, testCurAcceptedCollabUidArr);
 
     expect(testNewPendingCollabUidArr).toEqual(expectedNewPendingCollabUidArr);
   });
 
-  test('Two previous accepted collab and one accepted collab deleted in ' +
-       'current collabs', () => {
+  test('Two current accepted collab and one accepted collab deleted in ' +
+       'the collabs listed in the form.', () => {
     const expectedNewPendingCollabUidArr = [USER_Z_EMAIL];
     const testFormCollabUidArr = [USER_B_EMAIL, USER_Z_EMAIL];
     const testCurAcceptedCollabUidArr = [USER_A_EMAIL, USER_B_EMAIL];
 
-    const testNewPendingCollabUidArr = TripUtils.getCurPendingCollabUidArr(
+    const testNewPendingCollabUidArr = TripUtils.getNewPendingCollabUidArr(
                             testFormCollabUidArr, testCurAcceptedCollabUidArr);
 
     expect(testNewPendingCollabUidArr).toEqual(expectedNewPendingCollabUidArr);
