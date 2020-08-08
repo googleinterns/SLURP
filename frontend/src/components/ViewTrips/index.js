@@ -1,10 +1,9 @@
 import React from 'react';
 
-import Button from 'react-bootstrap/Button';
-
 import Header from '../Header/';
 import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
+import ManageTripsBar from './manage-trips-bar.js';
 import TripView from '../../constants/trip-view.js';
 
 /**
@@ -106,11 +105,11 @@ class ViewTrips extends React.Component {
           tripData={this.state.tripData}
           key={this.state.refreshSaveTripModal}
         />
-        <div className="manage-trips-bar">
-          <Button type='button' onClick={this.showAddTripModal}>
-            + New Trip
-          </Button>
-        </div>
+        <ManageTripsBar
+          handleAddTrip={this.showAddTripModal}
+          handleChangeView={this.changeTripView}
+          tripView={this.state.tripView}
+        />
         <TripsContainer
           handleEditTrip={this.showEditTripModal}
           tripView={this.state.tripView}
