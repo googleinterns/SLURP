@@ -1,9 +1,10 @@
 import * as firebase from 'firebase/app';
 
-import authUtils from '../AuthUtils';
+import authUtils, { getCurUserUid } from '../AuthUtils';
 import { getTimestampFromISODateString } from '../Utils/time.js'
 import * as DB from '../../constants/database.js';
 import * as msgs from '../../constants/messages.js';
+import TripView from '../../constants/trip-view.js';
 
 /**
  * {@link TripData} defined originally in `ViewTrips/trip.js`.
@@ -11,6 +12,10 @@ import * as msgs from '../../constants/messages.js';
 
 /**
  * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
+ */
+
+/**
+ * {@link TripView} defined originally in `constants/trip-view.js`.
  */
 
 /**
@@ -31,7 +36,7 @@ export function getCleanedTextInput(rawInput, defaultValue) {
 
 /**
  * Return a promise containing an array of collaborator uids given the emails
- * provided in the add trip form.
+ * provided in the add trip form (all but the trip creator).
  *
  * TODO(#72 & #67): Remove 'remove empty fields' once there is better way to
  * remove collaborators (#72) and there is email validation (#67).
@@ -39,14 +44,9 @@ export function getCleanedTextInput(rawInput, defaultValue) {
  * @param {!string[]} collaboratorEmailsArr Array of emails corresponding
  *     to the  collaborators of the trip (not including the trip creator email).
  * @return {Promise<!string[]>} Promise that resolves to an array of the
- *     collaborator uids of the current user and the uids corresponding to the
- *     emails in `collaboratorEmailsArr.
+ *     collaborator uids corrsponding to the emails in `collaboratorEmailsArr`.
  */
 export async function getCollaboratorUidArray(collaboratorEmailArr) {
-  collaboratorEmailArr = [authUtils.getCurUserEmail()]
-                             .concat(collaboratorEmailArr);
-
-  // Removes empty fields (temporary until fix #67 & #72).
   const cleanedCollaboratorEmailArr = collaboratorEmailArr.filter(email => {
     return email !== '';
   });
@@ -55,28 +55,90 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
 }
 
 /**
+ * Returns the new `accepted_collaborator_uid_arr` field value for the updated
+ * trip document.
+ *
+ * @param {!string[]} formCollabUidArr Array of the collaborator uids
+ *     corresponding to the emails in the `collaborator_email_arr` field of the
+ *     {@link RawTripData} instance coming from the `SaveTripModal` component.
+ * @param {!string[]} curAcceptedCollabUidArr Array stored in the field
+ *     `accepted_collaborator_uid_arr` of the {@link TripData} obj
+ *     `curTripData`.
+ * @return {!string[]} Array containing the set intersection of two params
+ *     `formCollabUidArr` and `curAcceptedCollabUidArr` converted to sets.
+ */
+export function getNewAcceptedCollabUidArr(formCollabUidArr, curAcceptedCollabUidArr) {
+  const formCollabUidSet = new Set(formCollabUidArr);
+  const curAcceptedCollabUidSet = new Set(curAcceptedCollabUidArr);
+  return [...formCollabUidSet].filter(el => curAcceptedCollabUidSet.has(el));
+}
+
+/**
+ * Returns the new `pending_collaborator_uid_arr` field value for the updated
+ * trip document.
+ *
+ * @param {!string[]} formCollabUidArr Array of the collaborator uids
+ *     corresponding to the emails in the `collaborator_email_arr` field of the
+ *     {@link RawTripData} instance coming from the `SaveTripModal` component.
+ * @param {!string[]} curAcceptedCollabUidArr Array stored in the field
+ *     `accepted_collaborator_uid_arr` of the {@link TripData} obj
+ *     `curTripData`.
+ * @return {!string[]} Array containing the set difference of two params
+ *     `formCollabUidArr` and `curAcceptedCollabUidArr` converted to sets.
+ */
+export function getNewPendingCollabUidArr(formCollabUidArr, curAcceptedCollabUidArr) {
+  const formCollabUidSet = new Set(formCollabUidArr);
+  const curAcceptedCollabUidSet = new Set(curAcceptedCollabUidArr);
+  return [...formCollabUidSet].filter(el => !curAcceptedCollabUidSet.has(el));
+}
+
+/**
  * Returns a promise containing the formatted and cleaned {@link RawTripData}
  * that will be used to instantiate the the created trip document.
  *
- * We know that {@link RawTripData} will contain all of the necessary fields for
- * a trip document (except updated timestamp) because each key-value pair is
- * explicitly included. This means, only the value corresponding to each key
- * needs to be checked.
+ * Formatting done to convert {@link RawTripData} to {@link TripData}:
+ * - update timestamp: get current time with `Firestore.Timestamp.now()`.
+ * - plain text fields: basic input cleaning by providing default values.
+ * - date fields: ISO strings are converted to `Firestore.Timestamp` objs.
+ * - collaborator fields: Determine collab uid arrays based on `curTripData`.
+ *   New trips will add the current user to the accepted list and all others
+ *   to pending. Existing trips use `getCurAcceptedCollabUidArr` and
+ *   `getCurPendingCollabUidArr` to determine accepted and pending collabs
+ *   while maintaining the same reject list as previous.
+ *
  * For text element inputs, React has built in protections against injection/XSS
  * attacks. Thus, no sanitization is needed for text inputs besides providing a
  * default value in a Trip field where applicable.
  *
- * @param {!RawTripData} rawTripData A JS Object containing the raw form data
- *     from the add trip form.
+ * @param {!RawTripData} rawTripData Raw form data from the save trip form.
+ * @param {?TripData} curTripData If edit trip modal, contains data stored in
+ *     the current trip document. Null for add trip modals.
  * @return {Promise<!TripData>} Promise that resoleves to the formatted/cleaned
  *     version of {@link RawTripData} holding the data for the new Trip document
  *     that is to be created.
  */
-export async function formatTripData(rawTripData) {
-  const collaboratorUidArr = await getCollaboratorUidArray(
-                                          rawTripData[DB.TRIPS_COLLABORATORS]);
+export async function formatTripData(rawTripData, curTripData) {
+  let curUserUidArr = [getCurUserUid()];
+  const formCollabUidArr = await getCollaboratorUidArray(
+                                    rawTripData[DB.RAW_COLLAB_EMAILS]);
 
-  const formattedTripObj = {
+  let acceptedCollabUidArr;
+  let pendingCollabUidArr;
+  let rejectedCollabUidArr;
+  if (curTripData === null) {
+    acceptedCollabUidArr = curUserUidArr;
+    pendingCollabUidArr = formCollabUidArr;
+    rejectedCollabUidArr = [];
+  } else {
+    acceptedCollabUidArr = curUserUidArr.concat(getNewAcceptedCollabUidArr(
+                                formCollabUidArr,
+                                curTripData[DB.TRIPS_ACCEPTED_COLLABS]));
+    pendingCollabUidArr = getNewPendingCollabUidArr(formCollabUidArr,
+                                curTripData[DB.TRIPS_ACCEPTED_COLLABS]);
+    rejectedCollabUidArr = curTripData[DB.TRIPS_REJECTED_COLLABS];
+  }
+
+  const tripData = {
     [DB.TRIPS_UPDATE_TIMESTAMP]: firebase.firestore.Timestamp.now(),
     [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripData[DB.TRIPS_TITLE],
                                           msgs.TRIPS_TITLE_DEFAULT),
@@ -87,10 +149,33 @@ export async function formatTripData(rawTripData) {
                                 rawTripData[DB.TRIPS_START_DATE]),
     [DB.TRIPS_END_DATE]: getTimestampFromISODateString(
                                 rawTripData[DB.TRIPS_END_DATE]),
-    [DB.TRIPS_COLLABORATORS]: collaboratorUidArr,
+    [DB.TRIPS_ACCEPTED_COLLABS]: acceptedCollabUidArr,
+    [DB.TRIPS_PENDING_COLLABS]: pendingCollabUidArr,
+    [DB.TRIPS_REJECTED_COLLABS]: rejectedCollabUidArr,
   };
 
-  return formattedTripObj;
+  return tripData;
+}
+
+/**
+ * Return the trip document collaborator field name corresponding to `tripView`.
+ *
+ * @param {TripView} tripView The current user's trips page view.
+ * @return {string} The trip document field name (defined in `constants.js`).
+ */
+export function getCollaboratorField(tripView) {
+  switch(tripView) {
+    case TripView.ACTIVE:
+      return DB.TRIPS_ACCEPTED_COLLABS;
+    case TripView.PENDING:
+      return DB.TRIPS_PENDING_COLLABS;
+    case TripView.REJECTED:
+      return DB.TRIPS_REJECTED_COLLABS;
+    default:
+      console.error(`Trip view of ${tripView} was unexpected.
+                      Returning accepted collaborators field.`);
+      return DB.TRIPS_ACCEPTED_COLLABS;
+  }
 }
 
 /**

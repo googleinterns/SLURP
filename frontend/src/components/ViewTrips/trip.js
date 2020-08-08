@@ -5,7 +5,7 @@ import { Accordion, Card, Col, Container, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import authUtils from '../AuthUtils';
 import { moveCurUserEmailToFront } from './trip-utils.js';
-import { timestampToISOString, getDateRangeString } from '../Utils/time.js';
+import { getDateRangeString } from '../Utils/time.js';
 import DeleteTripButton from './delete-trip-button.js';
 import ViewActivitiesButton from './view-activities-button.js';
 import EditTripButton from './edit-trip-button.js';
@@ -21,8 +21,14 @@ import '../../styles/trips.css';
  * @property {firebase.firestore.Timestamp} start_date Start date
  *     `Firestore.Timestamp` object.
  * @property {firebase.firestore.Timestamp} end_date End date
- *     `Firestore.Timestamp` object.
- * @property {!string[]} collaborators An array of collaborator uids.
+ *     `Firestore.Timestamp` object
+ * @property {!string[]} accepted_collaborator_uid_arr Array of user uids
+ *     corresponding to collaborators that have accepted the trip.
+ * @property {!string[]} pending_collaborator_uid_arr Array of user uids
+ *     corresponding to collaborators that have neither accepted nor rejected
+ *     the trip.
+ * @property {!string[]} rejected_collaborator_uid_arr Array of user uids
+ *     corresponding to collaborators that have rejected the trip.
  */
 
 /**
@@ -72,7 +78,8 @@ const Trip = (props) => {
   const destination = props.tripData[DB.TRIPS_DESTINATION];
   const startDateTimestamp = props.tripData[DB.TRIPS_START_DATE];
   const endDateTimestamp = props.tripData[DB.TRIPS_END_DATE];
-  const collaboratorUidArr = props.tripData[DB.TRIPS_COLLABORATORS];
+  const collaboratorUidArr = props.tripData[DB.TRIPS_ACCEPTED_COLLABS].concat(
+                                 props.tripData[DB.TRIPS_PENDING_COLLABS]);
   const [collaboratorEmailsStr, setCollaboratorEmailsStr] = useState('');
 
   useEffect(() => {
@@ -95,19 +102,6 @@ const Trip = (props) => {
     // cleanup function that prevents `collaboratorEmailsStr` from being set.
     return () => { componentStillMounted = false; };
   }, [collaboratorUidArr]);
-
-  /**
-   * Re-package trip document data in the format of {@link_RawTripData}
-   * to pass to SaveTripModal when filling out form input default values.
-   */
-  const tripFormData = {
-    [DB.TRIPS_TITLE]: title,
-    [DB.TRIPS_DESCRIPTION]: description,
-    [DB.TRIPS_DESTINATION]: destination,
-    [DB.TRIPS_START_DATE]: timestampToISOString(startDateTimestamp),
-    [DB.TRIPS_END_DATE]: timestampToISOString(endDateTimestamp),
-    [DB.TRIPS_COLLABORATORS]: collaboratorEmailsStr.split(', '),
-  };
 
   return (
     <Card>
@@ -134,7 +128,7 @@ const Trip = (props) => {
                 <Row>
                   <EditTripButton
                     tripId={props.tripId}
-                    tripFormData={tripFormData}
+                    tripData={props.tripData}
                     handleEditTrip={props.handleEditTrip}
                   />
                 </Row>

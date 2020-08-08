@@ -6,6 +6,11 @@ import Accordion from 'react-bootstrap/Accordion';
 import authUtils from '../AuthUtils';
 import * as DB from '../../constants/database.js';
 import Trip from './trip.js';
+import { getCollaboratorField } from './trip-utils.js';
+
+/**
+ * {@link TripView} defined originally in `constants/trip-view.js`.
+ */
 
 const db = app.firestore();
 
@@ -38,6 +43,7 @@ function getErrorElement(error) {
  * @property {Object} props These are the props for this component:
  * @property {Function} props.handleEditTrip Event handler responsible for
  *     displaying the edit trip modal.
+ * @property {TripView} props.tripView The current user's trips page view.
  * @extends React.Component
  */
 class TripsContainer extends React.Component {
@@ -50,9 +56,9 @@ class TripsContainer extends React.Component {
   /**
    * When the TripsContainer mounts, a listener is attached to the QuerySnapshot
    * event that grabs all trip documents where the current user uid is contained
-   * in the collaborator uid array (collaborators field). This allows real-time
-   * updates for all collaborators on a trip whenever a trip is updated (add,
-   * edit, or delete).
+   * in the collaborator uid array corresponding to `this.props.tripView`.
+   * This allows real-time updates for all collaborators on a trip whenever a
+   * trip is updated (add, edit, or delete).
    *
    * In the case where there is an error, an error component is returned in
    * place of the array of trips.
@@ -61,8 +67,9 @@ class TripsContainer extends React.Component {
    */
   async componentDidMount() {
     const curUserUid = authUtils.getCurUserUid();
+    const collaboratorField = getCollaboratorField(this.props.tripView);
     db.collection(DB.COLLECTION_TRIPS)
-        .where(DB.TRIPS_COLLABORATORS, 'array-contains', curUserUid)
+        .where(collaboratorField, 'array-contains', curUserUid)
         .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
         .onSnapshot(querySnapshot => {
           const tripsArr = querySnapshot.docs.map((doc, idx) =>
