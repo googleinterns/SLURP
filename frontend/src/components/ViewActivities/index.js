@@ -65,12 +65,17 @@ class ViewActivities extends React.Component {
   /**
    * Runs when the user is done adding an activity.
    */
-  async doneAddingActivity() {
-    await this.setState({
+  async doneAddingActivity() {  
+    await this.setState({ 
       addingActivity: false,
-      newAct: null
+      newAct: null 
     });
   };
+
+  cancelAdd = () => {
+    // TODO: delete new event (#132)
+    this.doneAddingActivity()
+  }
 
   render() {
     const tripId = this.props.match.params.tripId;
@@ -114,13 +119,19 @@ class ViewActivities extends React.Component {
         );
       } else {
         return (
-          <Modal.Dialog>
-            <Modal.Header>Add New Activity</Modal.Header>
+          <Modal 
+            show={this.state.addingActivity}
+            onHide={this.cancelAdd}
+            dialogClassName="add-activity-modal" 
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Add New Activity</Modal.Title>
+            </Modal.Header>
             <Modal.Body>
               <EditActivity activity={this.state.newAct}
                 submitFunction={this.doneAddingActivity} new={true}/>
             </Modal.Body>
-          </Modal.Dialog>
+          </Modal>
         );
       }
     }

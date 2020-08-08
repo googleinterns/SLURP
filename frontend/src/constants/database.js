@@ -26,3 +26,4 @@ export const ACTIVITIES_TITLE = 'title';
 export const ACTIVITIES_DESCRIPTION = 'description';
 export const ACTIVITIES_START_COUNTRY = 'start_country';
 export const ACTIVITIES_END_COUNTRY = 'end_country';
+export const ACTIVITIES_FLIGHT = 'flight';
