@@ -49,8 +49,8 @@ class ActivityList extends React.Component {
             data[DB.ACTIVITIES_START_TIME]['seconds'] * 1000;         
           data[DB.ACTIVITIES_END_TIME] = 
             data[DB.ACTIVITIES_END_TIME]['seconds'] * 1000;
+          tripActivities.push(data);
         }
-        tripActivities.push(data);
       });
       this.setState({ days: activityFns.sortByDate(tripActivities) });
     });
