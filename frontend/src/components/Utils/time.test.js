@@ -27,6 +27,24 @@ test('other date timestamp format', () => {
  expect(actualSingapore).toEqual(expectedSingapore);
 });
 
+test('new york date timestamp format, no weekday', () => {
+  // Month parameter is zero indexed so it's actually the 10th month.
+  const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
+  const expected = 'October 3, 2020';
+  const actual = utils.timestampToLongDate(testDate);
+  expect(actual).toEqual(expected);
+ });
+ 
+ test('other date timestamp format, no weekday', () => {
+  const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3, 2, 4)).getTime();
+  const expectedCentral = 'August 22, 2020';
+  const expectedSingapore = 'August 23, 2020';
+  const actualCentral = utils.timestampToLongDate(testDate, TZ_CHICAGO);
+  const actualSingapore = utils.timestampToLongDate(testDate, TZ_SINGAPORE);
+  expect(actualCentral).toEqual(expectedCentral);
+  expect(actualSingapore).toEqual(expectedSingapore);
+ });
+
 test('new york time timestamp format', () => {
  // Month parameter is zero indexed so it's actually the 10th month.
  const testDate = new Date(Date.UTC(2020, 9, 3, 14, 19, 4, 23)).getTime();
@@ -129,20 +147,19 @@ test('ISODate empty input tests', () => {
   expect(utils.getISODate(testDate, null)).toBe(expected);
 });
 
-
 const mockTimeNow = 0;
 jest.mock('firebase', () => ({
     firestore: {
       Timestamp: {
           now: () => mockTimeNow,
           fromDate: (date) => date,
+          toDate: (date) => date,
       }
     }
 }));
 // TODO(Issue #118): Fix this test by mocking the Timestamp constructor or find
 //                   a workaround to avoid ithaving to be mocked.
 test('firestore Timestamp format', () => {
-  const {Timezone} = jest.RequireActual('firebase/firestore');
   const testDate = new Date(Date.UTC(2020, 7, 23, 2, 3))
   // central = 'Saturday, August 22, 2020, 9:03 PM';
   // singapore = 'Sunday, August 23, 2020, 10:03 AM';
@@ -157,7 +174,7 @@ describe('getTimeStampFromDateString tests', () => {
     const expectedTimestamp = mockTimeNow;
     const testRawDate = '';
 
-    const testTimestamp = utils.getTimestampFromDateString(testRawDate);
+    const testTimestamp = utils.getTimestampFromISODateString(testRawDate);
 
     expect(testTimestamp).toEqual(expectedTimestamp);
   });
@@ -166,13 +183,35 @@ describe('getTimeStampFromDateString tests', () => {
     const YEAR_2020 = 2020;
     const MONTH_JULY = 5; // Date constructor uses 0 indexed month.
     const DAY_4TH = 4;
-    const expectedTimestamp = new Date(YEAR_2020, MONTH_JULY, DAY_4TH);
+    const expectedTimestamp = new Date(Date.UTC(YEAR_2020, MONTH_JULY, DAY_4TH));
     // This is the type of string (yyyy-mm-dd) that is returned from the form
     // input type 'date'.
     const testISODateStr = '2020-06-04'; // July 4, 2020
 
-    const testTimestamp = utils.getTimestampFromDateString(testISODateStr);
+    const testTimestamp = utils.getTimestampFromISODateString(testISODateStr);
 
     expect(testTimestamp).toEqual(expectedTimestamp);
   });
 });
+
+test('getDateRangeString test', () => {
+  // Dates used for both test and expected date strings.
+  const startMonth = 12;
+  const startDay = 17;
+  const startYear = 1995;
+  const endMonth = 5;
+  const endDay = 24;
+  const endYear = 1996;
+  const expectedDateRange = `${startMonth}/${startDay}/${startYear} - ` +
+        `${endMonth}/${endDay}/${endYear}`;
+
+  // Note that the months in JS dates are 0 indexed rather than 1 indexed so
+  // they must be decremented by 1 in order for the month to be correct.
+  const testStartDate = firebase.firestore.Timestamp.fromDate(
+      new Date(startYear, startMonth - 1, startDay));
+  const testEndDate = firebase.firestore.Timestamp.fromDate(
+      new Date(endYear, endMonth - 1, endDay));
+  const testDateRange = utils.getDateRangeString(testStartDate, testEndDate);
+
+  expect(testDateRange).toEqual(expectedDateRange);
+})

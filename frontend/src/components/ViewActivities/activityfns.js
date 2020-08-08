@@ -1,6 +1,7 @@
 import * as DB from '../../constants/database.js';
 import app from '../Firebase';
 import { firestore } from 'firebase';
+import * as moment from 'moment-timezone';
 import * as time from '../Utils/time.js';
 
 const db = app.firestore();
@@ -62,10 +63,12 @@ export function sortByDate(tripActivities) {
       activities.set(dateKey, new Set([activity]));
     }
   }
-
-  // Sort activities by date.
-  let activitiesSorted = Array.from(activities).sort(compareActivities);
-  
+  // Sort activities by date.  
+  let activitiesSorted = Array.from(activities).sort((a, b) => {
+    const aDate = moment.utc(a[0], "YYYY-MM-DD").valueOf();
+    const bDate = moment.utc(b[0], "YYYY-MM-DD").valueOf();
+    return aDate < bDate ? -1 : 1;
+  });
   return activitiesSorted;
 }
 
@@ -128,4 +131,52 @@ export function getRefValue(ref, ignoreValue='', defaultValue=null) {
     return defaultValue;
   } 
   return ref.current.value;
+}
+  
+/**
+ * Pretty format start and end times/days to be displayed. 
+ * 
+ * Examples:
+ * 9:30 AM - 10:30 AM
+ * 9:30 AM America/Chicago - 10:30 AM America/New York
+ * 9:30 AM - August 9, 2020 10:30 AM
+ * 9:30 AM America/Chicago - August 9, 2020 10:30 AM America/New York
+ * 
+ * Exact output depends on input's date and timezone. 
+ * 
+ * @param {!ActivityInfo} activity The activity to display.
+ * @return {string} The text to display.
+ */
+export function displayTimes(activity) { 
+  const startDay = time.timestampToLongDate(
+    getField(activity, DB.ACTIVITIES_START_TIME), 
+    getField(activity, DB.ACTIVITIES_START_TZ)
+    );
+  const endDay = time.timestampToLongDate(
+    getField(activity, DB.ACTIVITIES_END_TIME), 
+    getField(activity, DB.ACTIVITIES_END_TZ)
+    );    
+  const startTime = time.timestampToTimeFormatted(
+    getField(activity, DB.ACTIVITIES_START_TIME), 
+    getField(activity, DB.ACTIVITIES_START_TZ)
+    );
+  const endTime = time.timestampToTimeFormatted(
+    getField(activity, DB.ACTIVITIES_END_TIME), 
+    getField(activity, DB.ACTIVITIES_END_TZ)
+    );
+  const startTz = getField(activity, DB.ACTIVITIES_START_TZ);
+  const endTz = getField(activity, DB.ACTIVITIES_END_TZ);
+  // Start and end time are on the same day.
+  if (startDay === endDay) {
+    // They're in the same timezone.
+    if (startTz === endTz) { return `${startTime} - ${endTime}`; }
+    // They're in different timezones.
+    return `${startTime} ${startTz} - ${endTime} ${endTz}`;
+  }
+
+  // Start and end time aren't on the same day.
+  // They're in the same timezone.
+  if (startTz === endTz) { return `${startTime} - ${endDay}, ${endTime}`; }
+  // They're in different timezones. 
+  return `${startTime} ${startTz} - ${endDay}, ${endTime} ${endTz}`;
 }
