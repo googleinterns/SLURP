@@ -31,9 +31,9 @@ class ViewActivities extends React.Component {
 
   /**
    * Create an empty activity (with filler information) to edit and then display.
-   * Allows us to use editActivity instead of creating a whole new form for it. 
-   * 
-   * @param {!string} tripId The tripId to attach to this new activity.
+   * Allows us to use editActivity instead of creating a whole new form for it.
+   *
+   * @param {string} tripId The tripId to attach to this new activity.
    * @return {Object} Data filled into new Activity.
    */
   createEmptyActivity = (tripId) => {
@@ -90,6 +90,11 @@ class ViewActivities extends React.Component {
             error: e
           })
         });
+  }
+
+  cancelAdd = () => {
+    // TODO: delete new event (#132)
+    this.doneAddingActivity()
   }
 
   cancelAdd = () => {

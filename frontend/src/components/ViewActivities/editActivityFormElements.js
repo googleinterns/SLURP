@@ -79,7 +79,7 @@ export function dateTimeTzFormGroup(controlId, formLabel, dateRef,
         <Form.Control type='time' label='time' ref={timeRef} 
           defaultValue={timeDefault}/>
       </Col>
-      <Col sm={TZPICKERWIDTH}>{tzpicker}</Col>
+      <Col sm={TZPICKERWIDTH}>{tzpickerElement}</Col>
     </Form.Group>
   );
 }

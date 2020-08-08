@@ -7,8 +7,7 @@ import { firestore } from 'firebase';
  * Example: '10:19 AM'.
  *
  * @param {number} msTimestamp Timestamp in milliseconds of desired date.
- * @param {string} [timezone='America/New_York'] 
- *  Timezone in which to convert (using underscores, not spaces).
+ * @param {?string} [timezone=null] Timezone in which to convert.
  * @return {string} Formatted time.
  */
 export function timestampToTimeFormatted(msTimestamp, timezone =  null) {
@@ -25,8 +24,7 @@ export function timestampToTimeFormatted(msTimestamp, timezone =  null) {
  * Example: 'Monday, January 19, 1970'.
  *
  * @param {number} msTimestamp Timestamp in milliseconds of desired date.
- * @param {string} [timezone='America/New_York'] 
- *  Timezone in which to convert (using underscores, not spaces).
+ * @param {?string} [timezone=null] Timezone in which to convert.
  * @return {string} Formatted time.
  */
 export function timestampToDateFormatted(msTimestamp, timezone=null) {
@@ -58,10 +56,9 @@ export function timestampToLongDate(msTimestamp, timezone=null) {
 /** 
  * Format a timestamp (in milliseconds) into a pretty string.
  * Example: 'Monday, January 19, 1970 02:48 AM PST'.
- * 
+ *
  * @param {number} msTimestamp Timestamp in milliseconds of desired date.
- * @param {string} [timezone='America/New_York'] 
- *  Timezone in which to convert (using underscores, not spaces).
+ * @param {?string} [timezone=null] Timezone in which to convert.
  * @returns {string} Formatted time.
  */
 export function timestampToFormatted(msTimestamp, timezone = null) {
@@ -155,7 +152,7 @@ export function timezonesForCountry(countryName) {
  * Get a date in 'YYYY-MM-DD' format.
  *
  * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
- * @param {?string} [timezone=null] The timezone which the string should be returned in. 
+ * @param {?string} [timezone=null] The timezone which the string should be returned in.
  * @return {string} The date in 'YYYY-MM-DD' format. 
  *  A null value will return timezone in GMT.
  */
@@ -169,7 +166,7 @@ export function getISODate(msTimestamp, timezone=null) {
  * Get a time in 24-hour ('HH:mm') format.
  *
  * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
- * @param {?string} [timezone=null] The timezone which the string should be returned in. 
+ * @param {?string} [timezone=null] The timezone which the string should be returned in.
  * @return {string} The time in 24-hour (HH:mm) format.   
  *  A null value will return timezone in GMT.
  */
