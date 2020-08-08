@@ -96,25 +96,39 @@ class TripsContainer extends React.Component {
           .where(collaboratorField, 'array-contains', curUserUid)
           .orderBy(DB.TRIPS_UPDATE_TIMESTAMP, 'desc')
           .onSnapshot(querySnapshot => {
-            const tripsArr = querySnapshot.docs.map((doc, idx) =>
-                ( <Trip
-                    tripData={doc.data()}
-                    tripId={doc.id}
-                    handleEditTrip={this.props.handleEditTrip}
-                    eventKey={String(idx)} // Event key must be string
-                    key={doc.id}
-                  />
-                )
-            );
+            const tripDocsArr = querySnapshot.docs;
 
-            this.setState({ [tripViewTripsState]: tripsArr,
-                            tripArrsUpdated: true
+            this.setState({ [tripViewTripsState]: tripDocsArr,
+                            tripArrsUpdated: true,
                           });
           }, (error) => {
             const errorElement = getErrorElement(error);
             this.setState({ tripsContainer: errorElement });
           });
     }
+  }
+
+  /**
+   * Returns an array of `Trip` components corresponding to the trip documents
+   * stored in `tripDocs`.
+   *
+   * @param {firebase.firestore.QuerySnapshot.QueryDocumentSnapshot[]} tripDocs
+   *     The array of all the documents in one of the `QuerySnapShot`s from
+   *     the listener in `componentDidMount.`
+   * @return {Array<JSX.Element>} Array of `Trip` components.
+   */
+  getTripArr = (tripDocs) => {
+    return tripDocs.map((doc, idx) =>
+          ( <Trip
+              tripData={doc.data()}
+              tripId={doc.id}
+              handleEditTrip={this.props.handleEditTrip}
+              tripView={this.props.tripView}
+              eventKey={String(idx)} // Event key must be string
+              key={doc.id}
+            />
+          )
+        );
   }
 
   // Checks to make sure tripsContainer does not contain error element and
@@ -139,13 +153,16 @@ class TripsContainer extends React.Component {
     if (tripsQuerySuccessful && (tripViewChanged || this.state.tripArrsUpdated)) {
       switch(this.props.tripView) {
         case TripView.ACTIVE:
-          this.setState({ tripsContainer: this.state.acceptedTrips });
+          this.setState({ tripsContainer:
+                              this.getTripArr(this.state.acceptedTrips) });
           break;
         case TripView.PENDING:
-          this.setState({ tripsContainer: this.state.pendingTrips });
+          this.setState({ tripsContainer:
+                              this.getTripArr(this.state.pendingTrips) });
           break;
         case TripView.REJECTED:
-          this.setState({ tripsContainer: this.state.rejectedTrips });
+          this.setState({ tripsContainer:
+                              this.getTripArr(this.state.rejectedTrips) });
           break;
         default:
           console.error(`Trip view of ${this.props.tripView} was unexpected.
