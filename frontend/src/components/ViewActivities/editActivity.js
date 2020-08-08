@@ -22,7 +22,16 @@ class EditActivity extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = {startTzChanged: false, endTzChanged: false};
+    const activity = props.activity;
+    this.state = {
+      startTzChanged: false, 
+      endTzChanged: false, 
+      startTimeDateChanged: false,
+      endDateFiller: time.getISODate(getField(activity, DB.ACTIVITIES_END_TIME), 
+        getField(activity, DB.ACTIVITIES_END_TZ)),
+      endTimeFiller: time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
+        getField(activity, DB.ACTIVITIES_END_TZ))
+    };
 
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
@@ -90,6 +99,13 @@ class EditActivity extends React.Component {
   // selected country's timezones. 
   startTimeTzUpdate = () => { this.setState({startTzChanged : !this.state.startTzChanged})};
   endTimeTzUpdate = () => { this.setState({endTzChanged : !this.state.endTzChanged})};
+
+  startDateUpdate = () => { 
+    this.setState({ 
+      endDateFiller: this.editStartDateRef.current.value, 
+      startTimeDateChanged: !this.state.startTimeDateChanged
+    });
+  }
 
   /**
    * Returns a dropdown of all the timezones.
@@ -200,18 +216,19 @@ class EditActivity extends React.Component {
           this.editStartTimeRef,                           // timeRef, 
           time.get24hTime(getField(activity, DB.ACTIVITIES_START_TIME), 
               getField(activity, DB.ACTIVITIES_START_TZ)), //timeDefault, 
-          this.timezoneDropdown('start', getField(activity, DB.ACTIVITIES_START_TZ)) // tzpicker 
+          this.timezoneDropdown('start', getField(activity, DB.ACTIVITIES_START_TZ)), // tzpicker 
+          this.startDateUpdate, // onChangeDate
           )}
         {formElements.dateTimeTzFormGroup( // END TIME
           'formActivityEndTime',                         // controlId
           'To:',                                         // formLabel
           this.editEndDateRef,                           // dateRef
-          time.getISODate(getField(activity, DB.ACTIVITIES_END_TIME), 
-              getField(activity, DB.ACTIVITIES_END_TZ)), // dateDefault 
+          this.state.endDateFiller, // dateDefault 
           this.editEndTimeRef,                           // timeRef, 
-          time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
-              getField(activity, DB.ACTIVITIES_END_TZ)), //timeDefault, 
-          this.timezoneDropdown('end', getField(activity, DB.ACTIVITIES_END_TZ)) // tzpicker 
+          this.state.endTimeFiller, //timeDefault, 
+          this.timezoneDropdown('end', getField(activity, DB.ACTIVITIES_END_TZ)), // tzpicker 
+          null, // onChangeDate
+          this.state.startTimeDateChanged // key
           )}
         {formElements.textElementFormGroup( // DESCRIPTION
             'formActivityDescription', // controlId
