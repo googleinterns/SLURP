@@ -7,12 +7,14 @@ import { firestore } from 'firebase';
  * Example: '10:19 AM'.
  *
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
- * @param {string} timezone Timezone in which to convert.
+ * @param {?string} [timezone=null] Timezone in which to convert.
  * @return {string} Formatted time.
  */
-export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_York') {
+export function timestampToTimeFormatted(msTimestamp, timezone =  null) {
   // Formats from https://momentjs.com/docs/#/displaying/format/
-  // LT = Localized time
+  // LT = Localized time  
+  timezone = timezone != null ? timezone.replace(' ', '_') // Reformat date.
+                              : ''; // Use GMT.
   return moment.tz(parseFloat(msTimestamp), timezone).format('LT');
 
 }
@@ -22,13 +24,15 @@ export function timestampToTimeFormatted(msTimestamp, timezone = 'America/New_Yo
  * Example: 'Monday, January 19, 1970'.
  *
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
- * @param {string} timezone Timezone in which to convert.
+ * @param {?string} [timezone=null] Timezone in which to convert.
  * @return {string} Formatted time.
  */
-export function timestampToDateFormatted(msTimestamp, timezone='America/New_York') {
+export function timestampToDateFormatted(msTimestamp, timezone=null) {
   // Formats from https://momentjs.com/docs/#/displaying/format/.
   // dddd = Day of the week (i.e. Monday)
-  // LL = "January 19, 1970"
+  // LL = "January 19, 1970"  
+  timezone = timezone != null ? timezone.replace(' ', '_') // Reformat date.
+                              : ''; // Use GMT.
   return moment.tz(parseFloat(msTimestamp), timezone).format('dddd, LL');
 }
 
@@ -52,13 +56,15 @@ export function timestampToLongDate(msTimestamp, timezone='America/New_York') {
  * Example: 'Monday, January 19, 1970 02:48 AM PST'.
  *
  * @param {int} msTimestamp Timestamp in milliseconds of desired date.
- * @param {string} timezone Timezone in which to convert.
+ * @param {?string} [timezone=null] Timezone in which to convert.
  * @returns {string} Formatted time.
  */
-export function timestampToFormatted(msTimestamp, timezone = 'America/New_York') {
+export function timestampToFormatted(msTimestamp, timezone = null) {
   // Formats from https://momentjs.com/docs/#/displaying/format/.
   // LLLL = "Monday, January 19, 1970 2:48 AM"
   // z = "PST"
+  timezone = timezone != null ? timezone.replace(' ', '_') // Reformat date.
+                              : ''; // Use GMT.
   return moment.tz(parseFloat(msTimestamp), timezone).format('LLLL z');
 
 }
@@ -143,13 +149,12 @@ export function timezonesForCountry(countryName) {
  * Get a date in 'YYYY-MM-DD' format.
  *
  * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
- * @param {string} timezone The timezone which the string should be returned in.
- * @return {string} The date in 'YYYY-MM-DD' format.
+ * @param {?string} [timezone=null] The timezone which the string should be returned in.
+ * @return {string} The date in 'YYYY-MM-DD' format. 
  */
 export function getISODate(msTimestamp, timezone=null) {
-  if (timezone === null) {
-    timezone = ''; // Use GMT.
-  }
+  timezone = timezone != null ? timezone.replace(' ', '_') // Reformat date.
+                              : ''; // Use GMT.
   return moment.tz(parseFloat(msTimestamp), timezone).format(moment.HTML5_FMT.DATE);
 }
 
@@ -157,13 +162,14 @@ export function getISODate(msTimestamp, timezone=null) {
  * Get a time in 24-hour ('HH:mm') format.
  *
  * @param {number} msTimestamp Timestamp, in milliseconds since epoch.
- * @param {string} timezone The timezone which the string should be returned in.
- * @return {string} The time in 24-hour (HH:mm) format.
+ * @param {?string} [timezone=null] The timezone which the string should be returned in.
+ * @return {string} The time in 24-hour (HH:mm) format.   
  */
-export function get24hTime(msTimestamp, timezone = null) {
+export function get24hTime(msTimestamp, timezone=null) {
   if (timezone === null) {
     timezone = ''; // Use GMT.
   }
+  timezone = timezone.replace(' ', '_');
   return moment.tz(parseFloat(msTimestamp), timezone).format(moment.HTML5_FMT.TIME);
 }
 
@@ -176,6 +182,7 @@ export function get24hTime(msTimestamp, timezone = null) {
  * @return {firestore.Timestamp} Firestore timestamp object at the same time.
  */
 export function firebaseTsFromISO(time, date, tz) {
+  tz = tz.replace(' ', '_');
   const mtzDate = moment.tz(time + " " + date, "HH:mm YYYY-MM-DD", tz);
   return new firestore.Timestamp(mtzDate.valueOf() / 1000, 0);
 }
