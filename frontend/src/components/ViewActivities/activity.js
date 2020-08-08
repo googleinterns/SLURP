@@ -25,7 +25,7 @@ class Activity extends React.Component {
   /**
    * Set the activity into editing mode.
    */
-  setEditActivity() {
+  setEditActivity = () => {
     this.setState({editing: true});
   }
 
@@ -70,8 +70,9 @@ class Activity extends React.Component {
     return (
       <Accordion defaultActiveKey='1'>  
         <Card>
-          <Accordion.Toggle as={Card.Header} eventKey='0' align='center'>
-            {activity[DB.ACTIVITIES_TITLE]}
+          <Accordion.Toggle as={Card.Header} eventKey='0'>
+            <h5>{activity[DB.ACTIVITIES_TITLE]}</h5>
+            <p>{utils.displayTimes(activity)}</p>
           </Accordion.Toggle>
           <Accordion.Collapse 
             eventKey='0' 

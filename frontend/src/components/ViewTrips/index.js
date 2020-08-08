@@ -1,40 +1,42 @@
 import React from 'react';
 
-import Button from 'react-bootstrap/Button';
-
 import Header from '../Header/';
 import SaveTripModal from './save-trip-modal.js'
 import TripsContainer from './trips-container.js';
+import ManageTripsBar from './manage-trips-bar.js';
+import TripView from '../../constants/trip-view.js';
 
+/**
+ * {@link TripView} defined originally in `constants/trip-view.js`.
+ */
+
+/**
+ * {@link RawTripData} defined originally in `ViewTrips/save-trip-modal.js`.
+ */
 
 /**
  * ViewTrips component that defines the page where a user can view and manage
  * their current trips.
  */
 class ViewTrips extends React.Component {
-  /** @inheritdoc */
+  /** @override */
   constructor() {
     super();
     this.state = { showModal: false,
-                   refreshTripsContainer: false,
                    refreshSaveTripModal: false,
                    tripId: null,
-                   defaultFormObj: null,
+                   tripData: null,
+                   tripView: TripView.ACTIVE,
                  };
   }
 
   /**
-   * Handler that flips `refreshTripsContainer` property which causes that
-   * TripsContainer component to be reloaded.
+   * Handler that updates the `tripView` state.
    *
-   * This allows a trip creator's view trips page to be updated in real time.
-   *
-   * In the future, the use of refreshTripContainer and the key prop on Trips
-   * container should be removed with the addition of real time listening with
-   * onShapshot (Issue #62).
+   * @param {TripView} tripView The page's new trip view state.
    */
-  refreshTripsContainer = () => {
-    this.setState({ refreshTripsContainer: !this.state.refreshTripsContainer });
+  changeTripView = (tripView) => {
+    this.setState({ tripView: tripView });
   }
 
   /**
@@ -61,14 +63,14 @@ class ViewTrips extends React.Component {
   /**
    * Handler that displays the add trip page.
    *
-   * Sets state for the states `tripId` and `placeholderObj` in order
+   * Sets state for the states `tripId` and `tripData` in order
    * to ensure the modal has the visual characteristics of an "add trip" modal
    * and creates a new Trip document in the database.
    */
   showAddTripModal = () => {
     this.setState({
       tripId: null,
-      defaultFormObj: null,
+      tripData: null,
     });
     this.showSaveTripModal();
   }
@@ -76,20 +78,22 @@ class ViewTrips extends React.Component {
   /**
    * Handler that displays the edit trip page.
    *
-   * Sets state for the states `tripId` and `placeholderObj` in order
+   * Sets state for the states `tripId` and `tripData` in order
    * to ensure the modal has the visual characteristics of an "edit trip" modal
-   * and overwrites and existing Trip document in the database.
+   * and updates existing Trip document in the database.
    *
+  * @param {string} tripId Document ID for the current Trip document.
+  * @param {!TripData} tripData Trip document data for trip to be modified.
    */
   showEditTripModal = (tripId, tripData) => {
     this.setState({
       tripId: tripId,
-      defaultFormObj: tripData
+      tripData: tripData,
     });
     this.showSaveTripModal();
   }
 
-  /** @inheritdoc */
+  /** @override */
   render() {
     return (
       <div className="view-trips-page">
@@ -97,20 +101,18 @@ class ViewTrips extends React.Component {
         <SaveTripModal
           show={this.state.showModal}
           handleClose={this.hideSaveTripModal}
-          refreshTripsContainer={this.refreshTripsContainer}
           tripId={this.state.tripId}
-          defaultFormObj={this.state.defaultFormObj}
+          tripData={this.state.tripData}
           key={this.state.refreshSaveTripModal}
         />
-        <div className="manage-trips-bar">
-          <Button type='button' onClick={this.showAddTripModal}>
-            + New Trip
-          </Button>
-        </div>
+        <ManageTripsBar
+          handleAddTrip={this.showAddTripModal}
+          handleChangeView={this.changeTripView}
+          tripView={this.state.tripView}
+        />
         <TripsContainer
           handleEditTrip={this.showEditTripModal}
-          refreshTripsContainer={this.refreshTripsContainer}
-          key={this.state.refreshTripsContainer}
+          tripView={this.state.tripView}
         />
       </div>
     );
