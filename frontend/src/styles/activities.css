@@ -33,3 +33,7 @@
 .activity-editor {
     padding: 1em 1em 3em 1em;
 }
+
+.add-activity-modal {
+    min-width: 45vw;
+}

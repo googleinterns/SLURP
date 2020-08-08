@@ -16,13 +16,26 @@ const db = app.firestore();
  * @property {Object} props ReactJS props.
  * @property {ActivityInfo} props.activity The activity to display.
  * @property {function} props.submitFunction The function to run upon submission.
+ * @property {boolean} props.new Whether or not the activity being edited is new.
  */
 class EditActivity extends React.Component {
   /** @override */
   constructor(props){
     super(props);
-
-    this.state = {startTzChanged: false, endTzChanged: false};
+ 
+    const activity = props.activity;
+    this.state = {
+      startTzChanged: false, 
+      endTzChanged: false, 
+      startTimeDateChanged: false,
+      endDateFiller: time.getISODate(getField(activity, DB.ACTIVITIES_END_TIME), 
+        getField(activity, DB.ACTIVITIES_END_TZ)),
+      endTimeFiller: time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
+        getField(activity, DB.ACTIVITIES_END_TZ)), 
+      flightCheck: getField(this.props.activity,
+           DB.ACTIVITIES_FLIGHT, // Check for database value of "flight".
+           !this.props.new) === 'true' // New activities have "flight" not checked.
+    };
 
     // Bind state users/modifiers to `this`.
     this.editActivity = this.editActivity.bind(this);
@@ -41,6 +54,7 @@ class EditActivity extends React.Component {
     this.editEndLocRef = React.createRef();
     this.editStartTzRef = React.createRef();
     this.editEndTzRef = React.createRef();
+    this.isFlightRef = React.createRef();
   }
   
   /**
@@ -58,11 +72,20 @@ class EditActivity extends React.Component {
 
     newVals[DB.ACTIVITIES_START_COUNTRY] = 
       getRefValue(this.editStartLocRef, 'No Change', activity[DB.ACTIVITIES_START_COUNTRY]);
-    newVals[DB.ACTIVITIES_END_COUNTRY] = 
-      getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
+    
+    // Ref doesn't keep track of checked value
+    newVals[DB.ACTIVITIES_FLIGHT] = this.state.flightCheck;
     
     newVals[DB.ACTIVITIES_START_TZ] = getRefValue(this.editStartTzRef);
-    newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef);
+
+    if (newVals[DB.ACTIVITIES_FLIGHT]) { // This is a flight.
+      newVals[DB.ACTIVITIES_END_COUNTRY] = 
+        getRefValue(this.editEndLocRef, 'No Change', activity[DB.ACTIVITIES_END_COUNTRY]);
+      newVals[DB.ACTIVITIES_END_TZ] = getRefValue(this.editEndTzRef);
+    } else { // This is not a flight.
+      newVals[DB.ACTIVITIES_END_COUNTRY] = newVals[DB.ACTIVITIES_START_COUNTRY];
+      newVals[DB.ACTIVITIES_END_TZ] = newVals[DB.ACTIVITIES_START_TZ];
+    }
 
     // Start time fields!
     const startTime = getRefValue(this.editStartTimeRef);
@@ -90,6 +113,15 @@ class EditActivity extends React.Component {
   // selected country's timezones. 
   startTimeTzUpdate = () => { this.setState({startTzChanged : !this.state.startTzChanged})};
   endTimeTzUpdate = () => { this.setState({endTzChanged : !this.state.endTzChanged})};
+
+  onFlightCheckChange = () => { this.setState({flightCheck: !this.state.flightCheck}) }
+
+  startDateUpdate = () => { 
+    this.setState({ 
+      endDateFiller: this.editStartDateRef.current.value, 
+      startTimeDateChanged: !this.state.startTimeDateChanged
+    });
+  }
 
   /**
    * Returns a dropdown of all the timezones.
@@ -133,13 +165,13 @@ class EditActivity extends React.Component {
    * change as well.
    *
    * @param {ref} ref The reference to attach to the dropdown.
-   * @param {ref} tzref The corresponding time zone reference field. 
+   * @param {ref} onChange The function to call onChange. 
    * @param {string} defaultCountry The default country for the dropdown.
    * @return {HTML} HTML dropdown of all the countries with timezones.
    */
-  countriesDropdown(ref, tzref, defaultCountry) {
+  countriesDropdown(ref, onChange, defaultCountry) {
     return (
-      <Form.Control as='select' ref={ref} onChange={tzref} defaultValue={defaultCountry}>
+      <Form.Control as='select' ref={ref} onChange={onChange} defaultValue={defaultCountry}>
         {countryList.map((item, index) => {
           return (
             <option key={index}>{item}</option>
@@ -168,7 +200,6 @@ class EditActivity extends React.Component {
 
   render() {
     const activity = this.props.activity;
-    const newAct = this.props.new;
     return (
       <Form className='activity-editor' onSubmit={this.finishEditActivity}>
         {formElements.textElementFormGroup( // TITLE
@@ -177,19 +208,27 @@ class EditActivity extends React.Component {
             getField(activity, DB.ACTIVITIES_TITLE, msgs.ACTIVITY_TITLE_PLACEHOLDER), // placeHolder 
             this.editTitleRef             // ref
           )}
+        {formElements.flightCheck( // "THIS IS A FLIGHT" checkbox
+          'formActivityFlightCheck', // controlId
+          'This is a flight.',       // formLabel
+          this.isFlightRef,          // ref
+          this.onFlightCheckChange,  // onChange
+          this.state.flightCheck      // defaultValue
+        )}
         {formElements.locationElementFormGroup( // START LOCATION
           'formActivityStartLocation',                 // controlId
           'Start Location:',                           // formLabel
           this.countriesDropdown(this.editStartLocRef, // defaultValue ref
-            this.editStartTzRef,                          // countriesDropdown tzref
+            this.startTimeTzUpdate,                          // countriesDropdown onChange
             getField(activity, DB.ACTIVITIES_START_COUNTRY)) // countriesDropdown defaultCountry
           )}
         {formElements.locationElementFormGroup( // END LOCATION
           'formActivityEndLocation',                 // controlId
           'End Location:',                           // formLabel
           this.countriesDropdown(this.editEndLocRef, // defaultValue ref
-            this.editEndTzRef, // countriesDropdown tzref
-            getField(activity, DB.ACTIVITIES_END_COUNTRY)) // countriesDropdown defaultCountry
+            this.endTimeTzUpdate, // countriesDropdown onChange
+            getField(activity, DB.ACTIVITIES_END_COUNTRY)), // countriesDropdown defaultCountry
+            this.state.flightCheck //show
           )}
         {formElements.dateTimeTzFormGroup( // START TIME
           'formActivityStartTime',                         // controlId
@@ -200,18 +239,20 @@ class EditActivity extends React.Component {
           this.editStartTimeRef,                           // timeRef, 
           time.get24hTime(getField(activity, DB.ACTIVITIES_START_TIME), 
               getField(activity, DB.ACTIVITIES_START_TZ)), //timeDefault, 
-          this.timezoneDropdown('start', getField(activity, DB.ACTIVITIES_START_TZ)) // tzpicker 
+          this.timezoneDropdown('start', getField(activity, DB.ACTIVITIES_START_TZ)), // tzpicker 
+          this.startDateUpdate, // onChangeDate
           )}
         {formElements.dateTimeTzFormGroup( // END TIME
           'formActivityEndTime',                         // controlId
           'To:',                                         // formLabel
           this.editEndDateRef,                           // dateRef
-          time.getISODate(getField(activity, DB.ACTIVITIES_END_TIME), 
-              getField(activity, DB.ACTIVITIES_END_TZ)), // dateDefault 
+          this.state.endDateFiller, // dateDefault 
           this.editEndTimeRef,                           // timeRef, 
-          time.get24hTime(getField(activity, DB.ACTIVITIES_END_TIME), 
-              getField(activity, DB.ACTIVITIES_END_TZ)), //timeDefault, 
-          this.timezoneDropdown('end', getField(activity, DB.ACTIVITIES_END_TZ)) // tzpicker 
+          this.state.endTimeFiller, //timeDefault, 
+          this.timezoneDropdown('end', getField(activity, DB.ACTIVITIES_END_TZ)), // tzpicker 
+          null, // onChangeDate
+          this.state.startTimeDateChanged // key
+          this.state.flightCheck //show
           )}
         {formElements.textElementFormGroup( // DESCRIPTION
             'formActivityDescription', // controlId
