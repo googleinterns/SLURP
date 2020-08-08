@@ -3,6 +3,7 @@ import * as firebase from 'firebase/app';
 import authUtils from '../AuthUtils';
 import { getTimestampFromISODateString } from '../Utils/time.js'
 import * as DB from '../../constants/database.js';
+import * as msgs from '../../constants/messages.js';
 
 /**
  * {@link TripData} defined originally in `ViewTrips/trip.js`.
@@ -72,21 +73,20 @@ export async function getCollaboratorUidArray(collaboratorEmailArr) {
  *     that is to be created.
  */
 export async function formatTripData(rawTripData) {
-  const defaultName = "Untitled Trip";
-  const defaultDestination = "No Destination"
   const collaboratorUidArr = await getCollaboratorUidArray(
                                           rawTripData[DB.TRIPS_COLLABORATORS]);
 
   const formattedTripObj = {
     [DB.TRIPS_UPDATE_TIMESTAMP]: firebase.firestore.Timestamp.now(),
-    [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripData[DB.TRIPS_TITLE], defaultName),
+    [DB.TRIPS_TITLE]: getCleanedTextInput(rawTripData[DB.TRIPS_TITLE],
+                                          msgs.TRIPS_TITLE_DEFAULT),
     [DB.TRIPS_DESCRIPTION]: rawTripData[DB.TRIPS_DESCRIPTION],
-    [DB.TRIPS_DESTINATION]:
-        getCleanedTextInput(rawTripData[DB.TRIPS_DESTINATION], defaultDestination),
-    [DB.TRIPS_START_DATE]:
-        getTimestampFromISODateString(rawTripData[DB.TRIPS_START_DATE]),
-    [DB.TRIPS_END_DATE]:
-        getTimestampFromISODateString(rawTripData[DB.TRIPS_END_DATE]),
+    [DB.TRIPS_DESTINATION]: getCleanedTextInput(rawTripData[DB.TRIPS_DESTINATION],
+                                                msgs.TRIPS_DESTINATION_DEFAULT),
+    [DB.TRIPS_START_DATE]: getTimestampFromISODateString(
+                                rawTripData[DB.TRIPS_START_DATE]),
+    [DB.TRIPS_END_DATE]: getTimestampFromISODateString(
+                                rawTripData[DB.TRIPS_END_DATE]),
     [DB.TRIPS_COLLABORATORS]: collaboratorUidArr,
   };
 

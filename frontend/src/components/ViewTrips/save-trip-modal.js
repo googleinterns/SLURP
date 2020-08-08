@@ -4,6 +4,7 @@ import app from '../Firebase';
 import { Button, Modal, Form }  from 'react-bootstrap';
 
 import * as DB from '../../constants/database.js';
+import * as msgs from '../../constants/messages.js';
 import { formatTripData } from './trip-utils.js';
 import { createFormGroup } from './save-trip-form-elements.js';
 
@@ -197,7 +198,7 @@ class SaveTripModal extends React.Component {
                  'Trip Title',                             // formLabel
                  'text',                                   // inputType
                   this.titleRef,                           // ref
-                  'Enter Trip Title',                      // placeholder
+                  msgs.TRIPS_TITLE_PLACEHOLDER,            // placeholder
                   this.getDefaultFormField(DB.TRIPS_TITLE) // defaultVal
             )}
             {createFormGroup(
@@ -205,7 +206,7 @@ class SaveTripModal extends React.Component {
                   'Trip Description',                            // formLabel
                   'text',                                        // inputType
                   this.descriptionRef,                           // ref
-                  'Enter Trip Description',                      // placeholder
+                  msgs.TRIPS_DESCRIPTION_PLACEHOLDER,            // placeholder
                   this.getDefaultFormField(DB.TRIPS_DESCRIPTION) // defaultVal
             )}
             {createFormGroup(
@@ -213,7 +214,7 @@ class SaveTripModal extends React.Component {
                   'Trip Destination',                            // formLabel
                   'text',                                        // inputType
                   this.destinationRef,                           // ref
-                  'Enter Trip Destination',                      // placeholder
+                  msgs.TRIPS_DESTINATION_PLACEHOLDER,            // placeholder
                   this.getDefaultFormField(DB.TRIPS_DESTINATION) // defaultVal
             )}
             {createFormGroup(
@@ -237,7 +238,7 @@ class SaveTripModal extends React.Component {
                   'Trip Collaborators',                           // formLabel
                   'emails',                                       // inputType
                   this.state.collaboratorsRefArr,                 // ref
-                  'person@email.xyz',                             // placeholder
+                  msgs.TRIPS_COLLAB_EMAIL_PLACEHOLDER,            // placeholder
                   this.getDefaultFormField(DB.TRIPS_COLLABORATORS) // defaultVal
             )}
             <Button onClick={this.addCollaboratorRef}>
