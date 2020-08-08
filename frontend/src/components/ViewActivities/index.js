@@ -11,13 +11,10 @@ import Header from '../Header';
 
 const db = app.firestore();
 /**
- * The view activities page. First checks that the current user is authorized to
- * view the current trip (i.e. they are a collaborator for it). If so, the
- * ActivityList component is displayed as normal. If not, an error is displayed
- * instead.
- *
- * @param {Object} props This component expects the following props:
- * - `tripId` {string} The trip's ID. This is sent to the component through the URL.
+ * React component for the whole 'view activities' page.
+ * 
+ * @property {Object} props ReactJS props. 
+ * @property {ActivityInfo} props.tripId This is sent to the component through the URL.
  */
 class ViewActivities extends React.Component {
   constructor(props) {
@@ -52,7 +49,8 @@ class ViewActivities extends React.Component {
   }
 
   /**
-   * Complete "Add Activity" operation
+   * Complete "Add Activity" operation.
+   * @param e {React.FormEvent} Form event.
    */
   addActivity = (e) => {
     e.preventDefault();
@@ -71,6 +69,33 @@ class ViewActivities extends React.Component {
       newAct: null 
     });
   };
+      
+  /** @override */
+  componentDidMount() {
+    app.firestore()
+        .collection(DB.COLLECTION_TRIPS)
+        .doc(this.tripId)
+        .get()
+        .then(doc => {
+          this.setState({
+            collaborators: doc.get(DB.TRIPS_ACCEPTED_COLLABS),
+            isLoading: false,
+            error: undefined
+          });
+        })
+        .catch(e => {
+          this.setState({
+            collaborators: undefined,
+            isLoading: true,
+            error: e
+          })
+        });
+  }
+
+  cancelAdd = () => {
+    // TODO: delete new event (#132)
+    this.doneAddingActivity()
+  }
 
   cancelAdd = () => {
     // TODO: delete new event (#132)
@@ -135,28 +160,6 @@ class ViewActivities extends React.Component {
         );
       }
     }
-  }
-
-  /** @inheritdoc */
-  componentDidMount() {
-    app.firestore()
-        .collection(DB.COLLECTION_TRIPS)
-        .doc(this.tripId)
-        .get()
-        .then(doc => {
-          this.setState({
-            collaborators: doc.get(DB.TRIPS_ACCEPTED_COLLABS),
-            isLoading: false,
-            error: undefined
-          });
-        })
-        .catch(e => {
-          this.setState({
-            collaborators: undefined,
-            isLoading: true,
-            error: e
-          })
-        });
   }
 }
 

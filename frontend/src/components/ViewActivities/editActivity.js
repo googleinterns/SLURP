@@ -102,7 +102,11 @@ class EditActivity extends React.Component {
     writeActivity(this.props.activity.tripId, this.props.activity.id, newVals);
   }
 
-  /** Runs when the `submit` button on the form is pressed.  */
+  /** 
+   * Runs when the `submit` button on the form is pressed. 
+   * 
+   * @param event The form event.
+   */
   finishEditActivity(event) {
     event.preventDefault();
     this.editActivity();
@@ -127,16 +131,15 @@ class EditActivity extends React.Component {
    * Returns a dropdown of all the timezones.
    * The dropdown's values change based on the corrresponding country dropdown to
    * reduce scrolling and ensure that the location corresponds to the time zone.
-   *
-   * Tests done manually using UI.
-   *
-   * @param {string} st Either 'start' or 'end' depending on whether the
+   * 
+   * @param {string} st Either 'start' or 'end' depending on whether the 
    * timezone is for the start or end timezone.
-   * @return {HTML} HTML dropdown item.
+   * @param {string} defaultTz The default time zone.
+   * @return {JSX.Element} HTML dropdown item.
    */
   timezoneDropdown(st, defaultTz) {
-    const ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
-    const dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
+    let ref = st === 'start' ? this.editStartLocRef : this.editEndLocRef;
+    let dbEntry = st === 'start' ? DB.ACTIVITIES_START_COUNTRY : DB.ACTIVITIES_END_COUNTRY;
     let timezones;
     if (ref.current == null) {
       // If activity[key] DNE, then timezones will just return all tzs anyway.
@@ -164,10 +167,10 @@ class EditActivity extends React.Component {
    * so when the country changes here, the values in the timezone dropdown
    * change as well.
    *
-   * @param {ref} ref The reference to attach to the dropdown.
-   * @param {ref} onChange The function to call onChange. 
+   * @param {React.RefObject} ref The reference to attach to the dropdown.
+   * @param {function} onChange The function to call onChange. 
    * @param {string} defaultCountry The default country for the dropdown.
-   * @return {HTML} HTML dropdown of all the countries with timezones.
+   * @return {JSX.Element} HTML dropdown of all the countries with timezones.
    */
   countriesDropdown(ref, onChange, defaultCountry) {
     return (
@@ -251,7 +254,7 @@ class EditActivity extends React.Component {
           this.state.endTimeFiller, //timeDefault, 
           this.timezoneDropdown('end', getField(activity, DB.ACTIVITIES_END_TZ)), // tzpicker 
           null, // onChangeDate
-          this.state.startTimeDateChanged // key
+          this.state.startTimeDateChanged, // key
           this.state.flightCheck //show
           )}
         {formElements.textElementFormGroup( // DESCRIPTION

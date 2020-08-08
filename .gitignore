@@ -10,3 +10,4 @@ target/
 
 # Don't include log files
 *.log
+frontend/docs/*
