@@ -50,6 +50,6 @@
     ]
   },
   "devDependencies": {
-    "jsdoc": "~3.6.5"
+    "jsdoc": "~4.0.5"
   }
 }
